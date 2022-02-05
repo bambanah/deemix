@@ -63,3 +63,6 @@ typings/
 # IDE
 .vscode
 .idea
+
+# development
+dist/*
