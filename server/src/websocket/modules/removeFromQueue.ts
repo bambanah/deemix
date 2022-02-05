@@ -1,11 +1,11 @@
 import { Server as WsServer } from 'ws'
 import { consoleInfo } from '../../helpers/errors'
-import { cancelDownload } from '../../main'
+import { DeemixApp } from '../../app'
 
 const eventName = 'removeFromQueue'
 
-const cb = (data: any, __: any, ___: WsServer) => {
-	cancelDownload(data)
+const cb = (data: any, __: any, ___: WsServer, deemix: DeemixApp) => {
+	deemix.cancelDownload(data)
 	consoleInfo(`Cancelled ${data}`)
 }
 

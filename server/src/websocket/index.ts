@@ -1,19 +1,17 @@
 import { Server as WsServer } from 'ws'
 
 import { consoleError, consoleInfo } from '../helpers/errors'
+import { DeemixApp } from '../app'
 import wsModules from './modules'
 
-// ? Is this needed?
-// ? https://github.com/websockets/ws#how-to-detect-and-close-broken-connections
-
-export const registerWebsocket = (wss: WsServer) => {
+export const registerWebsocket = (wss: WsServer, deemix: DeemixApp) => {
 	wss.on('connection', ws => {
 		ws.on('message', message => {
 			const data = JSON.parse(message.toString())
 
 			wsModules.forEach(module => {
 				if (data.key === module.eventName) {
-					module.cb(data.data, ws, wss)
+					module.cb(data.data, ws, wss, deemix)
 				}
 			})
 		})

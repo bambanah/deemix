@@ -1,13 +1,14 @@
 // @ts-expect-error
 import { Deezer } from 'deezer-js'
 import { ApiHandler } from '../../../types'
-import { sessionDZ, plugins } from '../../../main'
+import { sessionDZ } from '../../../app'
 
 const path: ApiHandler['path'] = '/getTracklist'
 
 const handler: ApiHandler['handler'] = async (req, res) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
 	const dz = sessionDZ[req.session.id]
+	const deemix = req.app.get('deemix')
 
 	const list_id = String(req.query.id)
 	const list_type = String(req.query.type)
@@ -20,7 +21,7 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 		}
 		case 'spotifyplaylist':
 		case 'spotify_playlist': {
-			if (!plugins.spotify.enabled) {
+			if (!deemix.plugins.spotify.enabled) {
 				res.send({
 					collaborative: false,
 					description: '',
@@ -40,7 +41,7 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 				})
 				break
 			}
-			const sp = plugins.spotify.sp
+			const sp = deemix.plugins.spotify.sp
 			let playlist = await sp.getPlaylist(list_id)
 			playlist = playlist.body
 			let tracklist = playlist.tracks.items

@@ -6,7 +6,7 @@ module.exports = env => {
 	const isProduction = !!env.production
 	const config = {
 		mode: isProduction ? 'production' : 'development',
-		entry: './src/app.ts',
+		entry: './src/index.ts',
 		devtool: isProduction ? false : 'eval',
 		module: {
 			rules: [

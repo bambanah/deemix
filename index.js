@@ -10,12 +10,14 @@ const argv = yargs(hideBin(process.argv)).options({
 	host: { type: 'string', default: '127.0.0.1' },
   dev: { type: 'boolean', default: false}
 }).argv
-const server = require('./server/dist/app.js')
+const { DeemixServer }= require('./server/dist/app.js')
 
 const PORT = process.env.DEEMIX_SERVER_PORT || argv.port
-
 process.env.DEEMIX_SERVER_PORT = PORT
 process.env.DEEMIX_HOST = argv.host
+
+const server = new DeemixServer(argv.host, PORT)
+server.init()
 
 let win
 const windowState = new WindowStateManager('mainWindow', {
@@ -91,7 +93,7 @@ app.on('window-all-closed', () => {
 })
 
 ipcMain.on('openDownloadsFolder', (event)=>{
-  const { downloadLocation } = server.getSettings().settings
+  const { downloadLocation } = server.deemixApp.getSettings().settings
   shell.openPath(downloadLocation)
 })
 

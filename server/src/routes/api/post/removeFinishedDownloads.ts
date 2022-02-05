@@ -1,10 +1,10 @@
 import { ApiHandler } from '../../../types'
-import { clearCompletedDownloads } from '../../../main'
 
 const path = '/removeFinishedDownloads'
 
-const handler: ApiHandler['handler'] = (_, res) => {
-	clearCompletedDownloads()
+const handler: ApiHandler['handler'] = (req, res) => {
+	const deemix = req.app.get('deemix')
+	deemix.clearCompletedDownloads()
 	res.send({ result: true })
 }
 

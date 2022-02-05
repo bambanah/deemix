@@ -1,26 +1,27 @@
 // @ts-expect-error
 import { Deezer } from 'deezer-js'
 import { ApiHandler } from '../../../types'
-import { sessionDZ, addToQueue, getSettings, listener } from '../../../main'
+import { sessionDZ } from '../../../app'
 
 const path: ApiHandler['path'] = '/addToQueue'
 
 const handler: ApiHandler['handler'] = async (req, res) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
+	const deemix = req.app.get('deemix')
 	const dz = sessionDZ[req.session.id]
 
 	const url = req.body.url.split(/[\s;]+/)
 	let bitrate = req.body.bitrate
-	if (bitrate === 'null' || bitrate === null) bitrate = getSettings().settings.maxBitrate
+	if (bitrate === 'null' || bitrate === null) bitrate = deemix.getSettings().settings.maxBitrate
 	let obj: any
 
 	try {
-		obj = await addToQueue(dz, url, bitrate)
+		obj = await deemix.addToQueue(dz, url, bitrate)
 	} catch (e) {
 		switch (e.name) {
 			case 'NotLoggedIn':
 				res.send({ result: false, errid: e.name, data: { url, bitrate } })
-				listener.send('loginNeededToDownload')
+				deemix.listener.send('loginNeededToDownload')
 				break
 			default:
 				console.error(e)

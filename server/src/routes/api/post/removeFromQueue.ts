@@ -1,12 +1,12 @@
 import { ApiHandler } from '../../../types'
-import { cancelDownload } from '../../../main'
 
 const path = '/removeFromQueue'
 
 const handler: ApiHandler['handler'] = (req, res) => {
+	const deemix = req.app.get('deemix')
 	const { uuid } = req.query
 	if (uuid) {
-		cancelDownload(uuid)
+		deemix.cancelDownload(uuid)
 		res.send({ result: true })
 	} else {
 		res.send({ result: false })

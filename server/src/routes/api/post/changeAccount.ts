@@ -3,7 +3,7 @@ import { RequestHandler } from 'express'
 import { Deezer } from 'deezer-js'
 
 import { ApiHandler } from '../../../types'
-import { sessionDZ } from '../../../main'
+import { sessionDZ } from '../../../app'
 
 const path: ApiHandler['path'] = '/changeAccount'
 

@@ -1,10 +1,10 @@
 import { ApiHandler } from '../../../types'
-import { plugins } from '../../../main'
 
 const path: ApiHandler['path'] = '/spotifyStatus'
 
-const handler: ApiHandler['handler'] = (_, res) => {
-	res.send({ spotifyEnabled: plugins.spotify.enabled })
+const handler: ApiHandler['handler'] = (req, res) => {
+	const deemix = req.app.get('deemix')
+	res.send({ spotifyEnabled: deemix.plugins.spotify.enabled })
 }
 
 const apiHandler: ApiHandler = { path, handler }

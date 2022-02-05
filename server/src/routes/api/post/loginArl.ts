@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express'
 // @ts-expect-error
 import { Deezer } from 'deezer-js'
-import { sessionDZ, startQueue, isDeezerAvailable } from '../../../main'
+import { sessionDZ } from '../../../app'
 import { ApiHandler } from '../../../types'
 
 export interface RawLoginArlBody {
@@ -21,6 +21,7 @@ const path: ApiHandler['path'] = '/loginArl'
 
 const handler: RequestHandler<{}, {}, RawLoginArlBody, {}> = async (req, res, _) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
+	const deemix = req.app.get('deemix')
 	const dz = sessionDZ[req.session.id]
 
 	if (!req.body) {
@@ -58,7 +59,7 @@ const handler: RequestHandler<{}, {}, RawLoginArlBody, {}> = async (req, res, _)
 		response = await testDz.login_via_arl(...loginParams)
 	}
 	if (response === LoginStatus.FAILED) sessionDZ[req.session.id] = new Deezer()
-	if (!(await isDeezerAvailable())) response = LoginStatus.NOT_AVAILABLE
+	if (!(await deemix.isDeezerAvailable())) response = LoginStatus.NOT_AVAILABLE
 	const returnValue = {
 		status: response,
 		arl: req.body.arl,
@@ -67,7 +68,7 @@ const handler: RequestHandler<{}, {}, RawLoginArlBody, {}> = async (req, res, _)
 		currentChild: dz.selected_account
 	}
 
-	if (response !== LoginStatus.NOT_AVAILABLE && response !== LoginStatus.FAILED) startQueue(dz)
+	if (response !== LoginStatus.NOT_AVAILABLE && response !== LoginStatus.FAILED) deemix.startQueue(dz)
 	return res.status(200).send(returnValue)
 }
 

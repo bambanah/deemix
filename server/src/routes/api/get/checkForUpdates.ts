@@ -1,13 +1,13 @@
 import { ApiHandler } from '../../../types'
-import { getLatestVersion, isUpdateAvailable } from '../../../main'
 
 const path: ApiHandler['path'] = '/checkForUpdates'
 
-const handler: ApiHandler['handler'] = async (_, res) => {
-	const latestCommit = await getLatestVersion()
+const handler: ApiHandler['handler'] = async (req, res) => {
+	const deemix = req.app.get('deemix')
+	const latestCommit = await deemix.getLatestVersion()
 	res.send({
 		latestCommit,
-		updateAvailable: isUpdateAvailable()
+		updateAvailable: deemix.isUpdateAvailable()
 	})
 }
 

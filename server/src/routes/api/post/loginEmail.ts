@@ -1,5 +1,5 @@
 import { ApiHandler } from '../../../types'
-import { getAccessToken, getArlFromAccessToken } from '../../../main'
+import { getAccessToken, getArlFromAccessToken } from '../../../app'
 
 const path = '/loginEmail'
 

@@ -2,7 +2,7 @@ import { RequestHandler } from 'express'
 // @ts-expect-error
 import { Deezer } from 'deezer-js'
 import { ApiHandler } from '../../../types'
-import { sessionDZ } from '../../../main'
+import { sessionDZ } from '../../../app'
 
 import { isObjectEmpy } from '../../../helpers/primitive-checks'
 import { BadRequestError, isBadRequestError, consoleError } from '../../../helpers/errors'

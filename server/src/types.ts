@@ -239,3 +239,7 @@ export interface Arguments {
 	[x: string]: unknown
 	$0: string
 }
+
+export interface Listener {
+	send: (key: string, data?: any) => void
+}

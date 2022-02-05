@@ -1,13 +1,13 @@
 import { ApiHandler } from '../../../types'
-import { plugins } from '../../../main'
 
 const path: ApiHandler['path'] = '/getUserSpotifyPlaylists'
 
 const handler: ApiHandler['handler'] = async (req, res) => {
 	let data
+	const deemix = req.app.get('deemix')
 
-	if (plugins.spotify.enabled) {
-		const sp = plugins.spotify.sp
+	if (deemix.plugins.spotify.enabled) {
+		const sp = deemix.plugins.spotify.sp
 		const username = req.query.spotifyUser
 		data = []
 		let playlists = await sp.getUserPlaylists(username)
@@ -22,7 +22,7 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 			playlistList = playlistList.concat(playlists.items)
 		}
 		playlistList.forEach((playlist: any) => {
-			data.push(plugins.spotify._convertPlaylistStructure(playlist))
+			data.push(deemix.plugins.spotify._convertPlaylistStructure(playlist))
 		})
 	} else {
 		data = { error: 'spotifyNotEnabled' }

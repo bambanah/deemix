@@ -1,10 +1,10 @@
 import { ApiHandler } from '../../../types'
-import { getSettings } from '../../../main'
 
 const path: ApiHandler['path'] = '/getSettings'
 
-const handler: ApiHandler['handler'] = (_, res) => {
-	res.send(getSettings())
+const handler: ApiHandler['handler'] = (req, res) => {
+	const deemix = req.app.get('deemix')
+	res.send(deemix.getSettings())
 }
 
 const apiHandler: ApiHandler = { path, handler }

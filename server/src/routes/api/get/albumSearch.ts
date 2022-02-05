@@ -3,7 +3,7 @@ import type { RequestHandler } from 'express'
 import { Deezer } from 'deezer-js'
 
 import type { ApiHandler } from '../../../types'
-import { sessionDZ } from '../../../main'
+import { sessionDZ } from '../../../app'
 
 export interface RawAlbumQuery {
 	term: string

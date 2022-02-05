@@ -1,5 +1,4 @@
 import { ApiHandler, Settings, SpotifySettings } from '../../../types'
-import { saveSettings, listener } from '../../../main'
 
 const path = '/saveSettings'
 
@@ -9,9 +8,10 @@ export interface SaveSettingsData {
 }
 
 const handler: ApiHandler['handler'] = (req, res) => {
+	const deemix = req.app.get('deemix')
 	const { settings, spotifySettings }: SaveSettingsData = req.query
-	saveSettings(settings, spotifySettings)
-	listener.send('updateSettings', { settings, spotifySettings })
+	deemix.saveSettings(settings, spotifySettings)
+	deemix.listener.send('updateSettings', { settings, spotifySettings })
 	res.send({ result: true })
 }
 

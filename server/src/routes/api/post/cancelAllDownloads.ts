@@ -1,10 +1,10 @@
 import { ApiHandler } from '../../../types'
-import { cancelAllDownloads } from '../../../main'
 
 const path = '/cancelAllDownloads'
 
-const handler: ApiHandler['handler'] = (_, res) => {
-	cancelAllDownloads()
+const handler: ApiHandler['handler'] = (req, res) => {
+	const deemix = req.app.get('deemix')
+	deemix.cancelAllDownloads()
 	res.send({ result: true })
 }
 

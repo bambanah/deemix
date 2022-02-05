@@ -1,6 +1,6 @@
 import { Server as WsServer } from 'ws'
 import { consoleInfo } from '../../helpers/errors'
-import { saveSettings, listener } from '../../main'
+import { DeemixApp } from '../../app'
 import { Settings, SpotifySettings } from '../../types'
 
 const eventName = 'saveSettings'
@@ -10,11 +10,11 @@ export interface SaveSettingsData {
 	spotifySettings: SpotifySettings
 }
 
-const cb = (data: SaveSettingsData, _: any, __: WsServer) => {
+const cb = (data: SaveSettingsData, _: any, __: WsServer, deemix: DeemixApp) => {
 	const { settings, spotifySettings } = data
-	saveSettings(settings, spotifySettings)
+	deemix.saveSettings(settings, spotifySettings)
 	consoleInfo('Settings saved')
-	listener.send('updateSettings', { settings, spotifySettings })
+	deemix.listener.send('updateSettings', { settings, spotifySettings })
 }
 
 export default { eventName, cb }

@@ -5,7 +5,7 @@ import deemix from 'deemix'
 import { Deezer } from 'deezer-js'
 
 import type { ApiHandler, GetTrackResponse, GetAlbumResponse } from '../../../types'
-import { sessionDZ } from '../../../main'
+import { sessionDZ } from '../../../app'
 
 export interface AnalyzeQuery {
 	term?: string
