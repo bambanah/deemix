@@ -102,7 +102,7 @@ export class DeemixApp {
 	parseVersion(version: string | null): any {
 		if (version === null || version === 'continuous' || version === 'NotFound') return null
 		try {
-			const matchResult = version.match(/(\d+)\.(\d+)\.(\d+)-r(\d)+\.(.+)/) || []
+			const matchResult = version.match(/(\d+)\.(\d+)\.(\d+)-r(\d+)\.(.+)/) || []
 			return {
 				year: parseInt(matchResult[1]),
 				month: parseInt(matchResult[2]),
@@ -124,7 +124,11 @@ export class DeemixApp {
 		if (latestVersionObj.month > currentVersionObj.month) return true
 		if (latestVersionObj.day > currentVersionObj.day) return true
 		if (latestVersionObj.revision > currentVersionObj.revision) return true
-		if (latestVersionObj.commit !== currentVersionObj.commit) return true
+		if (
+			latestVersionObj.revision === currentVersionObj.revision &&
+			latestVersionObj.commit !== currentVersionObj.commit
+		)
+			return true
 		return false
 	}
 
