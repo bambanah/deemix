@@ -1,6 +1,6 @@
 import http, { Server } from 'http'
 import express, { Application } from 'express'
-import { Server as WsServer } from 'ws'
+import { Server as WsServer, OPEN as WsOpen } from 'ws'
 import initDebug from 'debug'
 // @ts-expect-error
 import deemix from 'deemix'
@@ -37,7 +37,7 @@ export class DeemixServer {
 				if (logLine) console.log(logLine)
 				if (['downloadInfo', 'downloadWarn'].includes(key)) return
 				this.wss.clients.forEach(client => {
-					if (client.readyState === WebSocket.OPEN) {
+					if (client.readyState === WsOpen) {
 						client.send(JSON.stringify({ key, data }))
 					}
 				})
