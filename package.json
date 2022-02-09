@@ -6,7 +6,8 @@
   "author": "RemixDev <RemixDev64@gmail.com>",
   "license": "GPL-3.0-only",
   "scripts": {
-    "install-all": "yarn install && yarn --cwd server install && yarn --cwd webui install",
+    "install-all": "yarn install && yarn --cwd server install --production && yarn --cwd webui install --production",
+    "install-all-dev": "yarn install && yarn --cwd server install && yarn --cwd webui install",
     "dev": "yarn --cwd webui dev",
     "start": "electron . --dev",
     "predist": "yarn build-server && yarn build-webui",
@@ -14,7 +15,6 @@
     "dist:dir": "yarn set-version && yarn predist && electron-builder --dir && yarn reset-version",
     "dist-server": "yarn set-version && yarn predist && ./node_modules/.bin/pkg --out-dir dist ./server/package.json && yarn reset-version",
     "start-server": "yarn --cwd server start",
-    "start-server-build": "yarn --cwd server start-build",
     "build-server": "yarn --cwd server build",
     "build-webui": "yarn --cwd webui build",
     "set-version": "node scripts/set-version.js",
