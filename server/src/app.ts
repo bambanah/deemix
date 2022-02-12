@@ -31,7 +31,7 @@ export class DeemixApp {
 	queue: any
 	currentJob: any
 
-	deezerAvailable: boolean | null
+	deezerAvailable: string | null
 	latestVersion: string | null
 
 	plugins: any
@@ -58,7 +58,7 @@ export class DeemixApp {
 		this.restoreQueueFromDisk()
 	}
 
-	async isDeezerAvailable(): Promise<boolean> {
+	async isDeezerAvailable(): Promise<string> {
 		if (this.deezerAvailable === null) {
 			let response
 			try {
@@ -71,11 +71,11 @@ export class DeemixApp {
 				})
 			} catch (e) {
 				console.trace(e)
-				this.deezerAvailable = false
+				this.deezerAvailable = 'no-network'
 				return this.deezerAvailable
 			}
 			const title = (response.body.match(/<title[^>]*>([^<]+)<\/title>/)![1] || '').trim()
-			this.deezerAvailable = title !== 'Deezer will soon be available in your country.'
+			this.deezerAvailable = title !== 'Deezer will soon be available in your country.' ? 'yes' : 'no'
 		}
 		return this.deezerAvailable
 	}
