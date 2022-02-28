@@ -3,6 +3,7 @@ import { RequestHandler } from 'express'
 import { Deezer } from 'deezer-js'
 import { sessionDZ } from '../../../app'
 import { ApiHandler } from '../../../types'
+import { logger } from '../../../helpers/logger'
 
 export interface RawLoginArlBody {
 	arl: string
@@ -47,7 +48,7 @@ const handler: RequestHandler<{}, {}, RawLoginArlBody, {}> = async (req, res, _)
 			try {
 				response = await dz.login_via_arl(...loginParams)
 			} catch (e) {
-				console.trace(e)
+				logger.error(e)
 				response = false
 			}
 			response = response ? 1 : 0

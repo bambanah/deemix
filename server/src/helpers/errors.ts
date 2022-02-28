@@ -1,10 +1,3 @@
-import { concat } from 'ramda'
-
-const prependDeemix = concat('[deemix-server]: ')
-
-export const consoleInfo = (infoText: string) => console.info(prependDeemix(infoText))
-export const consoleError = (errorText: string) => console.error(prependDeemix(errorText))
-
 export class BadRequestError extends Error {
 	constructor() {
 		super()

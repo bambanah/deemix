@@ -1,6 +1,6 @@
 import http from 'http'
 import type { Debugger } from 'debug'
-import { consoleInfo } from './errors'
+import { logger } from './logger'
 
 /**
  * Event listener for HTTP server "error" event.
@@ -18,11 +18,11 @@ export function getErrorCb(port: number | string | boolean) {
 		// handle specific listen errors with friendly messages
 		switch (error.code) {
 			case 'EACCES': {
-				console.error(bind + ' requires elevated privileges')
+				logger.error(bind + ' requires elevated privileges')
 				process.exit(1)
 			}
 			case 'EADDRINUSE': {
-				console.error(bind + ' is already in use')
+				logger.error(bind + ' is already in use')
 				process.exit(1)
 			}
 			default:
@@ -44,7 +44,7 @@ export function getListeningCb(server: http.Server, debug: Debugger) {
 			const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port
 
 			debug(`Listening on ${bind}`)
-			consoleInfo(`Listening on ${bind}`)
+			logger.info(`Listening on ${bind}`)
 		}
 	}
 }

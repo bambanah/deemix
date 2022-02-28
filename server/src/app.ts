@@ -8,6 +8,7 @@ import { Settings, Listener } from './types'
 import { NotLoggedIn } from './helpers/errors'
 
 import { GUI_PACKAGE } from './helpers/paths'
+import { logger } from './helpers/logger'
 
 // Types
 const Downloader = deemix.downloader.Downloader
@@ -70,7 +71,7 @@ export class DeemixApp {
 					retry: 5
 				})
 			} catch (e) {
-				console.trace(e)
+				logger.error(e)
 				this.deezerAvailable = 'no-network'
 				return this.deezerAvailable
 			}
@@ -90,7 +91,7 @@ export class DeemixApp {
 					}
 				})
 			} catch (e) {
-				console.trace(e)
+				logger.error(e)
 				this.latestVersion = 'NotFound'
 				return this.latestVersion
 			}
@@ -111,7 +112,7 @@ export class DeemixApp {
 				commit: matchResult[5] || ''
 			}
 		} catch (e) {
-			console.trace(e)
+			logger.error(e)
 			return null
 		}
 	}
@@ -168,7 +169,7 @@ export class DeemixApp {
 
 		for (let i = 0; i < url.length; i++) {
 			link = url[i]
-			console.log(`Adding ${link} to queue`)
+			logger.info(`Adding ${link} to queue`)
 			let downloadObj
 			try {
 				downloadObj = await deemix.generateDownloadObject(dz, link, bitrate, this.plugins, this.listener)
@@ -182,7 +183,7 @@ export class DeemixApp {
 
 		if (downloadErrors.length) {
 			downloadErrors.forEach((e: any) => {
-				if (!e.errid) console.trace(e)
+				if (!e.errid) logger.error(e)
 				this.listener.send('queueError', { link: e.link, error: e.message, errid: e.errid })
 			})
 		}
@@ -280,7 +281,7 @@ export class DeemixApp {
 				this.queue[currentUUID] = savedObject
 				fs.writeFileSync(configFolder + `queue${sep}${currentUUID}.json`, JSON.stringify(savedObject))
 			}
-			console.log(this.queueOrder)
+			logger.info(this.queueOrder)
 			fs.writeFileSync(configFolder + `queue${sep}order.json`, JSON.stringify(this.queueOrder))
 
 			this.currentJob = null

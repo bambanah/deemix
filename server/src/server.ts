@@ -9,7 +9,7 @@ import indexRouter from './routes'
 import { getErrorCb, getListeningCb } from './helpers/server-callbacks'
 import { registerApis } from './routes/api/register'
 import { registerWebsocket } from './websocket'
-import { consoleInfo } from './helpers/errors'
+import { logger, removeOldLogs } from './helpers/logger'
 import { Port, Listener } from './types'
 import { DeemixApp } from './app'
 import { normalizePort } from './helpers/port'
@@ -34,7 +34,7 @@ export class DeemixServer {
 		const listener: Listener = {
 			send: (key: string, data?: any) => {
 				const logLine = deemix.utils.formatListener(key, data)
-				if (logLine) console.log(logLine)
+				if (logLine) logger.info(logLine)
 				if (['downloadInfo', 'downloadWarn'].includes(key)) return
 				this.wss.clients.forEach(client => {
 					if (client.readyState === WsOpen) {
@@ -72,10 +72,10 @@ export class DeemixServer {
 
 		/* === Server callbacks === */
 		this.app.on('mount', a => {
-			console.log(a)
+			logger.info(a)
 		})
 		this.server.on('connect', () => {
-			consoleInfo('Server connected')
+			logger.info('Server connected')
 		})
 		this.server.on('upgrade', (request, socket, head) => {
 			this.wss.handleUpgrade(request, socket, head, socket => {
@@ -84,5 +84,8 @@ export class DeemixServer {
 		})
 		this.server.on('error', getErrorCb(this.port))
 		this.server.on('listening', getListeningCb(this.server, debug))
+
+		/* === Remove Old logs files === */
+		removeOldLogs(5)
 	}
 }

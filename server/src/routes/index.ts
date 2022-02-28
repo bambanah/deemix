@@ -1,7 +1,7 @@
 import express from 'express'
 // @ts-expect-error
 import { Deezer } from 'deezer-js'
-import { consoleInfo } from '../helpers/errors'
+import { logger } from '../helpers/logger'
 import { sessionDZ, deemixVersion, currentVersion } from '../app'
 
 const router = express.Router()
@@ -13,8 +13,8 @@ router.get('/connect', async (req, res) => {
 	const deemix = req.app.get('deemix')
 
 	if (!update) {
-		consoleInfo(`Currently running deemix-gui version ${currentVersion}`)
-		consoleInfo(`deemix-lib version ${deemixVersion}`)
+		logger.info(`Currently running deemix-gui version ${currentVersion}`)
+		logger.info(`deemix-lib version ${deemixVersion}`)
 		update = {
 			currentCommit: currentVersion,
 			deemixVersion

@@ -2,6 +2,7 @@
 import { Deezer } from 'deezer-js'
 import { ApiHandler } from '../../../types'
 import { sessionDZ } from '../../../app'
+import { logger } from '../../../helpers/logger'
 
 const path: ApiHandler['path'] = '/addToQueue'
 
@@ -24,7 +25,7 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 				deemix.listener.send('loginNeededToDownload')
 				break
 			default:
-				console.error(e)
+				logger.error(e)
 				res.send({ result: false, errid: e.name, data: { url, bitrate } })
 				break
 		}
