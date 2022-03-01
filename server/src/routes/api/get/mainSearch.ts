@@ -5,12 +5,113 @@ import { sessionDZ } from '../../../app'
 
 const path: ApiHandler['path'] = '/mainSearch'
 
+const emptyResult = {
+	QUERY: '',
+	FUZZINNESS: true,
+	AUTOCORRECT: false,
+	ORDER: ['TOP_RESULT', 'TRACK', 'ARTIST', 'ALBUM', 'PLAYLIST'],
+	TOP_RESULT: [],
+	ARTIST: {
+		data: [],
+		count: 0,
+		total: 0,
+		filtered_count: 0,
+		filtered_items: [],
+		next: 20
+	},
+	ALBUM: {
+		data: [],
+		count: 0,
+		total: 0,
+		filtered_count: 0,
+		filtered_items: [],
+		next: 20
+	},
+	TRACK: {
+		data: [],
+		count: 0,
+		total: 0,
+		filtered_count: 0,
+		filtered_items: [],
+		next: 10
+	},
+	PLAYLIST: {
+		data: [],
+		count: 0,
+		total: 0,
+		filtered_count: 0,
+		filtered_items: [],
+		next: 20
+	},
+	RADIO: {
+		data: [],
+		count: 0,
+		total: 0,
+		filtered_count: 0,
+		filtered_items: [],
+		next: 20
+	},
+	USER: {
+		data: [],
+		count: 0,
+		total: 0,
+		filtered_count: 0,
+		filtered_items: [],
+		next: 20
+	},
+	SHOW: {
+		data: [],
+		count: 0,
+		total: 0,
+		filtered_count: 0,
+		filtered_items: [],
+		next: 20
+	},
+	CHANNEL: {
+		data: [],
+		count: 0,
+		total: 0
+	},
+	LIVESTREAM: {
+		data: [],
+		count: 0,
+		total: 0,
+		filtered_count: 0,
+		filtered_items: [],
+		next: 20
+	},
+	EPISODE: {
+		data: [],
+		count: 0,
+		total: 0,
+		filtered_count: 0,
+		filtered_items: [],
+		next: 20
+	},
+	LYRICS: {
+		data: [],
+		count: 0,
+		total: 0,
+		filtered_count: 0,
+		filtered_items: [],
+		next: 20
+	},
+	ERROR: ''
+}
+
 const handler: ApiHandler['handler'] = async (req, res) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
 	const dz = sessionDZ[req.session.id]
 
 	const term = String(req.query.term)
-	const results = await dz.gw.search(term)
+	let results
+	try {
+		results = await dz.gw.search(term)
+	} catch (e) {
+		results = { ...emptyResult }
+		results.QUERY = term
+		results.ERROR = e.message
+	}
 	const order: string[] = []
 	results.ORDER.forEach((element: string) => {
 		if (['TOP_RESULT', 'TRACK', 'ALBUM', 'ARTIST', 'PLAYLIST'].includes(element)) order.push(element)
