@@ -4,10 +4,15 @@ const NodemonPlugin = require('nodemon-webpack-plugin')
 
 module.exports = env => {
 	const isProduction = !!env.production
+	const generateSourceMap = !!env.sourcemap
+	let devtool = null
+	if (!isProduction) {
+		devtool = generateSourceMap ? 'source-map' : 'eval'
+	}
 	const config = {
 		mode: isProduction ? 'production' : 'development',
 		entry: './src/index.ts',
-		devtool: isProduction ? false : 'eval',
+		devtool,
 		module: {
 			rules: [
 				{
