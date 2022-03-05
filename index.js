@@ -67,6 +67,9 @@ function createWindow () {
 
   win.on('close', (event)=>{
     windowState.saveState(win);
+		if (server.deemixApp.getSettings().settings.clearQueueOnExit){
+			server.deemixApp.cancelAllDownloads()
+		}
   })
 }
 
