@@ -194,11 +194,10 @@ export class DeemixApp {
 
 		const slimmedObjects: any[] = []
 
-		downloadObjs.forEach((downloadObj: any, pos: number) => {
+		downloadObjs.forEach((downloadObj: any) => {
 			// Check if element is already in queue
 			if (Object.keys(this.queue).includes(downloadObj.uuid)) {
 				this.listener.send('alreadyInQueue', downloadObj.getEssentialDict())
-				delete downloadObjs[pos]
 				return
 			}
 
@@ -216,8 +215,7 @@ export class DeemixApp {
 
 			slimmedObjects.push(downloadObj.getSlimmedDict())
 		})
-		const isSingleObject = downloadObjs.length === 1
-		if (isSingleObject) this.listener.send('addedToQueue', downloadObjs[0].getSlimmedDict())
+		if (slimmedObjects.length === 1) this.listener.send('addedToQueue', slimmedObjects[0])
 		else this.listener.send('addedToQueue', slimmedObjects)
 
 		this.startQueue(dz)
