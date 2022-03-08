@@ -234,6 +234,11 @@ export class DeemixApp {
 			do {
 				currentUUID = this.queueOrder.shift() || ''
 			} while (this.queue[currentUUID] === undefined && this.queueOrder.length)
+			if (this.queue[currentUUID] === undefined) {
+				fs.writeFileSync(configFolder + `queue${sep}order.json`, JSON.stringify(this.queueOrder))
+				this.currentJob = null
+				return null
+			}
 			this.queue[currentUUID].status = 'downloading'
 			const currentItem: any = JSON.parse(fs.readFileSync(configFolder + `queue${sep}${currentUUID}.json`).toString())
 			let downloadObject: any
