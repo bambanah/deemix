@@ -1,5 +1,5 @@
 // @ts-expect-error
-import { Deezer } from 'deezer-js'
+import { Deezer, utils as dzUtils } from 'deezer-js'
 import { ApiHandler } from '../../../types'
 import { sessionDZ } from '../../../app'
 
@@ -62,9 +62,20 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 			break
 		}
 		default: {
-			const releaseAPI = await dz.api[`get_${list_type}`](list_id)
-			let releaseTracksAPI = await dz.api[`get_${list_type}_tracks`](list_id)
-			releaseTracksAPI = releaseTracksAPI.data
+			let releaseAPI, releaseTracksAPI
+			try {
+				releaseAPI = await dz.api[`get_${list_type}`](list_id)
+				releaseTracksAPI = await dz.api[`get_${list_type}_tracks`](list_id)
+				releaseTracksAPI = releaseTracksAPI.data
+			} catch {
+				if (list_type === 'playlist') {
+					releaseAPI = dzUtils.map_playlist(await (await dz.gw.get_playlist_page(list_id)).DATA)
+					releaseTracksAPI = await dz.gw.get_playlist_tracks(list_id)
+				} else {
+					releaseAPI = {}
+					releaseTracksAPI = []
+				}
+			}
 
 			const tracks: any[] = []
 			const showdiscs =
@@ -74,6 +85,7 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 			let current_disk = 0
 
 			releaseTracksAPI.forEach((track: any) => {
+				if (track.SNG_ID) track = dzUtils.map_track(track)
 				if (showdiscs && parseInt(track.disk_number) !== current_disk) {
 					current_disk = parseInt(track.disk_number)
 					tracks.push({ type: 'disc_separator', number: current_disk })
