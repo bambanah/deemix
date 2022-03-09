@@ -4,6 +4,7 @@ import { Deezer } from 'deezer-js'
 import { sessionDZ } from '../../../app'
 import { ApiHandler } from '../../../types'
 import { logger } from '../../../helpers/logger'
+import { saveLoginCredentials, resetLoginCredentials } from '../../../helpers/loginStorage'
 
 export interface RawLoginArlBody {
 	arl: string
@@ -24,6 +25,7 @@ const handler: RequestHandler<{}, {}, RawLoginArlBody, {}> = async (req, res, _)
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
 	const deemix = req.app.get('deemix')
 	const dz = sessionDZ[req.session.id]
+	const isSingleUser = req.app.get('isSingleUser')
 
 	if (!req.body) {
 		return res.status(400).send()
@@ -69,7 +71,14 @@ const handler: RequestHandler<{}, {}, RawLoginArlBody, {}> = async (req, res, _)
 		currentChild: dz.selected_account
 	}
 
-	if (response !== LoginStatus.NOT_AVAILABLE && response !== LoginStatus.FAILED) deemix.startQueue(dz)
+	if (response !== LoginStatus.NOT_AVAILABLE && response !== LoginStatus.FAILED) {
+		deemix.startQueue(dz)
+		if (isSingleUser)
+			saveLoginCredentials({
+				accessToken: null,
+				arl: returnValue.arl
+			})
+	} else if (isSingleUser) resetLoginCredentials()
 	return res.status(200).send(returnValue)
 }
 

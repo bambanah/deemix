@@ -2,6 +2,7 @@ import express from 'express'
 // @ts-expect-error
 import { Deezer } from 'deezer-js'
 import { logger } from '../helpers/logger'
+import { getLoginCredentials } from '../helpers/loginStorage'
 import { sessionDZ, deemixVersion, currentVersion } from '../app'
 
 const router = express.Router()
@@ -11,6 +12,7 @@ router.get('/connect', async (req, res) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer()
 	const dz = sessionDZ[req.session.id]
 	const deemix = req.app.get('deemix')
+	const isSingleUser = req.app.get('isSingleUser')
 
 	if (!update) {
 		logger.info(`Currently running deemix-gui version ${currentVersion}`)
@@ -29,6 +31,8 @@ router.get('/connect', async (req, res) => {
 		spotifyEnabled: deemix.plugins.spotify.enabled,
 		settingsData: deemix.getSettings()
 	}
+
+	if (isSingleUser && result.autologin) result.singleUser = getLoginCredentials()
 
 	if (result.settingsData.settings.autoCheckForUpdates) result.checkForUpdates = true
 

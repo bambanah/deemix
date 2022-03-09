@@ -10,6 +10,7 @@ import { getErrorCb, getListeningCb } from './helpers/server-callbacks'
 import { registerApis } from './routes/api/register'
 import { registerWebsocket } from './websocket'
 import { logger, removeOldLogs } from './helpers/logger'
+import { loadLoginCredentials } from './helpers/loginStorage'
 import { Port, Listener } from './types'
 import { DeemixApp } from './app'
 import { normalizePort } from './helpers/port'
@@ -17,15 +18,17 @@ import { normalizePort } from './helpers/port'
 export class DeemixServer {
 	host: string
 	port: Port
+	isSingleUser: boolean
 
 	wss: WsServer
 	app: Application
 	server: Server
 	deemixApp: DeemixApp
 
-	constructor(host: string, port: string) {
+	constructor(host: string, port: string, singleuser: boolean = false) {
 		this.host = host
 		this.port = normalizePort(port)
+		this.isSingleUser = singleuser
 
 		this.wss = new WsServer({ noServer: true })
 		this.app = express()
@@ -45,11 +48,13 @@ export class DeemixServer {
 		}
 
 		this.deemixApp = new DeemixApp(listener)
+		if (this.isSingleUser) loadLoginCredentials()
 	}
 
 	init() {
 		const debug = initDebug('deemix-gui:server')
 		this.app.set('deemix', this.deemixApp)
+		this.app.set('isSingleUser', this.isSingleUser)
 
 		/* === Middlewares === */
 		registerMiddlewares(this.app)

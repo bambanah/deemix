@@ -243,3 +243,8 @@ export interface Arguments {
 export interface Listener {
 	send: (key: string, data?: any) => void
 }
+
+export interface LoginFile {
+	arl: string | null
+	accessToken: string | null
+}
