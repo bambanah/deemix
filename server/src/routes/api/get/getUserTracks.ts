@@ -11,8 +11,7 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 	let data
 
 	if (dz.logged_in) {
-		const userID = dz.current_user.id
-		data = await dz.gw.get_user_tracks(userID, { limit: -1 })
+		data = await dz.gw.get_my_favorite_tracks({ limit: -1 })
 	} else {
 		data = { error: 'notLoggedIn' }
 	}
