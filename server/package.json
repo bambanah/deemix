@@ -5,6 +5,7 @@
 	"scripts": {
 		"start": "node dist/app.js",
 		"build": "webpack --env production",
+		"sourcemap": "webpack --env production sourcemap",
 		"prewatch": "yarn lint-build",
 		"watch": "webpack --watch",
 		"lint": "eslint \"./{src, tests}/**\" --fix",
