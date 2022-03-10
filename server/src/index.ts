@@ -16,7 +16,7 @@ if (!isModule) {
 
 	const DEEMIX_SERVER_PORT = process.env.DEEMIX_SERVER_PORT ?? argv.port
 	const DEEMIX_HOST = process.env.DEEMIX_HOST ?? argv.host
-	const IS_SINGLE_USER = !!argv.singleuser
+	const IS_SINGLE_USER = !!process.env.DEEMIX_SINGLE_USER ?? !!argv.singleuser
 
 	const server = new DeemixServer(DEEMIX_HOST, DEEMIX_SERVER_PORT, IS_SINGLE_USER)
 	server.init()
