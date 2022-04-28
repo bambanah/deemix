@@ -2168,9 +2168,9 @@ decompress-response@^6.0.0:
     mimic-response "^3.1.0"
 
 deemix@^3.6.0:
-  version "3.6.8"
-  resolved "https://registry.yarnpkg.com/deemix/-/deemix-3.6.8.tgz#4e65af1ebf47534834539e81ef035f1dac8fb6fb"
-  integrity sha512-mEH9lhXFCaq6Q8uOt2X9hJ/4/IfmDp86IkZg/O5pEFEjmssugKZu7BU+AcY1nweQ6FTwZn07I4d6UhMUNuHIPw==
+  version "3.6.9"
+  resolved "https://registry.yarnpkg.com/deemix/-/deemix-3.6.9.tgz#942baea1fec5423d7eb454c0332198a2d0172382"
+  integrity sha512-vDM2z9q+DFtsSyycriI1Mlw0tCtsOtc/DgCwA3Nptjq4EXaajpJBjp5eBlHlcjtXc6mXVmaVMJD1EMUpMzy6gw==
   dependencies:
     async "^3.2.0"
     deezer-js "^1.3.0"
