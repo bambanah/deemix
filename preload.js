@@ -9,13 +9,13 @@ contextBridge.exposeInMainWorld(
     "api", {
         send: (channel, data) => {
             // whitelist channels
-            let validChannels = ["openDownloadsFolder", "applogin", "selectDownloadFolder"];
+            let validChannels = ["openDownloadsFolder", "selectDownloadFolder"];
             if (validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
             }
         },
         receive: (channel, func) => {
-            let validChannels = ["downloadFolderSelected", "applogin_arl"];
+            let validChannels = ["downloadFolderSelected"];
             if (validChannels.includes(channel)) {
                 // Deliberately strip event as it includes `sender`
                 ipcRenderer.on(channel, (event, ...args) => func(...args));
