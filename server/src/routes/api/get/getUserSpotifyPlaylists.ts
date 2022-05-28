@@ -10,7 +10,13 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 		const sp = deemix.plugins.spotify.sp
 		const username = req.query.spotifyUser
 		data = []
-		let playlists = await sp.getUserPlaylists(username)
+		let playlists
+		try {
+			playlists = await sp.getUserPlaylists(username)
+		} catch (e) {
+			res.send({ error: 'wrongSpotifyUsername', username })
+			return
+		}
 		playlists = playlists.body
 		let playlistList = playlists.items
 		while (playlists.next) {
