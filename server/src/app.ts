@@ -363,9 +363,19 @@ export class DeemixApp {
 					switch (currentItem.__type__) {
 						case 'Single':
 							downloadObject = new Single(currentItem)
+							// Remove old incompatible queue items
+							if (downloadObject.single.trackAPI_gw) {
+								fs.unlinkSync(configFolder + `queue${sep}${filename}`)
+								return
+							}
 							break
 						case 'Collection':
 							downloadObject = new Collection(currentItem)
+							// Remove old incompatible queue items
+							if (downloadObject.collection.tracks_gw) {
+								fs.unlinkSync(configFolder + `queue${sep}${filename}`)
+								return
+							}
 							break
 						case 'Convertable':
 							downloadObject = new Convertable(currentItem)
