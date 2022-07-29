@@ -5,7 +5,7 @@ import deleteEndpoints from './delete'
 import postEndpoints from './post'
 import patchEndpoints from './patch'
 
-const prependApiPath = (path: string) => `/api${path}`
+const prependApiPath = (path: string) => `*/api${path}`
 
 interface Method {
 	method: string
@@ -40,7 +40,7 @@ export function registerApis(app: Application) {
 	})
 
 	// Fallback, for SPA mode
-	app.get('*', (_, res) => {
-		res.redirect('/')
+	app.get('*/api*', (_, res) => {
+		res.send({ error: "API endpoint doesn't exist" })
 	})
 }

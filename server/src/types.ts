@@ -235,6 +235,8 @@ export interface GetAlbumResponse extends BaseDeezerObject, CoveredDeezerObject 
 export interface Arguments {
 	port: string
 	host: string
+	locationbase: string
+	singleuser: boolean
 
 	[x: string]: unknown
 	$0: string

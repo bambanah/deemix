@@ -1,5 +1,8 @@
 import http, { Server } from 'http'
+import path from 'path'
+import fs from 'fs'
 import express, { Application } from 'express'
+import ejs from 'ejs'
 import { Server as WsServer, OPEN as WsOpen } from 'ws'
 import initDebug from 'debug'
 // @ts-expect-error
@@ -14,10 +17,12 @@ import { loadLoginCredentials } from './helpers/loginStorage'
 import { Port, Listener } from './types'
 import { DeemixApp } from './app'
 import { normalizePort } from './helpers/port'
+import { WEBUI_DIR } from './helpers/paths'
 
 export class DeemixServer {
 	host: string
 	port: Port
+	locationBase: string
 	isSingleUser: boolean
 
 	wss: WsServer
@@ -25,9 +30,10 @@ export class DeemixServer {
 	server: Server
 	deemixApp: DeemixApp
 
-	constructor(host: string, port: string, singleuser: boolean = false) {
+	constructor(host: string, port: string, locationBase: string, singleuser: boolean = false) {
 		this.host = host
 		this.port = normalizePort(port)
+		this.locationBase = locationBase
 		this.isSingleUser = singleuser
 
 		this.wss = new WsServer({ noServer: true })
@@ -64,6 +70,29 @@ export class DeemixServer {
 
 		/* === APIs === */
 		registerApis(this.app)
+
+		/* === Fallback === */
+		this.app.get('*/favicon.ico', (_, res) => {
+			res.sendFile(path.join(WEBUI_DIR, 'favicon.ico'))
+		})
+		this.app.get('*/js/*', (req, res) => {
+			const link = req.url.substr(req.url.indexOf('/js/'))
+			res.sendFile(path.join(WEBUI_DIR, link))
+		})
+		this.app.get('*/fonts/*', (req, res) => {
+			const link = req.url.substr(req.url.indexOf('/fonts/'))
+			res.sendFile(path.join(WEBUI_DIR, link))
+		})
+		this.app.get('*/res/*', (req, res) => {
+			const link = req.url.substr(req.url.indexOf('/res/'))
+			res.sendFile(path.join(WEBUI_DIR, link))
+		})
+		this.app.get('*', (req, res) => {
+			console.log(req.url)
+			fs.readFile(path.join(WEBUI_DIR, 'index.ejs'), (_, html) => {
+				res.send(ejs.render(html.toString(), { locationBase: this.locationBase }))
+			})
+		})
 
 		/* === Config === */
 		this.app.set('port', this.port)
