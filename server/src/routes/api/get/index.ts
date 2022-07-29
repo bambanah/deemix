@@ -1,3 +1,4 @@
+import connect from './connect'
 import analyzeLink from './analyzeLink'
 import getHome from './getHome'
 import getCharts from './getCharts'
@@ -19,6 +20,7 @@ import spotifyStatus from './spotifyStatus'
 import checkForUpdates from './checkForUpdates'
 
 export default [
+	connect,
 	albumSearch,
 	analyzeLink,
 	getHome,
