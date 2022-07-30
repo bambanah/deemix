@@ -16,7 +16,7 @@ const PORT = process.env.DEEMIX_SERVER_PORT || argv.port
 process.env.DEEMIX_SERVER_PORT = PORT
 process.env.DEEMIX_HOST = argv.host
 
-const server = new DeemixServer(argv.host, PORT, false)
+const server = new DeemixServer(argv.host, PORT, '/', false)
 server.init()
 
 let win
