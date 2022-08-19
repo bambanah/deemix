@@ -122,11 +122,11 @@ export class DeemixApp {
 		const latestVersionObj: any = this.parseVersion(this.latestVersion)
 		if (currentVersionObj === null || latestVersionObj === null) return false
 		if (latestVersionObj.year > currentVersionObj.year) return true
-		let sameDate = latestVersionObj.year == currentVersionObj.year
+		let sameDate = latestVersionObj.year === currentVersionObj.year
 		if (sameDate && latestVersionObj.month > currentVersionObj.month) return true
-		sameDate = sameDate && latestVersionObj.month == currentVersionObj.month
+		sameDate = sameDate && latestVersionObj.month === currentVersionObj.month
 		if (sameDate && latestVersionObj.day > currentVersionObj.day) return true
-		sameDate = sameDate && latestVersionObj.day == currentVersionObj.day
+		sameDate = sameDate && latestVersionObj.day === currentVersionObj.day
 		if (sameDate && latestVersionObj.revision > currentVersionObj.revision) return true
 		if (
 			latestVersionObj.revision === currentVersionObj.revision &&
