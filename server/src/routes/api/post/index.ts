@@ -7,6 +7,7 @@ import removeFinishedDownloads from './removeFinishedDownloads'
 import removeFromQueue from './removeFromQueue'
 import logout from './logout'
 import saveSettings from './saveSettings'
+import retryDownload from './retryDownload'
 
 export default [
 	changeAccount,
@@ -17,5 +18,6 @@ export default [
 	removeFinishedDownloads,
 	removeFromQueue,
 	logout,
-	saveSettings
+	saveSettings,
+	retryDownload
 ]

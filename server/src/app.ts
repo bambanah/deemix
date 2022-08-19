@@ -158,7 +158,7 @@ export class DeemixApp {
 		return result
 	}
 
-	async addToQueue(dz: any, url: string[], bitrate: number) {
+	async addToQueue(dz: any, url: string[], bitrate: number, retry: boolean = false) {
 		if (!dz.logged_in) throw new NotLoggedIn()
 		if (
 			!this.settings.feelingLucky &&
@@ -204,7 +204,7 @@ export class DeemixApp {
 
 		downloadObjs.forEach((downloadObj: any) => {
 			// Check if element is already in queue
-			if (Object.keys(this.queue).includes(downloadObj.uuid)) {
+			if (Object.keys(this.queue).includes(downloadObj.uuid) && !retry) {
 				this.listener.send('alreadyInQueue', downloadObj.getEssentialDict())
 				return
 			}
