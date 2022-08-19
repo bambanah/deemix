@@ -14,19 +14,22 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 	const url = req.body.url.split(/[\s;]+/)
 	let bitrate = req.body.bitrate
 	if (bitrate === 'null' || bitrate === null) bitrate = deemix.getSettings().settings.maxBitrate
+	bitrate = Number(bitrate)
 	let obj: any
 
 	try {
 		obj = await deemix.addToQueue(dz, url, bitrate)
 	} catch (e) {
+		res.send({ result: false, errid: e.name, data: { url, bitrate } })
 		switch (e.name) {
 			case 'NotLoggedIn':
-				res.send({ result: false, errid: e.name, data: { url, bitrate } })
-				deemix.listener.send('loginNeededToDownload')
+				deemix.listener.send('queueError' + e.name)
+				break
+			case 'CantStream':
+				deemix.listener.send('queueError' + e.name, e.bitrate)
 				break
 			default:
 				logger.error(e)
-				res.send({ result: false, errid: e.name, data: { url, bitrate } })
 				break
 		}
 		return

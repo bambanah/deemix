@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 import deemix from 'deemix'
 import got from 'got'
 import { Settings, Listener } from './types'
-import { NotLoggedIn } from './helpers/errors'
+import { NotLoggedIn, CantStream } from './helpers/errors'
 
 import { GUI_PACKAGE } from './helpers/paths'
 import { logger } from './helpers/logger'
@@ -160,6 +160,11 @@ export class DeemixApp {
 
 	async addToQueue(dz: any, url: string[], bitrate: number) {
 		if (!dz.logged_in) throw new NotLoggedIn()
+		if (
+			!this.settings.feelingLucky &&
+			((!dz.current_user.can_stream_lossless && bitrate === 9) || (!dz.current_user.can_stream_hq && bitrate === 3))
+		)
+			throw new CantStream(bitrate)
 
 		let downloadObjs: any[] = []
 		const downloadErrors: any[] = []
