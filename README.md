@@ -12,9 +12,9 @@ If you're using git to get this repo you should use `git submodule update --init
 Install the dependencies using `yarn install-all` for production.
 Install the dependencies using `yarn install-all-dev` for development.
 Then you should be able to run the app with `yarn start`.
-If you want to further develop Deemix and propose a PR, use `yarn dev`
+If you want to further develop deemix-gui and propose a PR, use `yarn dev`
 
-Here as command examples:
+Commands for easy setup:
 
 ```sh
 # Production
