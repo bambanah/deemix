@@ -41,10 +41,11 @@ export function getListeningCb(server: http.Server, debug: Debugger) {
 		const addr = server.address()
 
 		if (addr) {
-			const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port
+			const ip = typeof addr === 'string' ? 'pipe ' + addr : addr.address
+			const port = typeof addr === 'string' ? 'pipe ' + addr : addr.port
 
-			debug(`Listening on ${bind}`)
-			logger.info(`Listening on ${bind}`)
+			debug(`Listening on ${ip}:${port}`)
+			logger.info(`Listening on ${ip}:${port}`)
 		}
 	}
 }
