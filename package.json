@@ -42,8 +42,17 @@
       "package.json"
     ],
     "mac": {
-      "target": "dmg",
-      "artifactName": "deemix-gui.${ext}",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": "x64"
+        },
+        {
+          "target": "dmg",
+          "arch": "arm64"
+        }
+      ],
+      "artifactName": "deemix-gui_${arch}.${ext}",
       "category": "public.app-category.music"
     },
     "win": {
