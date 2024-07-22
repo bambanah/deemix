@@ -1,0 +1,66 @@
+@layer base {
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+
+	table,
+	caption,
+	tbody,
+	tfoot,
+	thead,
+	tr,
+	th,
+	td {
+		margin: 0;
+		border: 0;
+		padding: 0;
+		vertical-align: baseline;
+		font: inherit;
+		font-size: 100%;
+	}
+
+	table {
+		border-collapse: collapse;
+		border-spacing: 0;
+	}
+
+	/* Taken from Tailwind's Preflight */
+	button,
+	[type='button'],
+	[type='reset'],
+	[type='submit'] {
+		appearance: button;
+	}
+
+	input[type='text'],
+	input[type='password'],
+	input[type='number'],
+	input[type='search'],
+	input[type='checkbox'],
+	select {
+		appearance: none;
+	}
+
+	[type='number']::-webkit-inner-spin-button,
+	[type='number']::-webkit-outer-spin-button {
+		height: auto;
+	}
+
+	button,
+	[role='button'] {
+		cursor: pointer;
+	}
+
+	p {
+		word-break: break-word;
+	}
+
+	*,
+	::before,
+	::after {
+		border-width: 0;
+		border-style: solid;
+	}
+}

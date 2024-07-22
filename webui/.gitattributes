@@ -1,0 +1,148 @@
+## Source: https://github.com/ptkdev-boilerplate/node-cli-boilerplate/blob/main/.gitattributes
+
+## AUTO-DETECT
+* text=auto
+
+## SOURCE CODE
+*.bat      text eol=crlf
+*.css      text eol=lf
+*.html     text diff=html eol=lf
+*.ini      text eol=crlf
+*.js       text eol=lf
+*.json     text eol=lf
+*.php      text diff=php eol=lf
+*.py       text diff=python eol=lf
+*.rb       text diff=ruby
+*.sass     text eol=lf
+*.scss     text eol=lf
+*.sh       text eol=lf
+*.sql      text eol=lf
+*.ts       text eol=lf
+*.vue      text eol=lf
+*.svelte   text eol=lf
+*.xml      text eol=lf
+*.xhtml    text diff=html eol=lf
+
+## DOCKER
+*.dockerignore text eol=lf
+Dockerfile     text eol=lf
+
+## DOCUMENTATION
+*.md         text eol=lf
+*.txt        text eol=lf
+AUTHORS      text eol=lf
+CHANGELOG    text eol=lf
+CHANGES      text eol=lf
+CONTRIBUTING text eol=lf
+COPYING      text eol=lf
+INSTALL      text eol=lf
+license      text eol=lf
+LICENSE      text eol=lf
+NEWS         text eol=lf
+README       text eol=lf
+TODO         text eol=lf
+
+## TEMPLATES
+*.dot        text eol=lf
+*.tpl        text eol=lf
+*.twig       text eol=lf
+
+## LINTERS
+.csslintrc    text eol=lf
+.eslintrc     text eol=lf
+.htmlhintrc   text eol=lf
+.jscsrc       text eol=lf
+.jshintrc     text eol=lf
+.jshintignore text eol=lf
+.stylelintrc  text eol=lf
+.npmignore    text eol=lf
+
+## CONFIGS
+*.bowerrc      text eol=lf
+*.cnf          text eol=lf
+*.conf         text eol=lf
+*.config       text eol=lf
+.babelrc       text eol=lf
+.browserslistrc    text eol=lf
+.editorconfig  text eol=lf
+.env           text eol=lf
+.gitattributes text eol=lf
+.gitconfig     text eol=lf
+.htaccess      text eol=lf
+*.lock         text eol=lf
+*.npmignore    text eol=lf
+*.yaml         text eol=lf
+*.yml          text eol=lf
+browserslist   text eol=lf
+Makefile       text eol=lf
+makefile       text eol=lf
+
+## GRAPHICS
+*.ai   binary
+*.bmp  binary
+*.eps  binary
+*.gif  binary
+*.ico  binary
+*.jng  binary
+*.jp2  binary
+*.jpg  binary
+*.jpeg binary
+*.jpx  binary
+*.jxr  binary
+*.pdf  binary
+*.png  binary
+*.psb  binary
+*.psd  binary
+*.svg  text
+*.svgz binary
+*.tif  binary
+*.tiff binary
+*.wbmp binary
+*.webp binary
+
+## AUDIO
+*.kar  binary
+*.m4a  binary
+*.mid  binary
+*.midi binary
+*.mp3  binary
+*.ogg  binary
+*.ra   binary
+
+## VIDEO
+*.3gpp binary
+*.3gp  binary
+*.as   binary
+*.asf  binary
+*.asx  binary
+*.fla  binary
+*.flv  binary
+*.m4v  binary
+*.mng  binary
+*.mov  binary
+*.mp4  binary
+*.mpeg binary
+*.mpg  binary
+*.ogv  binary
+*.swc  binary
+*.swf  binary
+*.webm binary
+
+## ARCHIVES
+*.7z  binary
+*.gz  binary
+*.jar binary
+*.rar binary
+*.tar binary
+*.zip binary
+
+## FONTS
+*.ttf   binary
+*.eot   binary
+*.otf   binary
+*.woff  binary
+*.woff2 binary
+
+## EXECUTABLES
+*.exe binary
+*.pyc binary

@@ -1,0 +1,21 @@
+.primary-text {
+	@apply mb-1 transition-colors duration-200 ease-in-out;
+}
+
+.primary-text:hover {
+	@apply text-primary;
+}
+
+.secondary-text {
+	@apply mb-1 text-sm opacity-75;
+}
+
+@layer utilities {
+	.uppercase-first-letter::first-letter {
+		@apply uppercase;
+	}
+
+	.lowercase-first-letter::first-letter {
+		@apply lowercase;
+	}
+}

@@ -1,0 +1,140 @@
+.table {
+	width: 100%;
+	-webkit-border-horizontal-spacing: 0px;
+	-webkit-border-vertical-spacing: 0px;
+}
+.table tbody tr:not(.table__row-no-highlight):hover {
+	background: var(--table-highlight);
+	cursor: default;
+}
+.table tr {
+	transition: background-color 175ms ease-in-out;
+	background: var(--table-bg);
+}
+.table tr:nth-child(even) {
+	transition: background-color 175ms ease-in-out;
+	background: var(--table-zebra);
+}
+.table tr:not(:last-child) {
+	border-bottom: 1px solid var(--table-highlight);
+}
+.table td, .table th {
+	vertical-align: middle;
+}
+.table th .sortable {
+	user-select: none;
+}
+.table th .sort-asc::after, .table th .sort-desc::after {
+	padding-left: 3px;
+	line-height: 0.7em;
+	font-size: 0.7em;
+}
+.table th .sort-asc::after {
+	content: '\25b2';
+}
+.table th .sort-desc::after {
+	content: '\25bc';
+}
+.table td {
+	padding: 7px 10px;
+}
+.table td:first-child {
+	padding: 7px 10px 7px 20px;
+}
+.table td:last-child {
+	padding: 7px 20px 7px 10px;
+}
+.table td img {
+	vertical-align: middle;
+}
+
+/* === Tracks Table === */
+.table--tracks {
+	border-collapse: collapse;
+}
+.table--tracks thead {
+	border-bottom: 2px solid var(--table-highlight);
+}
+.table--tracks tr:first-child td:first-child {
+	border-top-left-radius: 3px;
+}
+.table--tracks tr:first-child td:last-child {
+	border-top-right-radius: 3px;
+}
+.table--tracks tr:last-child td:first-child {
+	border-bottom-left-radius: 3px;
+}
+.table--tracks tr:last-child td:last-child {
+	border-bottom-right-radius: 3px;
+}
+
+/* === Tracklist Table === */
+.table--tracklist thead {
+	border-bottom: 2px solid var(--table-highlight);
+	text-transform: capitalize;
+}
+.table--tracklist th {
+	padding: 7px 10px;
+	height: 45px;
+}
+.table--tracklist th:first-child {
+	padding: 7px 10px 7px 20px;
+}
+.table--tracklist th:last-child {
+	padding: 7px 20px 7px 10px;
+}
+.table--tracklist td {
+	height: 35px;
+}
+
+/* === Charts Table === */
+.table--charts td {
+	height: 35px;
+}
+
+.table .table__icon {
+	box-sizing: content-box;
+	width: 32px;
+}
+.table .table__icon--big {
+	width: 48px;
+	text-align: center;
+}
+.table .table__cell--x-small {
+	width: 0.32%;
+}
+.table .table__cell--small {
+	width: 3.2%;
+}
+.table .table__cell--medium {
+	width: 28.7%;
+}
+.table .table__cell--large {
+	width: 50%;
+}
+.table .table__cell--left {
+	text-align: left;
+}
+.table .table__cell--center {
+	text-align: center;
+}
+.table .table__cell--right {
+	text-align: right;
+}
+.table .table__cell-content.table__cell-content--vertical-center {
+	display: flex;
+	align-items: center;
+}
+.track_row > td > img {
+	width: 32px;
+	height: 32px;
+}
+.track_row > td > a > img {
+	width: 56px;
+	height: 56px;
+}
+
+.table--tracklist .clickable:hover,
+.table--charts .clickable:hover {
+	text-decoration: underline;
+}
