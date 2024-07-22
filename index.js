@@ -6,11 +6,11 @@ const os = require('os')
 const yargs = require('yargs/yargs')
 const { hideBin } = require('yargs/helpers')
 const argv = yargs(hideBin(process.argv)).options({
-	port: { type: 'string', default: '6595' },
-	host: { type: 'string', default: '127.0.0.1' },
-  dev: { type: 'boolean', default: false}
+  port: { type: 'string', default: '6595' },
+  host: { type: 'string', default: '127.0.0.1' },
+  dev: { type: 'boolean', default: false }
 }).argv
-const { DeemixServer }= require('./server/dist/app.js')
+const { DeemixServer } = require('./server/dist/app.js')
 
 const PORT = process.env.DEEMIX_SERVER_PORT || argv.port
 process.env.DEEMIX_SERVER_PORT = PORT
@@ -41,7 +41,7 @@ function createWindow () {
 
   win.setMenu(null)
 
-  if (argv.dev){
+  if (argv.dev) {
     const menu = new Menu()
     menu.append(new MenuItem({
       label: 'DevTools',
@@ -54,7 +54,7 @@ function createWindow () {
   }
 
   // Open links in external browser
-  win.webContents.on('new-window', function(e, url) {
+  win.webContents.on('new-window', function (e, url) {
     e.preventDefault()
     shell.openExternal(url)
   })
@@ -62,14 +62,14 @@ function createWindow () {
   win.loadURL(`http://${argv.host}:${PORT}`)
 
   if (windowState.maximized) {
-    win.maximize();
+    win.maximize()
   }
 
-  win.on('close', (event)=>{
-    windowState.saveState(win);
-		if (server.deemixApp.getSettings().settings.clearQueueOnExit){
-			server.deemixApp.cancelAllDownloads()
-		}
+  win.on('close', (event) => {
+    windowState.saveState(win)
+    if (server.deemixApp.getSettings().settings.clearQueueOnExit) {
+      server.deemixApp.cancelAllDownloads()
+    }
   })
 }
 
@@ -95,15 +95,15 @@ app.on('window-all-closed', () => {
   }
 })
 
-ipcMain.on('openDownloadsFolder', (event)=>{
+ipcMain.on('openDownloadsFolder', (event) => {
   const { downloadLocation } = server.deemixApp.getSettings().settings
   shell.openPath(downloadLocation)
 })
 
-ipcMain.on('selectDownloadFolder', async (event, downloadLocation)=>{
-  let path = await dialog.showOpenDialog(win, {
+ipcMain.on('selectDownloadFolder', async (event, downloadLocation) => {
+  const path = await dialog.showOpenDialog(win, {
     defaultPath: downloadLocation,
-    properties: ["openDirectory", "createDirectory"]
+    properties: ['openDirectory', 'createDirectory']
   })
-  if (path.filePaths[0]) win.webContents.send("downloadFolderSelected", path.filePaths[0])
+  if (path.filePaths[0]) win.webContents.send('downloadFolderSelected', path.filePaths[0])
 })

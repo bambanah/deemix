@@ -1,0 +1,4 @@
+https://gitlab.com/RemixDev -> For the original project
+https://gitlab.com/waLplanet -> For an updated UI
+https://gitlab.com/uh_wot -> for how to fix a recent Deezer API affecting the download of Spotify playlists
+

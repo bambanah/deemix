@@ -1,15 +1,15 @@
 {
-  "name": "deemix-gui",
-  "version": "0.0.0",
+  "name": "deemix-fix",
+  "description": "An hybrid app that wraps deemix-webui and lets you use the deemix-js library",
   "main": "index.js",
-  "repository": "https://gitlab.com/RemixDev/deemix-gui.git",
-  "author": "RemixDev <RemixDev64@gmail.com>",
+  "repository": "https://gitlab.com/deeplydrumming/DeemixFix2.git",
+  "author": "Deeplydrumming",
   "license": "GPL-3.0-only",
   "scripts": {
-    "install-all": "yarn install && yarn --cwd server install --production && yarn --cwd webui install --production",
-    "install-all-dev": "yarn install && yarn --cwd server install && yarn --cwd webui install",
+    "install-all": "yarn install && yarn --cwd deemix install --production && yarn --cwd server install && yarn --cwd spotify-web-api-node install --production && yarn --cwd webui install --production",
+    "install-all-dev": "yarn install && yarn --cwd deemix install && yarn --cwd server install && yarn --cwd spotify-web-api-node install && yarn --cwd webui install",
     "dev": "yarn --cwd webui dev",
-    "start": "electron . --dev",
+    "start": "electron . --dev ",
     "predist": "yarn build-server && yarn build-webui",
     "dist": "yarn set-version && electron-builder && yarn reset-version",
     "dist:dir": "yarn set-version && yarn predist && electron-builder --dir && yarn reset-version",
@@ -21,9 +21,9 @@
     "reset-version": "node scripts/reset-version.js"
   },
   "devDependencies": {
+    "@yao-pkg/pkg": "5.12.0",
     "electron": "^22.0.0",
-    "electron-builder": "^23.6.0",
-    "pkg": "^5.8.0"
+    "electron-builder": "^23.6.0"
   },
   "dependencies": {
     "electron-context-menu": "^3.6.1",
@@ -88,5 +88,6 @@
       "artifactName": "${productName}.${ext}",
       "requestExecutionLevel": "user"
     }
-  }
+  },
+  "version": "0.0.0"
 }
