@@ -1,0 +1,22 @@
+{
+  "name": "deemix",
+  "version": "3.6.15",
+  "description": "a barebones deezer downloader library",
+  "main": "deemix/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "RemixDev, Deeplydrumming",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "async": "^3.2.0",
+    "deezer-js": "^1.3.0",
+    "got": "^11.8.2",
+    "html-entities": "^2.3.3",
+    "metaflac-js2": "^1.0.8",
+    "spotify-web-api-node": "../spotify-web-api-node"
+  },
+  "devDependencies": {
+    "eslint": "^9.7.0"
+  }
+}
