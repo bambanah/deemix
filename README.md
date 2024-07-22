@@ -7,6 +7,8 @@ https://bit.ly/DeemixFixBuilds
 ## Running from source
 You need to use `yarn`.
 
+If you're using git to get this repo you should use `git submodule update --init --recursive` as well (in the root). If you're just downloading the archive.zip, make sure you download and extract deemix-webui into the webui folder.
+
 Install the dependencies using `yarn install-all-dev` for development.
 Then you should be able to run the app with `yarn start`.
 If you want to further develop deemix-gui and propose a PR, use `yarn dev`

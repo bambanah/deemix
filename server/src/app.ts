@@ -89,7 +89,7 @@ export class DeemixApp {
 		if ((this.latestVersion === null || force) && !this.settings.disableUpdateCheck) {
 			let response
 			try {
-				response = await got.get('https://gitlab.com/deeplydrumming/DeemixFix2/-/raw/main/latest.txt', {
+				response = await got.get('https://gitlab.com/deeplydrumming/DeemixFix/-/raw/main/latest.txt', {
 					https: {
 						rejectUnauthorized: false
 					}
