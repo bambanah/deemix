@@ -11,9 +11,11 @@ const logFolder: string = joinPath(deemix.utils.localpaths.getConfigFolder(), 'l
 const logFilename = joinPath(logFolder, `${dateFormat(new Date(), 'yyyy-mm-dd-HH.MM.ss')}.log`)
 
 const logFormat = printf(error => {
-	const { level, message, timestamp, stack } = error
-	let result = `${timestamp} [${level}] ${message}`
-	if (stack && !message.startsWith('uncaughtException')) result += '\n' + stack + '\n'
+	/* const { level, message, timestamp, stack } = error */
+	const { level, message } = error
+	const result = `[${level}] ${message}`
+	/* 	let result = `${timestamp} [${level}] ${message}`
+		if (stack && !message.startsWith('uncaughtException')) result += '\n' + stack + '\n' */
 	return result
 })
 

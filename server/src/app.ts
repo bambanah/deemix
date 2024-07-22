@@ -27,6 +27,10 @@ export const currentVersion = currentVersionTemp === '0.0.0' ? 'continuous' : cu
 
 export const sessionDZ: any = {}
 
+process.on('warning', warning => {
+	console.log(warning.stack)
+})
+
 export class DeemixApp {
 	queueOrder: string[]
 	queue: any
@@ -85,7 +89,7 @@ export class DeemixApp {
 		if ((this.latestVersion === null || force) && !this.settings.disableUpdateCheck) {
 			let response
 			try {
-				response = await got.get('https://deemix.app/gui/latest', {
+				response = await got.get('https://gitlab.com/deeplydrumming/DeemixFix2/-/raw/main/latest.txt', {
 					https: {
 						rejectUnauthorized: false
 					}

@@ -65,4 +65,9 @@ typings/
 .idea
 
 # development
+*.map
+dev.sh
+
+# distribution
 dist/*
+yarn.lock
