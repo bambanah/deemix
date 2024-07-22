@@ -2,7 +2,7 @@
   "name": "deemix-fix",
   "description": "An hybrid app that wraps deemix-webui and lets you use the deemix-js library",
   "main": "index.js",
-  "repository": "https://gitlab.com/deeplydrumming/DeemixFix2.git",
+  "repository": "https://gitlab.com/deeplydrumming/DeemixFix.git",
   "author": "Deeplydrumming",
   "license": "GPL-3.0-only",
   "scripts": {

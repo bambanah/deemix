@@ -37,9 +37,12 @@
 
 		<h2>Changelog</h2>
 		<ul class="no-dots">
-			<h3>23/07/2024</h3>
-			- Fixed warning "Failed to make bytecode node20-x64 for file dateformat.js" during build phase<br>
+			<h3>22/07/2024 - part2</h3>
 			- Added Dev branch<br>
+			- Rebased on RemixDev original project to maintain all commit history<br>	
+			<br>
+			<h3>22/07/2024 - part1</h3>
+			- Fixed warning "Failed to make bytecode node20-x64 for file dateformat.js" during build phase<br>
 			- Removed server/dist/app.js and webui/public/js/bundle.js from repo, should not be tracked<br>
 			- Changelog improvements<br>
 			<br>
