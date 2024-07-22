@@ -17,7 +17,7 @@ Commands for easy setup:
 
 ```sh
 # Development
-git clone https://gitlab.com/deeplydrumming/DeemixFix2.git && cd DeemixFix2 && git submodule update --init --recursive && yarn install-all-dev
+git clone https://gitlab.com/deeplydrumming/DeemixFix2.git && cd DeemixFix2 && yarn install-all-dev
 ```
 
 You can change the default port by setting the environment variable `PORT` to any other number before starting the app.
