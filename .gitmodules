@@ -1,3 +1,6 @@
+[submodule "webui"]
+	path = webui
+	url = ../webui
 [submodule "deemix"]
 	path = deemix
 	url = ../deemix
