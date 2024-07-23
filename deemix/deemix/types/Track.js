@@ -71,12 +71,11 @@ class Track {
   }
 
   async parseData (dz, id, trackAPI, albumAPI, playlistAPI) {
-    /* if (id && (!trackAPI || trackAPI && !trackAPI.track_token)) { */ // mickey
-    if (id && (!trackAPI || (trackAPI && !trackAPI.md5_origin))) {
+    /*     if (id && (!trackAPI || (trackAPI && !trackAPI.trackToken))) { */
+    if (id) {
       let trackAPI_new = await dz.gw.get_track_with_fallback(id)
       trackAPI_new = map_track(trackAPI_new)
       if (!trackAPI) trackAPI = {}
-      /* trackAPI = {...trackAPI_new, ...trackAPI} */ // mickey
       trackAPI = { ...trackAPI, ...trackAPI_new }
     } else if (!trackAPI) { throw new NoDataToParse() }
 

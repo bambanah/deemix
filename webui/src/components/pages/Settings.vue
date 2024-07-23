@@ -31,7 +31,7 @@
 
 			<div v-else>
 				<div class="flex w-full">
-					<div class="grid card bg-base-300 rounded-box place-items-center">
+					<!-- 					<div class="grid card bg-base-300 rounded-box place-items-center">
 						<form ref="loginWithCredentialsForm" @submit.prevent="loginWithCredentials">
 							<label>
 								<span>{{ $t('settings.login.email') }}</span>
@@ -44,10 +44,10 @@
 							<button class="btn btn-primary login-button" type="submit">{{ $t('settings.login.login') }}</button>
 						</form>
 					</div>
-					<div class="divider divider-horizontal">OR</div>
-					<div class="grid card bg-base-300 rounded-box place-items-center">
+					<div class="divider divider-horizontal">OR</div> -->
+					<div class="grid card bg-base-300 rounded-box place-items-center" style="width:100%">
 						<h3>{{ $t('settings.login.arl.title') }}</h3>
-						<div class="my-5 space-y-5">
+						<div class="my-5 space-y-5" style="width:100%">
 							<div class="flex items-center">
 								<input id="login_input_arl" ref="loginInput" :value="arl" autocomplete="off" placeholder="ARL"
 									type="password" />
@@ -569,30 +569,30 @@
 				<select v-model="settings.dateFormat">
 					<option value="Y-M-D">
 						{{
-							`${$t('settings.other.dateFormat.year')}-${$t('settings.other.dateFormat.month')}-${$t(
-								'settings.other.dateFormat.day'
-							)}`
+						`${$t('settings.other.dateFormat.year')}-${$t('settings.other.dateFormat.month')}-${$t(
+						'settings.other.dateFormat.day'
+						)}`
 						}}
 					</option>
 					<option value="Y-D-M">
 						{{
-							`${$t('settings.other.dateFormat.year')}-${$t('settings.other.dateFormat.day')}-${$t(
-								'settings.other.dateFormat.month'
-							)}`
+						`${$t('settings.other.dateFormat.year')}-${$t('settings.other.dateFormat.day')}-${$t(
+						'settings.other.dateFormat.month'
+						)}`
 						}}
 					</option>
 					<option value="D-M-Y">
 						{{
-							`${$t('settings.other.dateFormat.day')}-${$t('settings.other.dateFormat.month')}-${$t(
-								'settings.other.dateFormat.year'
-							)}`
+						`${$t('settings.other.dateFormat.day')}-${$t('settings.other.dateFormat.month')}-${$t(
+						'settings.other.dateFormat.year'
+						)}`
 						}}
 					</option>
 					<option value="M-D-Y">
 						{{
-							`${$t('settings.other.dateFormat.month')}-${$t('settings.other.dateFormat.day')}-${$t(
-								'settings.other.dateFormat.year'
-							)}`
+						`${$t('settings.other.dateFormat.month')}-${$t('settings.other.dateFormat.day')}-${$t(
+						'settings.other.dateFormat.year'
+						)}`
 						}}
 					</option>
 					<option value="Y">{{ $t('settings.other.dateFormat.year') }}</option>
