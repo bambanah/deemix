@@ -40,6 +40,7 @@
 			<h3>23/07/2024</h3>
 			- Fixed wrong API check for Deezer APIs<br>
 			- Removed email/password login (for now) to avoid confusion<br>
+			- Fixed search field background in day mode
 			<br>
 			<h3>22/07/2024 - part2</h3>
 			- Added Dev branch<br>
