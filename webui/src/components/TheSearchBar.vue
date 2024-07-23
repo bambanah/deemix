@@ -165,7 +165,6 @@ input[type='search']::-webkit-search-cancel-button {
 }
 
 #search {
-	--secondary-background: #29282d;
 	align-items: center;
 	background-color: var(--secondary-background);
 	border-radius: 15px;
