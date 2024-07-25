@@ -6,8 +6,7 @@
   "author": "Deeplydrumming",
   "license": "GPL-3.0-only",
   "scripts": {
-    "install-all": "yarn install && yarn --cwd deemix install --production && yarn --cwd server install && yarn --cwd spotify-web-api-node install --production && yarn --cwd webui install --production",
-    "install-all-dev": "yarn install && yarn --cwd deemix install && yarn --cwd server install && yarn --cwd spotify-web-api-node install && yarn --cwd webui install",
+    "install-all-dev": "yarn install && yarn --cwd deemix install && yarn --cwd deezer-js install && yarn --cwd server install && yarn --cwd spotify-web-api-node-plus install && yarn --cwd webui install",
     "dev": "yarn --cwd webui dev",
     "start": "electron . --dev ",
     "predist": "yarn build-server && yarn build-webui",

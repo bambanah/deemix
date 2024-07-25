@@ -84,8 +84,8 @@ const en = {
     newsChannel: 'News Channel',
     devlogChannel: 'Devlog Channel',
     questions: {
-      text: 'If you have questions or problems with the app, search for a solution on the {subreddit} first. Then, if you don\'t find anything you can make a post with your issue on the subreddit.',
-      subreddit: 'subreddit'
+      text: 'If you have questions or problems with the app, search for a solution in {telegram} first. Then, if you don\'t find anything you can make a post with your issue in {telegram}.',
+      telegram: 'Telegram'
     },
     beforeReporting: 'Before reporting a bug make sure you\'re running the latest version of the app and that what you want to report is actually a bug and not something that\'s wrong only on your end.',
     beSure: 'Make sure the bug is reproducible on other machines and also <strong>DO NOT</strong> report a bug if it\'s already been reported.',

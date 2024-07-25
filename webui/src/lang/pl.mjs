@@ -72,8 +72,8 @@ const pl = {
     officialSubreddit: 'Oficjalny subreddit',
     newsChannel: 'Kanał wiadomości',
     questions: {
-      text: 'Jeżeli masz pytania lub problemy związane z aplikacją, szukaj odpowiedzi na {subreddit}. Jeżeli niczego nie znajdziesz, stwórz post na subreddicie.',
-      subreddit: 'subreddicie'
+      text: 'Jeżeli masz pytania lub problemy związane z aplikacją, szukaj odpowiedzi na {telegram}. Jeżeli niczego nie znajdziesz, stwórz post na {telegram}.',
+      telegram: 'Telegram'
     },
     beforeReporting: 'Przed zgłaszaniem błędu upewnij się, że masz najnowszą wersje aplikacji i to, co chcesz zgłosić jest błędem, a nie usterką z twojej strony.',
     beSure: 'Upewnij się, że błąd można odtworzyć na innych urządzeniach i <strong>NIE ZGŁASZAJ</strong> błędów, które zostały już zgłoszone',

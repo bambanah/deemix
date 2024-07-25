@@ -12,6 +12,7 @@ const Request = function (builder) {
   this.bodyParameters = builder.bodyParameters
   this.headers = builder.headers
   this.path = builder.path
+  this.timeout = builder.timeout
 }
 
 Request.prototype._getter = function (key) {
@@ -37,6 +38,8 @@ Request.prototype.getBodyParameters = Request.prototype._getter(
 )
 
 Request.prototype.getHeaders = Request.prototype._getter('headers')
+
+Request.prototype.getTimeout = Request.prototype._getter('timeout')
 
 Request.prototype.getURI = function () {
   if (!this.scheme || !this.host || !this.port) {
@@ -135,6 +138,8 @@ Builder.prototype.withBodyParameters = Builder.prototype._assigner(
 )
 
 Builder.prototype.withHeaders = Builder.prototype._assigner('headers')
+
+Builder.prototype.withTimeout = Builder.prototype._setter('timeout')
 
 Builder.prototype.withAuth = function (accessToken) {
   if (accessToken) {

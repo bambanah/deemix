@@ -83,8 +83,8 @@ const pt = {
     officialSubreddit: 'Subreddit Oficial',
     newsChannel: 'Canal de Notícias',
     questions: {
-      text: 'Caso tenhas alguma duvida ou problema com a app, primeiro procura por uma solução no {subreddit}. Caso não encontres nada podes criar uma publicação com a tua questão.',
-      subreddit: 'subreddit'
+      text: 'Caso tenhas alguma duvida ou problema com a app, primeiro procura por uma solução no {telegram}. Caso não encontres nada podes criar uma publicação com a tua questão.',
+      telegram: 'Telegram'
     },
     beforeReporting: 'Antes de reportares um bug certifica-te que estás a correr a versão mais recente e que se trata realmentede um bug e não apenas algo que não funciona do teu lado.',
     beSure: 'Certifica-te que o erro é reprodutivel noutros dispositivos e <strong>NÃO</strong> reportes um bug que já tenha sido reportado.',

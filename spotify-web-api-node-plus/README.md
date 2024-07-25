@@ -1,16 +1,9 @@
 # Spotify Web API Node
 
-[![Tests](https://travis-ci.org/thelinmichael/spotify-web-api-node.svg?branch=master)](https://travis-ci.org/thelinmichael/spotify-web-api-node)
-[![Coverage Status](https://coveralls.io/repos/thelinmichael/spotify-web-api-node/badge.svg)](https://coveralls.io/r/thelinmichael/spotify-web-api-node)
-[![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/spotify-web-api-node.svg)](https://bundlephobia.com/result?p=spotify-web-api-node)
-
 This is a universal wrapper/client for the [Spotify Web API](https://developer.spotify.com/web-api/) that runs on Node.JS and the browser, using [browserify](http://browserify.org/)/[webpack](https://webpack.github.io/)/[rollup](http://rollupjs.org/). A list of selected wrappers for different languages and environments is available at the Developer site's [Libraries page](https://developer.spotify.com/documentation/web-api/libraries/).
 
-Project owners are [thelinmichael](https://github.com/thelinmichael) and [JMPerez](https://github.com/JMPerez), with help from [a lot of awesome contributors](https://github.com/thelinmichael/spotify-web-api-node/network/members).
-
-## Version 5
-
-> :warning: Since the last release (4.0.0, released over year ago) a lot of new functionality has been added by a lot of different contributors. **Thank you.** In order to implement some of the feature requests, some **breaking changes** had to be made. A list of them, along with a list of the new functionality, can be found in the [CHANGELOG](https://github.com/thelinmichael/spotify-web-api-node/blob/master/CHANGELOG.md). 
+This library is a fork of [spotify-web-api-node](https://github.com/thelinmichael/spotify-web-api-node) with the goal of
+the library becoming dependency free and actively maintained.
 
 ## Table of contents
 
@@ -52,7 +45,7 @@ The library includes helper functions to do the following:
 #### Your Music library
 
 * Add, remove, and get tracks and albums that are in the signed in user's Your Music library
-* Check if a track or album is in the signed in user's Your Music library 
+* Check if a track or album is in the signed in user's Your Music library
 
 #### Personalization
 
@@ -73,14 +66,14 @@ The library includes helper functions to do the following:
 * Get a User's Available Devices
 * Get Information About The User's Current Playback State
 * Get Current User's Recently Played Tracks
-* Get the User's Currently Playing Track 
+* Get the User's Currently Playing Track
 * Pause a User's Playback
 * Seek To Position In Currently Playing Track
 * Set Repeat Mode On User’s Playback
 * Set Volume For User's Playback
 * Skip User’s Playback To Next Track
-* Skip User’s Playback To Previous Track 
-* Start/Resume a User's Playback 
+* Skip User’s Playback To Previous Track
+* Start/Resume a User's Playback
 * Toggle Shuffle For User’s Playback
 * Transfer a User's Playback
 
@@ -127,7 +120,12 @@ This project depends on [superagent](https://github.com/visionmedia/superagent) 
 
 ## Installation
 
-    $ npm install spotify-web-api-node --save
+```bash
+$ npm install spotify-web-api-node --save
+# If you are using this library in a Node version that does not have the fetch function (Node < v17), you will need
+# to install and configure a fetch polyfill
+$ npm install node-fetch --save
+```
 
 ## Usage
 
@@ -201,7 +199,7 @@ spotifyApi
 
 ### Responses and errors
 
-This exposes the response headers, status code and body. 
+This exposes the response headers, status code and body.
 
 ```json
 {
@@ -215,7 +213,7 @@ This exposes the response headers, status code and body.
 }
 ```
 
-Errors have same fields, as well as a human readable `message`. This is especially useful since 
+Errors have same fields, as well as a human readable `message`. This is especially useful since
 Spotify's Web API returns different types of error objects depending on the endpoint being called.
 
 #### Example of a response
@@ -244,7 +242,7 @@ Retrieving a track's metadata in `spotify-web-api-node` version 1.4.0 and later:
 
 ### More examples
 
-Below are examples for all helper functions. Longer examples of some requests can be found in the [examples folder](examples/). 
+Below are examples for all helper functions. Longer examples of some requests can be found in the [examples folder](examples/).
 
 ```javascript
 var SpotifyWebApi = require('spotify-web-api-node');
@@ -255,6 +253,22 @@ var spotifyApi = new SpotifyWebApi();
  * Get metadata of tracks, albums, artists, shows, and episodes
  */
 
+// Get track
+spotifyApi.getTrack("28s5iRbX62GZG2ReZTLKDa")
+  .then(function (data) {
+    console.log("Track information", data.body);
+  }, function (err) {
+    console.error(err);
+  });
+
+// Get multiple tracks
+spotifyApi.getTracks(["6Rb4xFCy3Hh5MJ88ehLXdc", "5oOoQn1bhg6nbuvd54URPF"])
+  .then(function (data) {
+    console.log("Tracks information", track);
+  },function (err) {
+    console.error(err);
+  });
+  
 // Get album
 spotifyApi.getAlbum('5U4W9E5WsYb2jUQWePT8Xm')
   .then(function(data) {
@@ -820,7 +834,7 @@ spotifyApi.getMyRecentlyPlayedTracks({
     console.log('Something went wrong!', err);
   });
 
-// Get the User's Currently Playing Track 
+// Get the User's Currently Playing Track
 spotifyApi.getMyCurrentPlayingTrack()
   .then(function(data) {
     console.log('Now playing: ' + data.body.item.name);
@@ -873,7 +887,7 @@ spotifyApi.skipToNext()
     console.log('Something went wrong!', err);
   });
 
-// Skip User’s Playback To Previous Track 
+// Skip User’s Playback To Previous Track
 spotifyApi.skipToPrevious()
   .then(function() {
     console.log('Skip to previous');
@@ -882,7 +896,7 @@ spotifyApi.skipToPrevious()
     console.log('Something went wrong!', err);
   });
 
-// Start/Resume a User's Playback 
+// Start/Resume a User's Playback
 spotifyApi.play()
   .then(function() {
     console.log('Playback started');
@@ -1238,7 +1252,7 @@ api
 
 ## Development
 
-See something you think can be improved? [Open an issue](https://github.com/thelinmichael/spotify-web-api-node/issues/new) or clone the project and send a pull request with your changes.
+See something you think can be improved? [Open an issue](https://github.com/eligundry/spotify-web-api-fetch/issues/new) or clone the project and send a pull request with your changes.
 
 ### Running tests
 
