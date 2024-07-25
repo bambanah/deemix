@@ -36,6 +36,7 @@ build/Release
 node_modules/
 jspm_packages/
 yarn.lock
+pnpm-lock.yaml
 
 # Typescript v1 declaration files
 typings/
