@@ -37,6 +37,14 @@
 
 		<h2>Changelog</h2>
 		<ul class="no-dots">
+			<h3>25/07/2024</h3>
+			- Moved to spotify-web-api-node-plus<br>
+			- Amended spotify-web-api-node-plus Buffer() outdated syntax<br>
+			- Incorporated deemix.js as submodule<br>
+			- Fixed wrong API error displayed when track unavailable on Deezer<br>
+			- Removed bug report section in About<br>
+			- Removed reference to subreddit in About, now pointing to Telegram<br>
+			<br>
 			<h3>23/07/2024</h3>
 			- Fixed wrong API check for Deezer APIs<br>
 			- Removed email/password login (for now) to avoid confusion<br>
@@ -93,18 +101,18 @@
 		</h2>
 		<ul>
 			<i18n path="about.questions.text" tag="li">
-				<template #subreddit>
-					<a href="https://www.reddit.com/r/deemix" target="_blank">{{ $t('about.questions.subreddit') }}</a>
+				<template #telegram>
+					<a href="https://t.me/deemixcommunity" target="_blank">{{ $t('about.questions.telegram') }}</a>
 				</template>
 			</i18n>
-			<li>
+			<!-- <li>
 				{{ $t('about.beforeReporting') }}
 			</li>
 			<li v-html="$t('about.beSure')"></li>
 			<li>
 				{{ $t('about.duplicateReports') }}
 			</li>
-			<li v-html="$t('about.dontOpenIssues')"></li>
+			<li v-html="$t('about.dontOpenIssues')"></li> -->
 		</ul>
 
 		<h2>
@@ -114,9 +122,9 @@
 			</span>
 		</h2>
 		<ul>
-			<li>
+<!-- 			<li>
 				{{ $t('about.acceptFeatures') }}
-			</li>
+			</li> -->
 			<i18n path="about.contributeWebUI.text" tag="li">
 				<template #webui>
 					<span>{{ $t('about.contributeWebUI.webui') }}</span>

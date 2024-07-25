@@ -56,8 +56,8 @@ const tr = {
     officialSubreddit: 'İlgili Subreddit adresimiz',
     newsChannel: 'Haber Kanalı',
     questions: {
-      text: 'Eğer uygulama ile ilgili sorularınız veya bir probleminiz varsa,ilk önce {subreddit} sorununuzu arayın. Eğer bir şey bulamazsanız, sorununuz ile ilgili bir gönderi paylaşabilirsiniz.',
-      subreddit: 'subreddit adresinden'
+      text: 'Eğer uygulama ile ilgili sorularınız veya bir probleminiz varsa,ilk önce {telegram} sorununuzu arayın. Eğer bir şey bulamazsanız, sorununuz ile ilgili bir gönderi paylaşabilirsiniz.',
+      telegram: 'Telegram'
     },
     beforeReporting: 'Bir hatayı bildirmeden önce, uygulamanın son sürümünde olduğunuza veya sorunun sizden kaynaklı olmayıp bir hata olduğuna emin olduktan sonra emin olun.',
     beSure: 'Hatanın başka cihazlarda da olduğunu doğrulayın ve <strong>Bildirilen</strong> bir hatayı tekrar bildirmeyin.',

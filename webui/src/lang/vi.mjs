@@ -56,8 +56,8 @@ const vi = {
     officialSubreddit: 'Subreddit chính thức',
     newsChannel: 'Kênh tin tức',
     questions: {
-      text: 'Nếu bạn có câu hỏi hoặc vấn đề về ứng dụng này, xin hãy tìm giải pháp trên {subreddit} trước. Sau đó, nếu bạn không tìm được gì thì bạn có thể tạo một bài đăng về vấn đề của bạn trên subreddit dó.',
-      subreddit: 'subreddit'
+      text: 'Nếu bạn có câu hỏi hoặc vấn đề về ứng dụng này, xin hãy tìm giải pháp trên {telegram} trước. Sau đó, nếu bạn không tìm được gì thì bạn có thể tạo một bài đăng về vấn đề của bạn trên {telegram} dó.',
+      telegram: 'Telegram'
     },
     beforeReporting: 'Trước khi báo lỗi hãy đảm bảo bạn đang sử dụng phiên bản mới nhất của ứng dụng và lỗi bạn đang gặp không phải là do bạn.',
     beSure: 'Hãy đảm bảo là lỗi này vẫn có thể xảy ra trên các thiết bị khác và <strong>XIN ĐỪNG</strong> báo lỗi đã được báo rồi.',

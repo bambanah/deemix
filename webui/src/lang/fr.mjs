@@ -86,8 +86,8 @@ const fr = {
     newsChannel: "Canal d'Informations",
     devlogChannel: 'Canal De Développement',
     questions: {
-      text: 'Si vous avez des questions ou des problèmes avec l\'application, cherchez d\'abord une solution dans le {subreddit}. Ensuite, si la solution ne s\'y trouve pas, vous pouvez publier un message dans le subreddit en décrivant votre problème.',
-      subreddit: 'subreddit'
+      text: 'Si vous avez des questions ou des problèmes avec l\'application, cherchez d\'abord une solution dans le {telegram}. Ensuite, si la solution ne s\'y trouve pas, vous pouvez publier un message dans le {telegram} en décrivant votre problème.',
+      telegram: 'Telegram'
     },
     beforeReporting:
    "Avant de signaler un bug, assurez-vous que vous utilisez la version la plus récente de l'application. Vérifiez que vous souhaitez nous rapporter un bug et non quelque chose qui ne fonctionne pas uniquement de votre côté.",

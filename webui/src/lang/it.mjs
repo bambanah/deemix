@@ -85,8 +85,8 @@ const it = {
     newsChannel: 'Canale delle news',
     devlogChannel: 'Canale Devlog',
     questions: {
-      text: 'Se dovessi avere domande o problemi con l\'app, cerca prima una soluzione nel {subreddit}. Se non trovi nulla, puoi postare li il tuo problema.',
-      subreddit: 'subreddit ufficiale'
+      text: 'Se dovessi avere domande o problemi con l\'app, cerca prima una soluzione in {telegram}. Se non trovi nulla, puoi postare li il tuo problema.',
+      telegram: 'Telegram'
     },
     beforeReporting: 'Prima di segnalare un problema controlla che quella che stai usando sia l\'ultima versione dell\'app e che ciò che vuoi segnalare sia effettivamente un problema e non qualcosa che non funziona solamente a te.',
     beSure: 'Assicurati che il problema sia riproducibile su altri PC e <strong>NON</strong> segnalare un problema che è già stato segnalato.',
