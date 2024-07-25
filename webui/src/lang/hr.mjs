@@ -56,8 +56,8 @@ const hr = {
     officialSubreddit: 'Službeni subreddit',
     newsChannel: 'Kanal s novostima',
     questions: {
-      text: 'Ukoliko imate pitanja o aplikaciji, prvo potražite riješenje na {subreddit}. Tada, ako ne pronađete ništa, možete objaviti svoj problem na subredditu.',
-      subreddit: 'subreddit'
+      text: 'Ukoliko imate pitanja o aplikaciji, prvo potražite riješenje na {telegram}. Tada, ako ne pronađete ništa, možete objaviti svoj problem na {telegram}.',
+      telegram: 'Telegram'
     },
     beforeReporting: 'Prije prijavljivanja greške provjerite imate li instaliranu zadnju verziju aplikacije i da to što želite prijaviti je ustvari pogreška, a ne nešto što samo vama ne radi.',
     beSure: 'Provjerite može li se pogreška reproducirati i na drugim uređajima i također <strong>NEMOJTE</strong> prijavljivati grešku ako je već prijavljena.',

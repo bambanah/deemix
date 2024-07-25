@@ -71,8 +71,8 @@ const es = {
     officialSubreddit: 'Subreddit oficial',
     newsChannel: 'Canal de noticias',
     questions: {
-      text: 'Si tienes preguntas o problemas con la aplicación, busca una solución en el {subreddit} primero. Luego, si no encuentras nada puedes hacer un post con tu problema en el subreddit.',
-      subreddit: 'subreddit'
+      text: 'Si tienes preguntas o problemas con la aplicación, busca una solución en el {telegram} primero. Luego, si no encuentras nada puedes hacer un post con tu problema en el {telegram}.',
+      telegram: 'Telegram'
     },
     beforeReporting:
    'Antes de informar de un error asegúrese de que está ejecutando la última versión de la aplicación y que lo que quiere informar es en realidad un error y no algo que está mal sólo en su extremo.',

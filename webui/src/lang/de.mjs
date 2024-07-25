@@ -85,8 +85,8 @@ const de = {
     newsChannel: 'Neuigkeiten Kanal',
     devlogChannel: 'Devlog Kanal',
     questions: {
-      text: 'Suche bei Fragen oder Problemen mit der App als erstes nach einer Lösung im {subreddit}. Wenn du dort nichts findest, kannst du einen Beitrag mit deinen Problem auf dem Subreddit verfassen.',
-      subreddit: 'Subreddit'
+      text: 'Suche bei Fragen oder Problemen mit der App als erstes nach einer Lösung im {telegram}. Wenn du dort nichts findest, kannst du einen Beitrag mit deinen Problem auf dem {telegram} verfassen.',
+      telegram: 'Telegram'
     },
     beforeReporting:
    'Bevor du einen Fehler meldest, stelle sicher, dass die Version deiner App auf dem neusten Stand ist und dass dies, was du melden möchtest, tatsächlich ein Fehler und nicht nur bei dir falsch ist.',
@@ -94,7 +94,7 @@ const de = {
    'Stelle sicher, dass der Fehler auf anderen Computern auch vorhanden ist... <strong>MELDE DEN FEHLER NICHT </strong>, wenn dieser schon gemeldet worden ist.',
     duplicateReports: 'Achte darauf, dass doppelte Fehlerberichte geschlossen, werden.',
     dontOpenIssues:
-   '<strong>ERSTELLE KEINE</strong> Fehlermeldungen um Fragen zu stellen, es existiert ein Subreddit dafür.',
+   '<strong>ERSTELLE KEINE</strong> Fehlermeldungen um Fragen zu stellen, es existiert ein Telegram dafür.',
     newUI: {
       text: 'Wenn du Python fließend beherrschst, kannst du versuchen, mithilfe der Basisbibliothek eine neue Benutzeroberfläche für die App zu erstellen oder Fehler in der Bibliothek mit einem Pull-Request in der {repo} zu beheben.',
       repo: 'deemix Repo'

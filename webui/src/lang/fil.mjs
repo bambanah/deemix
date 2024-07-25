@@ -71,8 +71,8 @@ const fil = {
     officialSubreddit: 'Opisyal na Subreddit',
     newsChannel: 'News Channel',
     questions: {
-      text: 'Kung may tanong ka o problema sa app, maghanap ka muna ng solusiyon sa {subreddit}. Ngayon, kung wala ka talagang mahanap ay pwede kang mag-post patungkol sa iyong isyu doon sa subreddit.',
-      subreddit: 'subreddit'
+      text: 'Kung may tanong ka o problema sa app, maghanap ka muna ng solusiyon sa {telegram}. Ngayon, kung wala ka talagang mahanap ay pwede kang mag-post patungkol sa iyong isyu doon sa {telegram}.',
+      telegram: 'Telegram'
     },
     beforeReporting: 'Bago ka magreport ng bug, siguraduhing pinakabagong version ang ginagamit mo at ang ire-report mo ay talagang bug at hindi dahil sa pagkakamali mo lang ng paggamit.',
     beSure: 'Siguraduhing nangyayari rin ang bug sa iba\'t ibang plataporma at tsaka <strong>HUWAG</strong> mo nang i-report ang bug kung ito ay naipa-alam na ng iba.',

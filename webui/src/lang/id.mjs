@@ -56,8 +56,8 @@ const id = {
     officialSubreddit: 'Subreddit Resmi',
     newsChannel: 'Kanal Berita',
     questions: {
-      text: 'Kalau kamu punya pertanyaan atau masalah dengan aplikasi ini, tolong cari solusinya di {subreddit} kami terlebih dahulu. Kalau memang tidak ada, silakan buat pos baru berisikan persoalan tersebut.',
-      subreddit: 'subreddit'
+      text: 'Kalau kamu punya pertanyaan atau masalah dengan aplikasi ini, tolong cari solusinya di {telegram} kami terlebih dahulu. Kalau memang tidak ada, silakan buat pos baru berisikan persoalan tersebut.',
+      telegram: 'Telegram'
     },
     beforeReporting: 'Sebelum melaporkan masalah, pastikan kamu sudah memakai versi aplikasi terbaru dan hal yang akan kamu laporkan memang bukan kesalahan dari pihak kamu sendiri.',
     beSure: 'Pastikan masalah tersebut bisa diemulasikan di mesin lain, dan juga <strong>JANGAN</strong> laporkan masalah yang sudah dilaporkan sebelumnya.',

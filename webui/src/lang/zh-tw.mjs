@@ -79,8 +79,8 @@ const zh_tw = {
     officialSubreddit: '官方 Subreddit',
     newsChannel: '最新消息頻道',
     questions: {
-      text: '如果您對本程式有疑問或問題，請先在{subreddit}上搜尋解決方案。如果找不到任何解決方法，則可以在我們的 subreddit 上發布與您問題相關的文章。',
-      subreddit: ' subreddit '
+      text: '如果您對本程式有疑問或問題，請先在 {telegram} 上搜尋解決方案。如果找不到任何解決方法，則可以在我們的 {telegram} 上發布與您問題相關的文章。',
+      telegram: 'Telegram'
     },
     beforeReporting: '在報告錯誤之前，請確保您正在運行最新版本的程式，並且要報告的內容真的是一個錯誤，而不僅是您自己遇到的問題。',
     beSure: '請確保您所想回報的錯誤可在其他台裝置上再現的，並且<strong>請勿</strong>回報已知錯誤。',

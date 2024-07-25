@@ -85,8 +85,8 @@ const pt_br = {
     newsChannel: 'Canal de notícias',
     devlogChannel: 'Canal Devlog',
     questions: {
-      text: 'Se você tiver dúvidas ou problemas com o app, procure uma solução em {subreddit} primeiro. Caso você não encontre, você pode fazer um post explicando seu problema no subreddit.',
-      subreddit: 'subreddit'
+      text: 'Se você tiver dúvidas ou problemas com o app, procure uma solução em {telegram} primeiro. Caso você não encontre, você pode fazer um post explicando seu problema no {telegram}.',
+      telegram: 'Telegram'
     },
     beforeReporting: 'Antes de reportar um bug, tenha certeza que você está rodando a versão mais recente do app, e o que você quer reportar seja realmente um bug e não algo que esteja acontecendo especialmente com você.',
     beSure: 'Certifique-se que o bug é reproduzivel em outras máquinas e também <strong>NÃO</strong> reporte um bug se ele já foi reportado.',

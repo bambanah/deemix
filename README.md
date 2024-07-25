@@ -1,11 +1,12 @@
 # deemix-gui
-An hybrid app that wraps deemix-webui and lets you use the deemix-js library
+An hybrid app that wraps deemix-webui and lets you use the deemix-js library.  
+This app wouldn't be possible without [RemixDev](https://gitlab.com/RemixDev)'s work on the original [deemix-gui](https://gitlab.com/RemixDev/deemix-gui).
 
 ## Downloads
 https://bit.ly/DeemixFixBuilds
 
 ## Running from source
-You need to use `yarn`.
+You need to use node version 18 or higher and `yarn`.
 
 Install the dependencies using `yarn install-all-dev` for development.
 Then you should be able to run the app with `yarn start`.
@@ -24,7 +25,7 @@ You can change the default port by setting the environment variable `PORT` to an
 To build the app you need to have git installed and the repo cloned with `git`.
 Make sure you've installed the dependencies for all packages (the root folder, `server` and `webui`).
 Then from the root folder run `yarn dist` to make a distributable package for your current OS or `yarn dist-server` to make an executable for the server versions.
-
+  
 # License
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
