@@ -13,7 +13,7 @@
   "author": "RemixDev",
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "got": "^11.8.2",
+    "got": "11.8.2",
     "tough-cookie": "^4.0.0"
   },
   "devDependencies": {

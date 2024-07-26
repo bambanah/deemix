@@ -6,25 +6,32 @@ This app wouldn't be possible without [RemixDev](https://gitlab.com/RemixDev)'s 
 https://bit.ly/DeemixFixBuilds
 
 ## Running from source
-You need to use node version 18 or higher and `yarn`.
+You need to use node version 18 or higher and `pnpm`.
 
-Install the dependencies using `yarn install-all-dev` for development.
-Then you should be able to run the app with `yarn start`.
-If you want to further develop deemix-gui and propose a PR, use `yarn dev`
+If you don't have pnpm installed yet, please see here: [how to install pnpm](https://pnpm.io/installation).
+
+Typically you can just execute `npm install -g pnpm` if you already have npm.
+
+Install the dependencies using `pnpm i` for development. This installs all the depencies recursively for the main, deemix, deezer-js, server, spotify-web-api-node-plus, and webui folders.
+
+Then you should be able to run the app with `pnpm start`.
+If you want to further develop deemix-gui and propose a PR, use `pnpm dev` for development and HMR of the interface in a browser. http://127.0.0.1:6595/
+
+
+You can change the default port by setting the environment variable `PORT` to any other number before starting the app. 
 
 Commands for easy setup:
 
 ```sh
 # Development
-git clone https://gitlab.com/deeplydrumming/DeemixFix.git && cd DeemixFix && yarn install-all-dev
+git clone https://gitlab.com/deeplydrumming/DeemixFix.git && cd DeemixFix && pnpm i
 ```
 
-You can change the default port by setting the environment variable `PORT` to any other number before starting the app.
 
 ## Building the app
 To build the app you need to have git installed and the repo cloned with `git`.
-Make sure you've installed the dependencies for all packages (the root folder, `server` and `webui`).
-Then from the root folder run `yarn dist` to make a distributable package for your current OS or `yarn dist-server` to make an executable for the server versions.
+Make sure you've installed the dependencies for all packages (`pnpm i`).
+Then from the root folder run `pnpm dist` to make a distributable package for your current OS or `pnpm dist-server` to make an executable for the server versions.
   
 # License
 This program is free software: you can redistribute it and/or modify
