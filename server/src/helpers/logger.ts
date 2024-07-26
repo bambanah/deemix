@@ -1,14 +1,16 @@
 import fs from 'fs'
 import { join as joinPath } from 'path'
 import os from 'os'
-import dateFormat from 'dateformat'
+/* import dateFormat from 'dateformat' */
+import { formatDate } from 'date-fns'
 import { createLogger, format, transports } from 'winston'
 // @ts-expect-error
 import deemix from 'deemix'
 const { combine, timestamp, errors, colorize, printf } = format
 
 const logFolder: string = joinPath(deemix.utils.localpaths.getConfigFolder(), 'logs')
-const logFilename = joinPath(logFolder, `${dateFormat(new Date(), 'yyyy-mm-dd-HH.MM.ss')}.log`)
+/* const logFilename = joinPath(logFolder, `${dateFormat(new Date(), 'yyyy-mm-dd-HH.MM.ss')}.log`) */
+const logFilename = joinPath(logFolder, `${formatDate(new Date(), 'yyyy-MM-dd-hh.mm.ss')}.log`)
 
 const logFormat = printf(error => {
 	/* const { level, message, timestamp, stack } = error */

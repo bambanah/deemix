@@ -37,6 +37,12 @@
 
 		<h2>Changelog</h2>
 		<ul class="no-dots">
+			<h3>26/07/2024</h3>
+			- Moved all scripts to pnpm<br>
+			- Fixed a few dependencies<br>
+			- Incorporated spotify-web-api-node-plus as local dependency<br>
+			- Replaced dateformat with date-fns
+			<br>
 			<h3>25/07/2024</h3>
 			- Moved to spotify-web-api-node-plus<br>
 			- Amended spotify-web-api-node-plus Buffer() outdated syntax<br>

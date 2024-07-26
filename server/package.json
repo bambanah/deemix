@@ -28,7 +28,6 @@
 	},
 	"dependencies": {
 		"@types/cookie-parser": "1.4.7",
-		"@types/dateformat": "5.0.2",
 		"@types/debug": "4.1.12",
 		"@types/ejs": "3.1.5",
 		"@types/express": "4.17.21",
@@ -41,7 +40,7 @@
 		"@types/yargs": "17.0.32",
 		"bufferutil": "4.0.8",
 		"cookie-parser": "1.4.6",
-		"dateformat": "^5.0.3",
+		"date-fns": "^3.6.0",
 		"debug": "2.6.9",
 		"deemix": "../deemix",
 		"deezer-js": "../deezer-js",
