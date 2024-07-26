@@ -36,12 +36,12 @@
 		</ul>
 
 		<h2>Changelog</h2>
-		<ul class="no-dots">
+		<ul class="no-dots" style="font-size: 15px;">
 			<h3>26/07/2024</h3>
 			- Moved all scripts to pnpm<br>
 			- Fixed a few dependencies<br>
 			- Incorporated spotify-web-api-node-plus as local dependency<br>
-			- Replaced dateformat with date-fns
+			- Replaced dateformat with date-fns<br>
 			<br>
 			<h3>25/07/2024</h3>
 			- Moved to spotify-web-api-node-plus<br>
