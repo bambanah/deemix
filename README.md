@@ -12,9 +12,13 @@ If you don't have pnpm installed yet, please see here: [how to install pnpm](htt
 
 Typically you can just execute `npm install -g pnpm` if you already have npm.
 
-Install the dependencies using `pnpm i` for development.
+Install the dependencies using `pnpm i` for development. This installs all the depencies recursively for the main, deemix, deezer-js, server, spotify-web-api-node-plus, and webui folders.
+
 Then you should be able to run the app with `pnpm start`.
-If you want to further develop deemix-gui and propose a PR, use `pnpm dev`
+If you want to further develop deemix-gui and propose a PR, use `pnpm dev` for development and HMR of the interface in a browser. http://127.0.0.1:6595/
+
+
+You can change the default port by setting the environment variable `PORT` to any other number before starting the app. 
 
 Commands for easy setup:
 
@@ -23,7 +27,6 @@ Commands for easy setup:
 git clone https://gitlab.com/deeplydrumming/DeemixFix.git && cd DeemixFix && pnpm i
 ```
 
-You can change the default port by setting the environment variable `PORT` to any other number before starting the app.
 
 ## Building the app
 To build the app you need to have git installed and the repo cloned with `git`.
