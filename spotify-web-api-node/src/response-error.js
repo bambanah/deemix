@@ -7,8 +7,7 @@ class NamedError extends Error {
 
 class TimeoutError extends NamedError {
   constructor () {
-    const message =
-      "A timeout occurred while communicating with Spotify's Web API."
+    const message = 'A timeout occurred while communicating with Spotify\'s Web API.'
     super(message)
   }
 }
@@ -29,11 +28,8 @@ class WebapiError extends NamedError {
  */
 class WebapiRegularError extends WebapiError {
   constructor (body, headers, statusCode) {
-    const message =
-      "An error occurred while communicating with Spotify's Web API.\n" +
-      'Details: ' +
-      body.error.message +
-      '.'
+    const message = 'An error occurred while communicating with Spotify\'s Web API.\n' +
+    'Details: ' + body.error.message + '.'
 
     super(body, headers, statusCode, message)
   }
@@ -45,11 +41,8 @@ class WebapiRegularError extends WebapiError {
  */
 class WebapiAuthenticationError extends WebapiError {
   constructor (body, headers, statusCode) {
-    const message =
-      "An authentication error occurred while communicating with Spotify's Web API.\n" +
-      'Details: ' +
-      body.error +
-      (body.error_description ? ' ' + body.error_description + '.' : '.')
+    const message = 'An authentication error occurred while communicating with Spotify\'s Web API.\n' +
+    'Details: ' + body.error + (body.error_description ? ' ' + body.error_description + '.' : '.')
 
     super(body, headers, statusCode, message)
   }
@@ -61,20 +54,11 @@ class WebapiAuthenticationError extends WebapiError {
  */
 class WebapiPlayerError extends WebapiError {
   constructor (body, headers, statusCode) {
-    const message =
-      "An error occurred while communicating with Spotify's Web API.\n" +
-      'Details: ' +
-      body.error.message +
-      (body.error.reason ? ' ' + body.error.reason + '.' : '.')
+    const message = 'An error occurred while communicating with Spotify\'s Web API.\n' +
+    'Details: ' + body.error.message + (body.error.reason ? ' ' + body.error.reason + '.' : '.')
 
     super(body, headers, statusCode, message)
   }
 }
 
-module.exports = {
-  WebapiError,
-  TimeoutError,
-  WebapiRegularError,
-  WebapiAuthenticationError,
-  WebapiPlayerError
-}
+module.exports = { WebapiError, TimeoutError, WebapiRegularError, WebapiAuthenticationError, WebapiPlayerError }

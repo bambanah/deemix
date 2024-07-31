@@ -1,6 +1,6 @@
 'use strict'
 
-/* const AuthenticationRequest = require('./authentication-request') */
+const AuthenticationRequest = require('./authentication-request')
 const WebApiRequest = require('./webapi-request')
 const HttpManager = require('./http-manager')
 
@@ -91,13 +91,17 @@ SpotifyWebApi.prototype = {
   },
 
   _getCredential: function (credentialKey) {
-    if (this._credentials) {
+    if (!this._credentials) {
+
+    } else {
       return this._credentials[credentialKey]
     }
   },
 
   _resetCredential: function (credentialKey) {
-    if (this._credentials) {
+    if (!this._credentials) {
+
+    } else {
       this._credentials[credentialKey] = null
     }
   },
@@ -176,27 +180,6 @@ SpotifyWebApi.prototype = {
         },
         options
       )
-      .build()
-      .execute(HttpManager.get, callback)
-  },
-
-  getPlaylistCoverImage: function (playlistId, callback) {
-    return WebApiRequest.builder(this.getAccessToken())
-      .withPath('/v1/playlists/' + playlistId + '/images')
-      .withHeaders({ 'Content-Type': 'application/json' })
-      .build()
-      .execute(HttpManager.get, callback)
-  },
-
-  /** Get available markets that Spotify support
-   * @param {requestCallback} callback
-   * @returns {Promise|undefined} A promise that if successful, returns an object containing the user's devices. Not returned if a callback is given.
-   */
-  getAvailableMarkets: function (callback) {
-    const path = '/v1/markets'
-    return WebApiRequest.builder(this.getAccessToken())
-      .withPath(path)
-      .withHeaders({ 'Content-Type': 'application/json' })
       .build()
       .execute(HttpManager.get, callback)
   },
@@ -496,12 +479,9 @@ SpotifyWebApi.prototype = {
     return WebApiRequest.builder(this.getAccessToken())
       .withPath('/v1/me/playlists')
       .withHeaders({ 'Content-Type': 'application/json' })
-      .withBodyParameters(
-        {
-          name
-        },
-        options
-      )
+      .withBodyParameters({
+        name
+      }, options)
       .build()
       .execute(HttpManager.post, callback)
   },
@@ -574,16 +554,16 @@ SpotifyWebApi.prototype = {
   },
 
   /**
-     * Add tracks to a playlist.
-     * @param {string} playlistId The playlist's ID
-     * @param {string[]} tracks URIs of the tracks to add to the playlist.
-     * @param {Object} [options] Options, position being the only one.
-     * @param {requestCallback} [callback] Optional callback method to be called instead of the promise.
-     * @example addTracksToPlaylist('3EsfV6XzCHU8SPNdbnFogK',
-                '["spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M"]').then(...)
-     * @returns {Promise|undefined} A promise that if successful returns an object containing a snapshot_id. If rejected,
-     * it contains an error object. Not returned if a callback is given.
-     */
+   * Add tracks to a playlist.
+   * @param {string} playlistId The playlist's ID
+   * @param {string[]} tracks URIs of the tracks to add to the playlist.
+   * @param {Object} [options] Options, position being the only one.
+   * @param {requestCallback} [callback] Optional callback method to be called instead of the promise.
+   * @example addTracksToPlaylist('3EsfV6XzCHU8SPNdbnFogK',
+              '["spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M"]').then(...)
+   * @returns {Promise|undefined} A promise that if successful returns an object containing a snapshot_id. If rejected,
+   * it contains an error object. Not returned if a callback is given.
+   */
   addTracksToPlaylist: function (playlistId, tracks, options, callback) {
     return WebApiRequest.builder(this.getAccessToken())
       .withPath('/v1/playlists/' + playlistId + '/tracks')
@@ -1359,15 +1339,22 @@ SpotifyWebApi.prototype = {
 
   /**
    * Check if users are following a playlist.
-   * @param {String[]} followerIds IDs of the following users
+   * @param {string} userId The playlist's owner's user ID
    * @param {string} playlistId The playlist's ID
+   * @param {String[]} User IDs of the following users
    * @param {requestCallback} [callback] Optional callback method to be called instead of the promise.
    * @returns {Promise|undefined} A promise that if successful returns an array of booleans. If rejected,
    * it contains an error object. Not returned if a callback is given.
    */
-  areFollowingPlaylist: function (playlistId, followerIds, callback) {
+  areFollowingPlaylist: function (userId, playlistId, followerIds, callback) {
     return WebApiRequest.builder(this.getAccessToken())
-      .withPath('/v1/playlists/' + playlistId + '/followers/contains')
+      .withPath(
+        '/v1/users/' +
+          encodeURIComponent(userId) +
+          '/playlists/' +
+          playlistId +
+          '/followers/contains'
+      )
       .withQueryParameters({
         ids: followerIds.join(',')
       })
@@ -1542,9 +1529,7 @@ SpotifyWebApi.prototype = {
     return WebApiRequest.builder(this.getAccessToken())
       .withPath('/v1/me/shows')
       .withHeaders({ 'Content-Type': 'application/json' })
-      .withQueryParameters({
-        ids: showIds.join(',')
-      })
+      .withBodyParameters(showIds)
       .build()
       .execute(HttpManager.del, callback)
   },
@@ -1662,21 +1647,7 @@ SpotifyWebApi.prototype = {
       )
       .build()
       .execute(HttpManager.get, callback)
-  },
-
-  /** Get current Queue
-   * @param {requestCallback} [callback] Optional callback method to be called instead of the promise.
-   * @returns {Promise|undefined} A promise that if successful, returns an object containing information
-   *          about the episodes. Not returned if a callback is given.
-  */
-
-  getQueue: function (callback) {
-    return WebApiRequest.builder(this.getAccessToken())
-      .withPath('/v1/me/player/queue')
-      .build()
-      .execute(HttpManager.get, callback)
   }
-
 }
 
 SpotifyWebApi._addMethods = function (methods) {
