@@ -10,7 +10,7 @@ const {
 const { Convertable, Collection } = require('../types/DownloadObjects.js')
 const { sep } = require('path')
 const fs = require('fs')
-const SpotifyWebApi = require('spotify-web-api-node-plus')
+const SpotifyWebApi = require('spotify-web-api-node')
 const got = require('got')
 const { queue } = require('async')
 

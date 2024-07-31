@@ -4,6 +4,7 @@ const AuthenticationRequest = require('./authentication-request')
 const HttpManager = require('./http-manager')
 
 module.exports = {
+
   /**
    * Retrieve a URL where the user can give the application permissions.
    * @param {string[]} scopes The scopes corresponding to the permissions the application needs.
@@ -12,12 +13,7 @@ module.exports = {
    * @param {string} responseType An optional parameter that you can use to specify the code response based on the authentication type - can be set to 'code' or 'token'. Default 'code' to ensure backwards compatability.
    * @returns {string} The URL where the user can give application permissions.
    */
-  createAuthorizeURL: function (
-    scopes,
-    state,
-    showDialog,
-    responseType = 'code'
-  ) {
+  createAuthorizeURL: function (scopes, state, showDialog, responseType = 'code') {
     return AuthenticationRequest.builder()
       .withPath('/authorize')
       .withQueryParameters({
@@ -46,7 +42,11 @@ module.exports = {
         grant_type: 'client_credentials'
       })
       .withHeaders({
-        Authorization: 'Basic ' + Buffer.from(this.getClientId() + ':' + this.getClientSecret()).toString('base64'),
+        Authorization:
+          'Basic ' +
+          Buffer.from(
+            this.getClientId() + ':' + this.getClientSecret()
+          ).toString('base64'),
         'Content-Type': 'application/x-www-form-urlencoded'
       })
       .build()
@@ -94,7 +94,10 @@ module.exports = {
       })
       .withHeaders({
         Authorization:
-          'Basic ' + Buffer.from(this.getClientId() + ':' + this.getClientSecret()).toString('base64'),
+          'Basic ' +
+          Buffer.from(
+            this.getClientId() + ':' + this.getClientSecret()
+          ).toString('base64'),
         'Content-Type': 'application/x-www-form-urlencoded'
       })
       .build()

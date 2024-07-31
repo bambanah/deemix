@@ -37,6 +37,10 @@
 
 		<h2>Changelog</h2>
 		<ul class="no-dots" style="font-size: 15px;">
+			<h3>31/07/2024</h3>
+			- Reverted to spotify-web-api-node<br>
+			- Fixed (again) the Buffer method in spotify-web-api-node<br>
+			<br>
 			<h3>26/07/2024</h3>
 			- Moved all scripts to pnpm<br>
 			- Fixed a few dependencies<br>
@@ -128,7 +132,7 @@
 			</span>
 		</h2>
 		<ul>
-<!-- 			<li>
+			<!-- 			<li>
 				{{ $t('about.acceptFeatures') }}
 			</li> -->
 			<i18n path="about.contributeWebUI.text" tag="li">
