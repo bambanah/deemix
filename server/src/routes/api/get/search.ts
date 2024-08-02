@@ -47,7 +47,7 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 				data = await dz.api.search(term, { limit: nb, index: start })
 				break
 		}
-	} catch (e) {
+	} catch (e:any) {
 		data = { ...emptyResult }
 		data.error = e.message
 	}

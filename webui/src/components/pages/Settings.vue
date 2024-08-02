@@ -711,10 +711,10 @@
 					<input v-model="spotifyFeatures.clientSecret" type="password" />
 				</div>
 
-				<div class="input-group">
+<!-- 				<div class="input-group">
 					<p class="input-group-text">{{ $t('settings.spotify.username') }}</p>
 					<input v-model="spotifyUser" type="text" />
-				</div>
+				</div> -->
 
 				<label class="with-checkbox">
 					<input v-model="spotifyFeatures.fallbackSearch" type="checkbox" />

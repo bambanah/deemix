@@ -1,7 +1,7 @@
 <template>
 	<div id="home_tab">
 		<h1 class="mb-8 text-5xl">{{ $t('globals.welcome') }}</h1>
-		Version published 31/07/2024, see About section for changelog.
+		Version published 02/08/2024, see About section for changelog.
 		<section v-if="!isLoggedIn" ref="notLogged" class="py-6 border-0 border-t border-solid border-grayscale-500">
 			<p id="home_not_logged_text" class="mb-4">{{ $t('home.needTologin') }}</p>
 			<router-link custom v-slot="{ navigate }" class="btn btn-primary" name="button" :to="{ name: 'Settings' }">

@@ -1,6 +1,5 @@
 'use strict'
 
-const AuthenticationRequest = require('./authentication-request')
 const WebApiRequest = require('./webapi-request')
 const HttpManager = require('./http-manager')
 
@@ -91,19 +90,11 @@ SpotifyWebApi.prototype = {
   },
 
   _getCredential: function (credentialKey) {
-    if (!this._credentials) {
-
-    } else {
-      return this._credentials[credentialKey]
-    }
+    return this._credentials[credentialKey]
   },
 
   _resetCredential: function (credentialKey) {
-    if (!this._credentials) {
-
-    } else {
-      this._credentials[credentialKey] = null
-    }
+    this._credentials[credentialKey] = null
   },
 
   /**

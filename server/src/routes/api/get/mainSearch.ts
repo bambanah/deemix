@@ -107,7 +107,7 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 	let results
 	try {
 		results = await dz.gw.search(term)
-	} catch (e) {
+	} catch (e:any) {
 		results = { ...emptyResult }
 		results.QUERY = term
 		results.ERROR = e.message

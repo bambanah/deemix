@@ -19,7 +19,7 @@ const handler: ApiHandler['handler'] = async (req, res) => {
 
 	try {
 		obj = await deemix.addToQueue(dz, url, bitrate)
-	} catch (e) {
+	} catch (e:any) {
 		res.send({ result: false, errid: e.name, data: { url, bitrate } })
 		switch (e.name) {
 			case 'NotLoggedIn':

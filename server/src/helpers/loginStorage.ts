@@ -21,7 +21,7 @@ export function loadLoginCredentials() {
 
 	try {
 		loginData = JSON.parse(fs.readFileSync(configFolder + 'login.json').toString())
-	} catch (e) {
+	} catch (e:any) {
 		if (e.name === 'SyntaxError') resetLoginCredentials()
 	}
 }

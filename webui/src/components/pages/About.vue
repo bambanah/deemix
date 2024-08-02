@@ -37,6 +37,11 @@
 
 		<h2>Changelog</h2>
 		<ul class="no-dots" style="font-size: 15px;">
+			<h3>02/08/2024</h3>
+			- Removed outdated linters and formatters<br>
+			- Few fixes in API ts types<br>
+			- Removed Spotify UserName requirement and instructions from settings<br>
+			<br>
 			<h3>31/07/2024</h3>
 			- Reverted to spotify-web-api-node<br>
 			- Fixed (again) the Buffer method in spotify-web-api-node<br>

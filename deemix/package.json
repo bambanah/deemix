@@ -1,6 +1,6 @@
 {
   "name": "deemix",
-  "version": "3.6.17",
+  "version": "3.6.20",
   "description": "a barebones deezer downloader library",
   "main": "deemix/index.js",
   "scripts": {
@@ -22,8 +22,5 @@
     "metaflac-js2": "^1.0.8",
     "spotify-web-api-node": "../spotify-web-api-node",
     "tough-cookie": "^4.0.0"
-  },
-  "devDependencies": {
-    "eslint": "^9.7.0"
   }
 }

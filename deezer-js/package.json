@@ -15,8 +15,5 @@
   "dependencies": {
     "got": "11.8.2",
     "tough-cookie": "^4.0.0"
-  },
-  "devDependencies": {
-    "eslint": "^7.23.0"
   }
 }
