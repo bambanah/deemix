@@ -1,6 +1,6 @@
 {
 	"name": "deemix-webui",
-	"version": "1.9.7",
+	"version": "1.9.8",
 	"scripts": {
 		"clean": "rimraf public/js/bundle.js public/js/bundle.temp.js public/js/bundle.js.map",
 		"clean-temp": "rimraf public/js/bundle.temp.js",
