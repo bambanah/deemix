@@ -33,9 +33,11 @@
 			<template #overviewPage>
 				<a href="https://www.spotify.com/it/account/overview/" target="_blank">{{ $t('settings.spotify.howTo.usernameQuestion.step1.overviewPage') }}</a>
 			</template>
-		</i18n> -->
+		</i18n>
+		-->
+		
 	</div>
-</template>
+</template> 
 
 <script>
 export default {}

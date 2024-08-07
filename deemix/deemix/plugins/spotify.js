@@ -312,7 +312,8 @@ class Spotify extends Plugin {
 
   _convertPlaylistStructure (spotifyPlaylist) {
     let cover = null
-    if (spotifyPlaylist.images.length) cover = spotifyPlaylist.images[0].url
+    // Mickey: some playlists can be faulty, for example https://open.spotify.com/playlist/7vyEjAGrXOIjqlC8pZRupW
+    if (spotifyPlaylist?.images?.length) cover = spotifyPlaylist.images[0].url
 
     const deezerPlaylist = {
       checksum: spotifyPlaylist.snapshot_id,

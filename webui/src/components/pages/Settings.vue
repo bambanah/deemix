@@ -705,17 +705,22 @@
 					<p class="input-group-text">{{ $t('settings.spotify.clientID') }}</p>
 					<input v-model="spotifyFeatures.clientId" type="text" />
 				</div>
-
+				<br>
 				<div class="input-group">
 					<p class="input-group-text">{{ $t('settings.spotify.clientSecret') }}</p>
 					<input v-model="spotifyFeatures.clientSecret" type="password" />
 				</div>
-
-<!-- 				<div class="input-group">
-					<p class="input-group-text">{{ $t('settings.spotify.username') }}</p>
+				<br>
+				<div class="input-group">
+					<!-- <p class="input-group-text">{{ $t('settings.spotify.username') }}</p> -->
+					<p class="input-group-text">Spotify Users</p>
+					<p style="font-size: 13px; font-style: italic;">Tip: you can insert here a list of Spotify Users IDs,
+						separated by comma or space. All the public
+						playlists by these users will be displayed in the Favorites section. A user ID is the part that comes after
+						'https://open.spotify.com/user/' and can be a set of alphanumeric characters or a profile name.<br>You can also insert your own Spotify user ID as before.</p>
 					<input v-model="spotifyUser" type="text" />
-				</div> -->
-
+				</div>
+				<br>
 				<label class="with-checkbox">
 					<input v-model="spotifyFeatures.fallbackSearch" type="checkbox" />
 					<span class="checkbox-text">{{ $t('settings.downloads.fallbackSearch') }}</span>
