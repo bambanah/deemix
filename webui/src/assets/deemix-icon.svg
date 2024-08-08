@@ -8,7 +8,7 @@
     </linearGradient>
     <linearGradient id="linearGradient3021">
       <stop id="stop3017" offset="0" style="stop-color:#007aff;stop-opacity:1;"/>
-      <stop id="stop3019" offset="1" style="stop-color:#5856d6;stop-opacity:1"/>
+      <stop id="stop3019" offset="1" style="stop-color:#B560FF;stop-opacity:1"/>
     </linearGradient>
     <linearGradient gradientUnits="userSpaceOnUse" y2="13.229167" x2="34.355733" y1="13.229167" x1="30.794743" id="linearGradient3023" xlink:href="#linearGradient3021"/>
     <linearGradient gradientUnits="userSpaceOnUse" y2="19.84375" x2="17.671497" y1="6.6145835" x1="17.671497" id="linearGradient3052" xlink:href="#linearGradient3021"/>
@@ -216,7 +216,7 @@
   </g>
   <g id="layer3">
     <g style="filter:url(#filter10820)" id="g10580">
-      <path d="m 1.0583333,15.404013 c 0,2.777434 1.6195133,4.439737 4.0258347,4.439737 1.1998823,0 2.2096194,-0.353238 2.7734987,-1.281359 V 19.84375 H 10.054166 V 6.6145835 H 7.7724295 V 12.23871 C 7.2544471,11.310591 6.2971638,10.895015 5.0972812,10.895015 2.7499705,10.888139 1.0583333,12.585023 1.0583333,15.404013 Z m 6.78622,0 c 0,1.586116 -1.0228506,2.576572 -2.24896,2.576572 -1.2720065,0 -2.2489601,-0.990456 -2.2489601,-2.576572 0,-1.613818 0.9835102,-2.625053 2.2489601,-2.625053 1.2261094,0 2.24896,1.025086 2.24896,2.625053 z" id="path8175" style="opacity:1;fill:#ffffff;fill-opacity:1;stroke-width:0.0673896"/>
+      <path d="m 1.0583333,15.404013 c 0,2.777434 1.6195133,4.439737 4.0258347,4.439737 1.1998823,0 2.2096194,-0.353238 2.7734987,-1.281359 V 19.84375 H 10.054166 V 6.6145835 H 7.7724295 V 12.23871 C 7.2544471,11.310591 6.2971638,10.895015 5.0972812,10.895015 2.7499705,10.888139 1.0583333,12.585023 1.0583333,15.404013 Z m 6.78622,0 c 0,1.586116 -1.0228506,2.576572 -2.24896,2.576572 -1.2720065,0 -2.2489601,-0.990456 -2.2489601,-2.576572 0,-1.613818 0.9835102,-2.625053 2.2489601,-2.625053 1.2261094,0 2.24896,1.025086 2.24896,2.625053 z" id="path8175" style="opacity:1;fill:lightgreen;fill-opacity:1;stroke-width:0.0673896"/>
       <rect style="opacity:1;fill:none;fill-opacity:1;stroke:none;stroke-width:0.881856;stroke-linecap:round;stroke-linejoin:round" id="rect10263" width="26.458332" height="26.458332" x="0" y="5e-07" ry="0"/>
       <g mask="url(#mask9169-3)" id="g3068" style="display:inline">
         <rect style="opacity:1;fill:url(#linearGradient10573);fill-opacity:1;stroke:none;stroke-width:0.881856;stroke-linecap:round;stroke-linejoin:round" id="rect3013" width="13.229166" height="13.229166" x="11.1125" y="6.614583" ry="0.017408287"/>

@@ -20,7 +20,7 @@
 			<li>{{ $t('about.updates.deemixVersion') }}: {{ deemixVersion }}</li>
 			<i18n path="about.updates.updateAvailable" tag="li" v-if="updateAvailable && latest">
 				<template #version>
-					<a href="https://bit.ly/DeemixFixBuilds" target="_blank">{{ latest }}</a>
+					<a href="https://t.me/DeemixFix" target="_blank">{{ latest }}</a>
 				</template>
 			</i18n>
 		</ul>
@@ -37,13 +37,23 @@
 
 		<h2>Changelog</h2>
 		<ul class="no-dots" style="font-size: 15px;">
+			<h3>08/08/2024</h3>
+			- Icon colors<br>
+			- Created <a target="_blank" href="https://t.me/DeemixFix"> Releases Channel </a>Subscribe for
+			updates, changelog and Builds.<br>
+			- Contributions to developer accepted (all debit and credit cards):<a target="_blank"
+				href="https://revolut.me/michelf9a"> Revolut Me </a><br>
+			<br>
 			<h3>07/08/2024</h3>
 			- Restored "Spotify Username" field in Settings, Other, Spotify features.<br>
 			- Fix for crash when fetching empty Spotify Playlists or without thumbnail image.<br>
-			- New feature! Added the possibility to insert a list of spotify users instead, separated by commas or spaces.<br><br>
+			- New feature! Added the possibility to insert a list of spotify users instead, separated by commas or
+			spaces.<br><br>
 			How it works:<br>
 			Add a list of comma or space separated Spotify user IDs to "follow".<br>
-			All the public playlists by the listed users will be displayed in the Favorites section. A user ID is the part that comes after 'https://open.spotify.com/user/' and can be a set of alphanumeric characters or a profile name, especially for record labels. You can also insert your own Spotify username ID as before.<br>
+			All the public playlists by the listed users will be displayed in the Favorites section. A user ID is the part
+			that comes after 'https://open.spotify.com/user/' and can be a set of alphanumeric characters or a profile name,
+			especially for record labels. You can also insert your own Spotify username ID as before.<br>
 			<br>
 			<h3>02/08/2024</h3>
 			- Removed outdated linters and formatters<br>
@@ -91,7 +101,6 @@
 			- Modified About section<br>
 			- Added working Paypal link for contributions<br>
 			- Published on Gitlab Repo<br>
-			- Created bit.ly redirect to Builds (https://bit.ly/DeemixFixBuilds)<br>
 			<br>
 			<h3>18/07/2024</h3>
 			- Initial sync, JS formatting via Standard-JS for all project files<br>
@@ -110,7 +119,7 @@
 			<li>
 				<a href="https://gitlab.com/deeplydrumming/DeemixFix" target="_blank"> 💻 {{ $t('about.officialWebuiRepo') }}
 				</a><br>
-				<a href="https://bit.ly/DeemixFixBuilds" target="_blank">
+				<a href="https://t.me/DeemixFix" target="_blank">
 					💻 Builds
 				</a><br>
 			</li>
@@ -169,9 +178,9 @@
 		</ul>
 		<ul>
 			<li>
-				<i v-html="paypal" />
-				<strong>PayPal:</strong>
-				<a href="https://paypal.me/meetuppay" target="_blank">Contribute</a>
+				<!-- <i v-html="paypal" /> -->
+				<strong>Revolut (all debit and credit cards accepted)</strong>
+				<a href="https://revolut.me/michelf9a" target="_blank">Contribute</a>
 			</li>
 		</ul>
 
@@ -196,8 +205,6 @@
 import { computed, defineComponent, onMounted, reactive, toRefs } from '@vue/composition-api'
 
 import { useOnline } from '@/use/online'
-
-import paypal from '@/assets/paypal.svg'
 
 export default defineComponent({
 	setup(_, ctx) {
@@ -226,7 +233,6 @@ export default defineComponent({
 
 		return {
 			...toRefs(state),
-			paypal,
 			isOnline
 		}
 	}
