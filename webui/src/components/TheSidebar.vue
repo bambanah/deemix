@@ -93,8 +93,8 @@ export default defineComponent({
 }
 
 .deemix-icon-container /deep/ svg {
-	height: 75px;
-	filter: hue-rotate(30deg);
+	height: 90px;
+/* 	filter: hue-rotate(30deg); */
 }
 
 #update-notification {
