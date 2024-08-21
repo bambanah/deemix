@@ -1,6 +1,6 @@
 const en = {
   globals: {
-    welcome: 'Welcome to DeemixFix',
+    welcome: 'Welcome to deemix',
     back: 'back',
     loading: 'loading',
     download: 'Download {thing}',
