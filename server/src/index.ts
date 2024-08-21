@@ -10,7 +10,7 @@ if (!isModule) {
 	// TODO: Remove type assertion while keeping correct types
 	const argv = yargs(hideBin(process.argv)).options({
 		port: { type: 'string', default: '6595' },
-		host: { type: 'string', default: '127.0.0.1' },
+		host: { type: 'string', default: '0.0.0.0' },
 		locationbase: { type: 'string', default: '/' },
 		singleuser: { type: 'boolean', default: false }
 	}).argv as Arguments
