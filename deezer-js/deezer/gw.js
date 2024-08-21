@@ -454,6 +454,7 @@ class GW {
     return result
   }
 
+  // TODO: Optimise this function
   async get_my_favorite_tracks (options = {}) {
     const limit = options.limit || 25
     const ids_raw = await this.get_user_favorite_ids(null, { limit })
