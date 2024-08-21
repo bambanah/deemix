@@ -18,6 +18,10 @@ FROM base AS runner
 
 COPY --from=builder /app/dist/deemix-server dist/deemix-server
 
+ENV DEEMIX_DATA_DIR=/config/
+ENV DEEMIX_MUSIC_DIR=/downloads/
+ENV DEEMIX_HOST=0.0.0.0
+
 EXPOSE 6595
 
 ENTRYPOINT ["dist/deemix-server"]
