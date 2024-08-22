@@ -1,16 +1,13 @@
 <template>
   <div>
     <h1 class="mb-8 text-5xl">
-      {{ $t('charts.title') }} {{ country ? `- ${country}` : '' }}
+      {{ $t("charts.title") }} {{ country ? `- ${country}` : "" }}
     </h1>
 
     <div v-if="country">
       <p>
-        <button
-          class="btn btn-primary"
-          @click="onChangeCountry"
-        >
-          {{ $t('charts.changeCountry') }}
+        <button class="btn btn-primary" @click="onChangeCountry">
+          {{ $t("charts.changeCountry") }}
         </button>
         <button
           v-if="isLoggedIn"
@@ -18,23 +15,15 @@
           class="btn btn-primary"
           @click.stop="addToQueue"
         >
-          {{ $t('charts.download') }}
+          {{ $t("charts.download") }}
         </button>
-        <router-link
-          v-else
-          :to="{ name: 'Settings' }"
-          class="p3 ml-3"
-        >
-          {{ $t('toasts.loginNeededToDownload') }}
+        <router-link v-else :to="{ name: 'Settings' }" class="p3 ml-3">
+          {{ $t("toasts.loginNeededToDownload") }}
         </router-link>
       </p>
       <table class="table table--charts mt-6">
         <tbody>
-          <tr
-            v-for="(track, pos) in chart"
-            :key="pos"
-            class="track_row"
-          >
+          <tr v-for="(track, pos) in chart" :key="pos" class="track_row">
             <td
               :class="{ first: pos === 0 }"
               class="p-3 text-center cursor-default"
@@ -48,16 +37,16 @@
                 @click="playPausePreview"
               >
                 <PreviewControls v-if="track.preview" />
-                <img
-                  :src="track.album.cover_small"
-                  class="rounded coverart"
-                >
+                <img :src="track.album.cover_small" class="rounded coverart" />
               </span>
             </td>
             <td class="table__cell--large">
               {{
                 track.title +
-                  (track.title_version && track.title.indexOf(track.title_version) == -1 ? ' ' + track.title_version : '')
+                (track.title_version &&
+                track.title.indexOf(track.title_version) == -1
+                  ? " " + track.title_version
+                  : "")
               }}
             </td>
             <router-link
@@ -66,11 +55,7 @@
               class="table__cell table__cell--medium table__cell--center clickable"
               custom
             >
-              <td
-                role="link"
-                @click="navigate"
-                @keypress.enter="navigate"
-              >
+              <td role="link" @click="navigate" @keypress.enter="navigate">
                 {{ track.artist.name }}
               </td>
             </router-link>
@@ -80,11 +65,7 @@
               class="table__cell--medium table__cell--center clickable"
               custom
             >
-              <td
-                role="link"
-                @click="navigate"
-                @keypress.enter="navigate"
-              >
+              <td role="link" @click="navigate" @keypress.enter="navigate">
                 {{ track.album.title }}
               </td>
             </router-link>
@@ -111,10 +92,7 @@
       </table>
     </div>
 
-    <div
-      v-else
-      class="release-grid"
-    >
+    <div v-else class="release-grid">
       <div
         v-for="release in countries"
         :key="release.id"
@@ -131,106 +109,108 @@
           :src="release.picture_medium"
           class="w-full rounded coverart"
           :alt="release.title"
-        >
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import PreviewControls from '@/components/globals/PreviewControls.vue'
-import { mapGetters } from 'vuex'
-import { playPausePreview } from '@/components/globals/TheTrackPreview.vue'
-import { sendAddToQueue } from '@/utils/downloads'
-import { convertDuration } from '@/utils/utils'
-import { getChartsData, getChartTracks } from '@/data/charts'
+import PreviewControls from "@/components/globals/PreviewControls.vue";
+import { mapGetters } from "vuex";
+import { playPausePreview } from "@/components/globals/TheTrackPreview.vue";
+import { sendAddToQueue } from "@/utils/downloads";
+import { convertDuration } from "@/utils/utils";
+import { getChartsData, getChartTracks } from "@/data/charts";
 
 export default {
-	components: {
-		PreviewControls
-	},
-	data() {
-		return {
-			country: '',
-			id: 0,
-			countries: [],
-			chart: []
-		}
-	},
-	computed: {
-		...mapGetters(['isLoggedIn']),
-		worldwideRelease() {
-			const worldwideRelease = this.countries.filter(country => {
-				return country.title === 'Worldwide'
-			})
+  components: {
+    PreviewControls,
+  },
+  data() {
+    return {
+      country: "",
+      id: 0,
+      countries: [],
+      chart: [],
+    };
+  },
+  computed: {
+    ...mapGetters(["isLoggedIn"]),
+    worldwideRelease() {
+      const worldwideRelease = this.countries.filter((country) => {
+        return country.title === "Worldwide";
+      });
 
-			return worldwideRelease[0]
-		}
-	},
-	watch: {
-		id(newId) {
-			const isActualChart = newId !== 0
+      return worldwideRelease[0];
+    },
+  },
+  watch: {
+    id(newId) {
+      const isActualChart = newId !== 0;
 
-			if (isActualChart) {
-				this.setTracklist([])
-				getChartTracks(newId).then(response => this.setTracklist(response.data))
-			}
-		}
-	},
-	async created() {
-		// socket.on('setChartTracks', this.setTracklist)
-		// this.$on('hook:destroyed', () => {
-		// 	socket.off('setChartTracks')
-		// })
+      if (isActualChart) {
+        this.setTracklist([]);
+        getChartTracks(newId).then((response) =>
+          this.setTracklist(response.data),
+        );
+      }
+    },
+  },
+  async created() {
+    // socket.on('setChartTracks', this.setTracklist)
+    // this.$on('hook:destroyed', () => {
+    // 	socket.off('setChartTracks')
+    // })
 
-		const { data: chartsData } = await getChartsData()
-		this.initCharts(chartsData)
-	},
-	methods: {
-		convertDuration,
-		playPausePreview,
-		addToQueue(e) {
-			e.stopPropagation()
-			sendAddToQueue(e.currentTarget.dataset.link)
-		},
-		getTrackList(event) {
-			document.getElementById('content').scrollTo(0, 0)
+    const { data: chartsData } = await getChartsData();
+    this.initCharts(chartsData);
+  },
+  methods: {
+    convertDuration,
+    playPausePreview,
+    addToQueue(e) {
+      e.stopPropagation();
+      sendAddToQueue(e.currentTarget.dataset.link);
+    },
+    getTrackList(event) {
+      document.getElementById("content").scrollTo(0, 0);
 
-			const {
-				currentTarget: {
-					dataset: { title, id }
-				}
-			} = event
+      const {
+        currentTarget: {
+          dataset: { title, id },
+        },
+      } = event;
 
-			this.country = title
-			localStorage.setItem('chart', this.country)
-			this.id = id
-		},
-		setTracklist(data) {
-			this.chart = data
-		},
-		onChangeCountry() {
-			this.country = ''
-			this.id = 0
-		},
-		initCharts(chartsData) {
-			this.countries = chartsData
-			this.country = localStorage.getItem('chart') || ''
+      this.country = title;
+      localStorage.setItem("chart", this.country);
+      this.id = id;
+    },
+    setTracklist(data) {
+      this.chart = data;
+    },
+    onChangeCountry() {
+      this.country = "";
+      this.id = 0;
+    },
+    initCharts(chartsData) {
+      this.countries = chartsData;
+      this.country = localStorage.getItem("chart") || "";
 
-			if (!this.country) return
+      if (!this.country) return;
 
-			let i = 0
-			for (; i < this.countries.length; i++) {
-				if (this.countries[i].title === this.country) break
-			}
+      let i = 0;
+      for (; i < this.countries.length; i++) {
+        if (this.countries[i].title === this.country) break;
+      }
 
-			if (i !== this.countries.length) {
-				this.id = this.countries[i].id
-			} else {
-				this.country = ''
-				localStorage.setItem('chart', this.country)
-			}
-		}
-	}
-}
+      if (i !== this.countries.length) {
+        this.id = this.countries[i].id;
+      } else {
+        this.country = "";
+        localStorage.setItem("chart", this.country);
+      }
+    },
+  },
+};
 </script>

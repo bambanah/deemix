@@ -1,20 +1,20 @@
-export function standardizeData (rawObj, formatFunc) {
+export function standardizeData(rawObj, formatFunc) {
   if (!rawObj.hasLoaded) {
-    return null
+    return null;
   } else {
-    const { data: rawData } = rawObj
-    const formattedData = []
+    const { data: rawData } = rawObj;
+    const formattedData = [];
 
     for (const dataElement of rawData) {
-      const formatted = formatFunc(dataElement)
+      const formatted = formatFunc(dataElement);
 
-      formattedData.push(formatted)
+      formattedData.push(formatted);
     }
 
     return {
       data: formattedData,
       hasLoaded: rawObj.hasLoaded,
-      error: rawObj.error
-    }
+      error: rawObj.error,
+    };
   }
 }

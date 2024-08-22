@@ -1,17 +1,17 @@
-import { ref } from '@vue/composition-api'
-import { fetchData } from '@/utils/api'
+import { ref } from "@vue/composition-api";
+import { fetchData } from "@/utils/api";
 
-const searchResult = ref({})
+const searchResult = ref({});
 
-function performMainSearch (searchTerm) {
-  fetchData('mainSearch', { term: searchTerm }).then(data => {
-    searchResult.value = data
-  })
+function performMainSearch(searchTerm) {
+  fetchData("mainSearch", { term: searchTerm }).then((data) => {
+    searchResult.value = data;
+  });
 }
 
-export function useMainSearch () {
+export function useMainSearch() {
   return {
     searchResult,
-    performMainSearch
-  }
+    performMainSearch,
+  };
 }

@@ -10,14 +10,14 @@ Project owners are [thelinmichael](https://github.com/thelinmichael) and [JMPere
 
 ## Version 5
 
-> :warning: Since the last release (4.0.0, released over year ago) a lot of new functionality has been added by a lot of different contributors. **Thank you.** In order to implement some of the feature requests, some **breaking changes** had to be made. A list of them, along with a list of the new functionality, can be found in the [CHANGELOG](https://github.com/thelinmichael/spotify-web-api-node/blob/master/CHANGELOG.md). 
+> :warning: Since the last release (4.0.0, released over year ago) a lot of new functionality has been added by a lot of different contributors. **Thank you.** In order to implement some of the feature requests, some **breaking changes** had to be made. A list of them, along with a list of the new functionality, can be found in the [CHANGELOG](https://github.com/thelinmichael/spotify-web-api-node/blob/master/CHANGELOG.md).
 
 ## Table of contents
 
-* [Features](#features)
-* [Installation](#installation)
-* [Usage](#usage)
-* [Development](#development)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Development](#development)
 
 ## Features
 
@@ -25,101 +25,101 @@ The library includes helper functions to do the following:
 
 #### Fetch music metadata
 
-* Albums, artists, and tracks
-* Audio features and analysis for tracks
-* Albums for a specific artist
-* Top tracks for a specific artist
-* Artists similar to a specific artist
+- Albums, artists, and tracks
+- Audio features and analysis for tracks
+- Albums for a specific artist
+- Top tracks for a specific artist
+- Artists similar to a specific artist
 
 #### Profiles
 
-* User's emails, product type, display name, birthdate, image
+- User's emails, product type, display name, birthdate, image
 
 #### Search
 
-* Albums, artists, tracks, and playlists
+- Albums, artists, tracks, and playlists
 
 #### Playlist manipulation
 
-* Get a user's playlists
-* Create playlists
-* Change playlist details
-* Add tracks to a playlist
-* Remove tracks from a playlist
-* Replace tracks in a playlist
-* Reorder tracks in a playlist
+- Get a user's playlists
+- Create playlists
+- Change playlist details
+- Add tracks to a playlist
+- Remove tracks from a playlist
+- Replace tracks in a playlist
+- Reorder tracks in a playlist
 
 #### Your Music library
 
-* Add, remove, and get tracks and albums that are in the signed in user's Your Music library
-* Check if a track or album is in the signed in user's Your Music library 
+- Add, remove, and get tracks and albums that are in the signed in user's Your Music library
+- Check if a track or album is in the signed in user's Your Music library
 
 #### Personalization
 
-* Get a user’s top artists and tracks based on calculated affinity
+- Get a user’s top artists and tracks based on calculated affinity
 
 #### Browse
 
-* Get New Releases
-* Get Featured Playlists
-* Get a List of Categories
-* Get a Category
-* Get a Category's Playlists
-* Get recommendations based on seeds
-* Get available genre seeds
+- Get New Releases
+- Get Featured Playlists
+- Get a List of Categories
+- Get a Category
+- Get a Category's Playlists
+- Get recommendations based on seeds
+- Get available genre seeds
 
 #### Player
 
-* Get a User's Available Devices
-* Get Information About The User's Current Playback State
-* Get Current User's Recently Played Tracks
-* Get the User's Currently Playing Track 
-* Pause a User's Playback
-* Seek To Position In Currently Playing Track
-* Set Repeat Mode On User’s Playback
-* Set Volume For User's Playback
-* Skip User’s Playback To Next Track
-* Skip User’s Playback To Previous Track 
-* Start/Resume a User's Playback 
-* Toggle Shuffle For User’s Playback
-* Transfer a User's Playback
+- Get a User's Available Devices
+- Get Information About The User's Current Playback State
+- Get Current User's Recently Played Tracks
+- Get the User's Currently Playing Track
+- Pause a User's Playback
+- Seek To Position In Currently Playing Track
+- Set Repeat Mode On User’s Playback
+- Set Volume For User's Playback
+- Skip User’s Playback To Next Track
+- Skip User’s Playback To Previous Track
+- Start/Resume a User's Playback
+- Toggle Shuffle For User’s Playback
+- Transfer a User's Playback
 
 #### Follow
 
-* Follow and unfollow users
-* Follow and unfollow artists
-* Check if the logged in user follows a user or artist
-* Follow a playlist
-* Unfollow a playlist
-* Get followed artists
-* Check if users are following a Playlist
+- Follow and unfollow users
+- Follow and unfollow artists
+- Check if the logged in user follows a user or artist
+- Follow a playlist
+- Unfollow a playlist
+- Get followed artists
+- Check if users are following a Playlist
 
 #### Player
 
-* Add an Item to the User's Playback Queue
-* Get a user's available devices
-* Get information about the user's current playback
-* Get current user’s recently played tracks
-* Transfer a user's playback
-* Resume a user's playback
-* Skip a user's playback to next track
-* Skip a user's playback to previous track
-* Set a user's shuffle mode
-* Set a user's repeat mode
-* Set volume
-* Seek playback to a given position
+- Add an Item to the User's Playback Queue
+- Get a user's available devices
+- Get information about the user's current playback
+- Get current user’s recently played tracks
+- Transfer a user's playback
+- Resume a user's playback
+- Skip a user's playback to next track
+- Skip a user's playback to previous track
+- Set a user's shuffle mode
+- Set a user's repeat mode
+- Set volume
+- Seek playback to a given position
 
 #### Shows
 
-* [Get a Show](https://developer.spotify.com/documentation/web-api/reference/shows/get-a-show/)
+- [Get a Show](https://developer.spotify.com/documentation/web-api/reference/shows/get-a-show/)
 
 ### Authentication
 
 All methods require authentication, which can be done using these flows:
 
-* [Client credentials flow](http://tools.ietf.org/html/rfc6749#section-4.4) (Application-only authentication)
-* [Authorization code grant](http://tools.ietf.org/html/rfc6749#section-4.1) (Signed by user)
-* [Implicit Grant Flow](https://tools.ietf.org/html/rfc6749#section-4.2) (Client-side Authentication)
+- [Client credentials flow](http://tools.ietf.org/html/rfc6749#section-4.4) (Application-only authentication)
+- [Authorization code grant](http://tools.ietf.org/html/rfc6749#section-4.1) (Signed by user)
+- [Implicit Grant Flow](https://tools.ietf.org/html/rfc6749#section-4.2) (Client-side Authentication)
 
 ##### Dependencies
 
@@ -134,33 +134,33 @@ This project depends on [superagent](https://github.com/visionmedia/superagent) 
 First, instantiate the wrapper.
 
 ```javascript
-var SpotifyWebApi = require('spotify-web-api-node');
+var SpotifyWebApi = require("spotify-web-api-node");
 
 // credentials are optional
 var spotifyApi = new SpotifyWebApi({
-  clientId: 'fcecfc72172e4cd267473117a17cbd4d',
-  clientSecret: 'a6338157c9bb5ac9c71924cb2940e1a7',
-  redirectUri: 'http://www.example.com/callback'
+  clientId: "fcecfc72172e4cd267473117a17cbd4d",
+  clientSecret: "a6338157c9bb5ac9c71924cb2940e1a7",
+  redirectUri: "http://www.example.com/callback",
 });
 ```
 
 If you've got an access token and want to use it for all calls, simply use the API object's set method. Handling credentials is described in detail in the Authorization section.
 
 ```javascript
-spotifyApi.setAccessToken('<your_access_token>');
+spotifyApi.setAccessToken("<your_access_token>");
 ```
 
 Lastly, use the wrapper's helper methods to make the request to Spotify's Web API. The wrapper uses promises, so you need to provide a success callback as well as an error callback.
 
 ```javascript
 // Get Elvis' albums
-spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE').then(
-  function(data) {
-    console.log('Artist albums', data.body);
+spotifyApi.getArtistAlbums("43ZHCT0cAZBISjO8DG9PnE").then(
+  function (data) {
+    console.log("Artist albums", data.body);
   },
-  function(err) {
+  function (err) {
     console.error(err);
-  }
+  },
 );
 ```
 
@@ -169,15 +169,15 @@ If you dont wan't to use promises, you can provide a callback method instead.
 ```javascript
 // Get Elvis' albums
 spotifyApi.getArtistAlbums(
-  '43ZHCT0cAZBISjO8DG9PnE',
+  "43ZHCT0cAZBISjO8DG9PnE",
   { limit: 10, offset: 20 },
-  function(err, data) {
+  function (err, data) {
     if (err) {
-      console.error('Something went wrong!');
+      console.error("Something went wrong!");
     } else {
       console.log(data.body);
     }
-  }
+  },
 );
 ```
 
@@ -188,20 +188,20 @@ Note that the **options** parameter is **required if you're using a callback met
 ```javascript
 // Passing a callback - get Elvis' albums in range [20...29]
 spotifyApi
-  .getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE', { limit: 10, offset: 20 })
+  .getArtistAlbums("43ZHCT0cAZBISjO8DG9PnE", { limit: 10, offset: 20 })
   .then(
-    function(data) {
-      console.log('Album information', data.body);
+    function (data) {
+      console.log("Album information", data.body);
     },
-    function(err) {
+    function (err) {
       console.error(err);
-    }
+    },
   );
 ```
 
 ### Responses and errors
 
-This exposes the response headers, status code and body. 
+This exposes the response headers, status code and body.
 
 ```json
 {
@@ -215,7 +215,7 @@ This exposes the response headers, status code and body.
 }
 ```
 
-Errors have same fields, as well as a human readable `message`. This is especially useful since 
+Errors have same fields, as well as a human readable `message`. This is especially useful since
 Spotify's Web API returns different types of error objects depending on the endpoint being called.
 
 #### Example of a response
@@ -227,8 +227,7 @@ Retrieving a track's metadata in `spotify-web-api-node` version 1.4.0 and later:
   "body": {
     "name": "Golpe Maestro",
     "popularity": 42,
-    "preview_url":
-      "https://p.scdn.co/mp3-preview/4ac44a56e3a4b7b354c1273d7550bbad38c51f5d",
+    "preview_url": "https://p.scdn.co/mp3-preview/4ac44a56e3a4b7b354c1273d7550bbad38c51f5d",
     "track_number": 1,
     "type": "track",
     "uri": "spotify:track:3Qm86XLflmIXVm1wcwkgDK"
@@ -244,7 +243,7 @@ Retrieving a track's metadata in `spotify-web-api-node` version 1.4.0 and later:
 
 ### More examples
 
-Below are examples for all helper functions. Longer examples of some requests can be found in the [examples folder](examples/). 
+Below are examples for all helper functions. Longer examples of some requests can be found in the [examples folder](examples/).
 
 ```javascript
 var SpotifyWebApi = require('spotify-web-api-node');
@@ -820,7 +819,7 @@ spotifyApi.getMyRecentlyPlayedTracks({
     console.log('Something went wrong!', err);
   });
 
-// Get the User's Currently Playing Track 
+// Get the User's Currently Playing Track
 spotifyApi.getMyCurrentPlayingTrack()
   .then(function(data) {
     console.log('Now playing: ' + data.body.item.name);
@@ -873,7 +872,7 @@ spotifyApi.skipToNext()
     console.log('Something went wrong!', err);
   });
 
-// Skip User’s Playback To Previous Track 
+// Skip User’s Playback To Previous Track
 spotifyApi.skipToPrevious()
   .then(function() {
     console.log('Skip to previous');
@@ -882,7 +881,7 @@ spotifyApi.skipToPrevious()
     console.log('Something went wrong!', err);
   });
 
-// Start/Resume a User's Playback 
+// Start/Resume a User's Playback
 spotifyApi.play()
   .then(function() {
     console.log('Playback started');
@@ -939,42 +938,43 @@ spotifyApi.getMyTopTracks()
 ```javascript
 // track detail information for album tracks
 spotifyApi
-  .getAlbum('5U4W9E5WsYb2jUQWePT8Xm')
-  .then(function(data) {
-    return data.body.tracks.map(function(t) {
+  .getAlbum("5U4W9E5WsYb2jUQWePT8Xm")
+  .then(function (data) {
+    return data.body.tracks.map(function (t) {
       return t.id;
     });
   })
-  .then(function(trackIds) {
+  .then(function (trackIds) {
     return spotifyApi.getTracks(trackIds);
   })
-  .then(function(data) {
+  .then(function (data) {
     console.log(data.body);
   })
-  .catch(function(error) {
+  .catch(function (error) {
     console.error(error);
   });
 
 // album detail for the first 10 Elvis' albums
 spotifyApi
-  .getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE', { limit: 10 })
-  .then(function(data) {
-    return data.body.albums.map(function(a) {
+  .getArtistAlbums("43ZHCT0cAZBISjO8DG9PnE", { limit: 10 })
+  .then(function (data) {
+    return data.body.albums.map(function (a) {
       return a.id;
     });
   })
-  .then(function(albums) {
+  .then(function (albums) {
     return spotifyApi.getAlbums(albums);
   })
-  .then(function(data) {
+  .then(function (data) {
     console.log(data.body);
   });
 ```
 
 ### Authorization
+
 Supplying an access token is required for all requests to the Spotify API. This wrapper supports three authorization flows - The Authorization Code flow (signed by a user), the Client Credentials flow (application authentication - the user isn't involved), and the Implicit Grant Flow (For completely clientside applications). See Spotify's [Authorization guide](https://developer.spotify.com/spotify-web-api/authorization-guide/) for detailed information on these flows.
 
-**Important: If you are writing a universal/isomorphic web app using this library, you will not be able to use  methods that send a client secret to the Spotify authorization service. Client secrets should be kept server-side and not exposed to client browsers. Never include your client secret in the public JS served to the browser.**
+**Important: If you are writing a universal/isomorphic web app using this library, you will not be able to use methods that send a client secret to the Spotify authorization service. Client secrets should be kept server-side and not exposed to client browsers. Never include your client secret in the public JS served to the browser.**
 
 The first thing you need to do is to [create an application](https://developer.spotify.com/my-applications/). A step-by-step tutorial is offered by Spotify in this [tutorial](https://developer.spotify.com/spotify-web-api/tutorial/).
 
@@ -985,15 +985,15 @@ With the application created and its redirect URI set, the only thing necessary 
 In order to get permissions, you need to direct the user to [Spotify's Accounts service](https://accounts.spotify.com). Generate the URL by using the wrapper's authorization URL method.
 
 ```javascript
-var scopes = ['user-read-private', 'user-read-email'],
-  redirectUri = 'https://example.com/callback',
-  clientId = '5fe01282e44241328a84e7c5cc169165',
-  state = 'some-state-of-my-choice';
+var scopes = ["user-read-private", "user-read-email"],
+  redirectUri = "https://example.com/callback",
+  clientId = "5fe01282e44241328a84e7c5cc169165",
+  state = "some-state-of-my-choice";
 
 // Setting credentials can be done in the wrapper's constructor, or using the API object's setters.
 var spotifyApi = new SpotifyWebApi({
   redirectUri: redirectUri,
-  clientId: clientId
+  clientId: clientId,
 });
 
 // Create the authorization URL
@@ -1007,30 +1007,30 @@ The example below uses a hardcoded authorization code, retrieved from the Accoun
 
 ```javascript
 var credentials = {
-  clientId: 'someClientId',
-  clientSecret: 'someClientSecret',
-  redirectUri: 'http://www.michaelthelin.se/test-callback'
+  clientId: "someClientId",
+  clientSecret: "someClientSecret",
+  redirectUri: "http://www.michaelthelin.se/test-callback",
 };
 
 var spotifyApi = new SpotifyWebApi(credentials);
 
 // The code that's returned as a query parameter to the redirect URI
-var code = 'MQCbtKe23z7YzzS44KzZzZgjQa621hgSzHN';
+var code = "MQCbtKe23z7YzzS44KzZzZgjQa621hgSzHN";
 
 // Retrieve an access token and a refresh token
 spotifyApi.authorizationCodeGrant(code).then(
-  function(data) {
-    console.log('The token expires in ' + data.body['expires_in']);
-    console.log('The access token is ' + data.body['access_token']);
-    console.log('The refresh token is ' + data.body['refresh_token']);
+  function (data) {
+    console.log("The token expires in " + data.body["expires_in"]);
+    console.log("The access token is " + data.body["access_token"]);
+    console.log("The refresh token is " + data.body["refresh_token"]);
 
     // Set the access token on the API object to use it in later calls
-    spotifyApi.setAccessToken(data.body['access_token']);
-    spotifyApi.setRefreshToken(data.body['refresh_token']);
+    spotifyApi.setAccessToken(data.body["access_token"]);
+    spotifyApi.setRefreshToken(data.body["refresh_token"]);
   },
-  function(err) {
-    console.log('Something went wrong!', err);
-  }
+  function (err) {
+    console.log("Something went wrong!", err);
+  },
 );
 ```
 
@@ -1039,15 +1039,15 @@ Since the access token was set on the API object in the previous success callbac
 ```javascript
 // clientId, clientSecret and refreshToken has been set on the api object previous to this call.
 spotifyApi.refreshAccessToken().then(
-  function(data) {
-    console.log('The access token has been refreshed!');
+  function (data) {
+    console.log("The access token has been refreshed!");
 
     // Save the access token so that it's used in future calls
-    spotifyApi.setAccessToken(data.body['access_token']);
+    spotifyApi.setAccessToken(data.body["access_token"]);
   },
-  function(err) {
-    console.log('Could not refresh access token', err);
-  }
+  function (err) {
+    console.log("Could not refresh access token", err);
+  },
 );
 ```
 
@@ -1056,27 +1056,27 @@ spotifyApi.refreshAccessToken().then(
 The Client Credential flow doesn't require the user to give permissions, so it's suitable for requests where the application just needs to authenticate itself. This is the case with for example retrieving a playlist. However, note that the access token cannot be refreshed, and that it isn't connected to a specific user.
 
 ```javascript
-var clientId = 'someClientId',
-  clientSecret = 'someClientSecret';
+var clientId = "someClientId",
+  clientSecret = "someClientSecret";
 
 // Create the api object with the credentials
 var spotifyApi = new SpotifyWebApi({
   clientId: clientId,
-  clientSecret: clientSecret
+  clientSecret: clientSecret,
 });
 
 // Retrieve an access token.
 spotifyApi.clientCredentialsGrant().then(
-  function(data) {
-    console.log('The access token expires in ' + data.body['expires_in']);
-    console.log('The access token is ' + data.body['access_token']);
+  function (data) {
+    console.log("The access token expires in " + data.body["expires_in"]);
+    console.log("The access token is " + data.body["access_token"]);
 
     // Save the access token so that it's used in future calls
-    spotifyApi.setAccessToken(data.body['access_token']);
+    spotifyApi.setAccessToken(data.body["access_token"]);
   },
-  function(err) {
-    console.log('Something went wrong when retrieving an access token', err);
-  }
+  function (err) {
+    console.log("Something went wrong when retrieving an access token", err);
+  },
 );
 ```
 
@@ -1086,17 +1086,17 @@ The Implicit Grant can be used to allow users to login to your completely client
 This method of authentication won't return any refresh tokens, so you will need to fully reauthenticate the user everytime a token expires.
 
 ```javascript
-var scopes = ['user-read-private', 'user-read-email'],
-  redirectUri = 'https://example.com/callback',
-  clientId = '5fe01282e44241328a84e7c5cc169165',
-  state = 'some-state-of-my-choice',
+var scopes = ["user-read-private", "user-read-email"],
+  redirectUri = "https://example.com/callback",
+  clientId = "5fe01282e44241328a84e7c5cc169165",
+  state = "some-state-of-my-choice",
   showDialog = true,
-  responseType = 'token';
+  responseType = "token";
 
 // Setting credentials can be done in the wrapper's constructor, or using the API object's setters.
 var spotifyApi = new SpotifyWebApi({
   redirectUri: redirectUri,
-  clientId: clientId
+  clientId: clientId,
 });
 
 // Create the authorization URL
@@ -1104,7 +1104,7 @@ var authorizeURL = spotifyApi.createAuthorizeURL(
   scopes,
   state,
   showDialog,
-  responseType
+  responseType,
 );
 
 // https://accounts.spotify.com/authorize?client_id=5fe01282e44241328a84e7c5cc169165&response_type=token&redirect_uri=https://example.com/callback&scope=user-read-private%20user-read-email&state=some-state-of-my-choice&show_dialog=true
@@ -1115,12 +1115,12 @@ When the client returns, it will have a token we can directly pass to the librar
 
 ```javascript
 // The code that's returned as a hash fragment query string parameter to the redirect URI
-var code = 'MQCbtKe23z7YzzS44KzZzZgjQa621hgSzHN';
+var code = "MQCbtKe23z7YzzS44KzZzZgjQa621hgSzHN";
 var credentials = {
-  clientId: 'someClientId',
-  clientSecret: 'someClientSecret',
+  clientId: "someClientId",
+  clientSecret: "someClientSecret",
   //Either here
-  accessToken: code
+  accessToken: code,
 };
 
 var spotifyApi = new SpotifyWebApi(credentials);
@@ -1138,30 +1138,30 @@ Using setters, getters and resetters.
 ```javascript
 // Use setters to set all credentials one by one
 var spotifyApi = new SpotifyWebApi();
-spotifyApi.setAccessToken('myAccessToken');
-spotifyApi.setRefreshToken('myRefreshToken');
-spotifyApi.setRedirectURI('http://www.example.com/test-callback');
-spotifyApi.setClientId('myOwnClientId');
-spotifyApi.setClientSecret('someSuperSecretString');
+spotifyApi.setAccessToken("myAccessToken");
+spotifyApi.setRefreshToken("myRefreshToken");
+spotifyApi.setRedirectURI("http://www.example.com/test-callback");
+spotifyApi.setClientId("myOwnClientId");
+spotifyApi.setClientSecret("someSuperSecretString");
 
 // Set all credentials at the same time
 spotifyApi.setCredentials({
-  accessToken: 'myAccessToken',
-  refreshToken: 'myRefreshToken',
-  redirectUri: 'http://www.example.com/test-callback',
-  'clientId ': 'myClientId',
-  clientSecret: 'myClientSecret'
+  accessToken: "myAccessToken",
+  refreshToken: "myRefreshToken",
+  redirectUri: "http://www.example.com/test-callback",
+  "clientId ": "myClientId",
+  clientSecret: "myClientSecret",
 });
 
 // Get the credentials one by one
-console.log('The access token is ' + spotifyApi.getAccessToken());
-console.log('The refresh token is ' + spotifyApi.getRefreshToken());
-console.log('The redirectURI is ' + spotifyApi.getRedirectURI());
-console.log('The client ID is ' + spotifyApi.getClientId());
-console.log('The client secret is ' + spotifyApi.getClientSecret());
+console.log("The access token is " + spotifyApi.getAccessToken());
+console.log("The refresh token is " + spotifyApi.getRefreshToken());
+console.log("The redirectURI is " + spotifyApi.getRedirectURI());
+console.log("The client ID is " + spotifyApi.getClientId());
+console.log("The client secret is " + spotifyApi.getClientSecret());
 
 // Get all credentials
-console.log('The credentials are ' + spotifyApi.getCredentials());
+console.log("The credentials are " + spotifyApi.getCredentials());
 
 // Reset the credentials
 spotifyApi.resetAccessToken();
@@ -1180,59 +1180,59 @@ Using the constructor.
 ```javascript
 // Set necessary parts of the credentials on the constructor
 var spotifyApi = new SpotifyWebApi({
-  clientId: 'myClientId',
-  clientSecret: 'myClientSecret'
+  clientId: "myClientId",
+  clientSecret: "myClientSecret",
 });
 
 // Get an access token and 'save' it using a setter
 spotifyApi.clientCredentialsGrant().then(
-  function(data) {
-    console.log('The access token is ' + data.body['access_token']);
-    spotifyApi.setAccessToken(data.body['access_token']);
+  function (data) {
+    console.log("The access token is " + data.body["access_token"]);
+    spotifyApi.setAccessToken(data.body["access_token"]);
   },
-  function(err) {
-    console.log('Something went wrong!', err);
-  }
+  function (err) {
+    console.log("Something went wrong!", err);
+  },
 );
 ```
 
 ```javascript
 // Set the credentials when making the request
 var spotifyApi = new SpotifyWebApi({
-  accessToken: 'njd9wng4d0ycwnn3g4d1jm30yig4d27iom5lg4d3'
+  accessToken: "njd9wng4d0ycwnn3g4d1jm30yig4d27iom5lg4d3",
 });
 
 // Do search using the access token
-spotifyApi.searchTracks('artist:Love').then(
-  function(data) {
+spotifyApi.searchTracks("artist:Love").then(
+  function (data) {
     console.log(data.body);
   },
-  function(err) {
-    console.log('Something went wrong!', err);
-  }
+  function (err) {
+    console.log("Something went wrong!", err);
+  },
 );
 ```
 
 ```javascript
 // Set the credentials when making the request
 var spotifyApi = new SpotifyWebApi({
-  accessToken: 'njd9wng4d0ycwnn3g4d1jm30yig4d27iom5lg4d3'
+  accessToken: "njd9wng4d0ycwnn3g4d1jm30yig4d27iom5lg4d3",
 });
 
 // Get tracks in a playlist
 api
-  .getPlaylistTracks('3ktAYNcRHpazJ9qecm3ptn', {
+  .getPlaylistTracks("3ktAYNcRHpazJ9qecm3ptn", {
     offset: 1,
     limit: 5,
-    fields: 'items'
+    fields: "items",
   })
   .then(
-    function(data) {
-      console.log('The playlist contains these tracks', data.body);
+    function (data) {
+      console.log("The playlist contains these tracks", data.body);
     },
-    function(err) {
-      console.log('Something went wrong!', err);
-    }
+    function (err) {
+      console.log("Something went wrong!", err);
+    },
   );
 ```
 

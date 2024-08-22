@@ -3,19 +3,13 @@
     <BaseLoadingPlaceholder v-if="isLoading" />
 
     <template v-else>
-      <ResultsError
-        v-if="viewInfo.error"
-        :error="viewInfo.error"
-      />
+      <ResultsError v-if="viewInfo.error" :error="viewInfo.error" />
       <div v-else-if="viewInfo.data.length === 0">
         <h1 class="text-center">
-          {{ $t('search.noResultsPlaylist') }}
+          {{ $t("search.noResultsPlaylist") }}
         </h1>
       </div>
-      <div
-        v-else
-        class="release-grid"
-      >
+      <div v-else class="release-grid">
         <div
           v-for="playlist in viewInfo.data.slice(0, itemsToShow)"
           :key="playlist.playlistID"
@@ -27,11 +21,7 @@
             class="cursor-pointer"
             :to="{ name: 'Playlist', params: { id: playlist.playlistID } }"
           >
-            <div
-              role="link"
-              @click="navigate"
-              @keypress.enter="navigate"
-            >
+            <div role="link" @click="navigate" @keypress.enter="navigate">
               <CoverContainer
                 is-rounded
                 :cover="playlist.playlistPictureMedium"
@@ -47,9 +37,9 @@
 
           <p class="secondary-text">
             {{
-              `${$t('globals.by', { artist: playlist.artistName })} - ${$tc(
-                'globals.listTabs.trackN',
-                playlist.playlistTracksNumber
+              `${$t("globals.by", { artist: playlist.artistName })} - ${$tc(
+                "globals.listTabs.trackN",
+                playlist.playlistTracksNumber,
               )}`
             }}
           </p>
@@ -60,40 +50,41 @@
 </template>
 
 <script>
-import BaseLoadingPlaceholder from '@/components/globals/BaseLoadingPlaceholder.vue'
-import CoverContainer from '@/components/globals/CoverContainer.vue'
-import ResultsError from '@/components/search/ResultsError.vue'
+import BaseLoadingPlaceholder from "@/components/globals/BaseLoadingPlaceholder.vue";
+import CoverContainer from "@/components/globals/CoverContainer.vue";
+import ResultsError from "@/components/search/ResultsError.vue";
 
 export default {
-	components: {
-		BaseLoadingPlaceholder,
-		CoverContainer,
-		ResultsError
-	},
-	props: {
-		viewInfo: {
-			validator(value) {
-				const isNull = Object.is(value, null)
-				const isObject = Object.prototype.toString.call(value) === '[object Object]'
+  components: {
+    BaseLoadingPlaceholder,
+    CoverContainer,
+    ResultsError,
+  },
+  props: {
+    viewInfo: {
+      validator(value) {
+        const isNull = Object.is(value, null);
+        const isObject =
+          Object.prototype.toString.call(value) === "[object Object]";
 
-				return isNull || isObject
-			},
-			required: true
-		},
-		itemsToShow: {
-			type: Number,
-			default: 6
-		},
-		wantHeaders: {
-			type: Boolean,
-			required: false,
-			default: false
-		}
-	},
-	computed: {
-		isLoading() {
-			return !this.viewInfo || !this.viewInfo.hasLoaded
-		}
-	}
-}
+        return isNull || isObject;
+      },
+      required: true,
+    },
+    itemsToShow: {
+      type: Number,
+      default: 6,
+    },
+    wantHeaders: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
+  computed: {
+    isLoading() {
+      return !this.viewInfo || !this.viewInfo.hasLoaded;
+    },
+  },
+};
 </script>

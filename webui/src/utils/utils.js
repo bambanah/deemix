@@ -4,18 +4,18 @@
  * @return {Array}    Contains all the nodes between el and the root
  * @since  0.0.0
  */
-export function generatePath (el) {
+export function generatePath(el) {
   if (!el) {
-    throw new Error('No element passed to the generatePath function!')
+    throw new Error("No element passed to the generatePath function!");
   }
 
-  const path = [el]
+  const path = [el];
 
   while ((el = el.parentNode) && el !== document) {
-    path.push(el)
+    path.push(el);
   }
 
-  return path
+  return path;
 }
 
 /**
@@ -23,22 +23,22 @@ export function generatePath (el) {
  * @returns {boolean}
  * @since  0.0.0
  */
-export function isValidURL (text) {
-  const lowerCaseText = text.toLowerCase()
+export function isValidURL(text) {
+  const lowerCaseText = text.toLowerCase();
 
-  if (lowerCaseText.startsWith('http')) {
+  if (lowerCaseText.startsWith("http")) {
     if (
-      lowerCaseText.includes('deezer.com') ||
-   lowerCaseText.includes('deezer.page.link') ||
-   lowerCaseText.includes('open.spotify.com') ||
-   lowerCaseText.includes('link.tospotify.com')
+      lowerCaseText.includes("deezer.com") ||
+      lowerCaseText.includes("deezer.page.link") ||
+      lowerCaseText.includes("open.spotify.com") ||
+      lowerCaseText.includes("link.tospotify.com")
     ) {
-      return true
+      return true;
     }
-  } else if (lowerCaseText.startsWith('spotify:')) {
-    return true
+  } else if (lowerCaseText.startsWith("spotify:")) {
+    return true;
   }
-  return false
+  return false;
 }
 
 /**
@@ -46,17 +46,17 @@ export function isValidURL (text) {
  * @returns {string}
  * @since  0.0.0
  */
-export function convertDuration (duration) {
-  const mm = Math.floor(duration / 60)
+export function convertDuration(duration) {
+  const mm = Math.floor(duration / 60);
 
   // Convert from seconds only to mm:ss format
-  let ss = duration - mm * 60 // Add leading zero if ss < 0
+  let ss = duration - mm * 60; // Add leading zero if ss < 0
 
   if (ss < 10) {
-    ss = '0' + ss
+    ss = "0" + ss;
   }
 
-  return mm + ':' + ss
+  return mm + ":" + ss;
 }
 
 /**
@@ -64,15 +64,15 @@ export function convertDuration (duration) {
  * @returns {[number, number, number]}
  * @since 0.0.0
  */
-export function convertDurationSeparated (duration) {
-  let mm = Math.floor(duration / 60)
+export function convertDurationSeparated(duration) {
+  let mm = Math.floor(duration / 60);
 
-  const hh = Math.floor(mm / 60)
-  const ss = duration - mm * 60
+  const hh = Math.floor(mm / 60);
+  const ss = duration - mm * 60;
 
-  mm -= hh * 60
+  mm -= hh * 60;
 
-  return [hh, mm, ss]
+  return [hh, mm, ss];
 }
 
 /**
@@ -81,24 +81,25 @@ export function convertDurationSeparated (duration) {
  * @since  0.0.0
  * @deprecated
  */
-export const numberWithDots = x => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+export const numberWithDots = (x) =>
+  x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
 // On scroll event, returns currentTarget = null
 // Probably on other events too
-export function debounce (func, wait, immediate) {
-  let timeout
+export function debounce(func, wait, immediate) {
+  let timeout;
   return function () {
-    const context = this
-    const args = arguments
+    const context = this;
+    const args = arguments;
     const later = function () {
-      timeout = null
-      if (!immediate) func.apply(context, args)
-    }
-    const callNow = immediate && !timeout
-    clearTimeout(timeout)
-    timeout = setTimeout(later, wait)
-    if (callNow) func.apply(context, args)
-  }
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+    const callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
 }
 
 /**
@@ -109,16 +110,16 @@ export function debounce (func, wait, immediate) {
  * @returns void
  * @since  0.0.0
  */
-export function copyToClipboard (text) {
-  const ghostInput = document.createElement('input')
+export function copyToClipboard(text) {
+  const ghostInput = document.createElement("input");
 
-  document.body.appendChild(ghostInput)
-  ghostInput.setAttribute('type', 'text')
-  ghostInput.setAttribute('value', text)
-  ghostInput.select()
-  ghostInput.setSelectionRange(0, 99999)
-  document.execCommand('copy')
-  ghostInput.remove()
+  document.body.appendChild(ghostInput);
+  ghostInput.setAttribute("type", "text");
+  ghostInput.setAttribute("value", text);
+  ghostInput.select();
+  ghostInput.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  ghostInput.remove();
 }
 
 /**
@@ -127,25 +128,25 @@ export function copyToClipboard (text) {
  * @returns {any|null}   property requested
  * @since  0.0.0
  */
-export function getPropertyWithFallback (obj, ...props) {
+export function getPropertyWithFallback(obj, ...props) {
   for (const prop of props) {
     // Example: this.is.an.example
-    const hasDotNotation = /\./.test(prop)
+    const hasDotNotation = /\./.test(prop);
 
     // Searching the properties in the object
     const valueToTest = hasDotNotation
-      ? prop.split('.').reduce((o, i) => {
-        if (o) return o[i]
-        return undefined
-      }, obj)
-      : obj[prop]
+      ? prop.split(".").reduce((o, i) => {
+          if (o) return o[i];
+          return undefined;
+        }, obj)
+      : obj[prop];
 
-    if (typeof valueToTest !== 'undefined') {
-      return valueToTest
+    if (typeof valueToTest !== "undefined") {
+      return valueToTest;
     }
   }
 
-  return null
+  return null;
 }
 
 export default {
@@ -153,5 +154,5 @@ export default {
   convertDuration,
   convertDurationSeparated,
   numberWithDots,
-  debounce
-}
+  debounce,
+};

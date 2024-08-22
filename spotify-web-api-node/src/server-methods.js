@@ -1,10 +1,9 @@
-'use strict'
+"use strict";
 
-const AuthenticationRequest = require('./authentication-request')
-const HttpManager = require('./http-manager')
+const AuthenticationRequest = require("./authentication-request");
+const HttpManager = require("./http-manager");
 
 module.exports = {
-
   /**
    * Retrieve a URL where the user can give the application permissions.
    * @param {string[]} scopes The scopes corresponding to the permissions the application needs.
@@ -13,19 +12,24 @@ module.exports = {
    * @param {string} responseType An optional parameter that you can use to specify the code response based on the authentication type - can be set to 'code' or 'token'. Default 'code' to ensure backwards compatability.
    * @returns {string} The URL where the user can give application permissions.
    */
-  createAuthorizeURL: function (scopes, state, showDialog, responseType = 'code') {
+  createAuthorizeURL: function (
+    scopes,
+    state,
+    showDialog,
+    responseType = "code",
+  ) {
     return AuthenticationRequest.builder()
-      .withPath('/authorize')
+      .withPath("/authorize")
       .withQueryParameters({
         client_id: this.getClientId(),
         response_type: responseType,
         redirect_uri: this.getRedirectURI(),
-        scope: scopes.join('%20'),
+        scope: scopes.join("%20"),
         state,
-        show_dialog: showDialog && !!showDialog
+        show_dialog: showDialog && !!showDialog,
       })
       .build()
-      .getURL()
+      .getURL();
   },
 
   /**
@@ -37,20 +41,20 @@ module.exports = {
    */
   clientCredentialsGrant: function (callback) {
     return AuthenticationRequest.builder()
-      .withPath('/api/token')
+      .withPath("/api/token")
       .withBodyParameters({
-        grant_type: 'client_credentials'
+        grant_type: "client_credentials",
       })
       .withHeaders({
         Authorization:
-          'Basic ' +
+          "Basic " +
           Buffer.from(
-            this.getClientId() + ':' + this.getClientSecret()
-          ).toString('base64'),
-        'Content-Type': 'application/x-www-form-urlencoded'
+            this.getClientId() + ":" + this.getClientSecret(),
+          ).toString("base64"),
+        "Content-Type": "application/x-www-form-urlencoded",
       })
       .build()
-      .execute(HttpManager.post, callback)
+      .execute(HttpManager.post, callback);
   },
 
   /**
@@ -64,17 +68,17 @@ module.exports = {
    */
   authorizationCodeGrant: function (code, callback) {
     return AuthenticationRequest.builder()
-      .withPath('/api/token')
+      .withPath("/api/token")
       .withBodyParameters({
-        grant_type: 'authorization_code',
+        grant_type: "authorization_code",
         redirect_uri: this.getRedirectURI(),
         code,
         client_id: this.getClientId(),
-        client_secret: this.getClientSecret()
+        client_secret: this.getClientSecret(),
       })
-      .withHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+      .withHeaders({ "Content-Type": "application/x-www-form-urlencoded" })
       .build()
-      .execute(HttpManager.post, callback)
+      .execute(HttpManager.post, callback);
   },
 
   /**
@@ -87,20 +91,20 @@ module.exports = {
    */
   refreshAccessToken: function (callback) {
     return AuthenticationRequest.builder()
-      .withPath('/api/token')
+      .withPath("/api/token")
       .withBodyParameters({
-        grant_type: 'refresh_token',
-        refresh_token: this.getRefreshToken()
+        grant_type: "refresh_token",
+        refresh_token: this.getRefreshToken(),
       })
       .withHeaders({
         Authorization:
-          'Basic ' +
+          "Basic " +
           Buffer.from(
-            this.getClientId() + ':' + this.getClientSecret()
-          ).toString('base64'),
-        'Content-Type': 'application/x-www-form-urlencoded'
+            this.getClientId() + ":" + this.getClientSecret(),
+          ).toString("base64"),
+        "Content-Type": "application/x-www-form-urlencoded",
       })
       .build()
-      .execute(HttpManager.post, callback)
-  }
-}
+      .execute(HttpManager.post, callback);
+  },
+};

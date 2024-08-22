@@ -1,118 +1,127 @@
-import Toastify from 'toastify-js'
-import 'toastify-js/src/toastify.css'
-import '@/styles/css/toasts.css'
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
+import "@/styles/css/toasts.css";
 
 const sharedOptions = {
-  gravity: 'bottom',
-  position: 'left'
-}
+  gravity: "bottom",
+  position: "left",
+};
 
-const toastsWithId = {}
+const toastsWithId = {};
 
 export const toast = function (msg, icon = null, dismiss = true, id = null) {
   if (toastsWithId[id]) {
-    const toastObj = toastsWithId[id]
+    const toastObj = toastsWithId[id];
 
-    const toastElement = document.querySelectorAll(`div.toastify[toast_id=${id}]`)
+    const toastElement = document.querySelectorAll(
+      `div.toastify[toast_id=${id}]`,
+    );
 
     if (msg) {
-      toastElement.forEach(toast => {
-        const messages = toast.querySelectorAll('.toast-message')
+      toastElement.forEach((toast) => {
+        const messages = toast.querySelectorAll(".toast-message");
 
-        messages.forEach(message => {
-          message.innerText = msg
-        })
-      })
+        messages.forEach((message) => {
+          message.innerText = msg;
+        });
+      });
     }
 
     if (icon) {
-      const iconNode = document.createElement('span')
-      iconNode.classList.add('toast-icon')
+      const iconNode = document.createElement("span");
+      iconNode.classList.add("toast-icon");
 
-      if (icon === 'loading') {
-        const loader = document.createElement('div')
-        loader.classList.add('circle-loader')
-        iconNode.appendChild(loader)
+      if (icon === "loading") {
+        const loader = document.createElement("div");
+        loader.classList.add("circle-loader");
+        iconNode.appendChild(loader);
       } else {
-        const materialIcon = document.createElement('i')
-        materialIcon.classList.add('material-icons')
-        materialIcon.appendChild(document.createTextNode(icon))
-        iconNode.appendChild(materialIcon)
+        const materialIcon = document.createElement("i");
+        materialIcon.classList.add("material-icons");
+        materialIcon.appendChild(document.createTextNode(icon));
+        iconNode.appendChild(materialIcon);
       }
 
-      toastElement.forEach(toast => {
-        const icons = toast.querySelectorAll('.toast-icon')
+      toastElement.forEach((toast) => {
+        const icons = toast.querySelectorAll(".toast-icon");
 
-        icons.forEach(toastIcon => {
-          toastIcon.parentNode.replaceChild(iconNode, toastIcon)
-        })
-      })
+        icons.forEach((toastIcon) => {
+          toastIcon.parentNode.replaceChild(iconNode, toastIcon);
+        });
+      });
     }
     if (dismiss !== null && dismiss) {
-      toastElement.forEach(toast => {
-        toast.classList.add('dismissable')
-      })
+      toastElement.forEach((toast) => {
+        toast.classList.add("dismissable");
+      });
 
       setTimeout(() => {
-        toastObj.hideToast()
+        toastObj.hideToast();
 
-        delete toastsWithId[id]
-      }, 3000)
+        delete toastsWithId[id];
+      }, 3000);
     }
   } else {
-    const iconNode = document.createElement('span')
-    iconNode.classList.add('toast-icon')
+    const iconNode = document.createElement("span");
+    iconNode.classList.add("toast-icon");
     if (icon == null) {
-      iconNode.appendChild(document.createTextNode(''))
-    } else if (icon === 'loading') {
-      const loader = document.createElement('div')
-      loader.classList.add('circle-loader')
-      iconNode.appendChild(loader)
+      iconNode.appendChild(document.createTextNode(""));
+    } else if (icon === "loading") {
+      const loader = document.createElement("div");
+      loader.classList.add("circle-loader");
+      iconNode.appendChild(loader);
     } else {
-      const materialIcon = document.createElement('i')
-      materialIcon.classList.add('material-icons')
-      materialIcon.appendChild(document.createTextNode(icon))
-      iconNode.appendChild(materialIcon)
+      const materialIcon = document.createElement("i");
+      materialIcon.classList.add("material-icons");
+      materialIcon.appendChild(document.createTextNode(icon));
+      iconNode.appendChild(materialIcon);
     }
-    const messageNode = document.createElement('span')
-    messageNode.classList.add('toast-message')
-    messageNode.appendChild(document.createTextNode(msg))
+    const messageNode = document.createElement("span");
+    messageNode.classList.add("toast-message");
+    messageNode.appendChild(document.createTextNode(msg));
 
-    const toastNode = document.createElement('toast')
-    toastNode.appendChild(iconNode)
-    toastNode.appendChild(messageNode)
+    const toastNode = document.createElement("toast");
+    toastNode.appendChild(iconNode);
+    toastNode.appendChild(messageNode);
 
     const toastObj = Toastify({
       ...sharedOptions,
       node: toastNode,
       duration: dismiss ? 3000 : 0,
-      className: dismiss ? 'dismissable' : '',
-      onClick () {
-        let dismissable = true
+      className: dismiss ? "dismissable" : "",
+      onClick() {
+        let dismissable = true;
 
         if (id) {
-          const toastClasses = document.querySelector(`div.toastify[toast_id=${id}]`).classList
+          const toastClasses = document.querySelector(
+            `div.toastify[toast_id=${id}]`,
+          ).classList;
 
           if (toastClasses) {
-            dismissable = Array.prototype.slice.call(toastClasses).includes('dismissable')
+            dismissable = Array.prototype.slice
+              .call(toastClasses)
+              .includes("dismissable");
           }
         }
         if (toastObj && dismissable) {
-          toastObj.hideToast()
+          toastObj.hideToast();
 
           if (id) {
-            delete toastsWithId[id]
+            delete toastsWithId[id];
           }
         }
       },
       offset: {
-        x: window.localStorage.getItem('slimSidebar') === 'true' ? '3rem' : '14rem'
-      }
-    }).showToast()
+        x:
+          window.localStorage.getItem("slimSidebar") === "true"
+            ? "3rem"
+            : "14rem",
+      },
+    }).showToast();
     if (id) {
-      toastsWithId[id] = toastObj
+      toastsWithId[id] = toastObj;
 
-      toastObj.toastElement.setAttribute('toast_id', id)
+      toastObj.toastElement.setAttribute("toast_id", id);
     }
   }
-}
+};

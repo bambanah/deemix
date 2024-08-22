@@ -32,80 +32,90 @@
 </template>
 
 <script>
-import { debounce } from '@/utils/utils'
-import BackButton from '@/components/globals/BackButton.vue'
+import { debounce } from "@/utils/utils";
+import BackButton from "@/components/globals/BackButton.vue";
 
 export default {
-	components: {
-		BackButton
-	},
-	data: () => ({
-		performScrolledSearch: false
-	}),
-	computed: {
-		showBackButton() {
-			return ['Tracklist', 'Artist', 'Album', 'Playlist', 'Spotify Playlist'].includes(this.$route.name)
-		}
-	},
-	mounted() {
-		this.$router.beforeEach((_, __, next) => {
-			this.$refs.content.scrollTo(0, 0)
-			next()
-		})
-	},
-	methods: {
-		handleContentScroll: debounce(async function () {
-			if (this.$refs.content.scrollTop + this.$refs.content.clientHeight < this.$refs.content.scrollHeight) return
-			this.performScrolledSearch = true
+  components: {
+    BackButton,
+  },
+  data: () => ({
+    performScrolledSearch: false,
+  }),
+  computed: {
+    showBackButton() {
+      return [
+        "Tracklist",
+        "Artist",
+        "Album",
+        "Playlist",
+        "Spotify Playlist",
+      ].includes(this.$route.name);
+    },
+  },
+  mounted() {
+    this.$router.beforeEach((_, __, next) => {
+      this.$refs.content.scrollTo(0, 0);
+      next();
+    });
+  },
+  methods: {
+    handleContentScroll: debounce(async function () {
+      if (
+        this.$refs.content.scrollTop + this.$refs.content.clientHeight <
+        this.$refs.content.scrollHeight
+      )
+        return;
+      this.performScrolledSearch = true;
 
-			await this.$nextTick()
+      await this.$nextTick();
 
-			this.performScrolledSearch = false
-		}, 100)
-	}
-}
+      this.performScrolledSearch = false;
+    }, 100),
+  },
+};
 </script>
 
 <style>
 #container {
-	--container-width: 95%;
-	margin: 0 auto;
-	max-width: 1280px;
-	width: var(--container-width);
-	transform: scale(1);
+  --container-width: 95%;
+  margin: 0 auto;
+  max-width: 1280px;
+  width: var(--container-width);
+  transform: scale(1);
 }
 @media only screen and (min-width: 601px) {
-	#container {
-		--container-width: 85%;
-	}
+  #container {
+    --container-width: 85%;
+  }
 }
 @media only screen and (min-width: 993px) {
-	#container {
-		--container-width: 70%;
-	}
+  #container {
+    --container-width: 70%;
+  }
 }
 
 main {
-	background-color: var(--main-background);
-	padding-right: 5px;
-	width: 100%;
-	height: calc(100vh - 93px);
-	overflow-y: scroll;
-	overflow-x: hidden;
+  background-color: var(--main-background);
+  padding-right: 5px;
+  width: 100%;
+  height: calc(100vh - 93px);
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 main::-webkit-scrollbar {
-	width: 10px;
+  width: 10px;
 }
 
 main::-webkit-scrollbar-track {
-	background: var(--main-background);
+  background: var(--main-background);
 }
 
 main::-webkit-scrollbar-thumb {
-	background: var(--main-scroll);
-	border-radius: 4px;
-	width: 6px;
-	padding: 0px 2px;
+  background: var(--main-scroll);
+  border-radius: 4px;
+  width: 6px;
+  padding: 0px 2px;
 }
 </style>

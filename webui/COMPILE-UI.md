@@ -11,7 +11,9 @@ This file explains how to compile files for the WebUI.
 ```bash
 $ node -v
 ```
+
 and then
+
 ```bash
 $ npm -v
 ```
@@ -59,6 +61,7 @@ $ yarn dev
 ```
 
 you will have 2 tasks running at the same time:
+
 - the server
 - the [rollup](https://rollupjs.org/guide/en/) watcher pointing to the configured `.js` file and ready to re-bundle
 
@@ -76,7 +79,7 @@ However, if you need to edit the `public/index.html` file you'll have to kill th
 
 If you want to add new `.js` or `.vue` files, just add them. deemix uses ES6 synthax, so you'll probably need to export some functions or variables from your new file. Files that will export and import nothing will be ignored by the bundler (rollup).
 
-If you want to add new `.scss` (style) files, you need to import them in the main `style.scss` file. The `.scss` files **must** all start with an underscore _, except for the `style.scss` file.
+If you want to add new `.scss` (style) files, you need to import them in the main `style.scss` file. The `.scss` files **must** all start with an underscore \_, except for the `style.scss` file.
 
 ## Building
 

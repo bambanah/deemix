@@ -4,7 +4,9 @@
       <slot name="title" />
     </template>
 
-    <div class="flex flex-wrap p-4 space-x-2 rounded-2xl bg-background-secondary">
+    <div
+      class="flex flex-wrap p-4 space-x-2 rounded-2xl bg-background-secondary"
+    >
       <span
         v-for="(templateVariable, i) in templateVariables"
         :key="i"
@@ -18,15 +20,15 @@
 </template>
 
 <script>
-import BaseAccordion from '@/components/globals/BaseAccordion.vue'
+import BaseAccordion from "@/components/globals/BaseAccordion.vue";
 
 export default {
-	components: { BaseAccordion },
-	props: {
-		templateVariables: {
-			type: Array,
-			required: true
-		}
-	}
-}
+  components: { BaseAccordion },
+  props: {
+    templateVariables: {
+      type: Array,
+      required: true,
+    },
+  },
+};
 </script>

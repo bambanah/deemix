@@ -1,111 +1,110 @@
 :root {
-	font-size: 16px;
+  font-size: 16px;
 
-	--main-scroll: theme('colors.grayscale.300');
-	--panels-scroll: hsl(180, 2%, 17%);
-	--toast-background: hsla(240, 12%, 16%, 0.85);
-	--toast-secondary: hsla(240, 12%, 16%, 0.15);
-	--toast-text: hsla(0, 0%, 100%, 0.85);
+  --main-scroll: theme("colors.grayscale.300");
+  --panels-scroll: hsl(180, 2%, 17%);
+  --toast-background: hsla(240, 12%, 16%, 0.85);
+  --toast-secondary: hsla(240, 12%, 16%, 0.15);
+  --toast-text: hsla(0, 0%, 100%, 0.85);
 
-	--primary-color: #b560ff;
-	/* will remove variable */
-	--primary-text: theme('colors.grayscale.870');
-	/* will remove variable */
-	--secondary-color: hsl(46, 100%, 57%);
-	/* will remove variable */
+  --primary-color: #b560ff;
+  /* will remove variable */
+  --primary-text: theme("colors.grayscale.870");
+  /* will remove variable */
+  --secondary-color: hsl(46, 100%, 57%);
+  /* will remove variable */
 }
 
-:root[data-theme='light'] {
-	--main-background: theme('colors.white');
-	--secondary-background: theme('colors.grayscale.930');
-	--foreground: theme('colors.grayscale.200');
-	--panels-background: hsl(216, 4%, 78%);
+:root[data-theme="light"] {
+  --main-background: theme("colors.white");
+  --secondary-background: theme("colors.grayscale.930");
+  --foreground: theme("colors.grayscale.200");
+  --panels-background: hsl(216, 4%, 78%);
 
-	--table-bg: theme('colors.white');
-	--table-zebra: theme('colors.grayscale.900');
-	--table-highlight: theme('colors.grayscale.840');
+  --table-bg: theme("colors.white");
+  --table-zebra: theme("colors.grayscale.900");
+  --table-highlight: theme("colors.grayscale.840");
 }
 
-:root[data-theme='dark'] {
-	--main-background: hsl(240, 10%, 8%);
-	--secondary-background: hsl(260, 19%, 6%);
-	/* e.g. search bar bg */
-	--foreground: theme('colors.grayscale.930');
-	/* primary text + icons in main + search */
-	--panels-background: hsl(240, 15%, 12%);
-	/* panel left + right bg */
+:root[data-theme="dark"] {
+  --main-background: hsl(240, 10%, 8%);
+  --secondary-background: hsl(260, 19%, 6%);
+  /* e.g. search bar bg */
+  --foreground: theme("colors.grayscale.930");
+  /* primary text + icons in main + search */
+  --panels-background: hsl(240, 15%, 12%);
+  /* panel left + right bg */
 
-	--table-bg: hsl(240, 10%, 8%);
-	/* e.g. results table bg 1st row */
-	--table-zebra: hsl(240, 15%, 11%);
-	/* e.g. results table bg 2nd alternate */
-	--table-highlight: hsl(240, 10%, 22%);
-	/* e.g. hover bg color on table selection */
+  --table-bg: hsl(240, 10%, 8%);
+  /* e.g. results table bg 1st row */
+  --table-zebra: hsl(240, 15%, 11%);
+  /* e.g. results table bg 2nd alternate */
+  --table-highlight: hsl(240, 10%, 22%);
+  /* e.g. hover bg color on table selection */
 }
 
-:root[data-theme='purple'] {
-	--main-background: hsl(261, 74%, 6%);
-	--secondary-background: hsl(257, 61%, 10%);
-	--foreground: theme('colors.grayscale.930');
-	--panels-background: hsl(257, 70%, 9%);
+:root[data-theme="purple"] {
+  --main-background: hsl(261, 74%, 6%);
+  --secondary-background: hsl(257, 61%, 10%);
+  --foreground: theme("colors.grayscale.930");
+  --panels-background: hsl(257, 70%, 9%);
 
-	--table-bg: hsl(261, 74%, 6%);
-	--table-zebra: hsl(257, 61%, 10%);
-	--table-highlight: hsl(257, 66%, 27%);
+  --table-bg: hsl(261, 74%, 6%);
+  --table-zebra: hsl(257, 61%, 10%);
+  --table-highlight: hsl(257, 66%, 27%);
 }
 
 @layer base {
+  input[type="text"],
+  input[type="password"],
+  input[type="number"],
+  select {
+    border-radius: 4px;
+    background-color: var(--secondary-background);
+    padding: 0 1rem;
+    width: 100%;
+    min-height: 3rem;
+    line-height: 3rem;
+    color: var(--foreground);
+  }
 
-	input[type='text'],
-	input[type='password'],
-	input[type='number'],
-	select {
-		border-radius: 4px;
-		background-color: var(--secondary-background);
-		padding: 0 1rem;
-		width: 100%;
-		min-height: 3rem;
-		line-height: 3rem;
-		color: var(--foreground);
-	}
+  input[type="text"],
+  input[type="password"],
+  input[type="number"] {
+    padding: 0 16px;
+  }
 
-	input[type='text'],
-	input[type='password'],
-	input[type='number'] {
-		padding: 0 16px;
-	}
+  input[type="checkbox"] {
+    display: inline-block;
+    position: relative;
+    opacity: 0.5;
+    margin: 3px;
+    border: 2px solid gray;
+    border-radius: 2px;
+    background-color: none;
+    padding: 7px;
+  }
 
-	input[type='checkbox'] {
-		display: inline-block;
-		position: relative;
-		opacity: 0.5;
-		margin: 3px;
-		border: 2px solid gray;
-		border-radius: 2px;
-		background-color: none;
-		padding: 7px;
-	}
+  input[type="checkbox"]:checked {
+    opacity: 1;
+    border-width: 0;
+    background-color: var(--primary-color);
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='18' viewBox='3 3 18 18' width='18'%3E%3Cpath fill='%23ffffff' d='M 10,17 5,12 6.41,10.59 10,14.17 17.59,6.58 19,8 Z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
+    background-position: center center;
+    padding: 9px;
+    color: var(--primary-text);
+  }
 
-	input[type='checkbox']:checked {
-		opacity: 1;
-		border-width: 0;
-		background-color: var(--primary-color);
-		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='18' viewBox='3 3 18 18' width='18'%3E%3Cpath fill='%23ffffff' d='M 10,17 5,12 6.41,10.59 10,14.17 17.59,6.58 19,8 Z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
-		background-position: center center;
-		padding: 9px;
-		color: var(--primary-text);
-	}
+  select {
+    background-clip: border-box;
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 0 24 24' width='24'%3E%3Cpath style='fill:gray;fill-opacity:0.5' d='M7 10l5 5 5-5z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
+    background-position: calc(100% - 8px) center;
+    background-repeat: no-repeat;
+    background-size: 24px;
+    padding-right: 40px;
+  }
 
-	select {
-		background-clip: border-box;
-		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 0 24 24' width='24'%3E%3Cpath style='fill:gray;fill-opacity:0.5' d='M7 10l5 5 5-5z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
-		background-position: calc(100% - 8px) center;
-		background-repeat: no-repeat;
-		background-size: 24px;
-		padding-right: 40px;
-	}
-
-	a {
-		color: #b560ff;
-	}
+  a {
+    color: #b560ff;
+  }
 }

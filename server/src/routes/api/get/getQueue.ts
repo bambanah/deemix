@@ -1,16 +1,16 @@
 // import { Deezer } from 'deezer-js'
-import { ApiHandler } from '../../../types'
+import { ApiHandler } from "../../../types";
 
-const path: ApiHandler['path'] = '/getQueue'
+const path: ApiHandler["path"] = "/getQueue";
 
 // let homeCache: any
 
-const handler: ApiHandler['handler'] = (req, res) => {
-	const deemix = req.app.get('deemix')
-	const result: any = deemix.getQueue()
-	res.send(result)
-}
+const handler: ApiHandler["handler"] = (req, res) => {
+  const deemix = req.app.get("deemix");
+  const result: any = deemix.getQueue();
+  res.send(result);
+};
 
-const apiHandler: ApiHandler = { path, handler }
+const apiHandler: ApiHandler = { path, handler };
 
-export default apiHandler
+export default apiHandler;

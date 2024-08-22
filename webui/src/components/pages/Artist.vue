@@ -1,9 +1,6 @@
 <template>
   <div class="relative fixed-footer image-header">
-    <header
-      class="flex items-center"
-      :style="headerStyle"
-    >
+    <header class="flex items-center" :style="headerStyle">
       <h1 class="m-0">
         {{ artistName }}
       </h1>
@@ -15,10 +12,9 @@
         :data-cm-link="downloadLink"
         @click.stop="sendAddToQueue(downloadLink)"
       >
-        <i
-          class="text-4xl material-icons"
-          :title="$t('globals.download_hint')"
-        >get_app</i>
+        <i class="text-4xl material-icons" :title="$t('globals.download_hint')"
+          >get_app</i
+        >
       </div>
     </header>
 
@@ -45,7 +41,7 @@
               'sort-asc': data.sortKey === sortKey && sortOrder == 'asc',
               'sort-desc': data.sortKey === sortKey && sortOrder == 'desc',
               sortable: data.sortKey,
-              clickable: data.sortKey
+              clickable: data.sortKey,
             }"
             @click="data.sortKey ? sortBy(data.sortKey) : null"
           >
@@ -55,10 +51,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="release in sortedData"
-          :key="release.releaseID"
-        >
+        <tr v-for="release in sortedData" :key="release.releaseID">
           <router-link
             v-slot="{ navigate }"
             custom
@@ -66,20 +59,17 @@
             :data-cm-link="release.releaseLink"
             :to="{ name: 'Album', params: { id: release.releaseID } }"
           >
-            <td
-              role="link"
-              @click="navigate"
-              @keypress.enter="navigate"
-            >
+            <td role="link" @click="navigate" @keypress.enter="navigate">
               <img
                 class="mr-4 rounded coverart"
                 :src="release.releaseCover"
                 style="width: 56px; height: 56px"
-              >
+              />
               <i
                 v-if="release.isReleaseExplicit"
                 class="material-icons title-icon title-icon--explicit"
-              >explicit</i>
+                >explicit</i
+              >
               <div>
                 <span class="flex hover:text-primary">
                   {{ release.releaseTitle }}
@@ -113,131 +103,148 @@
             <i
               class="material-icons hover:text-primary"
               :title="$t('globals.download_hint')"
-            >file_download</i>
+              >file_download</i
+            >
           </td>
         </tr>
       </tbody>
     </table>
     <footer class="bg-background-main">
-      <div style="flex-grow: 1;">
+      <div style="flex-grow: 1">
         <button
-          :data-link="downloadLink+'/discography'"
+          :data-link="downloadLink + '/discography'"
           class="btn btn-flat"
           @click.stop="sendAddToQueue(downloadLink)"
         >
-          {{ `${$t('globals.download', { thing: $t('globals.listTabs.discography') })}` }}
+          {{
+            `${$t("globals.download", { thing: $t("globals.listTabs.discography") })}`
+          }}
         </button>
       </div>
       <button
-        :data-link="downloadLink+'/'+currentTab"
+        :data-link="downloadLink + '/' + currentTab"
         class="flex items-center btn btn-primary"
-        @click.stop="sendAddToQueue(downloadLink+'/'+currentTab)"
+        @click.stop="sendAddToQueue(downloadLink + '/' + currentTab)"
       >
-        {{ `${$t('globals.download', { thing: $tc(`globals.listTabs.${currentTab}`, 2) })}` }}<i class="ml-2 material-icons">file_download</i>
+        {{
+          `${$t("globals.download", { thing: $tc(`globals.listTabs.${currentTab}`, 2) })}`
+        }}<i class="ml-2 material-icons">file_download</i>
       </button>
     </footer>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref, unref, reactive, computed, toRefs } from '@vue/composition-api'
-import { orderBy } from 'lodash-es'
+import {
+  defineComponent,
+  ref,
+  unref,
+  reactive,
+  computed,
+  toRefs,
+} from "@vue/composition-api";
+import { orderBy } from "lodash-es";
 
-import { BaseTabs, BaseTab } from '@/components/globals/BaseTabs'
+import { BaseTabs, BaseTab } from "@/components/globals/BaseTabs";
 
-import { sendAddToQueue } from '@/utils/downloads'
-import { checkNewRelease } from '@/utils/dates'
-import { formatArtistData, getArtistData } from '@/data/artist'
-import { standardizeData } from '@/data/standardize'
+import { sendAddToQueue } from "@/utils/downloads";
+import { checkNewRelease } from "@/utils/dates";
+import { formatArtistData, getArtistData } from "@/data/artist";
+import { standardizeData } from "@/data/standardize";
 
 export default defineComponent({
-	components: {
-		BaseTabs,
-		BaseTab
-	},
-	setup(_, ctx) {
-		const state = reactive({
-			currentTab: '',
-			sortKey: 'releaseDate',
-			sortOrder: 'desc',
-			artistReleases: {},
-			artistName: '',
-			artistPicture: '',
-			currentRelease: computed(() => state.artistReleases[state.currentTab])
-		})
+  components: {
+    BaseTabs,
+    BaseTab,
+  },
+  setup(_, ctx) {
+    const state = reactive({
+      currentTab: "",
+      sortKey: "releaseDate",
+      sortOrder: "desc",
+      artistReleases: {},
+      artistName: "",
+      artistPicture: "",
+      currentRelease: computed(() => state.artistReleases[state.currentTab]),
+    });
 
-		const artistID = computed(() => ctx.root.$router.currentRoute.params.id)
-		const hasDataLoaded = ref(false)
+    const artistID = computed(() => ctx.root.$router.currentRoute.params.id);
+    const hasDataLoaded = ref(false);
 
-		getArtistData(unref(artistID))
-			.then(artistData => {
-				hasDataLoaded.value = true
+    getArtistData(unref(artistID))
+      .then((artistData) => {
+        hasDataLoaded.value = true;
 
-				const rawData = {
-					data: [artistData],
-					hasLoaded: unref(hasDataLoaded)
-				}
-				const {
-					data: [{ artistName, artistPictureXL, artistReleases }]
-				} = standardizeData(rawData, formatArtistData)
+        const rawData = {
+          data: [artistData],
+          hasLoaded: unref(hasDataLoaded),
+        };
+        const {
+          data: [{ artistName, artistPictureXL, artistReleases }],
+        } = standardizeData(rawData, formatArtistData);
 
-				Object.assign(state, {
-					artistName,
-					artistPicture: artistPictureXL,
-					artistReleases,
-					currentTab: Object.keys(artistReleases)[0]
-				})
-			})
-			.catch(err => console.error(err))
+        Object.assign(state, {
+          artistName,
+          artistPicture: artistPictureXL,
+          artistReleases,
+          currentTab: Object.keys(artistReleases)[0],
+        });
+      })
+      .catch((err) => console.error(err));
 
-		const sortedData = computed(() => {
-			if (!unref(hasDataLoaded)) {
-				return []
-			}
+    const sortedData = computed(() => {
+      if (!unref(hasDataLoaded)) {
+        return [];
+      }
 
-			let sortKey = state.sortKey
+      let sortKey = state.sortKey;
 
-			if (sortKey === 'releaseTracksNumber') {
-				sortKey = o => Number(o.releaseTracksNumber)
-			}
+      if (sortKey === "releaseTracksNumber") {
+        sortKey = (o) => Number(o.releaseTracksNumber);
+      }
 
-			return orderBy(state.currentRelease, sortKey, state.sortOrder)
-		})
+      return orderBy(state.currentRelease, sortKey, state.sortOrder);
+    });
 
-		return {
-			...toRefs(state),
-			downloadLink: computed(() => `https://www.deezer.com/artist/${unref(artistID)}`),
-			headerStyle: computed(() => ({
-				backgroundImage: `linear-gradient(to bottom, transparent 0%, var(--main-background) 100%), url(${state.artistPicture})`
-			})),
-			sortedData,
-			sendAddToQueue,
-			checkNewRelease
-		}
-	},
-	data() {
-		const $t = this.$t.bind(this)
-		const $tc = this.$tc.bind(this)
+    return {
+      ...toRefs(state),
+      downloadLink: computed(
+        () => `https://www.deezer.com/artist/${unref(artistID)}`,
+      ),
+      headerStyle: computed(() => ({
+        backgroundImage: `linear-gradient(to bottom, transparent 0%, var(--main-background) 100%), url(${state.artistPicture})`,
+      })),
+      sortedData,
+      sendAddToQueue,
+      checkNewRelease,
+    };
+  },
+  data() {
+    const $t = this.$t.bind(this);
+    const $tc = this.$tc.bind(this);
 
-		return {
-			head: [
-				{ title: $tc('globals.listTabs.title', 1), sortKey: 'releaseTitle' },
-				{ title: $t('globals.listTabs.releaseDate'), sortKey: 'releaseDate' },
-				{ title: $tc('globals.listTabs.track', 2), sortKey: 'releaseTracksNumber' },
-				// { title: '', width: '32px' }
-				{ title: '', width: null }
-			]
-		}
-	},
-	methods: {
-		sortBy(key) {
-			if (key === this.sortKey) {
-				this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc'
-			} else {
-				this.sortKey = key
-				this.sortOrder = 'asc'
-			}
-		}
-	}
-})
+    return {
+      head: [
+        { title: $tc("globals.listTabs.title", 1), sortKey: "releaseTitle" },
+        { title: $t("globals.listTabs.releaseDate"), sortKey: "releaseDate" },
+        {
+          title: $tc("globals.listTabs.track", 2),
+          sortKey: "releaseTracksNumber",
+        },
+        // { title: '', width: '32px' }
+        { title: "", width: null },
+      ],
+    };
+  },
+  methods: {
+    sortBy(key) {
+      if (key === this.sortKey) {
+        this.sortOrder = this.sortOrder === "asc" ? "desc" : "asc";
+      } else {
+        this.sortKey = key;
+        this.sortOrder = "asc";
+      }
+    },
+  },
+});
 </script>

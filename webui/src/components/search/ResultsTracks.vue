@@ -3,41 +3,29 @@
     <BaseLoadingPlaceholder v-if="isLoading" />
 
     <template v-else>
-      <ResultsError
-        v-if="viewInfo.error"
-        :error="viewInfo.error"
-      />
+      <ResultsError v-if="viewInfo.error" :error="viewInfo.error" />
       <div v-else-if="viewInfo.data.length === 0">
         <h1 class="text-center">
-          {{ $t('search.noResultsTrack') }}
+          {{ $t("search.noResultsTrack") }}
         </h1>
       </div>
 
-      <table
-        v-else
-        class="table w-full table--tracks"
-      >
+      <table v-else class="table w-full table--tracks">
         <thead v-if="wantHeaders">
           <tr class="capitalize">
-            <th
-              class="h-12 pb-3"
-              colspan="2"
-            >
-              {{ $tc('globals.listTabs.title', 1) }}
+            <th class="h-12 pb-3" colspan="2">
+              {{ $tc("globals.listTabs.title", 1) }}
             </th>
             <th class="h-12 pb-3">
-              {{ $tc('globals.listTabs.artist', 1) }}
+              {{ $tc("globals.listTabs.artist", 1) }}
             </th>
             <th class="h-12 pb-3">
-              {{ $tc('globals.listTabs.album', 1) }}
+              {{ $tc("globals.listTabs.album", 1) }}
             </th>
             <th class="h-12 pb-3">
               <i class="material-icons">timer</i>
             </th>
-            <th
-              class="h-12 pb-3"
-              style="width: 3.5rem"
-            />
+            <th class="h-12 pb-3" style="width: 3.5rem" />
           </tr>
         </thead>
 
@@ -54,19 +42,19 @@
               >
                 <PreviewControls v-if="track.trackPreview" />
 
-                <img
-                  class="rounded coverart"
-                  :src="track.albumPicture"
-                >
+                <img class="rounded coverart" :src="track.albumPicture" />
               </span>
             </td>
 
             <td class="table__cell table__cell--large">
-              <div class="break-words table__cell-content table__cell-content--vertical-center">
+              <div
+                class="break-words table__cell-content table__cell-content--vertical-center"
+              >
                 <i
                   v-if="track.isTrackExplicit"
                   class="material-icons title-icon"
-                >explicit</i>
+                  >explicit</i
+                >
                 {{ formatTitle(track) }}
               </div>
             </td>
@@ -77,11 +65,7 @@
               class="break-words table__cell table__cell--medium table__cell--center"
               :to="{ name: 'Artist', params: { id: track.artistID } }"
             >
-              <td
-                role="link"
-                @click="navigate"
-                @keypress.enter="navigate"
-              >
+              <td role="link" @click="navigate" @keypress.enter="navigate">
                 <span class="cursor-pointer hover:underline">
                   {{ track.artistName }}
                 </span>
@@ -94,11 +78,7 @@
               class="break-words table__cell table__cell--medium table__cell--center"
               :to="{ name: 'Album', params: { id: track.albumID } }"
             >
-              <td
-                role="link"
-                @click="navigate"
-                @keypress.enter="navigate"
-              >
+              <td role="link" @click="navigate" @keypress.enter="navigate">
                 <span class="cursor-pointer hover:underline">
                   {{ track.albumTitle }}
                 </span>
@@ -130,50 +110,51 @@
 </template>
 
 <script>
-import BaseLoadingPlaceholder from '@/components/globals/BaseLoadingPlaceholder.vue'
-import PreviewControls from '@/components/globals/PreviewControls.vue'
-import ResultsError from '@/components/search/ResultsError.vue'
-import { playPausePreview } from '@/components/globals/TheTrackPreview.vue'
+import BaseLoadingPlaceholder from "@/components/globals/BaseLoadingPlaceholder.vue";
+import PreviewControls from "@/components/globals/PreviewControls.vue";
+import ResultsError from "@/components/search/ResultsError.vue";
+import { playPausePreview } from "@/components/globals/TheTrackPreview.vue";
 
-import { convertDuration } from '@/utils/utils'
+import { convertDuration } from "@/utils/utils";
 
-import { formatTitle } from '@/data/search'
+import { formatTitle } from "@/data/search";
 
 export default {
-	components: {
-		BaseLoadingPlaceholder,
-		PreviewControls,
-		ResultsError
-	},
-	props: {
-		viewInfo: {
-			validator(value) {
-				const isNull = Object.is(value, null)
-				const isObject = Object.prototype.toString.call(value) === '[object Object]'
+  components: {
+    BaseLoadingPlaceholder,
+    PreviewControls,
+    ResultsError,
+  },
+  props: {
+    viewInfo: {
+      validator(value) {
+        const isNull = Object.is(value, null);
+        const isObject =
+          Object.prototype.toString.call(value) === "[object Object]";
 
-				return isNull || isObject
-			},
-			required: true
-		},
-		itemsToShow: {
-			type: Number,
-			default: 6
-		},
-		wantHeaders: {
-			type: Boolean,
-			required: false,
-			default: false
-		}
-	},
-	computed: {
-		isLoading() {
-			return !this.viewInfo || !this.viewInfo.hasLoaded
-		}
-	},
-	methods: {
-		convertDuration,
-		formatTitle,
-		playPausePreview
-	}
-}
+        return isNull || isObject;
+      },
+      required: true,
+    },
+    itemsToShow: {
+      type: Number,
+      default: 6,
+    },
+    wantHeaders: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
+  computed: {
+    isLoading() {
+      return !this.viewInfo || !this.viewInfo.hasLoaded;
+    },
+  },
+  methods: {
+    convertDuration,
+    formatTitle,
+    playPausePreview,
+  },
+};
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div id="home_tab">
     <h1 class="mb-8 text-5xl">
-      {{ $t('globals.welcome') }}
+      {{ $t("globals.welcome") }}
     </h1>
     Version published 07/08/2024, see About section for changelog.
     <section
@@ -9,11 +9,8 @@
       ref="notLogged"
       class="py-6 border-0 border-t border-solid border-grayscale-500"
     >
-      <p
-        id="home_not_logged_text"
-        class="mb-4"
-      >
-        {{ $t('home.needTologin') }}
+      <p id="home_not_logged_text" class="mb-4">
+        {{ $t("home.needTologin") }}
       </p>
       <router-link
         v-slot="{ navigate }"
@@ -22,12 +19,8 @@
         name="button"
         :to="{ name: 'Settings' }"
       >
-        <button
-          role="link"
-          @click="navigate"
-          @keypress.enter="navigate"
-        >
-          {{ $t('home.openSettings') }}
+        <button role="link" @click="navigate" @keypress.enter="navigate">
+          {{ $t("home.openSettings") }}
         </button>
       </router-link>
     </section>
@@ -37,7 +30,7 @@
       class="py-6 border-0 border-t border-solid border-grayscale-500"
     >
       <h2 class="mb-6 text-3xl">
-        {{ $t('home.sections.popularPlaylists') }}
+        {{ $t("home.sections.popularPlaylists") }}
       </h2>
       <div class="release-grid">
         <router-link
@@ -48,13 +41,11 @@
           class="release clickable"
           :to="{ name: 'Playlist', params: { id: release.id } }"
           tabindex="0"
-          @keyup.enter.native="$router.push({ name: 'Playlist', params: { id: release.id } })"
+          @keyup.enter.native="
+            $router.push({ name: 'Playlist', params: { id: release.id } })
+          "
         >
-          <div
-            role="link"
-            @click="navigate"
-            @keypress.enter="navigate"
-          >
+          <div role="link" @click="navigate" @keypress.enter="navigate">
             <CoverContainer
               is-rounded
               :cover="release.picture_medium"
@@ -66,9 +57,9 @@
             </p>
             <p class="secondary-text">
               {{
-                `${$t('globals.by', { artist: release.user.name })} - ${$tc(
-                  'globals.listTabs.trackN',
-                  release.nb_tracks
+                `${$t("globals.by", { artist: release.user.name })} - ${$tc(
+                  "globals.listTabs.trackN",
+                  release.nb_tracks,
                 )}`
               }}
             </p>
@@ -82,7 +73,7 @@
       class="py-6 border-0 border-t border-solid border-grayscale-500"
     >
       <h2 class="mb-6 text-3xl">
-        {{ $t('home.sections.popularAlbums') }}
+        {{ $t("home.sections.popularAlbums") }}
       </h2>
       <div class="release-grid">
         <router-link
@@ -94,13 +85,11 @@
           :to="{ name: 'Album', params: { id: release.id } }"
           :data-id="release.id"
           tabindex="0"
-          @keyup.enter.native="$router.push({ name: 'Album', params: { id: release.id } })"
+          @keyup.enter.native="
+            $router.push({ name: 'Album', params: { id: release.id } })
+          "
         >
-          <div
-            role="link"
-            @click="navigate"
-            @keypress.enter="navigate"
-          >
+          <div role="link" @click="navigate" @keypress.enter="navigate">
             <CoverContainer
               is-rounded
               :cover="release.cover_medium"
@@ -111,7 +100,7 @@
               {{ release.title }}
             </p>
             <p class="secondary-text">
-              {{ `${$t('globals.by', { artist: release.artist.name })}` }}
+              {{ `${$t("globals.by", { artist: release.artist.name })}` }}
             </p>
           </div>
         </router-link>
@@ -121,46 +110,46 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 
-import { sendAddToQueue } from '@/utils/downloads'
-import { getHomeData } from '@/data/home'
+import { sendAddToQueue } from "@/utils/downloads";
+import { getHomeData } from "@/data/home";
 
-import CoverContainer from '@/components/globals/CoverContainer.vue'
+import CoverContainer from "@/components/globals/CoverContainer.vue";
 
 export default {
-	components: {
-		CoverContainer
-	},
-	data() {
-		return {
-			playlists: [],
-			albums: []
-		}
-	},
-	computed: {
-		...mapGetters(['isLoggedIn'])
-	},
-	async created() {
-		const homeData = await getHomeData()
+  components: {
+    CoverContainer,
+  },
+  data() {
+    return {
+      playlists: [],
+      albums: [],
+    };
+  },
+  computed: {
+    ...mapGetters(["isLoggedIn"]),
+  },
+  async created() {
+    const homeData = await getHomeData();
 
-		this.initHome(homeData)
-	},
-	methods: {
-		addToQueue(e) {
-			sendAddToQueue(e.currentTarget.dataset.link)
-		},
-		initHome(data) {
-			const {
-				playlists: { data: playlistData },
-				albums: { data: albumData }
-			} = data
+    this.initHome(homeData);
+  },
+  methods: {
+    addToQueue(e) {
+      sendAddToQueue(e.currentTarget.dataset.link);
+    },
+    initHome(data) {
+      const {
+        playlists: { data: playlistData },
+        albums: { data: albumData },
+      } = data;
 
-			this.playlists = playlistData
-			this.albums = albumData
-		}
-	}
-}
+      this.playlists = playlistData;
+      this.albums = albumData;
+    },
+  },
+};
 </script>
 
 <style></style>
