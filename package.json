@@ -1,5 +1,5 @@
 {
-  "version": "2024.8.22-r292.9ebb6df28e",
+  "version": "0.0.0",
   "name": "deemix",
   "description": "A hybrid app that wraps deemix-webui and lets you use the deemix-js library",
   "main": "index.js",
