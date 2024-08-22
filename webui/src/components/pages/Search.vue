@@ -1,36 +1,39 @@
 <template>
-	<div id="search_tab">
-		<div v-show="isQueryEmpty && !isSearching">
-			<h2>{{ $t('search.startSearching') }}</h2>
-			<p>{{ $t('search.description') }}</p>
-		</div>
+  <div id="search_tab">
+    <div v-show="isQueryEmpty && !isSearching">
+      <h2>{{ $t('search.startSearching') }}</h2>
+      <p>{{ $t('search.description') }}</p>
+    </div>
 
-		<BaseLoadingPlaceholder text="Searching..." :hidden="!isSearching" />
+    <BaseLoadingPlaceholder
+      text="Searching..."
+      :hidden="!isSearching"
+    />
 
-		<div v-show="!isQueryEmpty && !isSearching">
-			<BaseTabs>
-				<BaseTab
-					v-for="tab in tabs"
-					:key="tab.name"
-					:class="{ active: currentTab.name === tab.name }"
-					@click="changeSearchTab(tab.searchType)"
-				>
-					{{ tab.name }}
-				</BaseTab>
-			</BaseTabs>
+    <div v-show="!isQueryEmpty && !isSearching">
+      <BaseTabs>
+        <BaseTab
+          v-for="tab in tabs"
+          :key="tab.name"
+          :class="{ active: currentTab.name === tab.name }"
+          @click="changeSearchTab(tab.searchType)"
+        >
+          {{ tab.name }}
+        </BaseTab>
+      </BaseTabs>
 
-			<keep-alive>
-				<component
-					:is="currentTab.component"
-					:view-info="getViewInfo()"
-					want-headers
-					:items-to-show="Infinity"
-					@add-to-queue="addToQueue"
-					@change-search-tab="changeSearchTab"
-				></component>
-			</keep-alive>
-		</div>
-	</div>
+      <keep-alive>
+        <component
+          :is="currentTab.component"
+          :view-info="getViewInfo()"
+          want-headers
+          :items-to-show="Infinity"
+          @add-to-queue="addToQueue"
+          @change-search-tab="changeSearchTab"
+        />
+      </keep-alive>
+    </div>
+  </div>
 </template>
 
 <script>

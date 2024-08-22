@@ -1,68 +1,78 @@
 <template>
-	<section
-		id="download_tab_container"
-		ref="container"
-		class="block h-screen bg-panels-bg text-foreground"
-		:class="{ 'tab-hidden': !isExpanded, 'w-8': !isExpanded }"
-		:data-label="$t('downloads')"
-		aria-label="downloads"
-		@transitionend="$refs.container.style.transition = ''"
-	>
-		<!-- Drag handler -->
-		<div
-			v-show="isExpanded"
-			class="absolute w-4 h-full bg-grayscale-200"
-			style="cursor: ew-resize"
-			@mousedown.prevent="startDrag"
-		></div>
+  <section
+    id="download_tab_container"
+    ref="container"
+    class="block h-screen bg-panels-bg text-foreground"
+    :class="{ 'tab-hidden': !isExpanded, 'w-8': !isExpanded }"
+    :data-label="$t('downloads')"
+    aria-label="downloads"
+    @transitionend="$refs.container.style.transition = ''"
+  >
+    <!-- Drag handler -->
+    <div
+      v-show="isExpanded"
+      class="absolute w-4 h-full bg-grayscale-200"
+      style="cursor: ew-resize"
+      @mousedown.prevent="startDrag"
+    />
 
-		<!-- Bar toggler -->
-		<i
-			id="toggle_download_tab"
-			ref="toggler"
-			class="m-1 text-2xl cursor-pointer material-icons"
-			:class="{ 'ml-1': !isExpanded, 'ml-5': isExpanded }"
-			:title="$t('globals.toggle_download_tab_hint')"
-			@click.prevent="toggleDownloadTab"
-		></i>
+    <!-- Bar toggler -->
+    <i
+      id="toggle_download_tab"
+      ref="toggler"
+      class="m-1 text-2xl cursor-pointer material-icons"
+      :class="{ 'ml-1': !isExpanded, 'ml-5': isExpanded }"
+      :title="$t('globals.toggle_download_tab_hint')"
+      @click.prevent="toggleDownloadTab"
+    />
 
-		<!-- Queue buttons -->
-		<div
-			class="absolute top-0 right-0 transition-all duration-200 ease-in-out"
-			:class="{ 'opacity-0 invisible': !isExpanded, 'opacity-100 visible': isExpanded }"
-		>
-			<i
-				v-if="clientMode"
-				class="m-1 text-2xl cursor-pointer material-icons"
-				:title="$t('globals.open_downloads_folder')"
-				@click="openDownloadsFolder"
-			>
-				folder_open
-			</i>
-			<i class="m-1 text-2xl cursor-pointer material-icons" :title="$t('globals.clean_queue_hint')" @click="cleanQueue">
-				clear_all
-			</i>
-			<i
-				class="m-1 text-2xl cursor-pointer material-icons"
-				:title="$t('globals.cancel_queue_hint')"
-				@click="cancelQueue"
-			>
-				delete_sweep
-			</i>
-		</div>
+    <!-- Queue buttons -->
+    <div
+      class="absolute top-0 right-0 transition-all duration-200 ease-in-out"
+      :class="{ 'opacity-0 invisible': !isExpanded, 'opacity-100 visible': isExpanded }"
+    >
+      <i
+        v-if="clientMode"
+        class="m-1 text-2xl cursor-pointer material-icons"
+        :title="$t('globals.open_downloads_folder')"
+        @click="openDownloadsFolder"
+      >
+        folder_open
+      </i>
+      <i
+        class="m-1 text-2xl cursor-pointer material-icons"
+        :title="$t('globals.clean_queue_hint')"
+        @click="cleanQueue"
+      >
+        clear_all
+      </i>
+      <i
+        class="m-1 text-2xl cursor-pointer material-icons"
+        :title="$t('globals.cancel_queue_hint')"
+        @click="cancelQueue"
+      >
+        delete_sweep
+      </i>
+    </div>
 
-		<div v-show="isExpanded" id="download_list" ref="list" class="w-full pr-2" :class="{ slim: isSlim }">
-			<QueueItem
-				v-for="item in queueList"
-				:key="item.uuid"
-				:queue-item="item"
-				:show-tags="showTags"
-				@show-errors="showErrorsTab"
-				@remove-item="onRemoveItem"
-				@retry-download="onRetryDownload"
-			/>
-		</div>
-	</section>
+    <div
+      v-show="isExpanded"
+      id="download_list"
+      ref="list"
+      class="w-full pr-2"
+      :class="{ slim: isSlim }"
+    >
+      <QueueItem
+        v-for="item in queueList"
+        :key="item.uuid"
+        :queue-item="item"
+        :show-tags="showTags"
+        @show-errors="showErrorsTab"
+        @remove-item="onRemoveItem"
+        @retry-download="onRetryDownload"
+      />
+    </div>
+  </section>
 </template>
 
 <script>

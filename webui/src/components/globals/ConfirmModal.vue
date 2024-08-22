@@ -1,16 +1,28 @@
 <template>
-	<div ref="wrapper" class="wrapper">
-		<div ref="body" class="body animate__animated animate__bounce">
-			<h1 style="flex: 1">{{ titleText }}</h1>
+  <div
+    ref="wrapper"
+    class="wrapper"
+  >
+    <div
+      ref="body"
+      class="body animate__animated animate__bounce"
+    >
+      <h1 style="flex: 1">
+        {{ titleText }}
+      </h1>
 
-			<div class="confirm-area">
-				<button class="no-hover">Text</button>
-				<button class="no-hover bg-red-600">Text</button>
-			</div>
-		</div>
+      <div class="confirm-area">
+        <button class="no-hover">
+          Text
+        </button>
+        <button class="no-hover bg-red-600">
+          Text
+        </button>
+      </div>
+    </div>
 
-		<div class="overlay"></div>
-	</div>
+    <div class="overlay" />
+  </div>
 </template>
 
 <script>

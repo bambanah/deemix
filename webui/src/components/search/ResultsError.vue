@@ -1,7 +1,9 @@
 <template>
   <div class="text-center">
     <h1>{{ $t('search.error') }}</h1>
-    <p class="secondary-text mt-4">{{ error }}</p>
+    <p class="secondary-text mt-4">
+      {{ error }}
+    </p>
   </div>
 </template>
 

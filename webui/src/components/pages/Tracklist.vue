@@ -1,161 +1,240 @@
 <template>
-	<div ref="root" class="relative fixed-footer bg-background-main image-header">
-		<header
-			:style="{
-				'background-image':
-					'linear-gradient(to bottom, transparent 0%, var(--main-background) 100%), url(\'' + image + '\')'
-			}"
-		>
-			<h1 class="flex items-center m-0 text-5xl">
-				{{ title }} <i v-if="explicit" class="material-icons title-icon title-icon--right">explicit</i>
-			</h1>
+  <div
+    ref="root"
+    class="relative fixed-footer bg-background-main image-header"
+  >
+    <header
+      :style="{
+        'background-image':
+          'linear-gradient(to bottom, transparent 0%, var(--main-background) 100%), url(\'' + image + '\')'
+      }"
+    >
+      <h1 class="flex items-center m-0 text-5xl">
+        {{ title }} <i
+          v-if="explicit"
+          class="material-icons title-icon title-icon--right"
+        >explicit</i>
+      </h1>
 
-			<h2 class="m-0 mb-3 text-lg">
-				<p v-if="metadata">{{ metadata }}</p>
-				<p v-if="release_date">{{ release_date }}</p>
-			</h2>
-		</header>
+      <h2 class="m-0 mb-3 text-lg">
+        <p v-if="metadata">
+          {{ metadata }}
+        </p>
+        <p v-if="release_date">
+          {{ release_date }}
+        </p>
+      </h2>
+    </header>
 
-		<table class="table table--tracklist">
-			<thead>
-				<tr>
-					<th>
-						<i class="material-icons">music_note</i>
-					</th>
-					<th>#</th>
-					<th>{{ $tc('globals.listTabs.title', 1) }}</th>
-					<th>{{ $tc('globals.listTabs.artist', 1) }}</th>
-					<th v-if="type === 'playlist'">{{ $tc('globals.listTabs.album', 1) }}</th>
-					<th>
-						<i class="material-icons">timer</i>
-					</th>
-					<th v-if="isLoggedIn" class="table__icon table__cell--center clickable">
-						<input class="selectAll" type="checkbox" @click="toggleAll" />
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<template v-if="type !== 'spotifyPlaylist'">
-					<template v-for="(track, index) in body">
-						<tr v-if="track.type === 'track'" @click="selectRow(index, track)">
-							<td class="table__cell--x-small table__cell--center">
-								<div class="table__cell-content table__cell-content--vertical-center">
-									<i
-										:class="{
-											preview_playlist_controls: track.preview,
-											'cursor-pointer': track.preview,
-											disabled: !track.preview
-										}"
-										:data-preview="track.preview"
-										:data-link-only="track.link"
-										:title="$t('globals.play_hint')"
-										class="material-icons"
-										v-on="{ click: track.preview ? playPausePreview : false }"
-									>
-										play_arrow
-									</i>
-								</div>
-							</td>
-							<td class="table__cell--small table__cell--center track_position">
-								{{ type === 'album' ? track.track_position : body.indexOf(track) + 1 }}
-							</td>
-							<td class="table__cell--large table__cell--with-icon">
-								<div class="table__cell-content table__cell-content--vertical-center">
-									<i v-if="track.explicit_lyrics" class="material-icons title-icon"> explicit </i>
-									{{
-										track.title +
-										(track.title_version && track.title.indexOf(track.title_version) == -1
-											? ' ' + track.title_version
-											: '')
-									}}
-								</div>
-							</td>
-							<router-link
-								:to="{ name: 'Artist', params: { id: track.artist.id } }"
-								class="table__cell--medium table__cell--center clickable"
-								custom
-								v-slot="{ navigate }"
-							>
-								<td @click="navigate" @keypress.enter="navigate" role="link">{{ track.artist.name }}</td>
-							</router-link>
-							<router-link
-								v-if="type === 'playlist'"
-								:to="{ name: 'Album', params: { id: track.album.id } }"
-								class="table__cell--medium table__cell--center clickable"
-								custom
-								v-slot="{ navigate }"
-							>
-								<td @click="navigate" @keypress.enter="navigate" role="link">{{ track.album.title }}</td>
-							</router-link>
-							<td
-								:class="{ 'table__cell--small': type === 'album', 'table__cell--x-small': type === 'playlist' }"
-								class="table__cell--center"
-							>
-								{{ convertDuration(track.duration) }}
-							</td>
-							<td v-if="isLoggedIn" class="table__icon table__cell--center">
-								<input v-model="track.selected" class="clickable" type="checkbox" />
-							</td>
-						</tr>
-						<tr v-else-if="track.type == 'disc_separator'" class="table__row-no-highlight" style="opacity: 0.54">
-							<td>
-								<div class="table__cell-content table__cell-content--vertical-center" style="opacity: 0.54">
-									<i class="material-icons">album</i>
-								</div>
-							</td>
-							<td class="table__cell--center">
-								{{ track.number }}
-							</td>
-							<td colspan="4"></td>
-						</tr>
-					</template>
-				</template>
-				<template v-else>
-					<tr v-for="(track, i) in body">
-						<td>
-							<i
-								v-if="track.preview_url"
-								:class="{
-									preview_playlist_controls: track.preview_url,
-									'cursor-pointer': track.preview_url
-								}"
-								:data-preview="track.preview_url"
-								:title="$t('globals.play_hint')"
-								class="material-icons"
-								@click="playPausePreview"
-							>
-								play_arrow
-							</i>
-							<i v-else class="material-icons disabled">play_arrow</i>
-						</td>
-						<td>{{ i + 1 }}</td>
-						<td class="flex items-center">
-							<i v-if="track.explicit" class="material-icons title-icon">explicit</i>
-							{{ track.name }}
-						</td>
-						<td>{{ track.artists[0].name }}</td>
-						<td>{{ track.album.name }}</td>
-						<td>{{ convertDuration(Math.floor(track.duration_ms / 1000)) }}</td>
-						<td v-if="isLoggedIn"><input v-model="track.selected" class="clickable" type="checkbox" /></td>
-					</tr>
-				</template>
-			</tbody>
-		</table>
-		<span v-if="label" style="opacity: 0.4; margin-top: 8px; display: inline-block; font-size: 13px">{{ label }}</span>
-		<footer class="bg-background-main">
-			<template v-if="isLoggedIn">
-				<button :data-link="link" class="mr-2 btn btn-primary" @click.stop="addToQueue">
-					{{ `${$t('globals.download', { thing: $tc(`globals.listTabs.${type}`, 1) })}` }}
-				</button>
-				<button :data-link="selectedLinks()" class="flex items-center btn btn-primary" @click.stop="addToQueue">
-					{{ $t('tracklist.downloadSelection') }}<i class="ml-2 material-icons">file_download</i>
-				</button>
-			</template>
-			<p v-else>
-				<router-link :to="{ name: 'Settings' }" class="p3">{{ $t('toasts.loginNeededToDownload') }}</router-link>
-			</p>
-		</footer>
-	</div>
+    <table class="table table--tracklist">
+      <thead>
+        <tr>
+          <th>
+            <i class="material-icons">music_note</i>
+          </th>
+          <th>#</th>
+          <th>{{ $tc('globals.listTabs.title', 1) }}</th>
+          <th>{{ $tc('globals.listTabs.artist', 1) }}</th>
+          <th v-if="type === 'playlist'">
+            {{ $tc('globals.listTabs.album', 1) }}
+          </th>
+          <th>
+            <i class="material-icons">timer</i>
+          </th>
+          <th
+            v-if="isLoggedIn"
+            class="table__icon table__cell--center clickable"
+          >
+            <input
+              class="selectAll"
+              type="checkbox"
+              @click="toggleAll"
+            >
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <template v-if="type !== 'spotifyPlaylist'">
+          <template v-for="(track, index) in body">
+            <tr
+              v-if="track.type === 'track'"
+              @click="selectRow(index, track)"
+            >
+              <td class="table__cell--x-small table__cell--center">
+                <div class="table__cell-content table__cell-content--vertical-center">
+                  <i
+                    :class="{
+                      preview_playlist_controls: track.preview,
+                      'cursor-pointer': track.preview,
+                      disabled: !track.preview
+                    }"
+                    :data-preview="track.preview"
+                    :data-link-only="track.link"
+                    :title="$t('globals.play_hint')"
+                    class="material-icons"
+                    v-on="{ click: track.preview ? playPausePreview : false }"
+                  >
+                    play_arrow
+                  </i>
+                </div>
+              </td>
+              <td class="table__cell--small table__cell--center track_position">
+                {{ type === 'album' ? track.track_position : body.indexOf(track) + 1 }}
+              </td>
+              <td class="table__cell--large table__cell--with-icon">
+                <div class="table__cell-content table__cell-content--vertical-center">
+                  <i
+                    v-if="track.explicit_lyrics"
+                    class="material-icons title-icon"
+                  > explicit </i>
+                  {{
+                    track.title +
+                      (track.title_version && track.title.indexOf(track.title_version) == -1
+                        ? ' ' + track.title_version
+                        : '')
+                  }}
+                </div>
+              </td>
+              <router-link
+                v-slot="{ navigate }"
+                :to="{ name: 'Artist', params: { id: track.artist.id } }"
+                class="table__cell--medium table__cell--center clickable"
+                custom
+              >
+                <td
+                  role="link"
+                  @click="navigate"
+                  @keypress.enter="navigate"
+                >
+                  {{ track.artist.name }}
+                </td>
+              </router-link>
+              <router-link
+                v-if="type === 'playlist'"
+                v-slot="{ navigate }"
+                :to="{ name: 'Album', params: { id: track.album.id } }"
+                class="table__cell--medium table__cell--center clickable"
+                custom
+              >
+                <td
+                  role="link"
+                  @click="navigate"
+                  @keypress.enter="navigate"
+                >
+                  {{ track.album.title }}
+                </td>
+              </router-link>
+              <td
+                :class="{ 'table__cell--small': type === 'album', 'table__cell--x-small': type === 'playlist' }"
+                class="table__cell--center"
+              >
+                {{ convertDuration(track.duration) }}
+              </td>
+              <td
+                v-if="isLoggedIn"
+                class="table__icon table__cell--center"
+              >
+                <input
+                  v-model="track.selected"
+                  class="clickable"
+                  type="checkbox"
+                >
+              </td>
+            </tr>
+            <tr
+              v-else-if="track.type == 'disc_separator'"
+              class="table__row-no-highlight"
+              style="opacity: 0.54"
+            >
+              <td>
+                <div
+                  class="table__cell-content table__cell-content--vertical-center"
+                  style="opacity: 0.54"
+                >
+                  <i class="material-icons">album</i>
+                </div>
+              </td>
+              <td class="table__cell--center">
+                {{ track.number }}
+              </td>
+              <td colspan="4" />
+            </tr>
+          </template>
+        </template>
+        <template v-else>
+          <tr v-for="(track, i) in body">
+            <td>
+              <i
+                v-if="track.preview_url"
+                :class="{
+                  preview_playlist_controls: track.preview_url,
+                  'cursor-pointer': track.preview_url
+                }"
+                :data-preview="track.preview_url"
+                :title="$t('globals.play_hint')"
+                class="material-icons"
+                @click="playPausePreview"
+              >
+                play_arrow
+              </i>
+              <i
+                v-else
+                class="material-icons disabled"
+              >play_arrow</i>
+            </td>
+            <td>{{ i + 1 }}</td>
+            <td class="flex items-center">
+              <i
+                v-if="track.explicit"
+                class="material-icons title-icon"
+              >explicit</i>
+              {{ track.name }}
+            </td>
+            <td>{{ track.artists[0].name }}</td>
+            <td>{{ track.album.name }}</td>
+            <td>{{ convertDuration(Math.floor(track.duration_ms / 1000)) }}</td>
+            <td v-if="isLoggedIn">
+              <input
+                v-model="track.selected"
+                class="clickable"
+                type="checkbox"
+              >
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+    <span
+      v-if="label"
+      style="opacity: 0.4; margin-top: 8px; display: inline-block; font-size: 13px"
+    >{{ label }}</span>
+    <footer class="bg-background-main">
+      <template v-if="isLoggedIn">
+        <button
+          :data-link="link"
+          class="mr-2 btn btn-primary"
+          @click.stop="addToQueue"
+        >
+          {{ `${$t('globals.download', { thing: $tc(`globals.listTabs.${type}`, 1) })}` }}
+        </button>
+        <button
+          :data-link="selectedLinks()"
+          class="flex items-center btn btn-primary"
+          @click.stop="addToQueue"
+        >
+          {{ $t('tracklist.downloadSelection') }}<i class="ml-2 material-icons">file_download</i>
+        </button>
+      </template>
+      <p v-else>
+        <router-link
+          :to="{ name: 'Settings' }"
+          class="p3"
+        >
+          {{ $t('toasts.loginNeededToDownload') }}
+        </router-link>
+      </p>
+    </footer>
+  </div>
 </template>
 
 <script>

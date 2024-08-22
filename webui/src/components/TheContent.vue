@@ -1,30 +1,34 @@
 <template>
-	<main
-		id="content"
-		ref="content"
-		aria-label="main content"
-		@scroll="$route.name === 'Search' ? handleContentScroll($event) : null"
-	>
-		<div id="container">
-			<BackButton v-if="showBackButton" class="sticky -ml-20" style="top: 1rem" />
+  <main
+    id="content"
+    ref="content"
+    aria-label="main content"
+    @scroll="$route.name === 'Search' ? handleContentScroll($event) : null"
+  >
+    <div id="container">
+      <BackButton
+        v-if="showBackButton"
+        class="sticky -ml-20"
+        style="top: 1rem"
+      />
 
-			<keep-alive>
-				<router-view
-					v-if="!$route.meta.notKeepAlive"
-					:key="$route.fullPath"
-					:class="{ '-mt-16': showBackButton }"
-					:perform-scrolled-search="performScrolledSearch"
-				></router-view>
-			</keep-alive>
+      <keep-alive>
+        <router-view
+          v-if="!$route.meta.notKeepAlive"
+          :key="$route.fullPath"
+          :class="{ '-mt-16': showBackButton }"
+          :perform-scrolled-search="performScrolledSearch"
+        />
+      </keep-alive>
 
-			<router-view
-				v-if="$route.meta.notKeepAlive"
-				:key="$route.fullPath"
-				:class="{ '-mt-16': showBackButton }"
-				:perform-scrolled-search="performScrolledSearch"
-			></router-view>
-		</div>
-	</main>
+      <router-view
+        v-if="$route.meta.notKeepAlive"
+        :key="$route.fullPath"
+        :class="{ '-mt-16': showBackButton }"
+        :perform-scrolled-search="performScrolledSearch"
+      />
+    </div>
+  </main>
 </template>
 
 <script>

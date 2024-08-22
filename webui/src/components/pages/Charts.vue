@@ -1,66 +1,140 @@
 <template>
-	<div>
-		<h1 class="mb-8 text-5xl">{{ $t('charts.title') }} {{ country ? `- ${country}` : '' }}</h1>
+  <div>
+    <h1 class="mb-8 text-5xl">
+      {{ $t('charts.title') }} {{ country ? `- ${country}` : '' }}
+    </h1>
 
-		<div v-if="country">
-			<p>
-				<button class="btn btn-primary" @click="onChangeCountry">{{ $t('charts.changeCountry') }}</button>
-				<button v-if="isLoggedIn" :data-link="'https://www.deezer.com/playlist/' + id" class="btn btn-primary"
-					@click.stop="addToQueue">
-					{{ $t('charts.download') }}
-				</button>
-				<router-link :to="{ name: 'Settings' }" v-else class="p3 ml-3">{{ $t('toasts.loginNeededToDownload') }}</router-link>
-			</p>
-			<table class="table table--charts mt-6">
-				<tbody>
-					<tr v-for="(track, pos) in chart" :key="pos" class="track_row">
-						<td :class="{ first: pos === 0 }" class="p-3 text-center cursor-default">
-							{{ pos + 1 }}
-						</td>
-						<td class="table__icon table__icon--big">
-							<span :data-preview="track.preview" class="relative inline-block rounded cursor-pointer"
-								@click="playPausePreview">
-								<PreviewControls v-if="track.preview" />
-								<img :src="track.album.cover_small" class="rounded coverart" />
-							</span>
-						</td>
-						<td class="table__cell--large">
-							{{
-								track.title +
-								(track.title_version && track.title.indexOf(track.title_version) == -1 ? ' ' + track.title_version : '')
-							}}
-						</td>
-						<router-link :to="{ name: 'Artist', params: { id: track.artist.id } }"
-							class="table__cell table__cell--medium table__cell--center clickable" custom v-slot="{ navigate }">
-							<td @click="navigate" @keypress.enter="navigate" role="link">{{ track.artist.name }}</td>
-						</router-link>
-						<router-link :to="{ name: 'Album', params: { id: track.album.id } }"
-							class="table__cell--medium table__cell--center clickable" custom v-slot="{ navigate }">
-							<td @click="navigate" @keypress.enter="navigate" role="link">{{ track.album.title }}</td>
-						</router-link>
-						<td class="table__cell--small table__cell--center">
-							{{ convertDuration(track.duration) }}
-						</td>
-						<td v-if="isLoggedIn" :data-link="track.link" aria-label="download" class="group" role="button"
-							@click.stop="addToQueue">
-							<i :title="$t('globals.download_hint')"
-								class="transition-colors duration-150 ease-in-out material-icons group-hover:text-primary">
-								get_app
-							</i>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+    <div v-if="country">
+      <p>
+        <button
+          class="btn btn-primary"
+          @click="onChangeCountry"
+        >
+          {{ $t('charts.changeCountry') }}
+        </button>
+        <button
+          v-if="isLoggedIn"
+          :data-link="'https://www.deezer.com/playlist/' + id"
+          class="btn btn-primary"
+          @click.stop="addToQueue"
+        >
+          {{ $t('charts.download') }}
+        </button>
+        <router-link
+          v-else
+          :to="{ name: 'Settings' }"
+          class="p3 ml-3"
+        >
+          {{ $t('toasts.loginNeededToDownload') }}
+        </router-link>
+      </p>
+      <table class="table table--charts mt-6">
+        <tbody>
+          <tr
+            v-for="(track, pos) in chart"
+            :key="pos"
+            class="track_row"
+          >
+            <td
+              :class="{ first: pos === 0 }"
+              class="p-3 text-center cursor-default"
+            >
+              {{ pos + 1 }}
+            </td>
+            <td class="table__icon table__icon--big">
+              <span
+                :data-preview="track.preview"
+                class="relative inline-block rounded cursor-pointer"
+                @click="playPausePreview"
+              >
+                <PreviewControls v-if="track.preview" />
+                <img
+                  :src="track.album.cover_small"
+                  class="rounded coverart"
+                >
+              </span>
+            </td>
+            <td class="table__cell--large">
+              {{
+                track.title +
+                  (track.title_version && track.title.indexOf(track.title_version) == -1 ? ' ' + track.title_version : '')
+              }}
+            </td>
+            <router-link
+              v-slot="{ navigate }"
+              :to="{ name: 'Artist', params: { id: track.artist.id } }"
+              class="table__cell table__cell--medium table__cell--center clickable"
+              custom
+            >
+              <td
+                role="link"
+                @click="navigate"
+                @keypress.enter="navigate"
+              >
+                {{ track.artist.name }}
+              </td>
+            </router-link>
+            <router-link
+              v-slot="{ navigate }"
+              :to="{ name: 'Album', params: { id: track.album.id } }"
+              class="table__cell--medium table__cell--center clickable"
+              custom
+            >
+              <td
+                role="link"
+                @click="navigate"
+                @keypress.enter="navigate"
+              >
+                {{ track.album.title }}
+              </td>
+            </router-link>
+            <td class="table__cell--small table__cell--center">
+              {{ convertDuration(track.duration) }}
+            </td>
+            <td
+              v-if="isLoggedIn"
+              :data-link="track.link"
+              aria-label="download"
+              class="group"
+              role="button"
+              @click.stop="addToQueue"
+            >
+              <i
+                :title="$t('globals.download_hint')"
+                class="transition-colors duration-150 ease-in-out material-icons group-hover:text-primary"
+              >
+                get_app
+              </i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-		<div v-else class="release-grid">
-			<div v-for="release in countries" :key="release.id" :aria-label="release.title" :data-id="release.id"
-				:data-title="release.title" class="w-40 h-40 release clickable" role="button" tabindex="0" @click="getTrackList"
-				@keyup.enter="getTrackList">
-				<img :src="release.picture_medium" class="w-full rounded coverart" :alt="release.title" />
-			</div>
-		</div>
-	</div>
+    <div
+      v-else
+      class="release-grid"
+    >
+      <div
+        v-for="release in countries"
+        :key="release.id"
+        :aria-label="release.title"
+        :data-id="release.id"
+        :data-title="release.title"
+        class="w-40 h-40 release clickable"
+        role="button"
+        tabindex="0"
+        @click="getTrackList"
+        @keyup.enter="getTrackList"
+      >
+        <img
+          :src="release.picture_medium"
+          class="w-full rounded coverart"
+          :alt="release.title"
+        >
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

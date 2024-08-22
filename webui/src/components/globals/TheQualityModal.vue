@@ -1,26 +1,50 @@
 <template>
-	<div v-show="open" id="modal_quality" ref="modal" class="smallmodal" @click="tryToDownloadTrack($event)">
-		<div class="smallmodal-content">
-			<button class="btn btn-primary quality-button" data-quality-value="9">
-				{{ $t('globals.download', { thing: 'FLAC' }) }}
-			</button>
-			<button class="btn btn-primary quality-button" data-quality-value="3">
-				{{ $t('globals.download', { thing: 'MP3 320kbps' }) }}
-			</button>
-			<button class="btn btn-primary quality-button" data-quality-value="1">
-				{{ $t('globals.download', { thing: 'MP3 128kbps' }) }}
-			</button>
-			<button class="btn btn-primary quality-button" data-quality-value="15">
-				{{ $t('globals.download', { thing: '360 Reality Audio [HQ]' }) }}
-			</button>
-			<button class="btn btn-primary quality-button" data-quality-value="14">
-				{{ $t('globals.download', { thing: '360 Reality Audio [MQ]' }) }}
-			</button>
-			<button class="btn btn-primary quality-button" data-quality-value="13">
-				{{ $t('globals.download', { thing: '360 Reality Audio [LQ]' }) }}
-			</button>
-		</div>
-	</div>
+  <div
+    v-show="open"
+    id="modal_quality"
+    ref="modal"
+    class="smallmodal"
+    @click="tryToDownloadTrack($event)"
+  >
+    <div class="smallmodal-content">
+      <button
+        class="btn btn-primary quality-button"
+        data-quality-value="9"
+      >
+        {{ $t('globals.download', { thing: 'FLAC' }) }}
+      </button>
+      <button
+        class="btn btn-primary quality-button"
+        data-quality-value="3"
+      >
+        {{ $t('globals.download', { thing: 'MP3 320kbps' }) }}
+      </button>
+      <button
+        class="btn btn-primary quality-button"
+        data-quality-value="1"
+      >
+        {{ $t('globals.download', { thing: 'MP3 128kbps' }) }}
+      </button>
+      <button
+        class="btn btn-primary quality-button"
+        data-quality-value="15"
+      >
+        {{ $t('globals.download', { thing: '360 Reality Audio [HQ]' }) }}
+      </button>
+      <button
+        class="btn btn-primary quality-button"
+        data-quality-value="14"
+      >
+        {{ $t('globals.download', { thing: '360 Reality Audio [MQ]' }) }}
+      </button>
+      <button
+        class="btn btn-primary quality-button"
+        data-quality-value="13"
+      >
+        {{ $t('globals.download', { thing: '360 Reality Audio [LQ]' }) }}
+      </button>
+    </div>
+  </div>
 </template>
 
 <script>

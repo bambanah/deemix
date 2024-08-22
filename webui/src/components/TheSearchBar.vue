@@ -1,18 +1,40 @@
 <template>
-	<div id="search-wrapper">
-		<header id="search" aria-label="searchbar" :class="{ showSearchButton }">
-			<div v-if="!showSearchButton" class="search__icon">
-				<i class="material-icons">search</i>
-			</div>
+  <div id="search-wrapper">
+    <header
+      id="search"
+      aria-label="searchbar"
+      :class="{ showSearchButton }"
+    >
+      <div
+        v-if="!showSearchButton"
+        class="search__icon"
+      >
+        <i class="material-icons">search</i>
+      </div>
 
-			<input id="searchbar" ref="searchbar" class="w-full" autocomplete="off" type="search" name="searchbar" value=""
-				:placeholder="$t('searchbar')" autofocus @keyup="keyPerformSearch($event)" />
-			<!-- @keyup.enter.exact="onEnter"
+      <input
+        id="searchbar"
+        ref="searchbar"
+        class="w-full"
+        autocomplete="off"
+        type="search"
+        name="searchbar"
+        value=""
+        :placeholder="$t('searchbar')"
+        autofocus
+        @keyup="keyPerformSearch($event)"
+      >
+      <!-- @keyup.enter.exact="onEnter"
 				@keyup.ctrl.enter="onCTRLEnter" -->
-			<a v-if="showSearchButton" href="#" class="searchButton" @contextmenu="rightClickPerformSearch"
-				@click="clickPerformSearch"><i class="material-icons">search</i></a>
-		</header>
-	</div>
+      <a
+        v-if="showSearchButton"
+        href="#"
+        class="searchButton"
+        @contextmenu="rightClickPerformSearch"
+        @click="clickPerformSearch"
+      ><i class="material-icons">search</i></a>
+    </header>
+  </div>
 </template>
 
 <script>
