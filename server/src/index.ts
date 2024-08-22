@@ -19,7 +19,10 @@ if (!isModule) {
   const DEEMIX_HOST = process.env.DEEMIX_HOST ?? argv.host;
   const DEEMIX_LOCATION_BASE =
     process.env.DEEMIX_LOCATION_BASE ?? argv.locationbase;
-  const IS_SINGLE_USER = !!process.env.DEEMIX_SINGLE_USER ?? !!argv.singleuser;
+  const IS_SINGLE_USER =
+    process.env.DEEMIX_SINGLE_USER === undefined
+      ? !!argv.singleuser
+      : process.env.DEEMIX_SINGLE_USER === "true";
 
   const server = new DeemixServer(
     DEEMIX_HOST,
