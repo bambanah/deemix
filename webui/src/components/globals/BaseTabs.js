@@ -1,34 +1,34 @@
-/* eslint-disable vue/one-component-per-file */
-import { defineComponent } from '@vue/composition-api'
+ 
+import { defineComponent } from "@vue/composition-api";
 
 // https://vuejs.org/v2/guide/render-function.html
 // https://vuejs.org/v2/guide/render-function.html#createElement-Arguments
 export const BaseTab = defineComponent({
-  name: 'BaseTab',
+  name: "BaseTab",
   functional: true,
-  render (h, ctx) {
+  render(h, ctx) {
     return h(
-      'li',
+      "li",
       {
-        class: [ctx.data.class, 'section-tabs__tab', 'uppercase-first-letter'],
-        on: ctx.data.on
+        class: [ctx.data.class, "section-tabs__tab", "uppercase-first-letter"],
+        on: ctx.data.on,
       },
-      ctx.slots().default
-    )
-  }
-})
+      ctx.slots().default,
+    );
+  },
+});
 
 export const BaseTabs = defineComponent({
-  name: 'BaseTabs',
+  name: "BaseTabs",
   functional: true,
-  render (h, ctx) {
+  render(h, ctx) {
     return h(
-      'ul',
+      "ul",
       {
-        class: [ctx.data.class, 'my-8', 'section-tabs'],
-        on: ctx.data.on
+        class: [ctx.data.class, "my-8", "section-tabs"],
+        on: ctx.data.on,
       },
-      ctx.slots().default
-    )
-  }
-})
+      ctx.slots().default,
+    );
+  },
+});

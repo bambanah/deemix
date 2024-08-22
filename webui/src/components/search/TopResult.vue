@@ -4,13 +4,12 @@
       v-slot="{ navigate }"
       custom
       class="cursor-pointer"
-      :to="{ name: upperCaseFirstLowerCaseRest($attrs.info.type), params: { id: $attrs.info.id } }"
+      :to="{
+        name: upperCaseFirstLowerCaseRest($attrs.info.type),
+        params: { id: $attrs.info.id },
+      }"
     >
-      <div
-        role="link"
-        @click="navigate"
-        @keypress.enter="navigate"
-      >
+      <div role="link" @click="navigate" @keypress.enter="navigate">
         <CoverContainer
           class="w-40 h-40"
           :is-rounded="$attrs.info.type !== 'artist'"
@@ -20,7 +19,9 @@
           @click.stop="$emit('add-to-queue', $event)"
         />
 
-        <p class="mt-4 mb-1 text-xl text-center transition-colors duration-200 ease-in-out hover:text-primary">
+        <p
+          class="mt-4 mb-1 text-xl text-center transition-colors duration-200 ease-in-out hover:text-primary"
+        >
           {{ $attrs.info.title }}
         </p>
       </div>
@@ -36,32 +37,32 @@
 </template>
 
 <script>
-import { upperCaseFirstLowerCaseRest } from '@/utils/texts'
-import CoverContainer from '@/components/globals/CoverContainer.vue'
+import { upperCaseFirstLowerCaseRest } from "@/utils/texts";
+import CoverContainer from "@/components/globals/CoverContainer.vue";
 
 export default {
-	components: {
-		CoverContainer
-	},
-	computed: {
-		fansNumber() {
-			let number
+  components: {
+    CoverContainer,
+  },
+  computed: {
+    fansNumber() {
+      let number;
 
-			try {
-				number = this.$n(this.$attrs.info.nb_fan)
-			} catch (error) {
-				number = this.$n(this.$attrs.info.nb_fan, { locale: 'en' })
-			}
+      try {
+        number = this.$n(this.$attrs.info.nb_fan);
+      } catch (error) {
+        number = this.$n(this.$attrs.info.nb_fan, { locale: "en" });
+      }
 
-			return this.$attrs.info.type === 'artist'
-				? this.$t('search.fans', { n: number })
-				: this.$t('globals.by', { artist: this.$attrs.info.artist }) +
-						' - ' +
-						this.$tc('globals.listTabs.trackN', this.$attrs.info.nb_song)
-		}
-	},
-	methods: {
-		upperCaseFirstLowerCaseRest
-	}
-}
+      return this.$attrs.info.type === "artist"
+        ? this.$t("search.fans", { n: number })
+        : this.$t("globals.by", { artist: this.$attrs.info.artist }) +
+            " - " +
+            this.$tc("globals.listTabs.trackN", this.$attrs.info.nb_song);
+    },
+  },
+  methods: {
+    upperCaseFirstLowerCaseRest,
+  },
+};
 </script>

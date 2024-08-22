@@ -9,6 +9,6 @@
 
 <style scoped>
 button {
-	transition: background 200ms ease-in-out;
+  transition: background 200ms ease-in-out;
 }
 </style>

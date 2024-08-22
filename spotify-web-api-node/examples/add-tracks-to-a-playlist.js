@@ -1,4 +1,4 @@
-const SpotifyWebApi = require('../');
+const SpotifyWebApi = require("../");
 
 /**
  * This example demonstrates adding tracks to a specified position in a playlist.
@@ -13,37 +13,37 @@ const SpotifyWebApi = require('../');
 
 /* Obtain the `authorizationCode` below as described in the Authorization section of the README.
  */
-const authorizationCode = '<insert authorization code>';
+const authorizationCode = "<insert authorization code>";
 
 /**
  * Get the credentials from Spotify's Dashboard page.
  * https://developer.spotify.com/dashboard/applications
  */
 const spotifyApi = new SpotifyWebApi({
-  clientId: '<insert client id>',
-  clientSecret: '<insert client secret>',
-  redirectUri: '<insert redirect URI>'
+  clientId: "<insert client id>",
+  clientSecret: "<insert client secret>",
+  redirectUri: "<insert redirect URI>",
 });
 
 // First retrieve an access token
 spotifyApi
   .authorizationCodeGrant(authorizationCode)
-  .then(function(data) {
-    spotifyApi.setAccessToken(data.body['access_token']);
+  .then(function (data) {
+    spotifyApi.setAccessToken(data.body["access_token"]);
     return spotifyApi.addTracksToPlaylist(
-      '5ieJqeLJjjI8iJWaxeBLuK',
+      "5ieJqeLJjjI8iJWaxeBLuK",
       [
-        'spotify:track:4iV5W9uYEdYUVa79Axb7Rh',
-        'spotify:track:1301WleyT98MSxVHPZCA6M'
+        "spotify:track:4iV5W9uYEdYUVa79Axb7Rh",
+        "spotify:track:1301WleyT98MSxVHPZCA6M",
       ],
       {
-        position: 10
-      }
+        position: 10,
+      },
     );
   })
-  .then(function(data) {
-    console.log('Added tracks to the playlist!');
+  .then(function (data) {
+    console.log("Added tracks to the playlist!");
   })
-  .catch(function(err) {
-    console.log('Something went wrong:', err.message);
+  .catch(function (err) {
+    console.log("Something went wrong:", err.message);
   });

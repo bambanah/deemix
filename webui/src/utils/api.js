@@ -1,47 +1,59 @@
-export function fetchData (key, data = {}, method = 'GET') {
-  const url = new URL(`${window.location.origin}${window.location.base}api/${key}`)
+export function fetchData(key, data = {}, method = "GET") {
+  const url = new URL(
+    `${window.location.origin}${window.location.base}api/${key}`,
+  );
 
-  Object.keys(data).forEach(key => {
-    url.searchParams.append(key, data[key])
-  })
+  Object.keys(data).forEach((key) => {
+    url.searchParams.append(key, data[key]);
+  });
 
   return fetch(url.href, { method })
-    .then(response => response.json())
-    .catch(error => {
-      console.error('There has been a problem with your fetch operation:', error)
-      return Promise.reject(error)
-    })
+    .then((response) => response.json())
+    .catch((error) => {
+      console.error(
+        "There has been a problem with your fetch operation:",
+        error,
+      );
+      return Promise.reject(error);
+    });
 }
 
-export function sendToServer (key, data) {
-  const url = new URL(`${window.location.origin}${window.location.base}api/${key}`)
+export function sendToServer(key, data) {
+  const url = new URL(
+    `${window.location.origin}${window.location.base}api/${key}`,
+  );
 
-  Object.keys(data).forEach(key => {
-    url.searchParams.append(key, data[key])
-  })
+  Object.keys(data).forEach((key) => {
+    url.searchParams.append(key, data[key]);
+  });
 
-  fetch(url.href).catch(error => {
-    console.error('There has been a problem with your fetch operation:', error)
-  })
+  fetch(url.href).catch((error) => {
+    console.error("There has been a problem with your fetch operation:", error);
+  });
 }
 
-export function postToServer (endpoint, data) {
-  const url = new URL(`${window.location.origin}${window.location.base}api/${endpoint}`)
+export function postToServer(endpoint, data) {
+  const url = new URL(
+    `${window.location.origin}${window.location.base}api/${endpoint}`,
+  );
 
   return fetch(url, {
     body: JSON.stringify(data),
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json",
     },
-    method: 'POST'
+    method: "POST",
   })
-    .then(response => {
+    .then((response) => {
       if (!response.ok) {
-        throw new Error('Network response was not ok')
+        throw new Error("Network response was not ok");
       }
-      return response.json()
+      return response.json();
     })
-    .catch(error => {
-      console.error('There has been a problem with your fetch operation:', error)
-    })
+    .catch((error) => {
+      console.error(
+        "There has been a problem with your fetch operation:",
+        error,
+      );
+    });
 }

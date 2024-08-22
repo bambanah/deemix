@@ -1,4 +1,4 @@
-const SpotifyWebApi = require('../');
+const SpotifyWebApi = require("../");
 
 /*
  * This example shows how to search for a track. The endpoint is documented here:
@@ -10,36 +10,38 @@ const SpotifyWebApi = require('../');
  * Obtain the `authorizationCode` below as described in the Authorization section of the README.
  */
 
-const authorizationCode = '<insert authorization code>';
+const authorizationCode = "<insert authorization code>";
 
 /**
  * Get the credentials from Spotify's Dashboard page.
  * https://developer.spotify.com/dashboard/applications
  */
 const spotifyApi = new SpotifyWebApi({
-  clientId: '<insert client id>',
-  clientSecret: '<insert client secret>',
-  redirectUri: '<insert redirect URI>'
+  clientId: "<insert client id>",
+  clientSecret: "<insert client secret>",
+  redirectUri: "<insert redirect URI>",
 });
 
 spotifyApi
   .authorizationCodeGrant(authorizationCode)
-  .then(function(data) {
-    console.log('Retrieved access token', data.body['access_token']);
+  .then(function (data) {
+    console.log("Retrieved access token", data.body["access_token"]);
 
     // Set the access token
-    spotifyApi.setAccessToken(data.body['access_token']);
+    spotifyApi.setAccessToken(data.body["access_token"]);
 
     // Use the access token to retrieve information about the user connected to it
-    return spotifyApi.searchTracks('Love');
+    return spotifyApi.searchTracks("Love");
   })
-  .then(function(data) {
+  .then(function (data) {
     // Print some information about the results
-    console.log('I got ' + data.body.tracks.total + ' results!');
+    console.log("I got " + data.body.tracks.total + " results!");
 
     // Go through the first page of results
     var firstPage = data.body.tracks.items;
-    console.log('The tracks in the first page are (popularity in parentheses):');
+    console.log(
+      "The tracks in the first page are (popularity in parentheses):",
+    );
 
     /*
      * 0: All of Me (97)
@@ -47,9 +49,10 @@ spotifyApi
      * 2: I Love This Life (78)
      * ...
      */
-    firstPage.forEach(function(track, index) {
-      console.log(index + ': ' + track.name + ' (' + track.popularity + ')');
+    firstPage.forEach(function (track, index) {
+      console.log(index + ": " + track.name + " (" + track.popularity + ")");
     });
-  }).catch(function(err) {
-    console.log('Something went wrong:', err.message);
+  })
+  .catch(function (err) {
+    console.log("Something went wrong:", err.message);
   });

@@ -10,12 +10,15 @@
 </template>
 
 <script>
-import { previewMouseEnter, previewMouseLeave } from '@/components/globals/TheTrackPreview.vue'
+import {
+  previewMouseEnter,
+  previewMouseLeave,
+} from "@/components/globals/TheTrackPreview.vue";
 
 export default {
-	methods: {
-		previewMouseEnter,
-		previewMouseLeave
-	}
-}
+  methods: {
+    previewMouseEnter,
+    previewMouseLeave,
+  },
+};
 </script>

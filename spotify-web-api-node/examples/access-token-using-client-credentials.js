@@ -1,4 +1,4 @@
-const SpotifyWebApi = require('../');
+const SpotifyWebApi = require("../");
 
 /**
  * This example retrieves an access token using the Client Credentials Flow, documented at:
@@ -10,23 +10,23 @@ const SpotifyWebApi = require('../');
  * https://developer.spotify.com/dashboard/applications
  */
 const spotifyApi = new SpotifyWebApi({
-  clientId: '<insert client id>',
-  clientSecret: '<insert client secret>'
+  clientId: "<insert client id>",
+  clientSecret: "<insert client secret>",
 });
 
 // Retrieve an access token
 spotifyApi.clientCredentialsGrant().then(
-  function(data) {
-    console.log('The access token expires in ' + data.body['expires_in']);
-    console.log('The access token is ' + data.body['access_token']);
+  function (data) {
+    console.log("The access token expires in " + data.body["expires_in"]);
+    console.log("The access token is " + data.body["access_token"]);
 
     // Save the access token so that it's used in future calls
-    spotifyApi.setAccessToken(data.body['access_token']);
+    spotifyApi.setAccessToken(data.body["access_token"]);
   },
-  function(err) {
+  function (err) {
     console.log(
-      'Something went wrong when retrieving an access token',
-      err.message
+      "Something went wrong when retrieving an access token",
+      err.message,
     );
-  }
+  },
 );

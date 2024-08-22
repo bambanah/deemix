@@ -1,12 +1,9 @@
 <template>
   <section>
-    <ResultsError
-      v-if="viewInfo.ERROR"
-      :error="viewInfo.ERROR"
-    />
+    <ResultsError v-if="viewInfo.ERROR" :error="viewInfo.ERROR" />
     <div v-else-if="!thereAreResults">
       <h1 class="text-center">
-        {{ $t('search.noResults') }}
+        {{ $t("search.noResults") }}
       </h1>
     </div>
 
@@ -22,7 +19,7 @@
             :class="{
               'text-4xl text-center': section === 'TOP_RESULT',
               'inline-block cursor-pointer text-3xl hover:text-primary transition-colors duration-200 ease-in-out':
-                section !== 'TOP_RESULT'
+                section !== 'TOP_RESULT',
             }"
             @click="$emit('change-search-tab', section)"
           >
@@ -65,63 +62,70 @@
 </template>
 
 <script>
-import { convertDuration } from '@/utils/utils'
-import { upperCaseFirstLowerCaseRest } from '@/utils/texts'
-import TopResult from '@/components/search/TopResult.vue'
-import ResultsTracks from '@/components/search/ResultsTracks.vue'
-import ResultsAlbums from '@/components/search/ResultsAlbums.vue'
-import ResultsArtists from '@/components/search/ResultsArtists.vue'
-import ResultsPlaylists from '@/components/search/ResultsPlaylists.vue'
-import ResultsError from '@/components/search/ResultsError.vue'
+import { convertDuration } from "@/utils/utils";
+import { upperCaseFirstLowerCaseRest } from "@/utils/texts";
+import TopResult from "@/components/search/TopResult.vue";
+import ResultsTracks from "@/components/search/ResultsTracks.vue";
+import ResultsAlbums from "@/components/search/ResultsAlbums.vue";
+import ResultsArtists from "@/components/search/ResultsArtists.vue";
+import ResultsPlaylists from "@/components/search/ResultsPlaylists.vue";
+import ResultsError from "@/components/search/ResultsError.vue";
 
-import { formatSingleTrack, formatAlbums, formatArtist, formatPlaylist } from '@/data/search'
-import { standardizeData } from '@/data/standardize'
+import {
+  formatSingleTrack,
+  formatAlbums,
+  formatArtist,
+  formatPlaylist,
+} from "@/data/search";
+import { standardizeData } from "@/data/standardize";
 
 export default {
-	components: {
-		TopResult,
-		ResultsTracks,
-		ResultsAlbums,
-		ResultsArtists,
-		ResultsPlaylists,
-		ResultsError
-	},
-	props: {
-		viewInfo: {
-			type: Object,
-			required: true
-		}
-	},
-	computed: {
-		thereAreResults() {
-			const areInfosLoaded = !!this.viewInfo
+  components: {
+    TopResult,
+    ResultsTracks,
+    ResultsAlbums,
+    ResultsArtists,
+    ResultsPlaylists,
+    ResultsError,
+  },
+  props: {
+    viewInfo: {
+      type: Object,
+      required: true,
+    },
+  },
+  computed: {
+    thereAreResults() {
+      const areInfosLoaded = !!this.viewInfo;
 
-			if (!areInfosLoaded) {
-				return false
-			}
+      if (!areInfosLoaded) {
+        return false;
+      }
 
-			const noResultsPresent = this.viewInfo.ORDER.every(section =>
-				section === 'TOP_RESULT' ? this.viewInfo[section].length === 0 : this.viewInfo[section].data.length === 0
-			)
+      const noResultsPresent = this.viewInfo.ORDER.every((section) =>
+        section === "TOP_RESULT"
+          ? this.viewInfo[section].length === 0
+          : this.viewInfo[section].data.length === 0,
+      );
 
-			return !noResultsPresent
-		}
-	},
-	methods: {
-		convertDuration,
-		upperCaseFirstLowerCaseRest,
-		standardizeData,
-		formatSingleTrack,
-		formatAlbums,
-		formatArtist,
-		formatPlaylist,
-		checkSectionResults(section) {
-			if (section === 'TOP_RESULT') {
-				return !!this.viewInfo.TOP_RESULT[0]
-			} else {
-				return !!this.viewInfo[section].data[0]
-			}
-		}
-	}
-}
+      return !noResultsPresent;
+    },
+  },
+  methods: {
+    convertDuration,
+    upperCaseFirstLowerCaseRest,
+    standardizeData,
+    formatSingleTrack,
+    formatAlbums,
+    formatArtist,
+    formatPlaylist,
+    checkSectionResults(section) {
+      if (section === "TOP_RESULT") {
+        return !!this.viewInfo.TOP_RESULT[0];
+      } else {
+        return !!this.viewInfo[section].data[0];
+      }
+    },
+  },
+};
 </script>
