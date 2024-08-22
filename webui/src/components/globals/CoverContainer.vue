@@ -1,23 +1,26 @@
 <template>
-	<div class="relative cover-container group">
-		<img
-			aria-hidden="true"
-			class="block w-full opacity-100 coverart"
-			:class="{ rounded: isRounded, 'rounded-full': isCircle }"
-			:src="cover"
-		/>
+  <div class="relative cover-container group">
+    <img
+      aria-hidden="true"
+      class="block w-full opacity-100 coverart"
+      :class="{ rounded: isRounded, 'rounded-full': isCircle }"
+      :src="cover"
+    >
 
-		<button
-			role="button"
-			aria-label="download"
-			:data-link="link"
-			class="absolute p-0 text-center bg-black border-0 rounded-full opacity-0 download_overlay hover:bg-primary"
-			tabindex="0"
-			v-on="$listeners"
-		>
-			<i class="text-white cursor-pointer material-icons" :title="$t('globals.download_hint')">get_app</i>
-		</button>
-	</div>
+    <button
+      role="button"
+      aria-label="download"
+      :data-link="link"
+      class="absolute p-0 text-center bg-black border-0 rounded-full opacity-0 download_overlay hover:bg-primary"
+      tabindex="0"
+      v-on="$listeners"
+    >
+      <i
+        class="text-white cursor-pointer material-icons"
+        :title="$t('globals.download_hint')"
+      >get_app</i>
+    </button>
+  </div>
 </template>
 
 <script>

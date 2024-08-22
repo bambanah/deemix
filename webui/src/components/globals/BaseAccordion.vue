@@ -1,13 +1,19 @@
 <template functional>
-	<details :class="[data.staticClass]" :open="props.open" :style="data.staticStyle">
-		<summary class="cursor-pointer">
-			<slot name="title">Setting</slot>
-		</summary>
+  <details
+    :class="[data.staticClass]"
+    :open="props.open"
+    :style="data.staticStyle"
+  >
+    <summary class="cursor-pointer">
+      <slot name="title">
+        Setting
+      </slot>
+    </summary>
 
-		<div class="ml-10 mb-5">
-			<slot name="default"></slot>
-		</div>
-	</details>
+    <div class="ml-10 mb-5">
+      <slot name="default" />
+    </div>
+  </details>
 </template>
 
 <script>

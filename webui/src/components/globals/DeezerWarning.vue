@@ -1,12 +1,18 @@
 <template>
-	<div>
-		<div id="deezer_not_available" class="warning hide">
-			<i class="material-icons">warning</i> {{ $t('toasts.deezerNotAvailable') }}
-		</div>
-		<div id="deezer_not_reachable" class="warning hide">
-			<i class="material-icons">warning</i> {{ $t('toasts.deezerNotReachable') }}
-		</div>
-	</div>
+  <div>
+    <div
+      id="deezer_not_available"
+      class="warning hide"
+    >
+      <i class="material-icons">warning</i> {{ $t('toasts.deezerNotAvailable') }}
+    </div>
+    <div
+      id="deezer_not_reachable"
+      class="warning hide"
+    >
+      <i class="material-icons">warning</i> {{ $t('toasts.deezerNotReachable') }}
+    </div>
+  </div>
 </template>
 
 <style>

@@ -1,41 +1,62 @@
 <template>
-	<section>
-		<BaseLoadingPlaceholder v-if="isLoading" />
+  <section>
+    <BaseLoadingPlaceholder v-if="isLoading" />
 
-		<template v-else>
-			<ResultsError v-if="viewInfo.error" :error="viewInfo.error"></ResultsError>
-			<div v-else-if="viewInfo.data.length === 0">
-				<h1 class="text-center">{{ $t('search.noResultsPlaylist') }}</h1>
-			</div>
-			<div v-else class="release-grid">
-				<div v-for="playlist in viewInfo.data.slice(0, itemsToShow)" :key="playlist.playlistID" class="w-40 release">
-					<router-link custom v-slot="{ navigate }" class="cursor-pointer" :to="{ name: 'Playlist', params: { id: playlist.playlistID } }">
-						<div @click="navigate" @keypress.enter="navigate" role="link">
-							<CoverContainer
-								is-rounded
-								:cover="playlist.playlistPictureMedium"
-								:link="playlist.playlistLink"
-								@click.stop="$emit('add-to-queue', $event)"
-							/>
+    <template v-else>
+      <ResultsError
+        v-if="viewInfo.error"
+        :error="viewInfo.error"
+      />
+      <div v-else-if="viewInfo.data.length === 0">
+        <h1 class="text-center">
+          {{ $t('search.noResultsPlaylist') }}
+        </h1>
+      </div>
+      <div
+        v-else
+        class="release-grid"
+      >
+        <div
+          v-for="playlist in viewInfo.data.slice(0, itemsToShow)"
+          :key="playlist.playlistID"
+          class="w-40 release"
+        >
+          <router-link
+            v-slot="{ navigate }"
+            custom
+            class="cursor-pointer"
+            :to="{ name: 'Playlist', params: { id: playlist.playlistID } }"
+          >
+            <div
+              role="link"
+              @click="navigate"
+              @keypress.enter="navigate"
+            >
+              <CoverContainer
+                is-rounded
+                :cover="playlist.playlistPictureMedium"
+                :link="playlist.playlistLink"
+                @click.stop="$emit('add-to-queue', $event)"
+              />
 
-							<span class="primary-text">
-								{{ playlist.playlistTitle }}
-							</span>
-						</div>
-					</router-link>
+              <span class="primary-text">
+                {{ playlist.playlistTitle }}
+              </span>
+            </div>
+          </router-link>
 
-					<p class="secondary-text">
-						{{
-							`${$t('globals.by', { artist: playlist.artistName })} - ${$tc(
-								'globals.listTabs.trackN',
-								playlist.playlistTracksNumber
-							)}`
-						}}
-					</p>
-				</div>
-			</div>
-		</template>
-	</section>
+          <p class="secondary-text">
+            {{
+              `${$t('globals.by', { artist: playlist.artistName })} - ${$tc(
+                'globals.listTabs.trackN',
+                playlist.playlistTracksNumber
+              )}`
+            }}
+          </p>
+        </div>
+      </div>
+    </template>
+  </section>
 </template>
 
 <script>

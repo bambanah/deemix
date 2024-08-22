@@ -1,50 +1,72 @@
 <template>
-	<div class="download-object" :data-link-only="generateLink">
-		<div class="download-info">
-			<div class="relative coverart rounded">
-				<img width="75px" :src="queueItem.cover" :alt="`Cover ${queueItem.title}`">
-				<span v-if="showTags" class="tag">{{ bitrateText }}</span>
-			</div>
+  <div
+    class="download-object"
+    :data-link-only="generateLink"
+  >
+    <div class="download-info">
+      <div class="relative coverart rounded">
+        <img
+          width="75px"
+          :src="queueItem.cover"
+          :alt="`Cover ${queueItem.title}`"
+        >
+        <span
+          v-if="showTags"
+          class="tag"
+        >{{ bitrateText }}</span>
+      </div>
 
-			<div class="download-info-data">
-				<span class="download-line">
-					<i v-if="queueItem.explicit" class="material-icons explicit-icon">explicit</i> {{ queueItem.title }}
-				</span>
-				<span class="download-slim-separator"> - </span>
-				<span>{{ queueItem.artist }}</span>
-			</div>
+      <div class="download-info-data">
+        <span class="download-line">
+          <i
+            v-if="queueItem.explicit"
+            class="material-icons explicit-icon"
+          >explicit</i> {{ queueItem.title }}
+        </span>
+        <span class="download-slim-separator"> - </span>
+        <span>{{ queueItem.artist }}</span>
+      </div>
 
-			<div class="download-info-status" style="text-align: center">
-				<span class="download-line"> {{ queueItem.downloaded + queueItem.failed }}/{{ queueItem.size }} </span>
+      <div
+        class="download-info-status"
+        style="text-align: center"
+      >
+        <span class="download-line"> {{ queueItem.downloaded + queueItem.failed }}/{{ queueItem.size }} </span>
 
-				<span
-					v-if="hasFails"
-					class="flex items-center"
-					:class="{ clickable: hasFails }"
-					style="justify-content: center"
-					@click="hasFails ? $emit('show-errors', queueItem) : null"
-				>
-					{{ queueItem.failed }}
-					<i class="material-icons">error_outline</i>
-				</span>
-			</div>
-		</div>
+        <span
+          v-if="hasFails"
+          class="flex items-center"
+          :class="{ clickable: hasFails }"
+          style="justify-content: center"
+          @click="hasFails ? $emit('show-errors', queueItem) : null"
+        >
+          {{ queueItem.failed }}
+          <i class="material-icons">error_outline</i>
+        </span>
+      </div>
+    </div>
 
-		<div class="download-bar">
-			<div class="progress">
-				<div :class="barClass" :style="barStyle"></div>
-			</div>
-			<i
-				v-if="!isLoading"
-				class="material-icons queue_icon"
-				:class="{ clickable: finishedWithFails || resultIconText === 'delete_forever' }"
-				@click="onResultIconClick"
-			>
-				{{ resultIconText }}
-			</i>
-			<div v-else class="circle-loader"></div>
-		</div>
-	</div>
+    <div class="download-bar">
+      <div class="progress">
+        <div
+          :class="barClass"
+          :style="barStyle"
+        />
+      </div>
+      <i
+        v-if="!isLoading"
+        class="material-icons queue_icon"
+        :class="{ clickable: finishedWithFails || resultIconText === 'delete_forever' }"
+        @click="onResultIconClick"
+      >
+        {{ resultIconText }}
+      </i>
+      <div
+        v-else
+        class="circle-loader"
+      />
+    </div>
+  </div>
 </template>
 
 <script>

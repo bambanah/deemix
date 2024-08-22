@@ -430,7 +430,7 @@ function map_track (track) {
 
 // Cleanup terms that can hurt search results
 function clean_search_query (term) {
-  /* eslint-disable no-useless-escape */
+   
   term = term.replaceAll(/ feat[\.]? /g, ' ')
   term = term.replaceAll(/ ft[\.]? /g, ' ')
   term = term.replaceAll(/\(feat[\.]? /g, ' ')

@@ -1,7 +1,16 @@
 <template>
-	<audio id="preview-track" ref="preview" @canplay="onCanPlay" @timeupdate="onTimeUpdate">
-		<source id="preview-track_source" src="" type="audio/mpeg" />
-	</audio>
+  <audio
+    id="preview-track"
+    ref="preview"
+    @canplay="onCanPlay"
+    @timeupdate="onTimeUpdate"
+  >
+    <source
+      id="preview-track_source"
+      src=""
+      type="audio/mpeg"
+    >
+  </audio>
 </template>
 
 <script>

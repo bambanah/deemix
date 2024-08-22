@@ -1,15 +1,20 @@
 <template>
-	<div v-show="menuOpen" ref="contextMenu" class="context-menu" :style="{ top: yPos, left: xPos }">
-		<button
-			v-for="option of sortedOptions"
-			v-show="option.show"
-			:key="option.label"
-			class="btn menu-option"
-			@click.prevent="option.action"
-		>
-			<span class="menu-option__text">{{ option.label }}</span>
-		</button>
-	</div>
+  <div
+    v-show="menuOpen"
+    ref="contextMenu"
+    class="context-menu"
+    :style="{ top: yPos, left: xPos }"
+  >
+    <button
+      v-for="option of sortedOptions"
+      v-show="option.show"
+      :key="option.label"
+      class="btn menu-option"
+      @click.prevent="option.action"
+    >
+      <span class="menu-option__text">{{ option.label }}</span>
+    </button>
+  </div>
 </template>
 
 <script>

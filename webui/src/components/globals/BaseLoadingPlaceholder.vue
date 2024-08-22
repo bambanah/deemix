@@ -1,18 +1,18 @@
 <template functional>
-	<div
-		v-show="!props.hidden"
-		class="flex justify-center items-center flex-col flex-1 h-full"
-		:class="props.additionalClasses"
-	>
-		<span class="mb-5">{{ props.text || 'Loading...' }}</span>
+  <div
+    v-show="!props.hidden"
+    class="flex justify-center items-center flex-col flex-1 h-full"
+    :class="props.additionalClasses"
+  >
+    <span class="mb-5">{{ props.text || 'Loading...' }}</span>
 
-		<div class="lds-ring">
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-		</div>
-	</div>
+    <div class="lds-ring">
+      <div />
+      <div />
+      <div />
+      <div />
+    </div>
+  </div>
 </template>
 
 <style scoped>
