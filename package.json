@@ -17,12 +17,17 @@
     "build-server": "pnpm -C server build",
     "build-webui": "pnpm -C webui build",
     "set-version": "node scripts/set-version.js",
-    "reset-version": "node scripts/reset-version.js"
+    "reset-version": "node scripts/reset-version.js",
+    "lint": "eslint ."
   },
   "devDependencies": {
+    "@eslint/js": "^9.9.0",
     "@yao-pkg/pkg": "5.12.0",
     "electron": "^22.0.0",
-    "electron-builder": "^23.6.0"
+    "electron-builder": "^23.6.0",
+    "eslint": "^9.9.0",
+    "eslint-plugin-vue": "^9.27.0",
+    "globals": "^15.9.0"
   },
   "dependencies": {
     "electron-context-menu": "^3.6.1",
