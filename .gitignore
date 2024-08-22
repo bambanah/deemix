@@ -34,8 +34,6 @@ build/Release
 
 # Dependency directories
 node_modules/
-jspm_packages/
-yarn.lock
 
 # Typescript v1 declaration files
 typings/
@@ -52,14 +50,8 @@ typings/
 # Output of 'npm pack'
 *.tgz
 
-# Yarn Integrity file
-.yarn-integrity
-
 # dotenv environment variables file
 .env
-
-# next.js build output
-.next
 
 # IDE
 .vscode
@@ -70,5 +62,5 @@ typings/
 dev.sh
 
 # distribution and temp bundles
-dist/*
+dist/
 webui/public/js/*
