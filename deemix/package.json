@@ -2,7 +2,7 @@
   "name": "deemix",
   "version": "3.6.21",
   "description": "a barebones deezer downloader library",
-  "main": "deemix/index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
