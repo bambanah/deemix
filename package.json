@@ -18,16 +18,21 @@
     "build-webui": "pnpm -C webui build",
     "set-version": "node scripts/set-version.js",
     "reset-version": "node scripts/reset-version.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
     "@yao-pkg/pkg": "5.12.0",
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "electron": "^22.0.0",
     "electron-builder": "^23.6.0",
     "eslint": "^9.9.0",
     "eslint-plugin-vue": "^9.27.0",
-    "globals": "^15.9.0"
+    "globals": "^15.9.0",
+    "husky": "^9.1.4",
+    "prettier": "^3.2.5"
   },
   "dependencies": {
     "electron-context-menu": "^3.6.1",
