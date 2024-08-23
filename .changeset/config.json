@@ -3,9 +3,13 @@
 	"changelog": "@changesets/cli/changelog",
 	"commit": false,
 	"fixed": [],
-	"linked": [],
-	"access": "restricted",
+	"linked": [["deemix-webui", "deemix-server", "deemix", "deezer-js"]],
+	"access": "public",
 	"baseBranch": "main",
 	"updateInternalDependencies": "patch",
-	"ignore": []
+	"ignore": [],
+	"privatePackages": {
+		"version": true,
+		"tag": true
+	}
 }

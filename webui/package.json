@@ -1,19 +1,20 @@
 {
   "name": "deemix-webui",
-  "version": "1.9.3",
+  "version": "3.8.3",
+  "private": true,
   "scripts": {
     "clean": "rimraf public/js/bundle.js public/js/bundle.temp.js public/js/bundle.js.map",
-		"clean-temp": "rimraf public/js/bundle.temp.js",
-		"build:js": "rollup -c",
-		"minify": "esbuild public/js/bundle.temp.js --outfile=public/js/bundle.js --minify",
-		"build": "npm-run-all --sequential clean build:js minify clean-temp",
-		"start:gui": "pnpm -C ../ start",
-		"watch:server": "pnpm -C ../server watch",
-		"watch:js": "rollup -c -w",
-		"dev": "npm-run-all --parallel watch:server watch:js",
-		"test": "jest",
-		"test-watch": "jest --watch",
-		"testlang": "node ./tests/testlang.js"
+    "clean-temp": "rimraf public/js/bundle.temp.js",
+    "build:js": "rollup -c",
+    "minify": "esbuild public/js/bundle.temp.js --outfile=public/js/bundle.js --minify",
+    "build": "npm-run-all --sequential clean build:js minify clean-temp",
+    "start:gui": "pnpm -C ../ start",
+    "watch:server": "pnpm -C ../server watch",
+    "watch:js": "rollup -c -w",
+    "dev": "npm-run-all --parallel watch:server watch:js",
+    "test": "jest",
+    "test-watch": "jest --watch",
+    "testlang": "node ./tests/testlang.js"
   },
   "dependencies": {
     "@rollup/plugin-alias": "3.1.5",
