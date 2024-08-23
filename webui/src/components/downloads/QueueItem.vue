@@ -171,7 +171,10 @@ export default {
 					return `https://deezer.com/album/${this.queueItem.id}`;
 				case "playlist":
 					if (this.queueItem.id.endsWith("_top_track"))
-						return `https://www.deezer.com/artist/${this.queueItem.id.slice(0, -10)}/top_track`;
+						return `https://www.deezer.com/artist/${this.queueItem.id.slice(
+							0,
+							-10
+						)}/top_track`;
 					return `https://deezer.com/playlist/${this.queueItem.id}`;
 				case "spotify_playlist":
 					return `https://open.spotify.com/playlist/${this.queueItem.id}`;
