@@ -1,9 +1,9 @@
 import { fetchData } from "@/utils/api";
 
 export function getChartsData() {
-  return fetchData("getCharts");
+	return fetchData("getCharts");
 }
 
 export function getChartTracks(chartId) {
-  return fetchData("getChartTracks", { id: chartId });
+	return fetchData("getChartTracks", { id: chartId });
 }

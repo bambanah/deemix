@@ -9,28 +9,28 @@ import { WEBUI_DIR } from "./helpers/paths";
 const MemoryStore = require("memorystore")(session);
 
 declare module "express-session" {
-  export interface SessionData {
-    dz: any;
-  }
+	export interface SessionData {
+		dz: any;
+	}
 }
 
 export function registerMiddlewares(app: Application) {
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: false }));
-  app.use(cookieParser());
-  app.use(
-    session({
-      store: new MemoryStore({
-        checkPeriod: 86400000, // prune expired entries every 24h
-      }),
-      secret: "U2hoLCBpdHMgYSBzZWNyZXQh",
-      resave: true,
-      saveUninitialized: true,
-    }),
-  );
-  app.use(express.static(WEBUI_DIR));
+	app.use(express.json());
+	app.use(express.urlencoded({ extended: false }));
+	app.use(cookieParser());
+	app.use(
+		session({
+			store: new MemoryStore({
+				checkPeriod: 86400000, // prune expired entries every 24h
+			}),
+			secret: "U2hoLCBpdHMgYSBzZWNyZXQh",
+			resave: true,
+			saveUninitialized: true,
+		})
+	);
+	app.use(express.static(WEBUI_DIR));
 
-  if (process.env.NODE_ENV === "development") {
-    app.use(logger("dev"));
-  }
+	if (process.env.NODE_ENV === "development") {
+		app.use(logger("dev"));
+	}
 }

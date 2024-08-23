@@ -4,14 +4,14 @@ let homeData = {};
 let cached = false;
 
 export async function getHomeData() {
-  if (cached) {
-    return homeData;
-  } else {
-    const data = await fetchData("getHome");
+	if (cached) {
+		return homeData;
+	} else {
+		const data = await fetchData("getHome");
 
-    homeData = data;
-    cached = true;
+		homeData = data;
+		cached = true;
 
-    return data;
-  }
+		return data;
+	}
 }

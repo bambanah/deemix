@@ -1,29 +1,29 @@
 <template>
-  <div id="app">
-    <div class="app-container">
-      <TheSidebar />
+	<div id="app">
+		<div class="app-container">
+			<TheSidebar />
 
-      <div class="content-container">
-        <TheSearchBar />
-        <DeezerWarning />
-        <TheContent />
-      </div>
+			<div class="content-container">
+				<TheSearchBar />
+				<DeezerWarning />
+				<TheContent />
+			</div>
 
-      <TheDownloadBar />
-    </div>
+			<TheDownloadBar />
+		</div>
 
-    <BaseLoadingPlaceholder
-      :text="loadingText"
-      :hidden="isSocketConnected"
-      additional-classes="absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-50 z-50"
-    />
+		<BaseLoadingPlaceholder
+			:text="loadingText"
+			:hidden="isSocketConnected"
+			additional-classes="absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-50 z-50"
+		/>
 
-    <TheTrackPreview />
-    <TheQualityModal />
-    <!-- <ConfirmModal /> -->
+		<TheTrackPreview />
+		<TheQualityModal />
+		<!-- <ConfirmModal /> -->
 
-    <TheContextMenu />
-  </div>
+		<TheContextMenu />
+	</div>
 </template>
 
 <script>
@@ -41,46 +41,46 @@ import TheContent from "@/components/TheContent.vue";
 import TheDownloadBar from "@/components/downloads/TheDownloadBar.vue";
 
 export default {
-  components: {
-    TheSidebar,
-    TheSearchBar,
-    TheDownloadBar,
-    TheTrackPreview,
-    TheQualityModal,
-    BaseLoadingPlaceholder,
-    TheContextMenu,
-    TheContent,
-    DeezerWarning,
-    // ConfirmModal
-  },
-  data() {
-    return {
-      isSocketConnected: false,
-      loadingText: "Connecting to local server...",
-    };
-  },
-  mounted() {
-    this.isSocketConnected = socket.readyState === WebSocket.OPEN;
-    socket.addEventListener("open", () => {
-      console.log("Connected to WebSocket");
-      this.isSocketConnected = true;
-    });
-    socket.addEventListener("error", (event) => {
-      console.log(event);
-      this.loadingText = "Couldn't connect to local server.";
-    });
-  },
+	components: {
+		TheSidebar,
+		TheSearchBar,
+		TheDownloadBar,
+		TheTrackPreview,
+		TheQualityModal,
+		BaseLoadingPlaceholder,
+		TheContextMenu,
+		TheContent,
+		DeezerWarning,
+		// ConfirmModal
+	},
+	data() {
+		return {
+			isSocketConnected: false,
+			loadingText: "Connecting to local server...",
+		};
+	},
+	mounted() {
+		this.isSocketConnected = socket.readyState === WebSocket.OPEN;
+		socket.addEventListener("open", () => {
+			console.log("Connected to WebSocket");
+			this.isSocketConnected = true;
+		});
+		socket.addEventListener("error", (event) => {
+			console.log(event);
+			this.loadingText = "Couldn't connect to local server.";
+		});
+	},
 };
 </script>
 
 <style>
 .app-container {
-  display: flex;
+	display: flex;
 }
 
 .content-container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
 }
 </style>

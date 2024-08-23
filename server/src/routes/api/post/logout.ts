@@ -7,9 +7,9 @@ import { resetLoginCredentials } from "../../../helpers/loginStorage";
 const path: ApiHandler["path"] = "/logout";
 
 const handler: ApiHandler["handler"] = (req, res) => {
-  sessionDZ[req.session.id] = new Deezer();
-  res.send({ logged_out: true });
-  if (req.app.get("isSingleUser")) resetLoginCredentials();
+	sessionDZ[req.session.id] = new Deezer();
+	res.send({ logged_out: true });
+	if (req.app.get("isSingleUser")) resetLoginCredentials();
 };
 
 const apiHandler: ApiHandler = { path, handler };

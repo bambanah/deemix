@@ -4,11 +4,11 @@
  * 										therefore it's considered a new release, if referring to a track or album
  */
 export function checkNewRelease(dateToCheck) {
-  const now = new Date();
-  now.setHours(0, 0, 0, 0);
+	const now = new Date();
+	now.setHours(0, 0, 0, 0);
 
-  dateToCheck = new Date(dateToCheck);
-  dateToCheck.setDate(dateToCheck.getDate() + 3);
+	dateToCheck = new Date(dateToCheck);
+	dateToCheck.setDate(dateToCheck.getDate() + 3);
 
-  return now.getTime() <= dateToCheck.getTime();
+	return now.getTime() <= dateToCheck.getTime();
 }

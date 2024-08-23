@@ -16,67 +16,67 @@ const isLoggedWithSpotify = computed(() => store.getters.isLoggedWithSpotify);
 const isRefreshingFavorites = ref(false);
 
 const setAllFavorites = (data) => {
-  const { tracks, albums, artists, playlists, lovedTracks } = data;
+	const { tracks, albums, artists, playlists, lovedTracks } = data;
 
-  isRefreshingFavorites.value = false;
-  favoriteArtists.value = artists || [];
-  favoriteAlbums.value = albums || [];
-  favoritePlaylists.value = playlists || [];
-  favoriteTracks.value = tracks || [];
-  lovedTracksPlaylist.value = lovedTracks || [];
+	isRefreshingFavorites.value = false;
+	favoriteArtists.value = artists || [];
+	favoriteAlbums.value = albums || [];
+	favoritePlaylists.value = playlists || [];
+	favoriteTracks.value = tracks || [];
+	lovedTracksPlaylist.value = lovedTracks || [];
 };
 
 const setSpotifyPlaylists = (response) => {
-  if (response.error) {
-    favoriteSpotifyPlaylists.value = [];
-    switch (response.error) {
-      case "spotifyNotEnabled":
-        store
-          .dispatch("setSpotifyStatus", SPOTIFY_STATUS.DISABLED)
-          .catch(console.error);
-        break;
-      case "wrongSpotifyUsername":
-        toast(
-          i18n.t("toasts.wrongSpotifyUsername", {
-            username: response.username,
-          }),
-          "person_off",
-        );
-        break;
-      default:
-        break;
-    }
-    return;
-  }
+	if (response.error) {
+		favoriteSpotifyPlaylists.value = [];
+		switch (response.error) {
+			case "spotifyNotEnabled":
+				store
+					.dispatch("setSpotifyStatus", SPOTIFY_STATUS.DISABLED)
+					.catch(console.error);
+				break;
+			case "wrongSpotifyUsername":
+				toast(
+					i18n.t("toasts.wrongSpotifyUsername", {
+						username: response.username,
+					}),
+					"person_off"
+				);
+				break;
+			default:
+				break;
+		}
+		return;
+	}
 
-  favoriteSpotifyPlaylists.value = response || [];
+	favoriteSpotifyPlaylists.value = response || [];
 };
 
 const refreshFavorites = async () => {
-  isRefreshingFavorites.value = true;
+	isRefreshingFavorites.value = true;
 
-  await store.dispatch("refreshSpotifyStatus");
+	await store.dispatch("refreshSpotifyStatus");
 
-  fetchData("getUserFavorites").then(setAllFavorites).catch(console.error);
+	fetchData("getUserFavorites").then(setAllFavorites).catch(console.error);
 
-  if (isLoggedWithSpotify.value) {
-    const spotifyUser = store.getters.getSpotifyUser.id;
+	if (isLoggedWithSpotify.value) {
+		const spotifyUser = store.getters.getSpotifyUser.id;
 
-    fetchData("getUserSpotifyPlaylists", { spotifyUser })
-      .then(setSpotifyPlaylists)
-      .catch(console.error);
-  } else {
-    favoriteSpotifyPlaylists.value = [];
-  }
+		fetchData("getUserSpotifyPlaylists", { spotifyUser })
+			.then(setSpotifyPlaylists)
+			.catch(console.error);
+	} else {
+		favoriteSpotifyPlaylists.value = [];
+	}
 };
 
 export const useFavorites = () => ({
-  favoriteArtists,
-  favoriteAlbums,
-  favoriteSpotifyPlaylists,
-  favoritePlaylists,
-  favoriteTracks,
-  lovedTracksPlaylist,
-  isRefreshingFavorites,
-  refreshFavorites,
+	favoriteArtists,
+	favoriteAlbums,
+	favoriteSpotifyPlaylists,
+	favoritePlaylists,
+	favoriteTracks,
+	lovedTracksPlaylist,
+	isRefreshingFavorites,
+	refreshFavorites,
 });

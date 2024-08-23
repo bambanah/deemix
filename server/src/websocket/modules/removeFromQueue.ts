@@ -5,8 +5,8 @@ import { DeemixApp } from "../../app";
 const eventName = "removeFromQueue";
 
 const cb = (data: any, __: any, ___: WsServer, deemix: DeemixApp) => {
-  deemix.cancelDownload(data);
-  logger.info(`Cancelled ${data}`);
+	deemix.cancelDownload(data);
+	logger.info(`Cancelled ${data}`);
 };
 
 export default { eventName, cb };

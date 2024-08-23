@@ -10,14 +10,14 @@ import saveSettings from "./saveSettings";
 import retryDownload from "./retryDownload";
 
 export default [
-  changeAccount,
-  loginArl,
-  addToQueue,
-  loginEmail,
-  cancelAllDownloads,
-  removeFinishedDownloads,
-  removeFromQueue,
-  logout,
-  saveSettings,
-  retryDownload,
+	changeAccount,
+	loginArl,
+	addToQueue,
+	loginEmail,
+	cancelAllDownloads,
+	removeFinishedDownloads,
+	removeFromQueue,
+	logout,
+	saveSettings,
+	retryDownload,
 ];

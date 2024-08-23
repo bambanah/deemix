@@ -1,26 +1,26 @@
 {
-  "name": "deemix",
-  "version": "3.6.21",
-  "description": "a barebones deezer downloader library",
-  "main": "src/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "RemixDev",
-  "contributors": [
-    {
-      "name": "Deeplydrumming",
-      "url": "https://gitlab.com/deeplydrumming"
-    }
-  ],
-  "license": "GPL-3.0-or-later",
-  "dependencies": {
-    "@spotify/web-api-ts-sdk": "^1.2.0",
-    "async": "^3.2.0",
-    "deezer-js": "../deezer-js",
-    "got": "^11.8.2",
-    "html-entities": "^2.3.3",
-    "metaflac-js2": "^1.0.8",
-    "tough-cookie": "^4.0.0"
-  }
+	"name": "deemix",
+	"version": "3.6.21",
+	"description": "a barebones deezer downloader library",
+	"main": "src/index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "RemixDev",
+	"contributors": [
+		{
+			"name": "Deeplydrumming",
+			"url": "https://gitlab.com/deeplydrumming"
+		}
+	],
+	"license": "GPL-3.0-or-later",
+	"dependencies": {
+		"@spotify/web-api-ts-sdk": "^1.2.0",
+		"async": "^3.2.0",
+		"deezer-js": "../deezer-js",
+		"got": "^11.8.2",
+		"html-entities": "^2.3.3",
+		"metaflac-js2": "^1.0.8",
+		"tough-cookie": "^4.0.0"
+	}
 }

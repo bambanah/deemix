@@ -5,8 +5,8 @@ import { DeemixApp } from "../../app";
 const eventName = "removeFinishedDownloads";
 
 const cb = (_: any, __: any, ___: WsServer, deemix: DeemixApp) => {
-  deemix.clearCompletedDownloads();
-  logger.info("Completed downloads cleared");
+	deemix.clearCompletedDownloads();
+	logger.info("Completed downloads cleared");
 };
 
 export default { eventName, cb };

@@ -4,8 +4,8 @@ import removeFromQueue from "./removeFromQueue";
 import cancelAllDownloads from "./cancelAllDownloads";
 
 export default [
-  saveSettings,
-  removeFinishedDownloads,
-  removeFromQueue,
-  cancelAllDownloads,
+	saveSettings,
+	removeFinishedDownloads,
+	removeFromQueue,
+	cancelAllDownloads,
 ];

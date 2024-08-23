@@ -8,10 +8,10 @@ import errors from "@/store/modules/errors";
 Vue.use(Vuex);
 
 export default new Store({
-  modules: {
-    appInfo,
-    login,
-    errors,
-  },
-  strict: process.env.NODE_ENV !== "production",
+	modules: {
+		appInfo,
+		login,
+		errors,
+	},
+	strict: process.env.NODE_ENV !== "production",
 });
