@@ -86,9 +86,6 @@ importers:
 
   server:
     dependencies:
-      bufferutil:
-        specifier: 4.0.8
-        version: 4.0.8
       cookie-parser:
         specifier: 1.4.6
         version: 1.4.6
@@ -12566,6 +12563,7 @@ snapshots:
   bufferutil@4.0.8:
     dependencies:
       node-gyp-build: 4.8.1
+    optional: true
 
   builder-util-runtime@9.1.1:
     dependencies:
