@@ -1,1 +1,2 @@
+pnpm reset-version
 npx lint-staged
