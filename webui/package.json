@@ -1,6 +1,6 @@
 {
   "name": "deemix-webui",
-  "version": "3.8.1",
+  "version": "3.8.2",
   "private": true,
   "scripts": {
     "clean": "rimraf public/js/bundle.js public/js/bundle.temp.js public/js/bundle.js.map",
