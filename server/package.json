@@ -1,6 +1,6 @@
 {
 	"name": "deemix-server",
-	"version": "0.0.0",
+	"version": "3.8.0",
 	"private": true,
 	"scripts": {
 		"start": "node dist/app.js",
