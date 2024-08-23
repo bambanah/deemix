@@ -33,6 +33,7 @@ jobs:
           title: "Version Packages"
           commit: "chore(release): version packages"
           publish: pnpm changeset publish
+          setupGitUser: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HUSKY: 0
