@@ -49,6 +49,39 @@ importers:
         specifier: 2.2.1
         version: 2.2.1
 
+  deemix:
+    dependencies:
+      '@spotify/web-api-ts-sdk':
+        specifier: ^1.2.0
+        version: 1.2.0
+      async:
+        specifier: ^3.2.0
+        version: 3.2.4
+      deezer-js:
+        specifier: ../deezer-js
+        version: link:../deezer-js
+      got:
+        specifier: ^11.8.2
+        version: 11.8.2
+      html-entities:
+        specifier: ^2.3.3
+        version: 2.5.2
+      metaflac-js2:
+        specifier: ^1.0.8
+        version: 1.0.8
+      tough-cookie:
+        specifier: ^4.0.0
+        version: 4.1.4
+
+  deezer-js:
+    dependencies:
+      got:
+        specifier: 11.8.2
+        version: 11.8.2
+      tough-cookie:
+        specifier: ^4.0.0
+        version: 4.1.4
+
   server:
     dependencies:
       '@types/cookie-parser':
@@ -100,11 +133,11 @@ importers:
         specifier: 2.6.9
         version: 2.6.9
       deemix:
-        specifier: ^3.6.0
-        version: 3.6.14
+        specifier: ../deemix
+        version: link:../deemix
       deezer-js:
-        specifier: ^1.3.0
-        version: 1.3.8
+        specifier: ../deezer-js
+        version: link:../deezer-js
       dotenv:
         specifier: 8.2.0
         version: 8.2.0
@@ -873,6 +906,9 @@ packages:
 
   '@sinonjs/fake-timers@8.1.0':
     resolution: {integrity: sha512-OAPJUAtgeINhh/TAlUID4QTs53Njm7xzddaVlEs/SXwgtiD1tW22zAB/W1wdqfrpmikgaWQ9Fw6Ws+hsiRm5Vg==}
+
+  '@spotify/web-api-ts-sdk@1.2.0':
+    resolution: {integrity: sha512-JUaebva3Ohwo5I5tuTqyW/FKGOMbb40YevJMySAOINRxP7qQ/AMjBzfJx0zeO6yS+wAPfQSoGNsZaUggHw8vsA==}
 
   '@szmarczak/http-timer@1.1.2':
     resolution: {integrity: sha512-XIB2XbzHTN6ieIjfIMV9hlVcfPU26s2vafYWQcZHWXHOxiaRZYEDKEwdl129Zyg50+foYV2jCgtrqSA6qNuNSA==}
@@ -2328,9 +2364,6 @@ packages:
   dedent@0.7.0:
     resolution: {integrity: sha512-Q6fKUPqnAHAyhiUgFU7BUzLiv0kd8saH9al7tnu5Q/okj6dnupxyTgFIBjVzJATdfIAm9NAsvXNzjaKa+bxVyA==}
 
-  deemix@3.6.14:
-    resolution: {integrity: sha512-iFtCOzKn4DFqqQwxcISAVWov3hpOZ7WRP9/bfuavKnkqdY5I23DKAeyh08r/W5JMQrKU4G8f8ifbuLcuflYqpg==}
-
   deep-extend@0.6.0:
     resolution: {integrity: sha512-LOHxIOaPYdHlJRtCQfDIVZtfw/ufM8+rVj649RIHzcm/vGwQRXFt6OPqIFWsm2XEMrNIEtWR64sY1LEKD2vAOA==}
     engines: {node: '>=4.0.0'}
@@ -2341,9 +2374,6 @@ packages:
   deepmerge@4.3.1:
     resolution: {integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==}
     engines: {node: '>=0.10.0'}
-
-  deezer-js@1.3.8:
-    resolution: {integrity: sha512-DWcIWMJ9W+3D0akx+IA2Gh2Fnv28ylSDM35QnO5IU9GE+j6qxxT9eE3OZzl62+D1Cj59ClAznuz8X3LGn8ixeA==}
 
   defer-to-connect@1.1.3:
     resolution: {integrity: sha512-0ISdNousHvZT2EiFlZeZAHBUvSxmKswVCEf8hW7KWgG4a8MVEu/3Vb6uWYozkjylyCxe0JBIiRB1jV45S70WVQ==}
@@ -3254,6 +3284,10 @@ packages:
   gopd@1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
 
+  got@11.8.2:
+    resolution: {integrity: sha512-D0QywKgIe30ODs+fm8wMZiAcZjypcCodPNuMz5H9Mny7RJ+IjJ10BdmGW7OM7fHXP+O7r6ZwapQ/YQmMSvB0UQ==}
+    engines: {node: '>=10.19.0'}
+
   got@11.8.6:
     resolution: {integrity: sha512-6tfZ91bOr7bOXnK7PRDCGBLa1H4U080YHNaAQ2KsMGlLEzRbk44nsZF2E1IeRc3vtJHPVbKCYgdFbaGO2ljd8g==}
     engines: {node: '>=10.19.0'}
@@ -4128,9 +4162,6 @@ packages:
 
   keyv@3.1.0:
     resolution: {integrity: sha512-9ykJ/46SN/9KPM/sichzQ7OvXyGDYKGTaDlKMGCAlg2UK8KRy4jb0d8sFc+0Tt0YYnThq8X2RZgCg74RPxgcVA==}
-
-  keyv@4.5.2:
-    resolution: {integrity: sha512-5MHbFaKn8cNSmVW7BYnijeAVlE4cYA/SVkifVgrh7yotnfhKmjuXpDKjrABLnT0SfHWV21P8ow07OGfRrNDg8g==}
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
@@ -5740,9 +5771,6 @@ packages:
   split2@4.2.0:
     resolution: {integrity: sha512-UcjcJOWknrNkF6PLX83qcHM6KHgVKNkV62Y8a5uYDVv9ydGQVwAHMKqHdJje1VTWpljG0WYpCDhrCdAOYH4TWg==}
     engines: {node: '>= 10.x'}
-
-  spotify-web-api-node@5.0.2:
-    resolution: {integrity: sha512-r82dRWU9PMimHvHEzL0DwEJrzFk+SMCVfq249SLt3I7EFez7R+jeoKQd+M1//QcnjqlXPs2am4DFsGk8/GCsrA==}
 
   sprintf-js@1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
@@ -7611,6 +7639,8 @@ snapshots:
     dependencies:
       '@sinonjs/commons': 1.8.6
 
+  '@spotify/web-api-ts-sdk@1.2.0': {}
+
   '@szmarczak/http-timer@1.1.2':
     dependencies:
       defer-to-connect: 1.1.3
@@ -8865,7 +8895,7 @@ snapshots:
       clone-response: 1.0.3
       get-stream: 5.2.0
       http-cache-semantics: 4.1.0
-      keyv: 4.5.2
+      keyv: 4.5.4
       lowercase-keys: 2.0.0
       normalize-url: 6.1.0
       responselike: 2.0.1
@@ -9356,27 +9386,11 @@ snapshots:
 
   dedent@0.7.0: {}
 
-  deemix@3.6.14:
-    dependencies:
-      async: 3.2.4
-      deezer-js: 1.3.8
-      got: 11.8.6
-      html-entities: 2.5.2
-      metaflac-js2: 1.0.8
-      spotify-web-api-node: 5.0.2
-    transitivePeerDependencies:
-      - supports-color
-
   deep-extend@0.6.0: {}
 
   deep-is@0.1.4: {}
 
   deepmerge@4.3.1: {}
-
-  deezer-js@1.3.8:
-    dependencies:
-      got: 11.8.6
-      tough-cookie: 4.1.4
 
   defer-to-connect@1.1.3: {}
 
@@ -10558,6 +10572,20 @@ snapshots:
   gopd@1.0.1:
     dependencies:
       get-intrinsic: 1.2.4
+
+  got@11.8.2:
+    dependencies:
+      '@sindresorhus/is': 4.6.0
+      '@szmarczak/http-timer': 4.0.6
+      '@types/cacheable-request': 6.0.3
+      '@types/responselike': 1.0.0
+      cacheable-lookup: 5.0.4
+      cacheable-request: 7.0.2
+      decompress-response: 6.0.0
+      http2-wrapper: 1.0.3
+      lowercase-keys: 2.0.0
+      p-cancelable: 2.1.1
+      responselike: 2.0.1
 
   got@11.8.6:
     dependencies:
@@ -11861,10 +11889,6 @@ snapshots:
   keyv@3.1.0:
     dependencies:
       json-buffer: 3.0.0
-
-  keyv@4.5.2:
-    dependencies:
-      json-buffer: 3.0.1
 
   keyv@4.5.4:
     dependencies:
@@ -13596,12 +13620,6 @@ snapshots:
       extend-shallow: 3.0.2
 
   split2@4.2.0: {}
-
-  spotify-web-api-node@5.0.2:
-    dependencies:
-      superagent: 6.1.0
-    transitivePeerDependencies:
-      - supports-color
 
   sprintf-js@1.0.3: {}
 

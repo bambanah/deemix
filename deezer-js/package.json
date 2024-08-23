@@ -1,0 +1,19 @@
+{
+	"name": "deezer-js",
+	"version": "1.3.9",
+	"description": "A wrapper for all Deezer's APIs",
+	"main": "src/index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://gitlab.com/RemixDev/deezer-js"
+	},
+	"author": "RemixDev",
+	"license": "GPL-3.0-or-later",
+	"dependencies": {
+		"got": "11.8.2",
+		"tough-cookie": "^4.0.0"
+	}
+}
