@@ -10,7 +10,7 @@ const {
 const { Convertable, Collection } = require("../types/DownloadObjects.js");
 const { sep } = require("path");
 const fs = require("fs");
-const SpotifyWebApi = require("spotify-web-api-node");
+const { SpotifyApi } = require("@spotify/web-api-ts-sdk");
 const got = require("got");
 const { queue } = require("async");
 
@@ -138,8 +138,8 @@ class Spotify extends Plugin {
 
   async generatePlaylistItem(dz, link_id, bitrate) {
     if (!this.enabled) throw new Error("Spotify plugin not enabled");
-    let spotifyPlaylist = await this.sp.getPlaylist(link_id);
-    spotifyPlaylist = spotifyPlaylist.body;
+
+    let spotifyPlaylist = await this.sp.playlists.getPlaylist(link_id);
 
     const playlistAPI = this._convertPlaylistStructure(spotifyPlaylist);
     playlistAPI.various_artist = await dz.api.get_artist(5080); // Useful for save as compilation
@@ -151,11 +151,16 @@ class Spotify extends Plugin {
       );
       const offset = regExec[1];
       const limit = regExec[2];
-      const playlistTracks = await this.sp.getPlaylistTracks(link_id, {
-        offset,
+
+      const playlistTracks = await this.sp.playlists.getPlaylistItems(
+        link_id,
+        undefined,
+        undefined,
         limit,
-      });
-      spotifyPlaylist.tracks = playlistTracks.body;
+        offset,
+      );
+
+      spotifyPlaylist.tracks = playlistTracks;
       tracklistTemp = tracklistTemp.concat(spotifyPlaylist.tracks.items);
     }
 
@@ -195,13 +200,12 @@ class Spotify extends Plugin {
 
     if (!spotifyTrack) {
       try {
-        spotifyTrack = await this.sp.getTrack(track_id);
+        spotifyTrack = await this.sp.tracks.get("0ehcOXeXkE1Cozi3NIRWrv");
       } catch (e) {
         if (e.body.error.message === "invalid id")
           throw new InvalidID(`https://open.spotify.com/track/${track_id}`);
         throw e;
       }
-      spotifyTrack = spotifyTrack.body;
     }
     if (spotifyTrack.external_ids && spotifyTrack.external_ids.isrc)
       cachedTrack.isrc = spotifyTrack.external_ids.isrc;
@@ -222,13 +226,12 @@ class Spotify extends Plugin {
 
     if (!spotifyAlbum) {
       try {
-        spotifyAlbum = await this.sp.getAlbum(album_id);
+        spotifyAlbum = await this.sp.albums.get(album_id);
       } catch (e) {
         if (e.body.error.message === "invalid id")
           throw new InvalidID(`https://open.spotify.com/album/${album_id}`);
         throw e;
       }
-      spotifyAlbum = spotifyAlbum.body;
     }
     if (spotifyAlbum.external_ids && spotifyAlbum.external_ids.upc)
       cachedAlbum.upc = spotifyAlbum.external_ids.upc;
@@ -491,24 +494,12 @@ class Spotify extends Plugin {
       this.enabled = false;
       return;
     }
-    this.sp = new SpotifyWebApi(this.credentials);
-    this.sp.clientCredentialsGrant().then(
-      (creds) => {
-        this.sp.setAccessToken(creds.body.access_token);
-        // Need to get a new access_token when it expires
-        setTimeout(
-          () => {
-            this.checkCredentials();
-          },
-          creds.body.expires_in * 1000 - 10,
-        );
-        this.enabled = true;
-      },
-      () => {
-        this.enabled = false;
-        this.sp = undefined;
-      },
+
+    this.sp = SpotifyApi.withClientCredentials(
+      this.credentials.clientId,
+      this.credentials.clientSecret,
     );
+    this.enabled = true;
   }
 
   getCredentials() {

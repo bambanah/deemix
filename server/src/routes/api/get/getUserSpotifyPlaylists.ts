@@ -16,19 +16,21 @@ const handler: ApiHandler["handler"] = async (req, res) => {
       username = username.trim();
       let playlists;
       try {
-        playlists = await sp.getUserPlaylists(username);
+        playlists = await sp.playlists.getUsersPlaylists(username);
       } catch (e) {
         res.send({ error: "wrongSpotifyUsername", username });
         return;
       }
-      playlists = playlists.body;
       playlistList = playlistList.concat(playlists.items);
       while (playlists.next) {
         const regExec = /offset=(\d+)/g.exec(playlists.next);
         const offset = regExec![1];
         // const limit = regExec![2]
-        const newPlaylists = await sp.getUserPlaylists(username, { offset });
-        playlists = newPlaylists.body;
+        playlists = await sp.playlists.getUsersPlaylists(
+          username,
+          undefined,
+          offset,
+        );
         playlistList = playlistList.concat(playlists.items);
       }
     }
