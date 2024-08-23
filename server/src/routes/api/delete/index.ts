@@ -1,3 +1,3 @@
-import { ApiHandler } from '../../../types'
+import { ApiHandler } from "../../../types";
 
-export default [] as ApiHandler[]
+export default [] as ApiHandler[];

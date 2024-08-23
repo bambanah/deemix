@@ -1,12 +1,12 @@
-import { Server as WsServer } from 'ws'
-import { logger } from '../../helpers/logger'
-import { DeemixApp } from '../../app'
+import { Server as WsServer } from "ws";
+import { logger } from "../../helpers/logger";
+import { DeemixApp } from "../../app";
 
-const eventName = 'cancelAllDownloads'
+const eventName = "cancelAllDownloads";
 
 const cb = (_: any, __: any, ___: WsServer, deemix: DeemixApp) => {
-	deemix.cancelAllDownloads()
-	logger.info(`Queue cleared`)
-}
+	deemix.cancelAllDownloads();
+	logger.info(`Queue cleared`);
+};
 
-export default { eventName, cb }
+export default { eventName, cb };

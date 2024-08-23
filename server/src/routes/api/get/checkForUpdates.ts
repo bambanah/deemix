@@ -1,16 +1,16 @@
-import { ApiHandler } from '../../../types'
+import { ApiHandler } from "../../../types";
 
-const path: ApiHandler['path'] = '/checkForUpdates'
+const path: ApiHandler["path"] = "/checkForUpdates";
 
-const handler: ApiHandler['handler'] = async (req, res) => {
-	const deemix = req.app.get('deemix')
-	const latestCommit = await deemix.getLatestVersion()
+const handler: ApiHandler["handler"] = async (req, res) => {
+	const deemix = req.app.get("deemix");
+	const latestCommit = await deemix.getLatestVersion();
 	res.send({
 		latestCommit,
-		updateAvailable: deemix.isUpdateAvailable()
-	})
-}
+		updateAvailable: deemix.isUpdateAvailable(),
+	});
+};
 
-const apiHandler: ApiHandler = { path, handler }
+const apiHandler: ApiHandler = { path, handler };
 
-export default apiHandler
+export default apiHandler;
