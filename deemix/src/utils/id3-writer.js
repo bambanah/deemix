@@ -2,11 +2,10 @@
 	"object" == typeof exports && "undefined" != typeof module
 		? (module.exports = t())
 		: "function" == typeof define && define.amd
-		? define(t)
-		: ((e =
-				"undefined" != typeof globalThis
-					? globalThis
-					: e || self).ID3Writer = t());
+			? define(t)
+			: ((e =
+					"undefined" != typeof globalThis ? globalThis : e || self).ID3Writer =
+					t());
 })(this, function () {
 	"use strict";
 	function r(e) {
@@ -77,10 +76,10 @@
 						return t || r
 							? "image/tiff"
 							: 66 === e[0] && 77 === e[1]
-							? "image/bmp"
-							: 0 === e[0] && 0 === e[1] && 1 === e[2] && 0 === e[3]
-							? "image/x-icon"
-							: null;
+								? "image/bmp"
+								: 0 === e[0] && 0 === e[1] && 1 === e[2] && 0 === e[3]
+									? "image/x-icon"
+									: null;
 					})(new Uint8Array(t)),
 					i = r.toString();
 				if (!n) throw new Error("Unknown picture MIME type");
@@ -229,8 +228,8 @@
 						var r = this.separateWithNull
 								? String.fromCharCode(0)
 								: "TCON" === e
-								? ";"
-								: "/",
+									? ";"
+									: "/",
 							r = t.join(r);
 						this._setStringFrame(e, r);
 						break;
@@ -494,16 +493,16 @@
 									(i += s.length),
 									e.useUnicodeEncoding
 										? ((s = [].concat(t)),
-										  n.set(s, i),
-										  (i += s.length),
-										  (s = c(e.description)),
-										  n.set(s, i),
-										  (i += s.length),
-										  (i += 2))
+											n.set(s, i),
+											(i += s.length),
+											(s = c(e.description)),
+											n.set(s, i),
+											(i += s.length),
+											(i += 2))
 										: ((s = o(e.description)),
-										  n.set(s, i),
-										  (i += s.length),
-										  i++),
+											n.set(s, i),
+											(i += s.length),
+											i++),
 									n.set(new Uint8Array(e.value), i),
 									(i += e.value.byteLength);
 								break;

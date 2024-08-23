@@ -482,13 +482,8 @@ class Downloader {
 		track.applySettings(this.settings);
 
 		// Generate filename and filepath from metadata
-		const {
-			filename,
-			filepath,
-			artistPath,
-			coverPath,
-			extrasPath,
-		} = generatePath(track, this.downloadObject, this.settings);
+		const { filename, filepath, artistPath, coverPath, extrasPath } =
+			generatePath(track, this.downloadObject, this.settings);
 		if (this.downloadObject.isCanceled) throw new DownloadCanceled();
 
 		// Make sure the filepath exsists
@@ -523,9 +518,8 @@ class Downloader {
 				track.album.embeddedCoverPath
 			);
 		}
-		track.album.embeddedCoverPath = await this.coverQueue[
-			track.album.embeddedCoverPath
-		];
+		track.album.embeddedCoverPath =
+			await this.coverQueue[track.album.embeddedCoverPath];
 		if (this.coverQueue[track.album.embeddedCoverPath])
 			delete this.coverQueue[track.album.embeddedCoverPath];
 		this.log(itemData, "gotAlbumArt");
@@ -769,9 +763,8 @@ class Downloader {
 						}
 						if (fallbackID !== 0) {
 							this.warn(itemData, e.errid, "fallback");
-							let newTrack = await this.dz.gw.get_track_with_fallback(
-								fallbackID
-							);
+							let newTrack =
+								await this.dz.gw.get_track_with_fallback(fallbackID);
 							newTrack = map_track(newTrack);
 							track.parseEssentialData(newTrack);
 							return await this.downloadWrapper(extraData, track);
@@ -785,9 +778,8 @@ class Downloader {
 							track.album.title
 						);
 						if (searchedID !== "0") {
-							let newTrack = await this.dz.gw.get_track_with_fallback(
-								searchedID
-							);
+							let newTrack =
+								await this.dz.gw.get_track_with_fallback(searchedID);
 							newTrack = map_track(newTrack);
 							track.parseEssentialData(newTrack);
 							track.searched = true;
