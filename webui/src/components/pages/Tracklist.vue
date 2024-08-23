@@ -261,13 +261,13 @@ export default {
 			type: "empty",
 		};
 	},
+	computed: {
+		...mapGetters(["isLoggedIn"]),
+	},
 	mounted() {
 		EventBus.$on("showAlbum", this.showAlbum);
 		EventBus.$on("showPlaylist", this.showPlaylist);
 		EventBus.$on("showSpotifyPlaylist", this.showSpotifyPlaylist);
-	},
-	computed: {
-		...mapGetters(["isLoggedIn"]),
 	},
 	methods: {
 		playPausePreview,

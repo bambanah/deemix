@@ -1,15 +1,21 @@
 import pluginVue from "eslint-plugin-vue";
-import globals from "globals";
+import eslintConfigPrettier from "eslint-config-prettier";
 
 export default [
-  ...pluginVue.configs["flat/base"],
-  {
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-      },
-    },
-
-    rules: {},
-  },
+	...pluginVue.configs["flat/recommended"],
+	{
+		rules: {
+			"vue/multi-word-component-names": "off",
+			"vue/no-v-html": "off",
+			"vue/no-deprecated-events-api": "off",
+			"vue/no-deprecated-functional-template": "off",
+			"vue/no-deprecated-dollar-listeners-api": "off",
+			"vue/require-explicit-emits": "off",
+			"vue/one-component-per-file": "off",
+		},
+	},
+	{
+		ignores: ["**/node_modules/", "**/dist/", "webui/public/js/"],
+	},
+	eslintConfigPrettier,
 ];
