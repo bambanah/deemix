@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from "fs";
-import generateVersion from "./gen-version.js";
+import generateVersion from "./gen-version.mjs";
 
 const pack = JSON.parse(readFileSync("package.json"));
 pack.version = generateVersion();

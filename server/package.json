@@ -1,5 +1,5 @@
 {
-	"name": "@deemix-gui/deemix-server",
+	"name": "deemix-server",
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
@@ -18,24 +18,12 @@
 			"../package.json"
 		],
 		"targets": [
-			"node16-linux-x64",
-			"node16-win-x64",
-			"node16-macos-x64"
+			"node20-linux-x64",
+			"node20-macos-x64",
+			"node20-win-x64"
 		]
 	},
 	"dependencies": {
-		"@types/cookie-parser": "1.4.2",
-		"@types/dateformat": "5.0.0",
-		"@types/debug": "4.1.5",
-		"@types/ejs": "3.1.1",
-		"@types/express": "4.17.11",
-		"@types/express-session": "^1.17.3",
-		"@types/morgan": "1.9.2",
-		"@types/node": "14.14.37",
-		"@types/ramda": "0.27.40",
-		"@types/uuid": "8.3.0",
-		"@types/ws": "7.4.1",
-		"@types/yargs": "17.0.0",
 		"cookie-parser": "1.4.6",
 		"date-fns": "^3.6.0",
 		"debug": "2.6.9",

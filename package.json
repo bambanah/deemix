@@ -5,6 +5,7 @@
   "repository": "https://gitlab.com/RemixDev/deemix-gui.git",
   "author": "RemixDev <RemixDev64@gmail.com>",
   "license": "GPL-3.0-only",
+  "type": "module",
   "scripts": {
     "install-all": "pnpm install && pnpm -C server install --production && pnpm -C webui install --production",
     "install-all-dev": "pnpm install && pnpm -C server install && pnpm -C webui install",
@@ -17,8 +18,8 @@
     "start-server": "pnpm -C server start",
     "build-server": "pnpm -C server build",
     "build-webui": "pnpm -C webui build",
-    "set-version": "node scripts/set-version.js",
-    "reset-version": "node scripts/reset-version.js",
+    "set-version": "node scripts/set-version.mjs",
+    "reset-version": "node scripts/reset-version.mjs",
     "lint": "eslint .",
     "prepare": "husky"
   },
