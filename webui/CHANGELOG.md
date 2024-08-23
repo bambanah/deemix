@@ -1,5 +1,12 @@
 # deemix-webui
 
+## 3.8.3
+
+### Patch Changes
+
+- 07e7900: Manual bump
+- 5c4868b: Manual bump
+
 ## 3.8.2
 
 ### Patch Changes
