@@ -35,5 +35,5 @@ jobs:
           publish: pnpm changeset publish
           setupGitUser: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
           HUSKY: 0
