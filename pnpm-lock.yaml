@@ -84,42 +84,6 @@ importers:
 
   server:
     dependencies:
-      '@types/cookie-parser':
-        specifier: 1.4.2
-        version: 1.4.2
-      '@types/dateformat':
-        specifier: 5.0.0
-        version: 5.0.0
-      '@types/debug':
-        specifier: 4.1.5
-        version: 4.1.5
-      '@types/ejs':
-        specifier: 3.1.1
-        version: 3.1.1
-      '@types/express':
-        specifier: 4.17.11
-        version: 4.17.11
-      '@types/express-session':
-        specifier: ^1.17.3
-        version: 1.18.0
-      '@types/morgan':
-        specifier: 1.9.2
-        version: 1.9.2
-      '@types/node':
-        specifier: 14.14.37
-        version: 14.14.37
-      '@types/ramda':
-        specifier: 0.27.40
-        version: 0.27.40
-      '@types/uuid':
-        specifier: 8.3.0
-        version: 8.3.0
-      '@types/ws':
-        specifier: 7.4.1
-        version: 7.4.1
-      '@types/yargs':
-        specifier: 17.0.0
-        version: 17.0.0
       cookie-parser:
         specifier: 1.4.6
         version: 1.4.6
@@ -178,12 +142,45 @@ importers:
         specifier: 17.7.2
         version: 17.7.2
     devDependencies:
+      '@types/cookie-parser':
+        specifier: 1.4.7
+        version: 1.4.7
+      '@types/debug':
+        specifier: 4.1.12
+        version: 4.1.12
+      '@types/ejs':
+        specifier: 3.1.5
+        version: 3.1.5
+      '@types/express':
+        specifier: 4.17.21
+        version: 4.17.21
+      '@types/express-session':
+        specifier: ^1.17.3
+        version: 1.18.0
       '@types/jest':
         specifier: 29.5.12
         version: 29.5.12
+      '@types/morgan':
+        specifier: 1.9.9
+        version: 1.9.9
+      '@types/node':
+        specifier: 14.14.37
+        version: 14.14.37
+      '@types/ramda':
+        specifier: 0.27.40
+        version: 0.27.40
       '@types/supertest':
         specifier: 6.0.2
         version: 6.0.2
+      '@types/uuid':
+        specifier: 8.3.0
+        version: 8.3.0
+      '@types/ws':
+        specifier: 7.4.1
+        version: 7.4.1
+      '@types/yargs':
+        specifier: 17.0.32
+        version: 17.0.32
       jest:
         specifier: 26.6.3
         version: 26.6.3(bufferutil@4.0.3)(ts-node@9.1.1(typescript@4.2.4))(utf-8-validate@5.0.5)
@@ -926,23 +923,17 @@ packages:
   '@types/conventional-commits-parser@5.0.0':
     resolution: {integrity: sha512-loB369iXNmAZglwWATL+WRe+CRMmmBPtpolYzIebFaX4YA3x+BEfLqhUAV9WanycKI3TG1IMr5bMJDajDKLlUQ==}
 
-  '@types/cookie-parser@1.4.2':
-    resolution: {integrity: sha512-uwcY8m6SDQqciHsqcKDGbo10GdasYsPCYkH3hVegj9qAah6pX5HivOnOuI3WYmyQMnOATV39zv/Ybs0bC/6iVg==}
+  '@types/cookie-parser@1.4.7':
+    resolution: {integrity: sha512-Fvuyi354Z+uayxzIGCwYTayFKocfV7TuDYZClCdIP9ckhvAu/ixDtCB6qx2TT0FKjPLf1f3P/J1rgf6lPs64mw==}
 
   '@types/cookiejar@2.1.5':
     resolution: {integrity: sha512-he+DHOWReW0nghN24E1WUqM0efK4kI9oTqDm6XmK8ZPe2djZ90BSNdGnIyCLzCPw7/pogPlGbzI2wHGGmi4O/Q==}
 
-  '@types/dateformat@5.0.0':
-    resolution: {integrity: sha512-SZg4JdHIWHQGEokbYGZSDvo5wA4TLYPXaqhigs/wH+REDOejcJzgH+qyY+HtEUtWOZxEUkbhbdYPqQDiEgrXeA==}
+  '@types/debug@4.1.12':
+    resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
 
-  '@types/debug@4.1.5':
-    resolution: {integrity: sha512-Q1y515GcOdTHgagaVFhHnIFQ38ygs/kmxdNpvpou+raI9UO3YZcHDngBSYKQklcKlvA7iuQlmIKbzvmxcOE9CQ==}
-
-  '@types/debug@4.1.7':
-    resolution: {integrity: sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==}
-
-  '@types/ejs@3.1.1':
-    resolution: {integrity: sha512-RQul5wEfY7BjWm0sYY86cmUN/pcXWGyVxWX93DFFJvcrxax5zKlieLwA3T77xJGwNcZW0YW6CYG70p1m8xPFmA==}
+  '@types/ejs@3.1.5':
+    resolution: {integrity: sha512-nv+GSx77ZtXiJzwKdsASqi+YQ5Z7vwHsTP0JY2SiQgjGckkBRKZnk8nIM+7oUZ1VCtuTz0+By4qVR7fqzp/Dfg==}
 
   '@types/eslint-scope@3.7.7':
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
@@ -962,8 +953,8 @@ packages:
   '@types/express-session@1.18.0':
     resolution: {integrity: sha512-27JdDRgor6PoYlURY+Y5kCakqp5ulC0kmf7y+QwaY+hv9jEFuQOThgkjyA53RP3jmKuBsH5GR6qEfFmvb8mwOA==}
 
-  '@types/express@4.17.11':
-    resolution: {integrity: sha512-no+R6rW60JEc59977wIxreQVsIEOAYwgCqldrA/vkpCnbD7MqTefO97lmoBe4WE0F156bC4uLSP1XHDOySnChg==}
+  '@types/express@4.17.21':
+    resolution: {integrity: sha512-ejlPM315qwLpaQlQDTjPdsUFSc6ZsP4AN6AlWnogPjQ7CVi7PYF3YVz+CY3jE2pwYf7E/7HlDAN0rV2GxTG0HQ==}
 
   '@types/fs-extra@9.0.13':
     resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
@@ -1010,8 +1001,8 @@ packages:
   '@types/minimatch@5.1.2':
     resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
 
-  '@types/morgan@1.9.2':
-    resolution: {integrity: sha512-edtGMEdit146JwwIeyQeHHg9yID4WSolQPxpEorHmN3KuytuCHyn2ELNr5Uxy8SerniFbbkmgKMrGM933am5BQ==}
+  '@types/morgan@1.9.9':
+    resolution: {integrity: sha512-iRYSDKVaC6FkGSpEVVIvrRGw0DfJMiQzIn3qr2G5B3C//AWkulhXgaBd7tS9/J79GWSYMTHGs7PfI5b3Y8m+RQ==}
 
   '@types/ms@0.7.31':
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
@@ -1094,11 +1085,11 @@ packages:
   '@types/yargs@16.0.9':
     resolution: {integrity: sha512-tHhzvkFXZQeTECenFoRljLBYPZJ7jAVxqqtEI0qTLOmuultnFp4I9yKE17vTuhf7BkhCu7I4XuemPgikDVuYqA==}
 
-  '@types/yargs@17.0.0':
-    resolution: {integrity: sha512-RS7u2X7vdXjVQs160PWY1pjLBw6GJj04utojn0KU8p2rRZR37FSzzK6XOT+KLzT/DVbDYRyezroc0LHIvM5Z2A==}
-
   '@types/yargs@17.0.17':
     resolution: {integrity: sha512-72bWxFKTK6uwWJAVT+3rF6Jo6RTojiJ27FQo8Rf60AL+VZbzoVPnMFhKsUnbjR8A3BTCYQ7Mv3hnl8T0A+CX9g==}
+
+  '@types/yargs@17.0.32':
+    resolution: {integrity: sha512-xQ67Yc/laOG5uMfX/093MRlGGCIBzZMarVa+gfNKJxWAIgykYpVGkBdbqEzGDDfCrVUj6Hiff4mTZ5BA6TmAog==}
 
   '@types/yauzl@2.10.0':
     resolution: {integrity: sha512-Cn6WYCm0tXv8p6k+A8PvbDG763EDpBoTzHdA+Q/MF6H3sapGjCm9NzoaJncJS9tUKSuCoDs9XHxYYsQDgxR6kw==}
@@ -7139,7 +7130,7 @@ snapshots:
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
       '@types/node': 14.14.37
-      '@types/yargs': 17.0.17
+      '@types/yargs': 17.0.32
       chalk: 4.1.2
 
   '@jridgewell/gen-mapping@0.3.2':
@@ -7316,21 +7307,17 @@ snapshots:
     dependencies:
       '@types/node': 14.14.37
 
-  '@types/cookie-parser@1.4.2':
+  '@types/cookie-parser@1.4.7':
     dependencies:
-      '@types/express': 4.17.11
+      '@types/express': 4.17.21
 
   '@types/cookiejar@2.1.5': {}
 
-  '@types/dateformat@5.0.0': {}
-
-  '@types/debug@4.1.5': {}
-
-  '@types/debug@4.1.7':
+  '@types/debug@4.1.12':
     dependencies:
       '@types/ms': 0.7.31
 
-  '@types/ejs@3.1.1': {}
+  '@types/ejs@3.1.5': {}
 
   '@types/eslint-scope@3.7.7':
     dependencies:
@@ -7355,9 +7342,9 @@ snapshots:
 
   '@types/express-session@1.18.0':
     dependencies:
-      '@types/express': 4.17.11
+      '@types/express': 4.17.21
 
-  '@types/express@4.17.11':
+  '@types/express@4.17.21':
     dependencies:
       '@types/body-parser': 1.19.5
       '@types/express-serve-static-core': 4.19.5
@@ -7415,7 +7402,7 @@ snapshots:
   '@types/minimatch@5.1.2':
     optional: true
 
-  '@types/morgan@1.9.2':
+  '@types/morgan@1.9.9':
     dependencies:
       '@types/node': 14.14.37
 
@@ -7507,11 +7494,11 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.0
 
-  '@types/yargs@17.0.0':
+  '@types/yargs@17.0.17':
     dependencies:
       '@types/yargs-parser': 21.0.0
 
-  '@types/yargs@17.0.17':
+  '@types/yargs@17.0.32':
     dependencies:
       '@types/yargs-parser': 21.0.0
 
@@ -8316,7 +8303,7 @@ snapshots:
   builder-util@23.6.0:
     dependencies:
       7zip-bin: 5.1.1
-      '@types/debug': 4.1.7
+      '@types/debug': 4.1.12
       '@types/fs-extra': 9.0.13
       app-builder-bin: 4.0.0
       bluebird-lst: 1.0.9
