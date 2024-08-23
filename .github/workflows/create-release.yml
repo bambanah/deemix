@@ -1,21 +1,13 @@
 name: Publish
 on:
-  workflow_run:
-    workflows: [Build and Publish Docker Image]
-    types:
-      - completed
+  push:
     branches:
       - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
-permissions:
-  contents: write
-  pull-requests: write
-
 jobs:
-  publish:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  create-release-or-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -32,6 +24,6 @@ jobs:
         with:
           title: "Version Packages"
           commit: "chore(release): version packages"
-          publish: pnpm changeset tag
+          publish: pnpm changeset publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
