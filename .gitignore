@@ -69,5 +69,4 @@ typings/
 dev.sh
 
 # distribution
-dist/*
-server-dist/*
+dist/
