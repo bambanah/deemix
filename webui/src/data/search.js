@@ -133,5 +133,7 @@ export function formatTitle(track) {
 		track.trackTitleVersion &&
 		!track.trackTitle.includes(track.trackTitleVersion);
 
-	return `${track.trackTitle}${hasTitleVersion ? ` ${track.trackTitleVersion}` : ""}`;
+	return `${track.trackTitle}${
+		hasTitleVersion ? ` ${track.trackTitleVersion}` : ""
+	}`;
 }
