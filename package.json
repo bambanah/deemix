@@ -1,20 +1,18 @@
 {
-  "name": "deemix-gui",
   "version": "0.0.0",
+  "name": "deemix",
+  "description": "A hybrid monorepo that wraps deemix-webui and lets you use the deemix-js library",
   "main": "index.js",
-  "repository": "https://gitlab.com/RemixDev/deemix-gui.git",
-  "author": "RemixDev <RemixDev64@gmail.com>",
+  "repository": "https://github.com/bambanah/deemix.git",
+  "author": "Bambanah",
   "license": "GPL-3.0-only",
-  "type": "module",
   "scripts": {
-    "install-all": "pnpm install && pnpm -C server install --production && pnpm -C webui install --production",
-    "install-all-dev": "pnpm install && pnpm -C server install && pnpm -C webui install",
     "dev": "pnpm -C webui dev",
     "start": "electron . --dev",
     "predist": "pnpm build-server && pnpm build-webui",
     "dist": "pnpm set-version && electron-builder && pnpm reset-version",
     "dist:dir": "pnpm set-version && pnpm predist && electron-builder --dir && pnpm reset-version",
-    "dist-server": "pnpm set-version && pnpm predist && ./node_modules/.bin/pkg --out-dir dist ./server/package.json && pnpm reset-version",
+    "dist-server": "pnpm set-version && pnpm predist && pkg --out-dir dist ./server/package.json && pnpm reset-version",
     "start-server": "pnpm -C server start",
     "build-server": "pnpm -C server build",
     "build-webui": "pnpm -C webui build",
@@ -26,14 +24,15 @@
   "devDependencies": {
     "@commitlint/cli": "^19.4.0",
     "@commitlint/config-conventional": "^19.2.2",
+    "@yao-pkg/pkg": "5.12.0",
     "electron": "^22.0.0",
     "electron-builder": "^23.6.0",
     "eslint": "^9.9.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue": "^9.27.0",
+    "globals": "^15.9.0",
     "husky": "^9.1.5",
-    "pkg": "^5.8.0",
-    "prettier": "2.2.1"
+    "prettier": "^3.2.5"
   },
   "dependencies": {
     "electron-context-menu": "^3.6.1",
