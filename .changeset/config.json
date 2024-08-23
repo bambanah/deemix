@@ -2,11 +2,8 @@
 	"$schema": "https://unpkg.com/@changesets/config@3.0.2/schema.json",
 	"changelog": "@changesets/cli/changelog",
 	"commit": false,
-	"fixed": [
-		["deemix-server", "deemix", "deezer-js"],
-		["deemix-server", "deemix-webui"]
-	],
-	"linked": [],
+	"fixed": [],
+	"linked": [["deemix-webui", "deemix-server", "deemix", "deezer-js"]],
 	"access": "restricted",
 	"baseBranch": "main",
 	"updateInternalDependencies": "patch",

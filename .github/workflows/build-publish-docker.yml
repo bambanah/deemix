@@ -3,7 +3,7 @@ name: Create Release or Publish
 on:
   push:
     tags:
-      - deemix-server@*
+      - deemix-webui@*
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
