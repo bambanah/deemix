@@ -11,7 +11,6 @@ export default [
 			"vue/no-deprecated-functional-template": "off",
 			"vue/no-deprecated-dollar-listeners-api": "off",
 			"vue/require-explicit-emits": "off",
-			"vue/one-component-per-file": "off",
 		},
 	},
 	{
