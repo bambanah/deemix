@@ -30,12 +30,12 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { defineComponent, ref } from "@vue/composition-api";
-import { isValidURL } from "@/utils/utils";
-import { sendAddToQueue } from "@/utils/downloads";
 import { fetchData } from "@/utils/api";
+import { sendAddToQueue } from "@/utils/downloads";
 import EventBus from "@/utils/EventBus";
+import { isValidURL } from "@/utils/utils";
+import { defineComponent, ref } from "@vue/composition-api";
+import { mapGetters } from "vuex";
 
 export default defineComponent({
 	setup() {
