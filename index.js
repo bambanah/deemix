@@ -15,7 +15,7 @@ const yargs = require("yargs/yargs");
 const { hideBin } = require("yargs/helpers");
 const argv = yargs(hideBin(process.argv)).options({
 	port: { type: "string", default: "6595" },
-	host: { type: "string", default: "127.0.0.1" },
+	host: { type: "string", default: "0.0.0.0" },
 	dev: { type: "boolean", default: false },
 }).argv;
 const { DeemixServer } = require("./server/dist/app.js");
@@ -126,7 +126,7 @@ ipcMain.on("openDownloadsFolder", (event) => {
 });
 
 ipcMain.on("selectDownloadFolder", async (event, downloadLocation) => {
-	let path = await dialog.showOpenDialog(win, {
+	const path = await dialog.showOpenDialog(win, {
 		defaultPath: downloadLocation,
 		properties: ["openDirectory", "createDirectory"],
 	});
