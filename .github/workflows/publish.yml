@@ -32,5 +32,6 @@ jobs:
         with:
           title: "Version Packages"
           commit: "chore(release): version packages"
+          publish: pnpm changeset tag
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
