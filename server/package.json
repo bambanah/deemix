@@ -7,6 +7,7 @@
 		"build": "webpack --env production",
 		"sourcemap": "webpack --env production sourcemap",
 		"watch": "webpack --watch",
+		"lint:ts": "tsc --noEmit",
 		"test": "jest",
 		"test-watch": "jest --watch"
 	},
