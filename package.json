@@ -18,12 +18,21 @@
     "build-server": "yarn --cwd server build",
     "build-webui": "yarn --cwd webui build",
     "set-version": "node scripts/set-version.js",
-    "reset-version": "node scripts/reset-version.js"
+    "reset-version": "node scripts/reset-version.js",
+    "lint": "eslint .",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.4.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "electron": "^22.0.0",
     "electron-builder": "^23.6.0",
-    "pkg": "^5.8.0"
+    "eslint": "^9.9.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-vue": "^9.27.0",
+    "husky": "^9.1.5",
+    "pkg": "^5.8.0",
+    "prettier": "2.2.1"
   },
   "dependencies": {
     "electron-context-menu": "^3.6.1",
