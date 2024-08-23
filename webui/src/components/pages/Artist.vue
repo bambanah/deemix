@@ -113,7 +113,9 @@
 					@click.stop="sendAddToQueue(downloadLink)"
 				>
 					{{
-						`${$t("globals.download", { thing: $t("globals.listTabs.discography") })}`
+						`${$t("globals.download", {
+							thing: $t("globals.listTabs.discography"),
+						})}`
 					}}
 				</button>
 			</div>
@@ -123,7 +125,9 @@
 				@click.stop="sendAddToQueue(downloadLink + '/' + currentTab)"
 			>
 				{{
-					`${$t("globals.download", { thing: $tc(`globals.listTabs.${currentTab}`, 2) })}`
+					`${$t("globals.download", {
+						thing: $tc(`globals.listTabs.${currentTab}`, 2),
+					})}`
 				}}<i class="ml-2 material-icons">file_download</i>
 			</button>
 		</footer>
@@ -141,7 +145,8 @@ import {
 } from "@vue/composition-api";
 import { orderBy } from "lodash-es";
 
-import { BaseTabs, BaseTab } from "@components/globals/BaseTabs";
+import { BaseTab } from "@components/globals/BaseTab";
+import { BaseTabs } from "@components/globals/BaseTabs";
 
 import { sendAddToQueue } from "@/utils/downloads";
 import { checkNewRelease } from "@/utils/dates";
