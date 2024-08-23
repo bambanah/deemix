@@ -33,3 +33,4 @@ jobs:
           publish: pnpm changeset tag
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+          HUSKY: 0
