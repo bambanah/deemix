@@ -1,10 +1,15 @@
-name: Publish
+name: Create Release or Publish
+
 on:
   push:
     branches:
       - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   create-release-or-publish:
