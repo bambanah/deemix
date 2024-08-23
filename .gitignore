@@ -65,3 +65,5 @@ dev.sh
 
 # distribution
 dist/
+
+webui/public/js/*
