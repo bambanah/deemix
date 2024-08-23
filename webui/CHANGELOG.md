@@ -1,5 +1,11 @@
 # deemix-webui
 
+## 3.8.1
+
+### Patch Changes
+
+- 10bc5d5: Reduce font size of about page
+
 ## 1.10.2
 
 ### Patch Changes
