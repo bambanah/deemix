@@ -51,7 +51,8 @@ import ResultsAlbums from "@components/search/ResultsAlbums.vue";
 import ResultsArtists from "@components/search/ResultsArtists.vue";
 import ResultsPlaylists from "@components/search/ResultsPlaylists.vue";
 import ResultsTracks from "@components/search/ResultsTracks.vue";
-import { BaseTabs, BaseTab } from "@components/globals/BaseTabs";
+import { BaseTab } from "@components/globals/BaseTab";
+import { BaseTabs } from "@components/globals/BaseTabs";
 import { sendAddToQueue } from "@/utils/downloads";
 import { numberWithDots, convertDuration } from "@/utils/utils";
 
