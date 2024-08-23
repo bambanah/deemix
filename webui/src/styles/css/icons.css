@@ -1,0 +1,25 @@
+.material-icons.title-icon {
+	margin-right: 0.3125em;
+	margin-left: -3px;
+}
+
+.material-icons.title-icon.title-icon--right {
+	margin-right: 0px;
+	margin-left: 0.3125em;
+}
+
+.material-icons.title-icon.title-icon--explicit {
+	color: hsl(240, 5%, 59%);
+}
+
+.material-icons.title-icon.title-icon--new {
+	color: hsl(27, 100%, 50%);
+}
+
+.material-icons.disabled {
+	@apply opacity-50 cursor-default;
+}
+
+.material-icons.mirrored {
+	transform: scaleX(-1);
+}

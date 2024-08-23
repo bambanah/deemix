@@ -1,0 +1,11 @@
+{
+	"compilerOptions": {
+		"checkJs": true,
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./*"],
+			"@components/*": ["./components/*"]
+		}
+	},
+	"exclude": ["assets/**/*", "styles/**/*"]
+}
