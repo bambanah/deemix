@@ -3,9 +3,13 @@ name: Create Release or Publish
 on:
   push:
     tags:
-      - deemix-webui@*
+      - "deemix-webui@*"
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build-publish-docker:
