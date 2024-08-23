@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html class="h-screen" data-theme="dark" dir="ltr" lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>deemix</title>
+		<link href="favicon.ico" rel="shortcut icon" />
+		<meta
+			content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=0"
+			name="viewport"
+		/>
+		<style>
+			body {
+				background: hsl(240, 10%, 8%);
+				color: hsl(0, 0%, 93%);
+			}
+			#missingBundle {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				margin: auto;
+				width: 50%;
+				padding: 24px;
+				text-align: center;
+				font-size: 1.2em;
+				font-family: sans-serif;
+				background-color: hsl(240, 12%, 16%);
+				border-radius: 10px;
+				display: none;
+			}
+		</style>
+		<script>location.base = "<%= locationBase %>"</script>
+		<script>
+			if (localStorage.getItem('selectedTheme')) {
+				document.documentElement.setAttribute('data-theme', localStorage.getItem('selectedTheme'))
+			}
+		</script>
+	</head>
+
+	<body class="w-full h-full overflow-hidden font-sans bg-background-main text-foreground">
+		<div id="app"></div>
+		<p id="missingBundle">
+			If you're reading this it means that <code>js/bundle.js</code> isn't loading correctly.<br/>
+			Make sure the file is present, if not build the webui.
+		</p>
+	</body>
+
+	<script>
+		setTimeout(()=>{
+			let missingBundle = document.getElementById('missingBundle')
+			if (missingBundle) missingBundle.style.display = 'block'
+		}, 3000)
+	</script>
+	<script src="js/bundle.js"></script>
+</html>

@@ -1,0 +1,36 @@
+.changing-theme {
+	/* Applied to ALL elements when changing theme */
+	transition: all 200ms ease-in-out;
+}
+
+[v-cloak] {
+	/* Attribute removed after that a component finished loading */
+	display: none;
+}
+
+.clickable {
+	cursor: pointer !important;
+}
+
+.coverart {
+	/* ? Why? */
+	background-color: var(--secondary-background);
+}
+
+.release {
+	display: inline-block;
+	width: 156px;
+}
+
+.spin {
+	animation: spin 500ms infinite ease-out reverse;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
