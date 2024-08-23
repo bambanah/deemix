@@ -4,6 +4,8 @@ on:
     workflows: [Build and Publish Docker Image]
     types:
       - completed
+    branches:
+      - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
