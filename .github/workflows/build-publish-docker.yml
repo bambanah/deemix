@@ -10,6 +10,7 @@ on:
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env:
+  HUSKY: 0
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
