@@ -5,7 +5,7 @@ import { ApiHandler } from "../../../types";
 import { sessionDZ } from "../../../app";
 
 import { isObjectEmpy } from "../../../helpers/primitive-checks";
-import { BadRequestError, isBadRequestError } from "../../../helpers/errors";
+import { BadRequestError } from "../../../helpers/errors";
 import { logger } from "../../../helpers/logger";
 
 export interface RawChartTracksQuery {
@@ -39,7 +39,7 @@ const handler: RequestHandler<{}, {}, {}, RawChartTracksQuery> = async (
 		});
 		return res.status(200).send(response);
 	} catch (error) {
-		if (isBadRequestError(error)) {
+		if (error instanceof BadRequestError) {
 			logger.error(error.message);
 			res.status(400).send();
 			return next();
