@@ -74,7 +74,7 @@
 		"nsis": {
 			"artifactName": "${productName}_setup.${ext}",
 			"oneClick": false,
-			"license": "LICENSE.txt",
+			"license": "../LICENSE.txt",
 			"allowToChangeInstallationDirectory": true,
 			"uninstallDisplayName": "${productName}",
 			"deleteAppDataOnUninstall": true

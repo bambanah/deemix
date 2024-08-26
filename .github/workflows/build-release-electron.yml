@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v4
@@ -40,6 +40,7 @@ jobs:
         with:
           files: |
             gui/dist/deemix-gui_*.dmg
+            gui/dist/deemix-gui.exe
+            gui/dist/deemix-gui_setup.exe
             gui/dist/deemix-gui_*.AppImage
             gui/dist/deemix-gui_*.deb
-            gui/dist/deemix-gui_*.exe
