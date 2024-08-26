@@ -1,41 +1,41 @@
 {
-  "name": "deemix",
-  "version": "0.0.0",
-  "private": true,
-  "description": "A hybrid monorepo that wraps deemix-webui and lets you use the deemix-js library",
-  "main": "index.js",
-  "repository": "https://github.com/bambanah/deemix.git",
-  "author": "Bambanah",
-  "license": "GPL-3.0-only",
-  "scripts": {
-    "dev": "pnpm -C webui dev",
-    "dev:gui": "pnpm -C gui dev",
-    "build": "run-s build:server build:webui",
-    "build:server": "pnpm -C server build",
-    "build:webui": "pnpm -C webui build",
-    "build:gui": "pnpm build && pnpm -C gui build",
-    "start:server": "pnpm -C server start",
-    "lint": "run-s lint:*",
-    "lint:es": "eslint .",
-    "lint:ts": "pnpm -C server lint:ts",
-    "prepare": "husky"
-  },
-  "devDependencies": {
-    "@changesets/cli": "^2.27.7",
-    "@commitlint/cli": "^19.4.0",
-    "@commitlint/config-conventional": "^19.2.2",
-    "electron": "^22.0.0",
-    "electron-builder": "^23.6.0",
-    "eslint": "^9.9.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-vue": "^9.27.0",
-    "husky": "^9.1.5",
-    "npm-run-all2": "^6.2.0",
-    "prettier": "^3.2.5",
-    "typescript": "^4.9.5"
-  },
-  "dependencies": {
-    "yargs": "^17.6.2"
-  },
-  "packageManager": "pnpm@9.7.1+sha512.faf344af2d6ca65c4c5c8c2224ea77a81a5e8859cbc4e06b1511ddce2f0151512431dd19e6aff31f2c6a8f5f2aced9bd2273e1fed7dd4de1868984059d2c4247"
+	"name": "deemix",
+	"version": "0.0.0",
+	"private": true,
+	"description": "A hybrid monorepo that wraps deemix-webui and lets you use the deemix-js library",
+	"main": "index.js",
+	"repository": "https://github.com/bambanah/deemix.git",
+	"author": "Bambanah",
+	"license": "GPL-3.0-only",
+	"scripts": {
+		"dev": "pnpm -C webui dev",
+		"dev:gui": "pnpm -C gui dev",
+		"build": "run-s build:server build:webui",
+		"build:server": "pnpm -C server build",
+		"build:webui": "pnpm -C webui build",
+		"build:gui": "pnpm build && pnpm -C gui build",
+		"start:server": "pnpm -C server start",
+		"lint": "run-s lint:*",
+		"lint:es": "eslint .",
+		"lint:ts": "pnpm -r lint:ts",
+		"prepare": "husky"
+	},
+	"devDependencies": {
+		"@changesets/cli": "^2.27.7",
+		"@commitlint/cli": "^19.4.0",
+		"@commitlint/config-conventional": "^19.2.2",
+		"electron": "^22.0.0",
+		"electron-builder": "^23.6.0",
+		"eslint": "^9.9.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-vue": "^9.27.0",
+		"husky": "^9.1.5",
+		"npm-run-all2": "^6.2.0",
+		"prettier": "^3.2.5",
+		"typescript": "^4.9.5"
+	},
+	"dependencies": {
+		"yargs": "^17.6.2"
+	},
+	"packageManager": "pnpm@9.7.1+sha512.faf344af2d6ca65c4c5c8c2224ea77a81a5e8859cbc4e06b1511ddce2f0151512431dd19e6aff31f2c6a8f5f2aced9bd2273e1fed7dd4de1868984059d2c4247"
 }

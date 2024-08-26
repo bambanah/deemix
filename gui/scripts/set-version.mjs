@@ -4,4 +4,4 @@ import generateVersion from "./gen-version.mjs";
 const pack = JSON.parse(readFileSync("package.json"));
 pack.version = generateVersion();
 
-writeFileSync("package.json", JSON.stringify(pack, null, 2) + "\n");
+writeFileSync("package.json", JSON.stringify(pack, null, "\t") + "\n");
