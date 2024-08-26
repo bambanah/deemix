@@ -18,9 +18,6 @@ export class BadRequestError extends Error {
 	}
 }
 
-export const isBadRequestError = (error: any) =>
-	error instanceof BadRequestError;
-
 export class QueueError extends Error {
 	constructor(message: string) {
 		super(message);
