@@ -311,6 +311,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: 4.29.0
         version: 4.29.0(eslint@7.32.0)(typescript@4.3.5)
+      autoprefixer:
+        specifier: ^9.8.8
+        version: 9.8.8
       babel-jest:
         specifier: 27.0.6
         version: 27.0.6(@babel/core@7.15.0)
@@ -8033,7 +8036,7 @@ snapshots:
 
   '@types/fs-extra@9.0.13':
     dependencies:
-      '@types/node': 18.11.15
+      '@types/node': 14.14.37
 
   '@types/glob@7.2.0':
     dependencies:
@@ -8192,7 +8195,7 @@ snapshots:
 
   '@types/yauzl@2.10.0':
     dependencies:
-      '@types/node': 18.11.15
+      '@types/node': 14.14.37
     optional: true
 
   '@typescript-eslint/eslint-plugin@4.29.0(@typescript-eslint/parser@4.29.0(eslint@7.32.0)(typescript@4.3.5))(eslint@7.32.0)(typescript@4.3.5)':
@@ -11555,7 +11558,7 @@ snapshots:
       jest-environment-jsdom: 26.6.2(bufferutil@4.0.3)(utf-8-validate@5.0.5)
       jest-environment-node: 26.6.2
       jest-get-type: 26.3.0
-      jest-jasmine2: 26.6.3
+      jest-jasmine2: 26.6.3(bufferutil@4.0.3)(ts-node@9.1.1(typescript@4.2.4))(utf-8-validate@5.0.5)
       jest-regex-util: 26.0.0
       jest-resolve: 26.6.2
       jest-util: 26.6.2
@@ -11740,7 +11743,7 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  jest-jasmine2@26.6.3:
+  jest-jasmine2@26.6.3(bufferutil@4.0.3)(ts-node@9.1.1(typescript@4.2.4))(utf-8-validate@5.0.5):
     dependencies:
       '@babel/traverse': 7.25.4
       '@jest/environment': 26.6.2
@@ -11761,7 +11764,11 @@ snapshots:
       pretty-format: 26.6.2
       throat: 5.0.0
     transitivePeerDependencies:
+      - bufferutil
+      - canvas
       - supports-color
+      - ts-node
+      - utf-8-validate
 
   jest-jasmine2@27.5.1:
     dependencies:
