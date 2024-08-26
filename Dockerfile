@@ -1,12 +1,12 @@
 FROM node:20-alpine AS base
 
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
 WORKDIR /app
 
-RUN apk add --no-cache libc6-compat
-
 FROM base AS builder
-
-RUN apk add --no-cache git
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY server/package.json ./server/
@@ -14,7 +14,7 @@ COPY webui/package.json ./webui/
 COPY deemix/package.json ./deemix/
 COPY deezer-js/package.json ./deezer-js/
 
-RUN corepack enable pnpm && pnpm install
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 COPY . .
 
