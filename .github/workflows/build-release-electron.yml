@@ -16,6 +16,9 @@ jobs:
   build-publish-electron:
     runs-on: ${{ matrix.os }}
 
+    permissions:
+      contents: write
+
     strategy:
       matrix:
         os: [macos-latest]
