@@ -1,5 +1,11 @@
 # deemix-webui
 
+## 3.11.0
+
+### Minor Changes
+
+- 87a1468: Docker image now runs server via node instead of bundling using pkg
+
 ## 3.10.0
 
 ### Minor Changes
