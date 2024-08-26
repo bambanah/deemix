@@ -11,6 +11,4 @@ function generateVersion() {
 	return `${year}.${month}.${day}-r${commitsNumber}.${commitHash}`;
 }
 
-console.log(generateVersion());
-
 export default generateVersion;

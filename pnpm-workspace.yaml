@@ -3,3 +3,4 @@ packages:
   - "server"
   - "deemix"
   - "deezer-js"
+  - "gui"
