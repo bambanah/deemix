@@ -18,7 +18,7 @@ RUN corepack enable pnpm && pnpm install
 
 COPY . .
 
-RUN pnpm build-server && pnpm build-webui
+RUN pnpm build
 
 FROM base AS runner
 

@@ -12,18 +12,6 @@
 		"test-watch": "jest --watch"
 	},
 	"bin": "./dist/app.js",
-	"pkg": {
-		"scripts": "./dist/**/*.js",
-		"assets": [
-			"../webui/public/**/*",
-			"../package.json"
-		],
-		"targets": [
-			"node20-linux-x64",
-			"node20-macos-x64",
-			"node20-win-x64"
-		]
-	},
 	"dependencies": {
 		"cookie-parser": "1.4.6",
 		"date-fns": "^3.6.0",
