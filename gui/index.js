@@ -18,7 +18,7 @@ const argv = yargs(hideBin(process.argv)).options({
 	host: { type: "string", default: "0.0.0.0" },
 	dev: { type: "boolean", default: false },
 }).argv;
-const { DeemixServer } = require("./server/dist/app.js");
+const { DeemixServer } = require("../server/dist/app.js");
 
 const PORT = process.env.DEEMIX_SERVER_PORT || argv.port;
 process.env.DEEMIX_SERVER_PORT = PORT;
