@@ -8,17 +8,13 @@ WORKDIR /app
 
 FROM base AS builder
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY server/package.json ./server/
-COPY webui/package.json ./webui/
-COPY deemix/package.json ./deemix/
-COPY deezer-js/package.json ./deezer-js/
+COPY pnpm-lock.yaml ./
 
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm fetch
 
 COPY . .
 
-RUN pnpm build
+RUN pnpm install -r --offline && pnpm build
 
 FROM base AS runner
 
