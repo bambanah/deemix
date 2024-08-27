@@ -128,6 +128,12 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, _, next) => {
+	if (to.name && to.name !== "Home") {
+		document.title = to.name + " · Deemix";
+	} else {
+		document.title = "Deemix";
+	}
+
 	switch (to.name) {
 		case "Tracklist": {
 			// const getTracklistParams = {
