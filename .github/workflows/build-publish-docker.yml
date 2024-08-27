@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - "deemix-webui@*"
-    branches:
-      - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
