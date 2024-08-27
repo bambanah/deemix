@@ -4,9 +4,7 @@
 	"private": true,
 	"description": "A barebones deezer downloader library",
 	"main": "src/index.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
+	"scripts": {},
 	"author": "RemixDev",
 	"license": "GPL-3.0-or-later",
 	"dependencies": {

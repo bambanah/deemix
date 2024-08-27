@@ -15,6 +15,7 @@
 		"build:webui": "pnpm -C webui build",
 		"build:gui": "pnpm build && pnpm -C gui build",
 		"start:server": "pnpm -C server start",
+		"test": "pnpm -C webui test",
 		"lint": "run-s lint:*",
 		"lint:es": "eslint .",
 		"lint:ts": "pnpm -r lint:ts",

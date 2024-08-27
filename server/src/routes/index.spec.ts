@@ -1,5 +1,7 @@
 import request from "supertest";
-import { app } from "../app";
+import { server } from "../index";
+
+const { app } = server;
 
 describe("root path requests", () => {
 	it("responds 200 to the GET method", async () => {
