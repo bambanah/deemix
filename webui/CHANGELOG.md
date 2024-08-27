@@ -1,5 +1,11 @@
 # deemix-webui
 
+## 3.11.1
+
+### Patch Changes
+
+- a8cc14f: Correctly display favicon and capitalize tab title
+
 ## 3.11.0
 
 ### Minor Changes
