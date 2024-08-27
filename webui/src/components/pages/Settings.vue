@@ -915,30 +915,30 @@
 				<select v-model="settings.dateFormat">
 					<option value="Y-M-D">
 						{{
-							`${$t("settings.other.dateFormat.year")}-${$t("settings.other.dateFormat.month")}-${$t(
-								"settings.other.dateFormat.day"
-							)}`
+							`${$t("settings.other.dateFormat.year")}-${$t(
+								"settings.other.dateFormat.month"
+							)}-${$t("settings.other.dateFormat.day")}`
 						}}
 					</option>
 					<option value="Y-D-M">
 						{{
-							`${$t("settings.other.dateFormat.year")}-${$t("settings.other.dateFormat.day")}-${$t(
-								"settings.other.dateFormat.month"
-							)}`
+							`${$t("settings.other.dateFormat.year")}-${$t(
+								"settings.other.dateFormat.day"
+							)}-${$t("settings.other.dateFormat.month")}`
 						}}
 					</option>
 					<option value="D-M-Y">
 						{{
-							`${$t("settings.other.dateFormat.day")}-${$t("settings.other.dateFormat.month")}-${$t(
-								"settings.other.dateFormat.year"
-							)}`
+							`${$t("settings.other.dateFormat.day")}-${$t(
+								"settings.other.dateFormat.month"
+							)}-${$t("settings.other.dateFormat.year")}`
 						}}
 					</option>
 					<option value="M-D-Y">
 						{{
-							`${$t("settings.other.dateFormat.month")}-${$t("settings.other.dateFormat.day")}-${$t(
-								"settings.other.dateFormat.year"
-							)}`
+							`${$t("settings.other.dateFormat.month")}-${$t(
+								"settings.other.dateFormat.day"
+							)}-${$t("settings.other.dateFormat.year")}`
 						}}
 					</option>
 					<option value="Y">{{ $t("settings.other.dateFormat.year") }}</option>
@@ -1096,6 +1096,7 @@ import { fetchData, postToServer } from "@/utils/api";
 import { getFormItem } from "@/utils/forms";
 
 export default {
+	name: "Settings",
 	components: {
 		BaseAccordion,
 		TemplateVariablesList,
