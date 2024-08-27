@@ -1,5 +1,11 @@
 # deemix-webui
 
+## 3.11.2
+
+### Patch Changes
+
+- 260b1b0: Correctly display per-route titles
+
 ## 3.11.1
 
 ### Patch Changes
