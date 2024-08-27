@@ -11,7 +11,7 @@ env:
   HUSKY: 0
 
 jobs:
-  build-publish-electron:
+  build-release-electron:
     runs-on: ${{ matrix.os }}
 
     permissions:
