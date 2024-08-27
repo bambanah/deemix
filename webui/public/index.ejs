@@ -2,8 +2,8 @@
 <html class="h-screen" data-theme="dark" dir="ltr" lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>deemix</title>
-		<link href="favicon.ico" rel="shortcut icon" />
+		<title>Deemix</title>
+		<link rel="shortcut icon" type="image/png" href="favicon.png" />
 		<meta
 			content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=0"
 			name="viewport"
@@ -29,27 +29,42 @@
 				display: none;
 			}
 		</style>
-		<script>location.base = "<%= locationBase %>"</script>
 		<script>
-			if (localStorage.getItem('selectedTheme')) {
-				document.documentElement.setAttribute('data-theme', localStorage.getItem('selectedTheme'))
+			location.base = "<%= locationBase %>";
+		</script>
+		<script>
+			if (localStorage.getItem("selectedTheme")) {
+				document.documentElement.setAttribute(
+					"data-theme",
+					localStorage.getItem("selectedTheme")
+				);
 			}
 		</script>
 	</head>
 
-	<body class="w-full h-full overflow-hidden font-sans bg-background-main text-foreground">
+	<body
+		class="
+			w-full
+			h-full
+			overflow-hidden
+			font-sans
+			bg-background-main
+			text-foreground
+		"
+	>
 		<div id="app"></div>
 		<p id="missingBundle">
-			If you're reading this it means that <code>js/bundle.js</code> isn't loading correctly.<br/>
+			If you're reading this it means that <code>js/bundle.js</code> isn't
+			loading correctly.<br />
 			Make sure the file is present, if not build the webui.
 		</p>
 	</body>
 
 	<script>
-		setTimeout(()=>{
-			let missingBundle = document.getElementById('missingBundle')
-			if (missingBundle) missingBundle.style.display = 'block'
-		}, 3000)
+		setTimeout(() => {
+			let missingBundle = document.getElementById("missingBundle");
+			if (missingBundle) missingBundle.style.display = "block";
+		}, 3000);
 	</script>
 	<script src="js/bundle.js"></script>
 </html>
