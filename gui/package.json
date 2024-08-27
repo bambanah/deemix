@@ -4,7 +4,8 @@
 	"private": true,
 	"description": "A standalone electron app that wraps deemix-webui",
 	"main": "index.js",
-	"author": "Bambanah",
+	"repository": "https://github.com/bambanah/deemix.git",
+	"author": "Bambanah <hello@lachie.xyz>",
 	"license": "GPL-3.0-only",
 	"scripts": {
 		"dev": "electron . --dev",

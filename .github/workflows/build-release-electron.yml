@@ -42,5 +42,5 @@ jobs:
             gui/dist/deemix-gui_*.dmg
             gui/dist/deemix-gui.exe
             gui/dist/deemix-gui_setup.exe
-            gui/dist/deemix-gui_*.AppImage
-            gui/dist/deemix-gui_*.deb
+            gui/dist/deemix-gui.AppImage
+            gui/dist/deemix-gui.deb
