@@ -4,9 +4,7 @@
 	"private": true,
 	"description": "A wrapper for all Deezer's APIs",
 	"main": "src/index.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
+	"scripts": {},
 	"repository": {
 		"type": "git",
 		"url": "https://gitlab.com/RemixDev/deezer-js"
