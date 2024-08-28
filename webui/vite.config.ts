@@ -7,7 +7,7 @@ import vue2Jsx from "@vitejs/plugin-vue2-jsx";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [vue2(), vue2Jsx(), svgLoader()],
+	plugins: [vue2(), vue2Jsx()],
 	resolve: {
 		alias: {
 			"@/": fileURLToPath(new URL("./src/", import.meta.url)),

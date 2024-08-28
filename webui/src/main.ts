@@ -1,5 +1,4 @@
 import App from "@/App.vue";
-import { SPOTIFY_STATUS } from "@/constants";
 import i18n from "@/plugins/i18n";
 import router from "@/router";
 import store from "@/store";
@@ -33,9 +32,7 @@ async function startApp() {
 	}).$mount("#app");
 
 	const connectResponse = await fetchData("connect");
-	const spotifyStatus = connectResponse.spotifyEnabled
-		? SPOTIFY_STATUS.ENABLED
-		: SPOTIFY_STATUS.DISABLED;
+	const spotifyStatus = connectResponse.spotifyEnabled ? "enabled" : "disabled";
 
 	if (connectResponse.deezerAvailable === "no-network") {
 		document.getElementById("deezer_not_reachable").classList.remove("hide");
@@ -60,7 +57,7 @@ async function startApp() {
 		console.info("Autologin");
 		const accountNum = localStorage.getItem("accountNum");
 
-		async function login(arl, accountNum) {
+		async function login(arl: string, accountNum: number) {
 			toast(i18n.t("toasts.loggingIn"), "loading", false, "login-toast");
 			arl = arl.trim();
 			let result;
@@ -79,7 +76,7 @@ async function startApp() {
 		}
 
 		if (arl) {
-			let result = await login(arl, accountNum);
+			let result = await login(arl, Number(accountNum));
 			if (result.status === 0 && accessToken) {
 				const { arl: newArl } = await postToServer("loginWithCredentials", {
 					accessToken,
@@ -88,7 +85,7 @@ async function startApp() {
 					arl = newArl;
 					store.dispatch("setARL", { arl });
 				}
-				result = await login(newArl, accountNum);
+				result = await login(newArl, Number(accountNum));
 			}
 			loggedIn(result);
 		}

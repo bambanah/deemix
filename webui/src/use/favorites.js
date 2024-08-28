@@ -4,7 +4,6 @@ import store from "@/store";
 import { fetchData } from "@/utils/api";
 import { toast } from "@/utils/toasts";
 import i18n from "@/plugins/i18n";
-import { SPOTIFY_STATUS } from "@/constants";
 
 const favoriteArtists = ref([]);
 const favoriteAlbums = ref([]);
@@ -33,9 +32,7 @@ const setSpotifyPlaylists = (response) => {
 		favoriteSpotifyPlaylists.value = [];
 		switch (response.error) {
 			case "spotifyNotEnabled":
-				store
-					.dispatch("setSpotifyStatus", SPOTIFY_STATUS.DISABLED)
-					.catch(console.error);
+				store.dispatch("setSpotifyStatus", "disabled").catch(console.error);
 				break;
 			case "wrongSpotifyUsername":
 				toast(
