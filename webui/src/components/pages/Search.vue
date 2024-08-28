@@ -45,13 +45,13 @@ import {
 } from "vue";
 import { uniqWith } from "lodash-es";
 
-import BaseLoadingPlaceholder from "@components/globals/BaseLoadingPlaceholder.vue";
-import ResultsAll from "@components/search/ResultsAll.vue";
-import ResultsAlbums from "@components/search/ResultsAlbums.vue";
-import ResultsArtists from "@components/search/ResultsArtists.vue";
-import ResultsPlaylists from "@components/search/ResultsPlaylists.vue";
-import ResultsTracks from "@components/search/ResultsTracks.vue";
-import { BaseTabs, BaseTab } from "@components/globals/BaseTabs";
+import BaseLoadingPlaceholder from "@/components/globals/BaseLoadingPlaceholder.vue";
+import ResultsAll from "@/components/search/ResultsAll.vue";
+import ResultsAlbums from "@/components/search/ResultsAlbums.vue";
+import ResultsArtists from "@/components/search/ResultsArtists.vue";
+import ResultsPlaylists from "@/components/search/ResultsPlaylists.vue";
+import ResultsTracks from "@/components/search/ResultsTracks.vue";
+import { BaseTabs, BaseTab } from "@/components/globals/BaseTabs";
 import { sendAddToQueue } from "@/utils/downloads";
 import { convertDuration } from "@/utils/utils";
 

@@ -11,7 +11,7 @@
 		>
 			<div role="link" @click="navigate" @keypress.enter="navigate">
 				<CoverContainer
-					class="w-40 h-40"
+					class="h-40 w-40"
 					:is-rounded="$attrs.info.type !== 'artist'"
 					:is-circle="$attrs.info.type === 'artist'"
 					:cover="$attrs.info.picture"
@@ -20,17 +20,17 @@
 				/>
 
 				<p
-					class="mt-4 mb-1 text-xl text-center transition-colors duration-200 ease-in-out hover:text-primary"
+					class="hover:text-primary mb-1 mt-4 text-center text-xl transition-colors duration-200 ease-in-out"
 				>
 					{{ $attrs.info.title }}
 				</p>
 			</div>
 		</router-link>
 
-		<p class="mb-3 text-center secondary-text">
+		<p class="secondary-text mb-3 text-center">
 			{{ fansNumber }}
 		</p>
-		<span class="p-1 px-2 text-xs text-center capitalize bg-primary rounded-xl">
+		<span class="bg-primary rounded-xl p-1 px-2 text-center text-xs capitalize">
 			{{ $tc(`globals.listTabs.${$attrs.info.type}`, 1) }}
 		</span>
 	</div>
@@ -38,7 +38,7 @@
 
 <script>
 import { upperCaseFirstLowerCaseRest } from "@/utils/texts";
-import CoverContainer from "@components/globals/CoverContainer.vue";
+import CoverContainer from "@/components/globals/CoverContainer.vue";
 
 export default {
 	components: {

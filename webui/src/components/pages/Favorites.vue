@@ -245,9 +245,9 @@
 <script>
 import { defineComponent, reactive, toRefs, watch } from "vue";
 
-import PreviewControls from "@components/globals/PreviewControls.vue";
-import CoverContainer from "@components/globals/CoverContainer.vue";
-import { BaseTab, BaseTabs } from "@components/globals/BaseTabs";
+import PreviewControls from "@/components/globals/PreviewControls.vue";
+import CoverContainer from "@/components/globals/CoverContainer.vue";
+import { BaseTab, BaseTabs } from "@/components/globals/BaseTabs";
 
 import { aggregateDownloadLinks, sendAddToQueue } from "@/utils/downloads";
 import { convertDuration } from "@/utils/utils";

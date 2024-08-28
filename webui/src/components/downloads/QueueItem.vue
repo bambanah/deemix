@@ -1,7 +1,7 @@
 <template>
 	<div class="download-object" :data-link-only="generateLink">
 		<div class="download-info">
-			<div class="relative coverart rounded">
+			<div class="coverart rounded relative">
 				<img
 					width="75px"
 					:src="queueItem.cover"
@@ -171,7 +171,10 @@ export default {
 					return `https://deezer.com/album/${this.queueItem.id}`;
 				case "playlist":
 					if (this.queueItem.id.endsWith("_top_track"))
-						return `https://www.deezer.com/artist/${this.queueItem.id.slice(0, -10)}/top_track`;
+						return `https://www.deezer.com/artist/${this.queueItem.id.slice(
+							0,
+							-10
+						)}/top_track`;
 					return `https://deezer.com/playlist/${this.queueItem.id}`;
 				case "spotify_playlist":
 					return `https://open.spotify.com/playlist/${this.queueItem.id}`;
@@ -294,7 +297,7 @@ export default {
 }
 #download_list.slim > .download-object .download-info-status {
 	width: 20%;
-	display: inline-block;
+	display: block;
 	float: right;
 }
 

@@ -15,7 +15,7 @@
 				<div
 					v-for="release in viewInfo.data.slice(0, itemsToShow)"
 					:key="release.artistID"
-					class="w-40 release"
+					class="release w-40"
 				>
 					<router-link
 						v-slot="{ navigate }"
@@ -46,9 +46,9 @@
 </template>
 
 <script>
-import BaseLoadingPlaceholder from "@components/globals/BaseLoadingPlaceholder.vue";
-import CoverContainer from "@components/globals/CoverContainer.vue";
-import ResultsError from "@components/search/ResultsError.vue";
+import BaseLoadingPlaceholder from "@/components/globals/BaseLoadingPlaceholder.vue";
+import CoverContainer from "@/components/globals/CoverContainer.vue";
+import ResultsError from "@/components/search/ResultsError.vue";
 
 export default {
 	components: {

@@ -29,16 +29,16 @@
 <script>
 import { socket } from "@/utils/socket";
 
-import BaseLoadingPlaceholder from "@components/globals/BaseLoadingPlaceholder.vue";
-import TheContextMenu from "@components/globals/TheContextMenu.vue";
-import TheTrackPreview from "@components/globals/TheTrackPreview.vue";
-import TheQualityModal from "@components/globals/TheQualityModal.vue";
-import DeezerWarning from "@components/globals/DeezerWarning.vue";
-// import ConfirmModal from '@components/globals/ConfirmModal.vue'
-import TheSidebar from "@components/TheSidebar.vue";
-import TheSearchBar from "@components/TheSearchBar.vue";
-import TheContent from "@components/TheContent.vue";
-import TheDownloadBar from "@components/downloads/TheDownloadBar.vue";
+import BaseLoadingPlaceholder from "@/components/globals/BaseLoadingPlaceholder.vue";
+import TheContextMenu from "@/components/globals/TheContextMenu.vue";
+import TheTrackPreview from "@/components/globals/TheTrackPreview.vue";
+import TheQualityModal from "@/components/globals/TheQualityModal.vue";
+import DeezerWarning from "@/components/globals/DeezerWarning.vue";
+// import ConfirmModal from '@/components/globals/ConfirmModal.vue'
+import TheSidebar from "@/components/TheSidebar.vue";
+import TheSearchBar from "@/components/TheSearchBar.vue";
+import TheContent from "@/components/TheContent.vue";
+import TheDownloadBar from "@/components/downloads/TheDownloadBar.vue";
 
 export default {
 	components: {

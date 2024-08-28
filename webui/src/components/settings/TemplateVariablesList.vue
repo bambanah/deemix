@@ -5,12 +5,12 @@
 		</template>
 
 		<div
-			class="flex flex-wrap p-4 space-x-2 rounded-2xl bg-background-secondary"
+			class="bg-background-secondary flex flex-wrap space-x-2 rounded-2xl p-4"
 		>
 			<span
 				v-for="(templateVariable, i) in templateVariables"
 				:key="i"
-				class="inline-block p-2 mt-2 tracking-wider rounded cursor-pointer bg-panels-bg first:ml-2 hover:shadow-outline"
+				class="rounded bg-panels-bg mt-2 inline-block cursor-pointer p-2 tracking-wider first:ml-2 hover:shadow-outline"
 				@click="$emit('variable-click', templateVariable)"
 			>
 				{{ templateVariable }}
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import BaseAccordion from "@components/globals/BaseAccordion.vue";
+import BaseAccordion from "@/components/globals/BaseAccordion.vue";
 
 export default {
 	components: { BaseAccordion },

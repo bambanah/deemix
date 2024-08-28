@@ -111,7 +111,7 @@
 </template>
 
 <script>
-import PreviewControls from "@components/globals/PreviewControls.vue";
+import PreviewControls from "@/components/globals/PreviewControls.vue";
 import { sendAddToQueue } from "@/utils/downloads";
 import { convertDuration } from "@/utils/utils";
 import { getChartsData, getChartTracks } from "@/data/charts";

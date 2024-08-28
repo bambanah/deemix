@@ -135,7 +135,7 @@
 						</tr>
 						<tr
 							v-else-if="track.type == 'disc_separator'"
-							:key="track.id"
+							:key="track.id + '_disc_separator'"
 							class="table__row-no-highlight"
 							style="opacity: 0.54"
 						>

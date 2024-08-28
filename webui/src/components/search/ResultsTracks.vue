@@ -107,9 +107,9 @@
 </template>
 
 <script>
-import BaseLoadingPlaceholder from "@components/globals/BaseLoadingPlaceholder.vue";
-import PreviewControls from "@components/globals/PreviewControls.vue";
-import ResultsError from "@components/search/ResultsError.vue";
+import BaseLoadingPlaceholder from "@/components/globals/BaseLoadingPlaceholder.vue";
+import PreviewControls from "@/components/globals/PreviewControls.vue";
+import ResultsError from "@/components/search/ResultsError.vue";
 
 import { convertDuration } from "@/utils/utils";
 

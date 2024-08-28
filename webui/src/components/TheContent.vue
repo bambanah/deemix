@@ -33,7 +33,7 @@
 
 <script>
 import { debounce } from "@/utils/utils";
-import BackButton from "@components/globals/BackButton.vue";
+import BackButton from "@/components/globals/BackButton.vue";
 
 export default {
 	components: {

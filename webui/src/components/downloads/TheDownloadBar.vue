@@ -2,7 +2,7 @@
 	<section
 		id="download_tab_container"
 		ref="container"
-		class="block h-screen bg-panels-bg text-foreground"
+		class="bg-panels-bg text-foreground block h-screen"
 		:class="{ 'tab-hidden': !isExpanded, 'w-8': !isExpanded }"
 		:data-label="$t('downloads')"
 		aria-label="downloads"
@@ -11,7 +11,7 @@
 		<!-- Drag handler -->
 		<div
 			v-show="isExpanded"
-			class="absolute w-4 h-full bg-grayscale-200"
+			class="bg-grayscale-200 absolute h-full w-4"
 			style="cursor: ew-resize"
 			@mousedown.prevent="startDrag"
 		></div>
@@ -20,7 +20,7 @@
 		<i
 			id="toggle_download_tab"
 			ref="toggler"
-			class="m-1 text-2xl cursor-pointer material-icons"
+			class="material-icons m-1 cursor-pointer text-2xl"
 			:class="{ 'ml-1': !isExpanded, 'ml-5': isExpanded }"
 			:title="$t('globals.toggle_download_tab_hint')"
 			@click.prevent="toggleDownloadTab"
@@ -28,29 +28,29 @@
 
 		<!-- Queue buttons -->
 		<div
-			class="absolute top-0 right-0 transition-all duration-200 ease-in-out"
+			class="absolute right-0 top-0 transition-all duration-200 ease-in-out"
 			:class="{
-				'opacity-0 invisible': !isExpanded,
-				'opacity-100 visible': isExpanded,
+				'invisible opacity-0': !isExpanded,
+				'visible opacity-100': isExpanded,
 			}"
 		>
 			<i
 				v-if="clientMode"
-				class="m-1 text-2xl cursor-pointer material-icons"
+				class="material-icons m-1 cursor-pointer text-2xl"
 				:title="$t('globals.open_downloads_folder')"
 				@click="openDownloadsFolder"
 			>
 				folder_open
 			</i>
 			<i
-				class="m-1 text-2xl cursor-pointer material-icons"
+				class="material-icons m-1 cursor-pointer text-2xl"
 				:title="$t('globals.clean_queue_hint')"
 				@click="cleanQueue"
 			>
 				clear_all
 			</i>
 			<i
-				class="m-1 text-2xl cursor-pointer material-icons"
+				class="material-icons m-1 cursor-pointer text-2xl"
 				:title="$t('globals.cancel_queue_hint')"
 				@click="cancelQueue"
 			>
@@ -80,7 +80,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import QueueItem from "@components/downloads/QueueItem.vue";
+import QueueItem from "@/components/downloads/QueueItem.vue";
 
 import { socket } from "@/utils/socket";
 import { toast } from "@/utils/toasts";
