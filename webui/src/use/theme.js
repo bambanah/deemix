@@ -1,4 +1,4 @@
-import { ref, watch } from "@vue/composition-api";
+import { ref, watch } from "vue";
 
 /**
  * @typedef	{string}	Theme

@@ -3,10 +3,10 @@
 		<h1 class="mb-8 text-5xl capitalize">{{ $t("sidebar.about") }}</h1>
 
 		<div
-			class="inline-flex px-4 py-2 mb-8 rounded-full"
+			class="mb-8 inline-flex rounded-full px-4 py-2"
 			:class="{ 'bg-green-500': isOnline, 'bg-red-500': !isOnline }"
 		>
-			<span class="text-sm uppercase-first-letter">
+			<span class="uppercase-first-letter text-sm">
 				{{ $t(`about.appStatus.${isOnline ? "online" : "offline"}`) }}
 			</span>
 		</div>
@@ -144,7 +144,7 @@
 		</ul>
 		<ul>
 			<li>
-				<i v-html="paypal" />
+				<!-- <i v-html="paypal" /> -->
 				<strong>PayPal:</strong>
 				<a href="https://paypal.me/RemixDev" target="_blank"
 					>PayPal.me/RemixDev</a
@@ -180,17 +180,11 @@
 </template>
 
 <script>
-import {
-	computed,
-	defineComponent,
-	onMounted,
-	reactive,
-	toRefs,
-} from "@vue/composition-api";
+import { computed, defineComponent, onMounted, reactive, toRefs } from "vue";
 
 import { useOnline } from "@/use/online";
 
-import paypal from "@/assets/paypal.svg";
+// import paypal from "@/assets/paypal.svg";
 
 export default defineComponent({
 	setup(_, ctx) {
@@ -220,7 +214,7 @@ export default defineComponent({
 
 		return {
 			...toRefs(state),
-			paypal,
+			// paypal,
 			isOnline,
 		};
 	},

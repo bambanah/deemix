@@ -5,31 +5,7 @@ module.exports = {
 		removeDeprecatedGapUtilities: true,
 		purgeLayersByDefault: true,
 	},
-	purge: {
-		// https://medium.com/@kyis/vue-tailwind-purgecss-the-right-way-c70d04461475
-		content: [
-			`./public/**/*.html`,
-			`./public/**/*.ejs`,
-			`./src/**/*.vue`,
-			`./src/**/*.js`,
-		],
-		defaultExtractor(content) {
-			const contentWithoutStyleBlocks = content.replace(
-				/<style[^]+?<\/style>/gi,
-				""
-			);
-			return (
-				contentWithoutStyleBlocks.match(/[A-Za-z0-9-_/:]*[A-Za-z0-9-_/]+/g) ||
-				[]
-			);
-		},
-		whitelist: [],
-		whitelistPatterns: [
-			/-(leave|enter|appear)(|-(to|from|active))$/,
-			/^(?!(|.*?:)cursor-move).+-move$/,
-			/^router-link(|-exact)-active$/,
-		],
-	},
+	content: [`./index.html`, `./src/**/*.{js,ts,tsx,vue}`],
 	theme: {
 		extend: {
 			colors: {

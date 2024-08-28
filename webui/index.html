@@ -1,0 +1,34 @@
+<!doctype html>
+<html class="h-screen" data-theme="dark" dir="ltr" lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Deemix</title>
+		<link rel="shortcut icon" type="image/png" href="favicon.png" />
+		<meta
+			content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=0"
+			name="viewport"
+		/>
+		<style>
+			body {
+				background: hsl(240, 10%, 8%);
+				color: hsl(0, 0%, 93%);
+			}
+		</style>
+		<script>
+			if (localStorage.getItem("selectedTheme")) {
+				document.documentElement.setAttribute(
+					"data-theme",
+					localStorage.getItem("selectedTheme")
+				);
+			}
+		</script>
+	</head>
+
+	<body
+		class="bg-background-main text-foreground h-full w-full overflow-hidden bg-[hsl(240deg,10%,8%)] font-sans"
+	>
+		<div id="app"></div>
+	</body>
+
+	<script type="module" src="/src/main.ts"></script>
+</html>

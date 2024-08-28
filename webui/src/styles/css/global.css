@@ -1,3 +1,13 @@
+@import "./helpers.css";
+@import "./icons.css";
+@import "./normalize.css";
+@import "./tables.css";
+@import "./typography.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
 	font-size: 16px;
 
@@ -103,5 +113,85 @@
 
 	a {
 		color: dodgerblue;
+	}
+}
+
+@layer components {
+	/* Button */
+	.btn {
+		@apply border rounded text-grayscale-900 relative h-8 border-solid border-transparent px-2 py-0 text-sm font-semibold uppercase;
+
+		font-family: inherit;
+		transition: transform 50ms ease-in-out;
+	}
+
+	.btn:active {
+		transform: scale(0.98);
+	}
+
+	.btn[disabled] {
+		@apply cursor-not-allowed bg-gray-600 text-gray-300 opacity-75;
+	}
+
+	.btn-only-icon {
+		@apply flex w-12 items-center justify-center px-1 py-0;
+
+		min-width: 24px;
+	}
+
+	.btn-primary {
+		@apply bg-primary;
+	}
+	.btn-flat {
+		background-color: rgba(0, 0, 0, 0);
+		color: var(--foreground);
+	}
+
+	.btn-primary:hover {
+		@apply border-foreground bg-blue-600;
+	}
+
+	/* Section tabs */
+	.section-tabs {
+		@apply mb-6 mt-4 flex cursor-pointer list-none;
+	}
+
+	.section-tabs__tab {
+		@apply rounded-b border-foreground bg-background-main flex-1 border-t-4 p-3 text-center text-xl capitalize;
+	}
+
+	.section-tabs__tab.active {
+		@apply text-primary border-primary bg-background-main;
+	}
+
+	.section-tabs__tab:hover {
+		@apply text-primary border-primary bg-background-secondary;
+		@apply bg-opacity-25;
+	}
+
+	/* Image header */
+	.image-header header {
+		@apply rounded-t-lg bg-cover px-6 pb-2 pt-56;
+
+		background-position: 0% 35%;
+	}
+
+	/* Fixed footer */
+	.fixed-footer footer {
+		@apply sticky bottom-0 mt-6 flex h-16 w-full flex-row items-center justify-end;
+	}
+
+	/* Release grid */
+	.release-grid {
+		@apply grid gap-4;
+
+		grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+	}
+
+	.tag {
+		padding: 3px;
+		background-color: var(--primary-color);
+		font-size: 10px;
+		border-radius: 3px;
 	}
 }

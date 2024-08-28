@@ -1,43 +1,30 @@
-import Vue from "vue";
-
-import "@/plugins/composition-api";
-
-import "@/styles/vendor/material-icons.css";
-import "@/styles/vendor/OpenSans.css";
-
-import "@/styles/css/tailwind.css";
-
-import "@/styles/css/normalize.css";
-import "@/styles/css/base.css";
-import "@/styles/css/components.css";
-import "@/styles/css/helpers.css";
-import "@/styles/css/icons.css";
-import "@/styles/css/tables.css";
-import "@/styles/css/typography.css";
-
 import App from "@/App.vue";
+import { SPOTIFY_STATUS } from "@/constants";
 import i18n from "@/plugins/i18n";
 import router from "@/router";
 import store from "@/store";
-
-import { socket } from "@/utils/socket";
 import { fetchData, postToServer } from "@/utils/api";
+import { sendAddToQueue } from "@/utils/downloads";
+import { socket } from "@/utils/socket";
 import { toast } from "@/utils/toasts";
 import { isValidURL } from "@/utils/utils";
-import { sendAddToQueue } from "@/utils/downloads";
-import { SPOTIFY_STATUS } from "@/constants";
+import Vue from "vue";
+
+import "@/styles/css/global.css";
+
+import "@/styles/vendor/material-icons.css";
+import "@/styles/vendor/OpenSans.css";
 
 /* ===== Random utils ===== */
 
 String.prototype.capitalize = function () {
 	return this.charAt(0).toUpperCase() + this.slice(1);
 };
-// Reset if ejs fails
-if (location.base == "<%= locationBase %>") location.base = "/";
+
+location.base = "/";
 
 /* ===== App initialization ===== */
 async function startApp() {
-	document.getElementById("missingBundle").remove();
 	new Vue({
 		store,
 		router,

@@ -1,4 +1,4 @@
-import { ref } from "@vue/composition-api";
+import { ref } from "vue";
 
 const isOnline = ref(navigator.onLine);
 

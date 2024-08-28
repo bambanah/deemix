@@ -8,7 +8,9 @@
 	"author": "Bambanah",
 	"license": "GPL-3.0-only",
 	"scripts": {
-		"dev": "pnpm -C webui dev",
+		"dev": "run-p dev:webui dev:server",
+		"dev:webui": "pnpm -C webui dev",
+		"dev:server": "pnpm -C server dev",
 		"dev:gui": "pnpm -C gui dev",
 		"build": "run-s build:server build:webui",
 		"build:server": "pnpm -C server build",
@@ -33,6 +35,7 @@
 		"husky": "^9.1.5",
 		"npm-run-all2": "^6.2.0",
 		"prettier": "^3.2.5",
+		"prettier-plugin-tailwindcss": "^0.6.6",
 		"typescript": "^4.9.5"
 	},
 	"dependencies": {
