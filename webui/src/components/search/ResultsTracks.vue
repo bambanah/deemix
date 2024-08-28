@@ -11,7 +11,7 @@
 				<h1 class="text-center">{{ $t("search.noResultsTrack") }}</h1>
 			</div>
 
-			<table v-else class="table w-full table--tracks">
+			<table v-else class="table--tracks table w-full">
 				<thead v-if="wantHeaders">
 					<tr class="capitalize">
 						<th class="h-12 pb-3" colspan="2">
@@ -33,7 +33,7 @@
 					>
 						<td class="table__icon table__icon--big">
 							<span
-								class="relative inline-block rounded cursor-pointer"
+								class="rounded relative inline-block cursor-pointer"
 								:data-preview="track.trackPreview"
 								@click="playPausePreview($event)"
 							>
@@ -45,7 +45,7 @@
 
 						<td class="table__cell table__cell--large">
 							<div
-								class="break-words table__cell-content table__cell-content--vertical-center"
+								class="table__cell-content table__cell-content--vertical-center break-words"
 							>
 								<i
 									v-if="track.isTrackExplicit"
@@ -59,7 +59,7 @@
 						<router-link
 							v-slot="{ navigate }"
 							custom
-							class="break-words table__cell table__cell--medium table__cell--center"
+							class="table__cell table__cell--medium table__cell--center break-words"
 							:to="{ name: 'Artist', params: { id: track.artistID } }"
 						>
 							<td role="link" @click="navigate" @keypress.enter="navigate">
@@ -72,7 +72,7 @@
 						<router-link
 							v-slot="{ navigate }"
 							custom
-							class="break-words table__cell table__cell--medium table__cell--center"
+							class="table__cell table__cell--medium table__cell--center break-words"
 							:to="{ name: 'Album', params: { id: track.albumID } }"
 						>
 							<td role="link" @click="navigate" @keypress.enter="navigate">
@@ -87,13 +87,13 @@
 						</td>
 
 						<td
-							class="cursor-pointer table__cell--center group"
+							class="table__cell--center group cursor-pointer"
 							:data-link="track.trackLink"
 							aria-label="download"
 							@click.stop="$emit('add-to-queue', $event)"
 						>
 							<i
-								class="transition-colors duration-150 ease-in-out material-icons group-hover:text-primary"
+								class="material-icons group-hover:text-primary transition-colors duration-150 ease-in-out"
 								:title="$t('globals.download_hint')"
 							>
 								get_app
@@ -110,11 +110,11 @@
 import BaseLoadingPlaceholder from "@components/globals/BaseLoadingPlaceholder.vue";
 import PreviewControls from "@components/globals/PreviewControls.vue";
 import ResultsError from "@components/search/ResultsError.vue";
-import { playPausePreview } from "@components/globals/TheTrackPreview.vue";
 
 import { convertDuration } from "@/utils/utils";
 
 import { formatTitle } from "@/data/search";
+import EventBus from "@/utils/EventBus";
 
 export default {
 	components: {
@@ -151,7 +151,9 @@ export default {
 	methods: {
 		convertDuration,
 		formatTitle,
-		playPausePreview,
+		playPausePreview: (e) => {
+			EventBus.$emit("trackPreview:playPausePreview", e);
+		},
 	},
 };
 </script>

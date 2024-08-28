@@ -1,9 +1,22 @@
 import pluginVue from "eslint-plugin-vue";
 import eslintConfigPrettier from "eslint-config-prettier";
+import tslint from "typescript-eslint";
 
-export default [
+export default tslint.config(
+	// ...tslint.configs.recommended,
 	...pluginVue.configs["flat/recommended"],
 	{
+		files: ["webui/**/*"],
+		plugins: {
+			"typescript-eslint": tslint.plugin,
+		},
+		languageOptions: {
+			parserOptions: {
+				parser: tslint.parser,
+				tsconfigRootDir: "./webui",
+				sourceType: "module",
+			},
+		},
 		rules: {
 			"vue/multi-word-component-names": "off",
 			"vue/no-v-html": "off",
@@ -12,10 +25,11 @@ export default [
 			"vue/no-deprecated-dollar-listeners-api": "off",
 			"vue/require-explicit-emits": "off",
 			"vue/one-component-per-file": "off",
+			"@typescript-eslint/no-explicit-any": "off",
 		},
 	},
 	{
-		ignores: ["**/node_modules/", "**/dist/", "webui/public/js/"],
+		ignores: ["**/node_modules/", "**/dist/"],
 	},
-	eslintConfigPrettier,
-];
+	eslintConfigPrettier
+);

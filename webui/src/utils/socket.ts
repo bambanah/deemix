@@ -14,7 +14,6 @@ class CustomSocket extends WebSocket {
 
 	on(key: string, cb: (ev: MessageEvent<any>) => any) {
 		if (!Object.keys(this.listeners).includes(key)) {
-			// console.log('on:', key)
 			this.listeners[key] = cb;
 
 			this.addEventListener("message", (event) => {
@@ -29,14 +28,11 @@ class CustomSocket extends WebSocket {
 
 	off(key: string) {
 		if (Object.keys(this.listeners).includes(key)) {
-			// console.log('off:', key)
 			this.removeEventListener("message", this.listeners[key]);
 			delete this.listeners[key];
 		}
 	}
 }
-
-console.log(location);
 
 export const socket = new CustomSocket(
 	(location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/"

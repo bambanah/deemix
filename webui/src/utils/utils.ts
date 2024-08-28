@@ -8,7 +8,10 @@ export function generatePath(el: HTMLElement): Array<any> {
 
 	const path = [el];
 
-	while ((el = el.parentNode) && el !== document) {
+	while (
+		(el = el.parentNode as HTMLElement) &&
+		el !== document.documentElement
+	) {
 		path.push(el);
 	}
 
@@ -37,7 +40,7 @@ export function convertDuration(duration: number): string {
 	const mm = Math.floor(duration / 60);
 
 	// Convert from seconds only to mm:ss format
-	let ss = duration - mm * 60; // Add leading zero if ss < 0
+	const ss = duration - mm * 60; // Add leading zero if ss < 0
 
 	return mm + ":" + (ss < 10 ? "0" : "") + ss;
 }

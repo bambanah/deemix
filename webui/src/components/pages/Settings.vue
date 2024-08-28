@@ -1397,7 +1397,7 @@ export default {
 		},
 		async logout() {
 			const result = await postToServer("logout");
-			console.log(result);
+
 			if (result.logged_out) {
 				toast(this.$t("toasts.loggedOut"), "done", true, "login-toast");
 				this.dispatchLogout();
