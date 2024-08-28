@@ -1,4 +1,0 @@
-export const SPOTIFY_STATUS = {
-	DISABLED: "DISABLED",
-	ENABLED: "ENABLED",
-};

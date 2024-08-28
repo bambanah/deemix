@@ -1,7 +1,25 @@
-import { SPOTIFY_STATUS } from "@/constants";
 import { fetchData } from "@/utils/api";
+import type { Module } from "vuex";
 
-const getDefaultState = () => ({
+interface LoginState {
+	arl: string;
+	accessToken: string;
+	status: string | null;
+	user: {
+		id: string | null;
+		name: string;
+		picture: string;
+	};
+	spotifyUser: {
+		id: string | null;
+		name: string | null;
+		picture: string | null;
+	};
+	spotifyStatus: "enabled" | "disabled";
+	clientMode: boolean;
+}
+
+const getDefaultState = (): LoginState => ({
 	arl: localStorage.getItem("arl") || "",
 	accessToken: localStorage.getItem("accessToken") || "",
 	status: null,
@@ -18,7 +36,7 @@ const getDefaultState = () => ({
 	// This does not always represent the truth because the status update on the server is async
 	// and at the moment there's no way to notice the status change. Therefore a fetch of the status
 	// is needed everytime we need to use it
-	spotifyStatus: SPOTIFY_STATUS.DISABLED,
+	spotifyStatus: "disabled",
 	clientMode: false,
 });
 
@@ -26,7 +44,7 @@ const state = () => {
 	return getDefaultState();
 };
 
-const actions = {
+const actions: Module<LoginState, unknown>["actions"] = {
 	login({ commit, dispatch }, payload) {
 		const { arl, user, status } = payload;
 
@@ -82,7 +100,7 @@ const actions = {
 	setClientMode({ commit }, payload) {
 		commit("SET_CLIENT_MODE", payload);
 	},
-	setSpotifyStatus({ commit }, newSpotifyStatus) {
+	setSpotifyStatus({ commit }, newSpotifyStatus: LoginState["spotifyStatus"]) {
 		commit("SET_SPOTIFY_STATUS", newSpotifyStatus);
 	},
 	setSpotifyUserId({ commit }, newSpotifyUserId) {
@@ -100,15 +118,13 @@ const actions = {
 		return fetchData("spotifyStatus").then((response) => {
 			commit(
 				"SET_SPOTIFY_STATUS",
-				response.spotifyEnabled
-					? SPOTIFY_STATUS.ENABLED
-					: SPOTIFY_STATUS.DISABLED
+				response.spotifyEnabled ? "enabled" : "disabled"
 			);
 		});
 	},
 };
 
-const getters = {
+const getters: Module<LoginState, unknown>["getters"] = {
 	getARL: (state) => state.arl,
 	getAccessToken: (state) => state.accessToken,
 	getUser: (state) => state.user,
@@ -117,23 +133,23 @@ const getters = {
 
 	isLoggedIn: (state) => !!state.arl,
 	isLoggedWithSpotify: (state) =>
-		!!state.spotifyUser.id && state.spotifyStatus === SPOTIFY_STATUS.ENABLED,
+		!!state.spotifyUser.id && state.spotifyStatus === "enabled",
 };
 
-const mutations = {
-	SET_ARL(state, payload) {
+const mutations: Module<LoginState, unknown>["mutations"] = {
+	SET_ARL(state, payload: LoginState["arl"]) {
 		state.arl = payload;
 	},
-	SET_ACCESS_TOKEN(state, payload) {
+	SET_ACCESS_TOKEN(state, payload: LoginState["accessToken"]) {
 		state.accessToken = payload;
 	},
-	SET_STATUS(state, payload) {
+	SET_STATUS(state, payload: LoginState["status"]) {
 		state.status = payload;
 	},
-	SET_USER(state, payload) {
+	SET_USER(state, payload: LoginState["user"]) {
 		state.user = payload;
 	},
-	SET_CLIENT_MODE(state, payload) {
+	SET_CLIENT_MODE(state, payload: LoginState["clientMode"]) {
 		state.clientMode = payload;
 	},
 	RESET_LOGIN(state) {
@@ -142,10 +158,13 @@ const mutations = {
 		Object.assign(state, getDefaultState());
 		state.clientMode = clientMode;
 	},
-	SET_SPOTIFY_STATUS(state, newSpotifyStatus) {
+	SET_SPOTIFY_STATUS(state, newSpotifyStatus: LoginState["spotifyStatus"]) {
 		state.spotifyStatus = newSpotifyStatus;
 	},
-	SET_SPOTIFY_USER_ID(state, newSpotifyUserId) {
+	SET_SPOTIFY_USER_ID(
+		state,
+		newSpotifyUserId: LoginState["spotifyUser"]["id"]
+	) {
 		state.spotifyUser = {
 			...state.spotifyUser,
 			id: newSpotifyUserId,

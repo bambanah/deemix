@@ -7,7 +7,7 @@
 		class="bg-panels-bg text-foreground left-0 top-0 flex h-screen flex-col"
 		role="navigation"
 	>
-		<!-- <DeemixIcon /> -->
+		<DeemixIcon />
 		<router-link
 			v-for="link in links"
 			:key="link.name"
@@ -79,12 +79,14 @@ import {
 
 import { links } from "@/data/sidebar";
 import { useTheme } from "@/use/theme";
+import { useStore } from "@/store";
 
-// import DeemixIcon from "../assets/deemix-icon.svg";
+import DeemixIcon from "@/assets/deemix-icon.svg";
 
 export default defineComponent({
 	setup(_, ctx) {
 		const currInstance = getCurrentInstance();
+		const store = useStore();
 
 		const activeTab = links.find(
 			(link) => link.routerName === currInstance?.proxy.$root.$route.name
@@ -97,9 +99,7 @@ export default defineComponent({
 		const { THEMES, currentTheme } = useTheme();
 
 		/* === Add update notification near info === */
-		const updateAvailable = computed(
-			() => currInstance?.proxy.$root.$store.state.appInfo.updateAvailable
-		);
+		const updateAvailable = computed(() => store.state.appInfo.updateAvailable);
 
 		currInstance?.proxy.$root.$router.afterEach((to) => {
 			const linkInSidebar = state.links.find(
@@ -117,7 +117,7 @@ export default defineComponent({
 			THEMES,
 			currentTheme,
 			isSlim: false,
-			// DeemixIcon,
+			DeemixIcon,
 		};
 	},
 });
