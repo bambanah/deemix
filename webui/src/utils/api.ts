@@ -1,4 +1,8 @@
-export function fetchData(key, data = {}, method = "GET") {
+export function fetchData(
+	key: string,
+	data: Record<string, any> = {},
+	method = "GET"
+) {
 	const url = new URL(`${window.location.origin}${location.base}api/${key}`);
 
 	Object.keys(data).forEach((key) => {
@@ -16,7 +20,7 @@ export function fetchData(key, data = {}, method = "GET") {
 		});
 }
 
-export function sendToServer(key, data) {
+export function sendToServer(key: string, data: Record<string, any>) {
 	const url = new URL(`${window.location.origin}${location.base}api/${key}`);
 
 	Object.keys(data).forEach((key) => {
@@ -28,7 +32,10 @@ export function sendToServer(key, data) {
 	});
 }
 
-export function postToServer(endpoint, data) {
+export function postToServer(
+	endpoint: string,
+	data: { url: string; bitrate?: number }
+) {
 	const url = new URL(
 		`${window.location.origin}${location.base}api/${endpoint}`
 	);

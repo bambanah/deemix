@@ -1,10 +1,7 @@
 /**
  * Climbs the DOM until the root is reached, storing every node passed.
- * @param 	{HTMLElement} el
- * @return	{Array}				Contains all the nodes between el and the root
- * @since		0.0.0
  */
-export function generatePath(el) {
+export function generatePath(el: HTMLElement): Array<any> {
 	if (!el) {
 		throw new Error("No element passed to the generatePath function!");
 	}
@@ -18,12 +15,7 @@ export function generatePath(el) {
 	return path;
 }
 
-/**
- * @param		{string}	text
- * @returns {boolean}
- * @since		0.0.0
- */
-export function isValidURL(text) {
+export function isValidURL(text: string): boolean {
 	const lowerCaseText = text.toLowerCase();
 
 	if (lowerCaseText.startsWith("http")) {
@@ -41,30 +33,18 @@ export function isValidURL(text) {
 	return false;
 }
 
-/**
- * @param		{number}	duration
- * @returns {string}
- * @since		0.0.0
- */
-export function convertDuration(duration) {
+export function convertDuration(duration: number): string {
 	const mm = Math.floor(duration / 60);
 
 	// Convert from seconds only to mm:ss format
 	let ss = duration - mm * 60; // Add leading zero if ss < 0
 
-	if (ss < 10) {
-		ss = "0" + ss;
-	}
-
-	return mm + ":" + ss;
+	return mm + ":" + (ss < 10 ? "0" : "") + ss;
 }
 
-/**
- * @param {number} duration
- * @returns {[number, number, number]}
- * @since	0.0.0
- */
-export function convertDurationSeparated(duration) {
+export function convertDurationSeparated(
+	duration: number
+): [number, number, number] {
 	let mm = Math.floor(duration / 60);
 
 	const hh = Math.floor(mm / 60);
@@ -76,41 +56,10 @@ export function convertDurationSeparated(duration) {
 }
 
 /**
- * @param 	{number}	x
- * @returns {string}
- * @since		0.0.0
- * @deprecated
- */
-export const numberWithDots = (x) =>
-	x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-// On scroll event, returns currentTarget = null
-// Probably on other events too
-export function debounce(func, wait, immediate) {
-	let timeout;
-	return function () {
-		const context = this;
-		const args = arguments;
-		const later = function () {
-			timeout = null;
-			if (!immediate) func.apply(context, args);
-		};
-		const callNow = immediate && !timeout;
-		clearTimeout(timeout);
-		timeout = setTimeout(later, wait);
-		if (callNow) func.apply(context, args);
-	};
-}
-
-/**
  * Workaround to copy to the clipboard cross-OS by generating a
- * ghost input and copying the passed String
- *
- * @param 	{string}	text Text to copy
- * @returns	void
- * @since		0.0.0
+ * ghost input and copying the passed string
  */
-export function copyToClipboard(text) {
+export function copyToClipboard(text: string) {
 	const ghostInput = document.createElement("input");
 
 	document.body.appendChild(ghostInput);
@@ -122,13 +71,41 @@ export function copyToClipboard(text) {
 	ghostInput.remove();
 }
 
+// On scroll event, returns currentTarget = null
+// Probably on other events too
+export function debounce(
+	func: { apply: (arg0: any, arg1: IArguments) => void },
+	wait: number | undefined,
+	immediate: any
+) {
+	let timeout: NodeJS.Timeout | null;
+	return function () {
+		const context = this;
+		const args = arguments;
+		const later = function () {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		const callNow = immediate && !timeout;
+
+		if (timeout) clearTimeout(timeout);
+
+		timeout = setTimeout(later, wait);
+
+		if (callNow) func.apply(context, args);
+	};
+}
+
 /**
  * @param		{object|array}	obj
  * @param		{...any}				props
  * @returns	{any|null}			property requested
  * @since		0.0.0
  */
-export function getPropertyWithFallback(obj, ...props) {
+export function getPropertyWithFallback(
+	obj: object | Array<any>,
+	...props: any[]
+): any | null {
 	for (const prop of props) {
 		// Example: this.is.an.example
 		const hasDotNotation = /\./.test(prop);
@@ -153,6 +130,5 @@ export default {
 	isValidURL,
 	convertDuration,
 	convertDurationSeparated,
-	numberWithDots,
 	debounce,
 };
