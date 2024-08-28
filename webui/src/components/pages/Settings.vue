@@ -1082,7 +1082,7 @@
 import { mapActions, mapGetters } from "vuex";
 import { debounce } from "lodash-es";
 
-import TemplateVariablesList from "@components/settings/TemplateVariablesList.vue";
+import TemplateVariablesList from "@/components/settings/TemplateVariablesList.vue";
 import { getSettingsData } from "@/data/settings";
 import { trackTemplateVariables } from "@/data/file-templates";
 

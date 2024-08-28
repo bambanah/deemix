@@ -9,14 +9,14 @@
 			<section
 				v-for="section in viewInfo.ORDER"
 				:key="section"
-				class="float-none py-5 border-t border-grayscale-500 first:border-t-0"
+				class="border-t border-grayscale-500 float-none py-5 first:border-t-0"
 			>
 				<template v-if="checkSectionResults(section)">
 					<h2
 						class="mb-6 capitalize"
 						:class="{
-							'text-4xl text-center': section === 'TOP_RESULT',
-							'inline-block cursor-pointer text-3xl hover:text-primary transition-colors duration-200 ease-in-out':
+							'text-center text-4xl': section === 'TOP_RESULT',
+							'hover:text-primary inline-block cursor-pointer text-3xl transition-colors duration-200 ease-in-out':
 								section !== 'TOP_RESULT',
 						}"
 						@click="$emit('change-search-tab', section)"
@@ -63,11 +63,11 @@
 import { convertDuration } from "@/utils/utils";
 import { upperCaseFirstLowerCaseRest } from "@/utils/texts";
 import TopResult from "@/components/search/TopResult.vue";
-import ResultsTracks from "@components/search/ResultsTracks.vue";
-import ResultsAlbums from "@components/search/ResultsAlbums.vue";
-import ResultsArtists from "@components/search/ResultsArtists.vue";
-import ResultsPlaylists from "@components/search/ResultsPlaylists.vue";
-import ResultsError from "@components/search/ResultsError.vue";
+import ResultsTracks from "@/components/search/ResultsTracks.vue";
+import ResultsAlbums from "@/components/search/ResultsAlbums.vue";
+import ResultsArtists from "@/components/search/ResultsArtists.vue";
+import ResultsPlaylists from "@/components/search/ResultsPlaylists.vue";
+import ResultsError from "@/components/search/ResultsError.vue";
 
 import {
 	formatSingleTrack,

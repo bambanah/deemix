@@ -138,7 +138,7 @@
 import { formatArtistData, getArtistData } from "@/data/artist";
 import { checkNewRelease } from "@/utils/dates";
 import { sendAddToQueue } from "@/utils/downloads";
-import { BaseTab, BaseTabs } from "@components/globals/BaseTabs";
+import { BaseTab, BaseTabs } from "@/components/globals/BaseTabs";
 import { orderBy } from "lodash-es";
 import {
 	computed,

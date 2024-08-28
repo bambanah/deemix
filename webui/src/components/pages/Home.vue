@@ -5,7 +5,7 @@
 		<section
 			v-if="!isLoggedIn"
 			ref="notLogged"
-			class="py-6 border-0 border-t border-solid border-grayscale-500"
+			class="border-t border-grayscale-500 border-0 border-solid py-6"
 		>
 			<p id="home_not_logged_text" class="mb-4">{{ $t("home.needTologin") }}</p>
 			<router-link
@@ -23,7 +23,7 @@
 
 		<section
 			v-if="playlists.length"
-			class="py-6 border-0 border-t border-solid border-grayscale-500"
+			class="border-t border-grayscale-500 border-0 border-solid py-6"
 		>
 			<h2 class="mb-6 text-3xl">{{ $t("home.sections.popularPlaylists") }}</h2>
 			<div class="release-grid">
@@ -62,7 +62,7 @@
 
 		<section
 			v-if="albums.length"
-			class="py-6 border-0 border-t border-solid border-grayscale-500"
+			class="border-t border-grayscale-500 border-0 border-solid py-6"
 		>
 			<h2 class="mb-6 text-3xl">{{ $t("home.sections.popularAlbums") }}</h2>
 			<div class="release-grid">
@@ -103,7 +103,7 @@ import { mapGetters } from "vuex";
 import { sendAddToQueue } from "@/utils/downloads";
 import { getHomeData } from "@/data/home";
 
-import CoverContainer from "@components/globals/CoverContainer.vue";
+import CoverContainer from "@/components/globals/CoverContainer.vue";
 
 export default {
 	components: {
