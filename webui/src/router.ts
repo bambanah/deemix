@@ -128,6 +128,8 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, _, next) => {
+	console.log(location);
+	console.log(window.location);
 	if (to.name && to.name !== "Home") {
 		document.title = to.name + " · Deemix";
 	} else {

@@ -81,7 +81,7 @@ import { links } from "@/data/sidebar";
 import { useTheme } from "@/use/theme";
 import { useStore } from "@/store";
 
-import DeemixIcon from "@/assets/deemix-icon.svg";
+import DeemixIcon from "../assets/deemix-icon.svg";
 
 export default defineComponent({
 	setup(_, ctx) {

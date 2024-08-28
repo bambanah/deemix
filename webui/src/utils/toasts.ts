@@ -1,6 +1,7 @@
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 import "@/styles/css/toasts.css";
+import type { TranslateResult } from "vue-i18n";
 
 const sharedOptions = {
 	gravity: "bottom",
@@ -9,7 +10,12 @@ const sharedOptions = {
 
 const toastsWithId = {};
 
-export const toast = function (msg, icon = null, dismiss = true, id = null) {
+export const toast = function (
+	msg: string | TranslateResult | Error,
+	icon: string | null = null,
+	dismiss = true,
+	id: string | null = null
+) {
 	if (toastsWithId[id]) {
 		const toastObj = toastsWithId[id];
 
