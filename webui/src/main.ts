@@ -16,6 +16,15 @@ import "@/styles/vendor/OpenSans.css";
 
 /* ===== Random utils ===== */
 
+declare global {
+	interface Location {
+		base: string;
+	}
+	interface String {
+		capitalize(): string;
+	}
+}
+
 String.prototype.capitalize = function () {
 	return this.charAt(0).toUpperCase() + this.slice(1);
 };
@@ -35,10 +44,10 @@ async function startApp() {
 	const spotifyStatus = connectResponse.spotifyEnabled ? "enabled" : "disabled";
 
 	if (connectResponse.deezerAvailable === "no-network") {
-		document.getElementById("deezer_not_reachable").classList.remove("hide");
+		document.getElementById("deezer_not_reachable")?.classList.remove("hide");
 	}
 	if (connectResponse.deezerAvailable === "no") {
-		document.getElementById("deezer_not_available").classList.remove("hide");
+		document.getElementById("deezer_not_available")?.classList.remove("hide");
 	}
 
 	store.dispatch("setAppInfo", connectResponse.update).catch(console.error);
@@ -122,10 +131,13 @@ if (window.api) {
 
 /* ===== Global shortcuts ===== */
 
-document.addEventListener("paste", (pasteEvent) => {
-	if (pasteEvent.target.localName === "input") return;
+document.addEventListener("paste", (pasteEvent: ClipboardEvent) => {
+	const target = pasteEvent.target as HTMLElement;
+	if (target?.tagName.toLowerCase() === "input") return;
 
-	let pastedText = pasteEvent.clipboardData.getData("Text");
+	let pastedText = pasteEvent.clipboardData?.getData("Text");
+
+	if (!pastedText) return;
 
 	if (isValidURL(pastedText)) {
 		if (router.currentRoute.name === "Link Analyzer") {
@@ -136,9 +148,10 @@ document.addEventListener("paste", (pasteEvent) => {
 			sendAddToQueue(pastedText);
 		}
 	} else {
-		const searchbar = document.querySelector("#searchbar");
-		searchbar.select();
-		searchbar.setSelectionRange(0, 99999);
+		const searchbar: HTMLInputElement | null =
+			document.querySelector("#searchbar");
+		searchbar?.select();
+		searchbar?.setSelectionRange(0, 99999);
 	}
 });
 
@@ -158,7 +171,7 @@ function setClientModeKeyBindings() {
 		}
 	});
 }
-function loggedIn(data) {
+function loggedIn(data: { status: number; user: any; arl: string | null }) {
 	const { status, user } = data;
 
 	switch (status) {
@@ -196,14 +209,14 @@ function loggedIn(data) {
 /* ===== Socketio listeners ===== */
 
 // Debug messages for socketio
-socket.on("message", function (msg) {
+socket.on("message", function (msg: string) {
 	console.log(msg);
 });
 socket.on("restoringQueue", function () {
 	toast(i18n.t("toasts.restoringQueue"), "loading", false, "restoring_queue");
 });
 
-socket.on("cancellingCurrentItem", function (uuid) {
+socket.on("cancellingCurrentItem", function (uuid: string) {
 	toast(
 		i18n.t("toasts.cancellingCurrentItem"),
 		"loading",
@@ -212,7 +225,7 @@ socket.on("cancellingCurrentItem", function (uuid) {
 	);
 });
 
-socket.on("currentItemCancelled", function (uuid) {
+socket.on("currentItemCancelled", function (uuid: string) {
 	toast(
 		i18n.t("toasts.currentItemCancelled"),
 		"done",
@@ -221,7 +234,7 @@ socket.on("currentItemCancelled", function (uuid) {
 	);
 });
 
-socket.on("startAddingArtist", function (data) {
+socket.on("startAddingArtist", function (data: { name: string; id: string }) {
 	toast(
 		i18n.t("toasts.startAddingArtist", { artist: data.name }),
 		"loading",
@@ -230,7 +243,7 @@ socket.on("startAddingArtist", function (data) {
 	);
 });
 
-socket.on("finishAddingArtist", function (data) {
+socket.on("finishAddingArtist", function (data: { name: string; id: string }) {
 	toast(
 		i18n.t("toasts.finishAddingArtist", { artist: data.name }),
 		"done",
@@ -239,7 +252,7 @@ socket.on("finishAddingArtist", function (data) {
 	);
 });
 
-socket.on("startConvertingSpotifyPlaylist", function (id) {
+socket.on("startConvertingSpotifyPlaylist", function (id: string) {
 	toast(
 		i18n.t("toasts.startConvertingSpotifyPlaylist"),
 		"loading",
@@ -248,7 +261,7 @@ socket.on("startConvertingSpotifyPlaylist", function (id) {
 	);
 });
 
-socket.on("finishConvertingSpotifyPlaylist", function (id) {
+socket.on("finishConvertingSpotifyPlaylist", function (id: string) {
 	toast(
 		i18n.t("toasts.finishConvertingSpotifyPlaylist"),
 		"done",
@@ -257,11 +270,11 @@ socket.on("finishConvertingSpotifyPlaylist", function (id) {
 	);
 });
 
-socket.on("errorMessage", function (error) {
+socket.on("errorMessage", function (error: Error) {
 	toast(error, "error");
 });
 
-socket.on("queueError", function (queueItem) {
+socket.on("queueError", function (queueItem: any) {
 	if (queueItem.errid) {
 		toast(
 			queueItem.link + " - " + i18n.t(`errors.ids.${queueItem.errid}`),
@@ -272,7 +285,7 @@ socket.on("queueError", function (queueItem) {
 	}
 });
 
-socket.on("alreadyInQueue", function (data) {
+socket.on("alreadyInQueue", function (data: { title: string }) {
 	toast(
 		i18n.t("toasts.alreadyInQueue", { item: data.title }),
 		"playlist_add_check"
@@ -292,31 +305,50 @@ const bitrateLabels = {
 	8: "128kbps",
 	0: "MP3",
 };
-socket.on("queueErrorCantStream", function (bitrate) {
-	toast(
-		i18n.t("toasts.queueErrorCantStream", { bitrate: bitrateLabels[bitrate] }),
-		"report"
-	);
-});
+socket.on(
+	"queueErrorCantStream",
+	function (bitrate: keyof typeof bitrateLabels) {
+		toast(
+			i18n.t("toasts.queueErrorCantStream", {
+				bitrate: bitrateLabels[bitrate],
+			}),
+			"report"
+		);
+	}
+);
 
-socket.on("startGeneratingItems", function (data) {
-	toast(
-		i18n.t("toasts.startGeneratingItems", { n: data.total }),
-		"loading",
-		false,
-		"batch_" + data.uuid
-	);
-});
+socket.on(
+	"startGeneratingItems",
+	function (data: { total: number; uuid: string }) {
+		toast(
+			i18n.t("toasts.startGeneratingItems", { n: data.total }),
+			"loading",
+			false,
+			"batch_" + data.uuid
+		);
+	}
+);
 
-socket.on("finishGeneratingItems", function (data) {
-	toast(
-		i18n.t("toasts.finishGeneratingItems", { n: data.total }),
-		"done",
-		true,
-		"batch_" + data.uuid
-	);
-});
-socket.on("toast", (data) => {
-	const { msg, icon, dismiss, id } = data;
-	toast(msg, icon || null, dismiss !== undefined ? dismiss : true, id || null);
-});
+socket.on(
+	"finishGeneratingItems",
+	function (data: { total: number; uuid: string }) {
+		toast(
+			i18n.t("toasts.finishGeneratingItems", { n: data.total }),
+			"done",
+			true,
+			"batch_" + data.uuid
+		);
+	}
+);
+socket.on(
+	"toast",
+	(data: { msg: string; icon: string; dismiss: boolean; id: string }) => {
+		const { msg, icon, dismiss, id } = data;
+		toast(
+			msg,
+			icon || null,
+			dismiss !== undefined ? dismiss : true,
+			id || null
+		);
+	}
+);
