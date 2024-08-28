@@ -94,11 +94,7 @@ export class DeemixServer {
 		});
 		this.app.get("*", (req, res) => {
 			console.log(req.url);
-			fs.readFile(path.join(WEBUI_DIR, "index.ejs"), (_, html) => {
-				res.send(
-					ejs.render(html.toString(), { locationBase: this.locationBase })
-				);
-			});
+			res.sendFile(path.join(WEBUI_DIR, "index.html"));
 		});
 
 		/* === Config === */

@@ -27,21 +27,21 @@
 		<p class="mb-4 text-base">
 			{{ $t("settings.spotify.howTo.clientSecretQuestion.step2.text") }}<br />
 			<img
-				src="res/InfoSpotifyFeatures/CreateApp.png"
+				src="/res/InfoSpotifyFeatures/CreateApp.png"
 				:alt="$t('settings.spotify.howTo.clientSecretQuestion.step2.imageAlt')"
 			/>
 		</p>
 		<p class="mb-4 text-base">
 			{{ $t("settings.spotify.howTo.clientSecretQuestion.step3.text") }}<br />
 			<img
-				src="res/InfoSpotifyFeatures/CreateAppForm.png"
+				src="/res/InfoSpotifyFeatures/CreateAppForm.png"
 				:alt="$t('settings.spotify.howTo.clientSecretQuestion.step3.imageAlt')"
 			/>
 		</p>
 		<p class="mb-4 text-base">
 			{{ $t("settings.spotify.howTo.clientSecretQuestion.step4.text") }}<br />
 			<img
-				src="res/InfoSpotifyFeatures/ClientIdSecret.png"
+				src="/res/InfoSpotifyFeatures/ClientIdSecret.png"
 				:alt="$t('settings.spotify.howTo.clientSecretQuestion.step4.imageAlt')"
 			/>
 		</p>

@@ -13,7 +13,7 @@
 					ref="userpicture"
 					:src="pictureHref"
 					alt="Profile Picture"
-					class="w-32 h-32 rounded-full"
+					class="h-32 w-32 rounded-full"
 				/>
 				<div class="user_info">
 					<i18n path="settings.login.loggedIn" tag="p">
@@ -89,7 +89,7 @@
 							type="password"
 						/>
 						<button
-							class="ml-2 btn btn-primary btn-only-icon"
+							class="btn btn-primary btn-only-icon ml-2"
 							@click="copyARLtoClipboard"
 						>
 							<i class="material-icons">assignment</i>
@@ -116,7 +116,7 @@
 				<i class="material-icons">language</i>{{ $t("settings.languages") }}
 			</h3>
 
-			<ul class="my-5">
+			<!-- <ul class="my-5">
 				<li
 					v-for="locale in locales"
 					:key="locale"
@@ -128,7 +128,7 @@
 					@keyup.enter="changeLocale(locale)"
 					v-html="flags[locale].flag"
 				/>
-			</ul>
+			</ul> -->
 		</div>
 
 		<BaseAccordion class="settings-group">
@@ -145,19 +145,19 @@
 					$t("settings.appearance.slimDownloadTab")
 				}}</span>
 			</label>
-			<label class="mb-4 with-checkbox">
+			<label class="with-checkbox mb-4">
 				<input v-model="modelSlimSidebar" type="checkbox" />
 				<span class="checkbox-text">{{
 					$t("settings.appearance.slimSidebar")
 				}}</span>
 			</label>
-			<label class="mb-4 with-checkbox">
+			<label class="with-checkbox mb-4">
 				<input v-model="modelShowBitrateTags" type="checkbox" />
 				<span class="checkbox-text">{{
 					$t("settings.appearance.bitrateTags")
 				}}</span>
 			</label>
-			<label class="mb-4 with-checkbox">
+			<label class="with-checkbox mb-4">
 				<input v-model="modelShowSearchButton" type="checkbox" />
 				<span class="checkbox-text">{{
 					$t("settings.appearance.searchButton")
@@ -181,7 +181,7 @@
 				/>
 				<button
 					v-if="clientMode"
-					class="ml-2 btn btn-primary btn-only-icon"
+					class="btn btn-primary btn-only-icon ml-2"
 					@click="selectDownloadFolder"
 				>
 					<i class="material-icons">folder</i>
@@ -240,7 +240,7 @@
 				</h3>
 			</template>
 
-			<div class="space-x-5 settings-container">
+			<div class="settings-container space-x-5">
 				<div class="settings-container__third">
 					<label class="with-checkbox">
 						<input v-model="settings.createPlaylistFolder" type="checkbox" />
@@ -317,7 +317,7 @@
 				</h3>
 			</template>
 
-			<div class="space-x-5 settings-container">
+			<div class="settings-container space-x-5">
 				<div
 					class="settings-container__third settings-container__third--only-checkbox"
 				>
@@ -480,7 +480,7 @@
 				</h3>
 			</template>
 
-			<div class="space-x-5 settings-container">
+			<div class="settings-container space-x-5">
 				<div class="settings-container__half">
 					<label class="with-checkbox">
 						<input v-model="settings.tags.title" type="checkbox" />
@@ -689,7 +689,7 @@
 				</select>
 			</div>
 
-			<div class="space-x-5 settings-container">
+			<div class="settings-container space-x-5">
 				<div
 					class="settings-container__third settings-container__third--only-checkbox"
 				>
@@ -1024,7 +1024,7 @@
 			<template #title>
 				<h3 class="settings-group__header">
 					<svg
-						class="mr-4 w-6 h-6"
+						class="mr-4 h-6 w-6"
 						enable-background="new 0 0 24 24"
 						style="fill: #1db954"
 						viewBox="0 0 24 24"
@@ -1068,7 +1068,7 @@
 		</BaseAccordion>
 
 		<footer class="bg-background-main">
-			<button class="mr-2 btn btn-primary" @click="resetToDefault">
+			<button class="btn btn-primary mr-2" @click="resetToDefault">
 				{{ $t("settings.reset") }}
 			</button>
 			<button class="btn btn-primary" @click="saveSettings">
@@ -1088,7 +1088,7 @@ import { trackTemplateVariables } from "@/data/file-templates";
 
 import { toast } from "@/utils/toasts";
 import { socket } from "@/utils/socket";
-import { flags } from "@/utils/flags";
+// import { flags } from "@/utils/flags";
 import { copyToClipboard } from "@/utils/utils";
 
 import BaseAccordion from "@/components/globals/BaseAccordion.vue";
@@ -1103,7 +1103,7 @@ export default {
 	},
 	data() {
 		return {
-			flags,
+			// flags,
 			currentLocale: this.$i18n.locale,
 			locales: this.$i18n.availableLocales,
 			settings: {
@@ -1502,7 +1502,7 @@ export default {
 }
 .settings-container__third--only-checkbox {
 	display: flex;
-	align-items: start;
+	align-items: flex-start;
 	flex-direction: column;
 	justify-content: center;
 }

@@ -1,16 +1,16 @@
 <template>
-	<div class="relative fixed-footer image-header">
+	<div class="fixed-footer image-header relative">
 		<header class="flex items-center" :style="headerStyle">
 			<h1 class="m-0">{{ artistName }}</h1>
 
 			<div
-				class="grid w-16 h-16 ml-auto rounded-full cursor-pointer bg-primary text-grayscale-870 place-items-center"
+				class="bg-primary text-grayscale-870 ml-auto grid h-16 w-16 cursor-pointer place-items-center rounded-full"
 				aria-label="download"
 				role="button"
 				:data-cm-link="downloadLink"
 				@click.stop="sendAddToQueue(downloadLink)"
 			>
-				<i class="text-4xl material-icons" :title="$t('globals.download_hint')"
+				<i class="material-icons text-4xl" :title="$t('globals.download_hint')"
 					>get_app</i
 				>
 			</div>
@@ -53,13 +53,13 @@
 					<router-link
 						v-slot="{ navigate }"
 						custom
-						class="flex items-center clickable"
+						class="clickable flex items-center"
 						:data-cm-link="release.releaseLink"
 						:to="{ name: 'Album', params: { id: release.releaseID } }"
 					>
 						<td role="link" @click="navigate" @keypress.enter="navigate">
 							<img
-								class="mr-4 rounded coverart"
+								class="rounded coverart mr-4"
 								:src="release.releaseCover"
 								style="width: 56px; height: 56px"
 							/>
@@ -69,7 +69,7 @@
 								>explicit</i
 							>
 							<div>
-								<span class="flex hover:text-primary">
+								<span class="hover:text-primary flex">
 									{{ release.releaseTitle }}
 									<i
 										v-if="checkNewRelease(release.releaseDate)"
@@ -80,7 +80,7 @@
 								</span>
 								<span
 									v-show="currentTab === 'all'"
-									class="block text-xs opacity-50 uppercase-first-letter"
+									class="uppercase-first-letter block text-xs opacity-50"
 								>
 									{{ $tc(`globals.listTabs.${release.releaseType}`) }}
 								</span>
@@ -113,32 +113,29 @@
 					@click.stop="sendAddToQueue(downloadLink)"
 				>
 					{{
-						`${$t("globals.download", { thing: $t("globals.listTabs.discography") })}`
+						`${$t("globals.download", {
+							thing: $t("globals.listTabs.discography"),
+						})}`
 					}}
 				</button>
 			</div>
 			<button
 				:data-link="downloadLink + '/' + currentTab"
-				class="flex items-center btn btn-primary"
+				class="btn btn-primary flex items-center"
 				@click.stop="sendAddToQueue(downloadLink + '/' + currentTab)"
 			>
 				{{
-					`${$t("globals.download", { thing: $tc(`globals.listTabs.${currentTab}`, 2) })}`
-				}}<i class="ml-2 material-icons">file_download</i>
+					`${$t("globals.download", {
+						thing: $tc(`globals.listTabs.${currentTab}`, 2),
+					})}`
+				}}<i class="material-icons ml-2">file_download</i>
 			</button>
 		</footer>
 	</div>
 </template>
 
 <script>
-import {
-	defineComponent,
-	ref,
-	unref,
-	reactive,
-	computed,
-	toRefs,
-} from "@vue/composition-api";
+import { defineComponent, ref, unref, reactive, computed, toRefs } from "vue";
 import { orderBy } from "lodash-es";
 
 import { BaseTabs, BaseTab } from "@components/globals/BaseTabs";

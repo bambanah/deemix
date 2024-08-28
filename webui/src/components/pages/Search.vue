@@ -42,7 +42,7 @@ import {
 	toRefs,
 	watch,
 	defineComponent,
-} from "@vue/composition-api";
+} from "vue";
 import { uniqWith } from "lodash-es";
 
 import BaseLoadingPlaceholder from "@components/globals/BaseLoadingPlaceholder.vue";

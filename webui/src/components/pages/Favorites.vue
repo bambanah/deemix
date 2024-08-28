@@ -5,7 +5,7 @@
 			<div
 				ref="reloadButton"
 				aria-label="reload"
-				class="inline-block clickable"
+				class="clickable inline-block"
 				role="button"
 				@click="refreshFavorites"
 			>
@@ -172,14 +172,14 @@
 				<tr v-for="track in tracks" :key="track.id" class="track_row">
 					<td
 						:class="{ first: track.position === 1 }"
-						class="p-3 text-center cursor-default"
+						class="cursor-default p-3 text-center"
 					>
 						{{ track.position }}
 					</td>
 					<td>
 						<span
 							:data-preview="track.preview"
-							class="relative inline-block rounded cursor-pointer"
+							class="rounded relative inline-block cursor-pointer"
 							@click="playPausePreview"
 						>
 							<PreviewControls v-if="track.preview" />
@@ -221,7 +221,7 @@
 					<td
 						:data-link="track.link"
 						aria-label="download"
-						class="cursor-pointer group"
+						class="group cursor-pointer"
 						role="button"
 						@click.stop="addToQueue"
 					>
@@ -230,7 +230,7 @@
 						>
 							<i
 								:title="$t('globals.download_hint')"
-								class="transition-colors duration-150 ease-in-out material-icons group-hover:text-primary"
+								class="material-icons group-hover:text-primary transition-colors duration-150 ease-in-out"
 							>
 								get_app
 							</i>
@@ -243,7 +243,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, toRefs, watch } from "@vue/composition-api";
+import { defineComponent, reactive, toRefs, watch } from "vue";
 
 import PreviewControls from "@components/globals/PreviewControls.vue";
 import CoverContainer from "@components/globals/CoverContainer.vue";

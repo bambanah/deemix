@@ -1,4 +1,4 @@
-import { ref } from "@vue/composition-api";
+import { ref } from "vue";
 import { fetchData } from "@/utils/api";
 
 const searchResult = ref({});

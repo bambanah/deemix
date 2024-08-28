@@ -31,7 +31,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref } from "vue";
 import { isValidURL } from "@/utils/utils";
 import { sendAddToQueue } from "@/utils/downloads";
 import { fetchData } from "@/utils/api";
