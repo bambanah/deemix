@@ -282,7 +282,6 @@ export default defineComponent({
 		},
 	},
 	methods: {
-		numberWithDots,
 		convertDuration,
 		addToQueue(e) {
 			sendAddToQueue(e.currentTarget.dataset.link);

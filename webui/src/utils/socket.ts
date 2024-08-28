@@ -1,16 +1,18 @@
 class CustomSocket extends WebSocket {
-	constructor(args) {
+	listeners: Record<string, (this: WebSocket, ev: MessageEvent<any>) => any>;
+
+	constructor(args: string | URL) {
 		super(args);
 		this.listeners = {};
 	}
 
-	emit(key, data) {
+	emit(key: string, data: any) {
 		if (this.readyState !== WebSocket.OPEN) return false;
 
 		this.send(JSON.stringify({ key, data }));
 	}
 
-	on(key, cb) {
+	on(key: string, cb: (ev: MessageEvent<any>) => any) {
 		if (!Object.keys(this.listeners).includes(key)) {
 			// console.log('on:', key)
 			this.listeners[key] = cb;
@@ -25,7 +27,7 @@ class CustomSocket extends WebSocket {
 		}
 	}
 
-	off(key) {
+	off(key: string) {
 		if (Object.keys(this.listeners).includes(key)) {
 			// console.log('off:', key)
 			this.removeEventListener("message", this.listeners[key]);

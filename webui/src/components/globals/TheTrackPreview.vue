@@ -50,7 +50,7 @@ export default {
 	},
 	methods: {
 		async onCanPlay() {
-			await this.$refs.preview.play();
+			await this.$refs.preview?.play();
 
 			this.previewStopped = false;
 

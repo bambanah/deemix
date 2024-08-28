@@ -1,20 +1,12 @@
 import { postToServer } from "@/utils/api";
 
-/**
- * @param	{string}	url
- * @param	{number|null}	bitrate
- */
-export function sendAddToQueue(url, bitrate = null) {
+export function sendAddToQueue(url: string, bitrate?: number) {
 	if (!url) throw new Error("No URL given to sendAddToQueue function!");
 
 	postToServer("addToQueue", { url, bitrate });
 }
 
-/**
- * @param {{ link: string }[]} releases
- * @returns {string}
- */
-export function aggregateDownloadLinks(releases) {
+export function aggregateDownloadLinks(releases: { link: string }[]): string {
 	const links = releases.map((release) => release.link);
 
 	return links.join(";");
