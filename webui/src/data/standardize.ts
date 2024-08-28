@@ -1,4 +1,7 @@
-export function standardizeData(rawObj, formatFunc) {
+export function standardizeData(
+	rawObj: { data?: any; hasLoaded?: any; error?: any },
+	formatFunc: Function
+) {
 	if (!rawObj.hasLoaded) {
 		return null;
 	} else {

@@ -1,24 +1,6 @@
 import { getPropertyWithFallback } from "@/utils/utils";
 
-/**
- * @typedef		{object}				FormattedSearchResult
- * @property	{FormattedData}	data
- * @property	{boolean}				hasLoaded
- */
-
-/**
- * @typedef		{object}	FormattedData
- */
-
-/**
- * @typedef		{function}			Formatter
- * @returns		{FormattedData}	formattedData
- */
-
-/**
- * @param {FormattedData}	track
- */
-export function formatSingleTrack(track) {
+export function formatSingleTrack(track: { [key: string]: any }) {
 	let isTrackExplicit = getPropertyWithFallback(
 		track,
 		"explicit_lyrics",
@@ -57,7 +39,7 @@ export function formatSingleTrack(track) {
 	};
 }
 
-export function formatAlbums(album) {
+export function formatAlbums(album: { [key: string]: any }) {
 	let isAlbumExplicit = getPropertyWithFallback(
 		album,
 		"explicit_lyrics",
@@ -86,7 +68,7 @@ export function formatAlbums(album) {
 	};
 }
 
-export function formatArtist(artist) {
+export function formatArtist(artist: { [key: string]: any }) {
 	return {
 		/* Artist */
 		artistID: getPropertyWithFallback(artist, "id", "ART_ID"),
@@ -102,7 +84,7 @@ export function formatArtist(artist) {
 	};
 }
 
-export function formatPlaylist(playlist) {
+export function formatPlaylist(playlist: { [key: string]: any }) {
 	return {
 		/* Playlist */
 		playlistID: getPropertyWithFallback(playlist, "id", "PLAYLIST_ID"),
@@ -128,10 +110,12 @@ export function formatPlaylist(playlist) {
 	};
 }
 
-export function formatTitle(track) {
+export function formatTitle(track: { [key: string]: any }) {
 	const hasTitleVersion =
 		track.trackTitleVersion &&
 		!track.trackTitle.includes(track.trackTitleVersion);
 
-	return `${track.trackTitle}${hasTitleVersion ? ` ${track.trackTitleVersion}` : ""}`;
+	return `${track.trackTitle}${
+		hasTitleVersion ? ` ${track.trackTitleVersion}` : ""
+	}`;
 }

@@ -135,15 +135,20 @@
 </template>
 
 <script>
-import { defineComponent, ref, unref, reactive, computed, toRefs } from "vue";
-import { orderBy } from "lodash-es";
-
-import { BaseTabs, BaseTab } from "@components/globals/BaseTabs";
-
-import { sendAddToQueue } from "@/utils/downloads";
-import { checkNewRelease } from "@/utils/dates";
 import { formatArtistData, getArtistData } from "@/data/artist";
-import { standardizeData } from "@/data/standardize";
+import { checkNewRelease } from "@/utils/dates";
+import { sendAddToQueue } from "@/utils/downloads";
+import { BaseTab, BaseTabs } from "@components/globals/BaseTabs";
+import { orderBy } from "lodash-es";
+import {
+	computed,
+	defineComponent,
+	getCurrentInstance,
+	reactive,
+	ref,
+	toRefs,
+	unref,
+} from "vue";
 
 export default defineComponent({
 	components: {
@@ -151,6 +156,7 @@ export default defineComponent({
 		BaseTab,
 	},
 	setup(_, ctx) {
+		const currInstance = getCurrentInstance();
 		const state = reactive({
 			currentTab: "",
 			sortKey: "releaseDate",
@@ -161,26 +167,24 @@ export default defineComponent({
 			currentRelease: computed(() => state.artistReleases[state.currentTab]),
 		});
 
-		const artistID = computed(() => ctx.root.$router.currentRoute.params.id);
+		const artistID = computed(
+			() => currInstance?.proxy.$root.$router.currentRoute.params.id
+		);
 		const hasDataLoaded = ref(false);
 
 		getArtistData(unref(artistID))
 			.then((artistData) => {
+				console.log(artistData);
 				hasDataLoaded.value = true;
 
-				const rawData = {
-					data: [artistData],
-					hasLoaded: unref(hasDataLoaded),
-				};
-				const {
-					data: [{ artistName, artistPictureXL, artistReleases }],
-				} = standardizeData(rawData, formatArtistData);
+				const { artistName, artistPictureXL, artistReleases } =
+					formatArtistData(artistData);
 
 				Object.assign(state, {
 					artistName,
 					artistPicture: artistPictureXL,
 					artistReleases,
-					currentTab: Object.keys(artistReleases)[0],
+					currentTab: artistReleases ? Object.keys(artistReleases)[0] : 0,
 				});
 			})
 			.catch((err) => console.error(err));
