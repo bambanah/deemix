@@ -2,7 +2,7 @@
 	<div>
 		<h1 class="mb-8 text-5xl">{{ $t("errors.title", { name: title }) }}</h1>
 
-		<table v-if="errors.length >= 1" class="table table--tracklist">
+		<table v-if="errors.length >= 1" class="table--tracklist table">
 			<tr>
 				<th>ID</th>
 				<th class="uppercase-first-letter">
@@ -32,7 +32,7 @@
 		</table>
 		<div v-if="postErrors.length >= 1">
 			<h2>{{ $t("errors.postTitle") }}</h2>
-			<table class="table table--tracklist">
+			<table class="table--tracklist table">
 				<tr>
 					<th>ID</th>
 					<th class="uppercase-first-letter">

@@ -24,7 +24,6 @@ export default tslint.config(
 			"vue/no-deprecated-functional-template": "off",
 			"vue/no-deprecated-dollar-listeners-api": "off",
 			"vue/require-explicit-emits": "off",
-			"vue/one-component-per-file": "off",
 			"@typescript-eslint/no-explicit-any": "off",
 		},
 	},

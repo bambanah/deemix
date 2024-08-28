@@ -90,12 +90,12 @@
 					role="button"
 					aria-label="download"
 					:data-link="link"
-					class="grid w-16 h-16 ml-auto rounded-full cursor-pointer bg-primary text-grayscale-870 place-items-center"
+					class="bg-primary text-grayscale-870 ml-auto grid h-16 w-16 cursor-pointer place-items-center rounded-full"
 					@contextmenu.prevent="openQualityModal"
 					@click.stop="addToQueue"
 				>
 					<i
-						class="text-4xl material-icons"
+						class="material-icons text-4xl"
 						:title="$t('globals.download_hint')"
 						>get_app</i
 					>

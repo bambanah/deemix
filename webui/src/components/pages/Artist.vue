@@ -135,10 +135,11 @@
 </template>
 
 <script>
+import { BaseTab } from "@/components/globals/BaseTab";
+import { BaseTabs } from "@/components/globals/BaseTabs";
 import { formatArtistData, getArtistData } from "@/data/artist";
 import { checkNewRelease } from "@/utils/dates";
 import { sendAddToQueue } from "@/utils/downloads";
-import { BaseTab, BaseTabs } from "@/components/globals/BaseTabs";
 import { orderBy } from "lodash-es";
 import {
 	computed,

@@ -1,8 +1,8 @@
 <template>
-	<div class="relative cover-container group">
+	<div class="cover-container group relative">
 		<img
 			aria-hidden="true"
-			class="block w-full opacity-100 coverart"
+			class="coverart block w-full opacity-100"
 			:class="{ rounded: isRounded, 'rounded-full': isCircle }"
 			:src="cover"
 		/>
@@ -11,12 +11,12 @@
 			role="button"
 			aria-label="download"
 			:data-link="link"
-			class="absolute p-0 text-center bg-black border-0 rounded-full opacity-0 download_overlay hover:bg-primary"
+			class="download_overlay hover:bg-primary absolute rounded-full border-0 bg-black p-0 text-center opacity-0"
 			tabindex="0"
 			v-on="$listeners"
 		>
 			<i
-				class="text-white cursor-pointer material-icons"
+				class="material-icons cursor-pointer text-white"
 				:title="$t('globals.download_hint')"
 				>get_app</i
 			>

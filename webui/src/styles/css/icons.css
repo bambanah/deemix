@@ -17,7 +17,7 @@
 }
 
 .material-icons.disabled {
-	@apply opacity-50 cursor-default;
+	@apply cursor-default opacity-50;
 }
 
 .material-icons.mirrored {
