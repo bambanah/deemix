@@ -1,10 +1,6 @@
-const defaultTheme = require("tailwindcss/defaultTheme");
+import defaultTheme from "tailwindcss/defaultTheme";
 
-module.exports = {
-	future: {
-		removeDeprecatedGapUtilities: true,
-		purgeLayersByDefault: true,
-	},
+export default {
 	content: [`./index.html`, `./src/**/*.{js,ts,tsx,vue}`],
 	theme: {
 		extend: {

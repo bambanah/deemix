@@ -245,15 +245,15 @@
 <script>
 import { defineComponent, reactive, toRefs, watch } from "vue";
 
-import PreviewControls from "@/components/globals/PreviewControls.vue";
+import { BaseTab } from "@/components/globals/BaseTab";
+import { BaseTabs } from "@/components/globals/BaseTabs";
 import CoverContainer from "@/components/globals/CoverContainer.vue";
-import { BaseTab, BaseTabs } from "@/components/globals/BaseTabs";
-
-import { aggregateDownloadLinks, sendAddToQueue } from "@/utils/downloads";
-import { convertDuration } from "@/utils/utils";
-import { toast } from "@/utils/toasts";
+import PreviewControls from "@/components/globals/PreviewControls.vue";
 import { useFavorites } from "@/use/favorites";
+import { aggregateDownloadLinks, sendAddToQueue } from "@/utils/downloads";
 import EventBus from "@/utils/EventBus";
+import { toast } from "@/utils/toasts";
+import { convertDuration } from "@/utils/utils";
 
 export default defineComponent({
 	components: {

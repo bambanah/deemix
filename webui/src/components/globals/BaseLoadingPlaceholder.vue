@@ -1,7 +1,7 @@
 <template functional>
 	<div
 		v-show="!props.hidden"
-		class="flex justify-center items-center flex-col flex-1 h-full"
+		class="flex h-full flex-1 flex-col items-center justify-center"
 		:class="props.additionalClasses"
 	>
 		<span class="mb-5">{{ props.text || "Loading..." }}</span>

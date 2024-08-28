@@ -1,9 +1,9 @@
 .toast-icon {
-	@apply flex items-center mr-2;
+	@apply mr-2 flex items-center;
 }
 
 .circle-loader {
-	@apply inline-block w-4 h-4;
+	@apply inline-block h-4 w-4;
 	border: 2px solid var(--primary-color);
 	border-radius: 50%;
 	border-bottom: 2px solid var(--secondary-background);

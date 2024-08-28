@@ -56,7 +56,6 @@ export class DeemixApp {
 		this.currentJob = null;
 
 		this.plugins = {
-			// eslint-disable-next-line new-cap
 			spotify: new deemix.plugins.spotify(),
 		};
 		this.deezerAvailable = null;
@@ -394,7 +393,7 @@ export class DeemixApp {
 						JSON.stringify(this.queueOrder)
 					);
 				// break
-				// eslint-disable-next-line no-fallthrough
+
 				default:
 					// This gets called even in the 'inQueue' case. Is this the expected behaviour? If no, de-comment the break
 					this.listener.send("removedFromQueue", uuid);

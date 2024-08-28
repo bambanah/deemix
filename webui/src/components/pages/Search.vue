@@ -34,32 +34,33 @@
 </template>
 
 <script>
+import { uniqWith } from "lodash-es";
 import {
 	computed,
+	defineComponent,
 	onMounted,
 	reactive,
 	ref,
 	toRefs,
 	watch,
-	defineComponent,
 } from "vue";
-import { uniqWith } from "lodash-es";
 
 import BaseLoadingPlaceholder from "@/components/globals/BaseLoadingPlaceholder.vue";
-import ResultsAll from "@/components/search/ResultsAll.vue";
+import { BaseTab } from "@/components/globals/BaseTab";
+import { BaseTabs } from "@/components/globals/BaseTabs";
 import ResultsAlbums from "@/components/search/ResultsAlbums.vue";
+import ResultsAll from "@/components/search/ResultsAll.vue";
 import ResultsArtists from "@/components/search/ResultsArtists.vue";
 import ResultsPlaylists from "@/components/search/ResultsPlaylists.vue";
 import ResultsTracks from "@/components/search/ResultsTracks.vue";
-import { BaseTabs, BaseTab } from "@/components/globals/BaseTabs";
 import { sendAddToQueue } from "@/utils/downloads";
 import { convertDuration } from "@/utils/utils";
 
 import {
-	formatSingleTrack,
 	formatAlbums,
 	formatArtist,
 	formatPlaylist,
+	formatSingleTrack,
 } from "@/data/search";
 import { standardizeData } from "@/data/standardize";
 import { useMainSearch } from "@/use/main-search";

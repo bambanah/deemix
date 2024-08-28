@@ -44,7 +44,7 @@ const handler: ApiHandler["handler"] = async (req, res) => {
 				break;
 			}
 			const sp = deemix.plugins.spotify.sp;
-			let playlist = await sp.playlists.getPlaylist(list_id);
+			const playlist = await sp.playlists.getPlaylist(list_id);
 			let tracklist = playlist.tracks.items;
 			while (playlist.tracks.next) {
 				const regExec = /offset=(\d+)&limit=(\d+)/g.exec(playlist.tracks.next);
