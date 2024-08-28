@@ -6,7 +6,6 @@ export function formatArtistData(artistData: {
 	picture_xl?: string;
 	releases?: { [key: string]: any[] };
 }) {
-	console.log(name);
 	return {
 		artistName: artistData.hasOwnProperty("name") ? artistData.name : undefined,
 		artistPictureXL: artistData.hasOwnProperty("picture_xl")

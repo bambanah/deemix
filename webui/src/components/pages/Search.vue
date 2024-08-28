@@ -53,7 +53,7 @@ import ResultsPlaylists from "@components/search/ResultsPlaylists.vue";
 import ResultsTracks from "@components/search/ResultsTracks.vue";
 import { BaseTabs, BaseTab } from "@components/globals/BaseTabs";
 import { sendAddToQueue } from "@/utils/downloads";
-import { numberWithDots, convertDuration } from "@/utils/utils";
+import { convertDuration } from "@/utils/utils";
 
 import {
 	formatSingleTrack,

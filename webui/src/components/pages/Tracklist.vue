@@ -1,5 +1,5 @@
 <template>
-	<div ref="root" class="relative fixed-footer bg-background-main image-header">
+	<div ref="root" class="fixed-footer bg-background-main image-header relative">
 		<header
 			:style="{
 				'background-image':
@@ -8,7 +8,7 @@
 					'\')',
 			}"
 		>
-			<h1 class="flex items-center m-0 text-5xl">
+			<h1 class="m-0 flex items-center text-5xl">
 				{{ title }}
 				<i v-if="explicit" class="material-icons title-icon title-icon--right"
 					>explicit</i
@@ -21,7 +21,7 @@
 			</h2>
 		</header>
 
-		<table class="table table--tracklist">
+		<table class="table--tracklist table">
 			<thead>
 				<tr>
 					<th>
@@ -206,7 +206,7 @@
 		<footer class="bg-background-main">
 			<button
 				:data-link="link"
-				class="mr-2 btn btn-primary"
+				class="btn btn-primary mr-2"
 				@click.stop="addToQueue"
 			>
 				{{
@@ -217,11 +217,11 @@
 			</button>
 			<button
 				:data-link="selectedLinks()"
-				class="flex items-center btn btn-primary"
+				class="btn btn-primary flex items-center"
 				@click.stop="addToQueue"
 			>
 				{{ $t("tracklist.downloadSelection")
-				}}<i class="ml-2 material-icons">file_download</i>
+				}}<i class="material-icons ml-2">file_download</i>
 			</button>
 		</footer>
 	</div>
@@ -231,7 +231,6 @@
 import { isEmpty } from "lodash-es";
 import { sendAddToQueue } from "@/utils/downloads";
 import Utils from "@/utils/utils";
-import { playPausePreview } from "@components/globals/TheTrackPreview.vue";
 import EventBus from "@/utils/EventBus";
 
 export default {
@@ -254,7 +253,9 @@ export default {
 		EventBus.$on("showSpotifyPlaylist", this.showSpotifyPlaylist);
 	},
 	methods: {
-		playPausePreview,
+		playPausePreview: (e) => {
+			EventBus.$emit("trackPreview:playPausePreview", e);
+		},
 		reset() {
 			this.title = "Loading...";
 			this.image = "";

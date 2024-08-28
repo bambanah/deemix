@@ -27,6 +27,7 @@
 		"@changesets/cli": "^2.27.7",
 		"@commitlint/cli": "^19.4.0",
 		"@commitlint/config-conventional": "^19.2.2",
+		"@typescript-eslint/parser": "^8.3.0",
 		"electron": "^22.0.0",
 		"electron-builder": "^23.6.0",
 		"eslint": "^9.9.0",
@@ -36,7 +37,8 @@
 		"npm-run-all2": "^6.2.0",
 		"prettier": "^3.2.5",
 		"prettier-plugin-tailwindcss": "^0.6.6",
-		"typescript": "^5.5.4"
+		"typescript": "^5.5.4",
+		"typescript-eslint": "^8.3.0"
 	},
 	"dependencies": {
 		"yargs": "^17.6.2"

@@ -12,7 +12,7 @@
 					:aria-label="release.title"
 					:data-id="release.id"
 					:data-title="release.title"
-					class="w-40 h-40 release clickable"
+					class="release clickable h-40 w-40"
 					role="button"
 					tabindex="0"
 					@click="getTrackList"
@@ -20,7 +20,7 @@
 				>
 					<img
 						:src="release.picture_medium"
-						class="w-full rounded coverart"
+						class="rounded coverart w-full"
 						:alt="release.title"
 					/>
 				</div>
@@ -38,19 +38,19 @@
 			>
 				{{ $t("charts.download") }}
 			</button>
-			<table class="table table--charts">
+			<table class="table--charts table">
 				<tbody>
 					<tr v-for="(track, pos) in chart" :key="pos" class="track_row">
 						<td
 							:class="{ first: pos === 0 }"
-							class="p-3 text-center cursor-default"
+							class="cursor-default p-3 text-center"
 						>
 							{{ pos + 1 }}
 						</td>
 						<td class="table__icon table__icon--big">
 							<span
 								:data-preview="track.preview"
-								class="relative inline-block rounded cursor-pointer"
+								class="rounded relative inline-block cursor-pointer"
 								@click="playPausePreview"
 							>
 								<PreviewControls v-if="track.preview" />
@@ -92,13 +92,13 @@
 						<td
 							:data-link="track.link"
 							aria-label="download"
-							class="cursor-pointer group"
+							class="group cursor-pointer"
 							role="button"
 							@click.stop="addToQueue"
 						>
 							<i
 								:title="$t('globals.download_hint')"
-								class="transition-colors duration-150 ease-in-out material-icons group-hover:text-primary"
+								class="material-icons group-hover:text-primary transition-colors duration-150 ease-in-out"
 							>
 								get_app
 							</i>
@@ -112,10 +112,10 @@
 
 <script>
 import PreviewControls from "@components/globals/PreviewControls.vue";
-import { playPausePreview } from "@components/globals/TheTrackPreview.vue";
 import { sendAddToQueue } from "@/utils/downloads";
 import { convertDuration } from "@/utils/utils";
 import { getChartsData, getChartTracks } from "@/data/charts";
+import EventBus from "@/utils/EventBus";
 
 export default {
 	components: {
@@ -161,7 +161,9 @@ export default {
 	},
 	methods: {
 		convertDuration,
-		playPausePreview,
+		playPausePreview: (e) => {
+			EventBus.$emit("trackPreview:playPausePreview", e);
+		},
 		addToQueue(e) {
 			e.stopPropagation();
 			sendAddToQueue(e.currentTarget.dataset.link);

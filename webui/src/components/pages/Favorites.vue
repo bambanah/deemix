@@ -247,13 +247,13 @@ import { defineComponent, reactive, toRefs, watch } from "vue";
 
 import PreviewControls from "@components/globals/PreviewControls.vue";
 import CoverContainer from "@components/globals/CoverContainer.vue";
-import { playPausePreview } from "@components/globals/TheTrackPreview.vue";
 import { BaseTab, BaseTabs } from "@components/globals/BaseTabs";
 
 import { aggregateDownloadLinks, sendAddToQueue } from "@/utils/downloads";
 import { convertDuration } from "@/utils/utils";
 import { toast } from "@/utils/toasts";
 import { useFavorites } from "@/use/favorites";
+import EventBus from "@/utils/EventBus";
 
 export default defineComponent({
 	components: {
@@ -310,7 +310,9 @@ export default defineComponent({
 		},
 	},
 	methods: {
-		playPausePreview,
+		playPausePreview: (e) => {
+			EventBus.$emit("trackPreview:playPausePreview", e);
+		},
 		convertDuration,
 		downloadAllOfType() {
 			try {

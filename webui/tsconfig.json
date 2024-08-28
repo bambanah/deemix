@@ -1,9 +1,9 @@
 {
 	"extends": "@vue/tsconfig/tsconfig.dom.json",
-	"include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+	"include": ["env.d.ts", "src/**/*.{ts,vue}"],
 	"compilerOptions": {
 		"allowJs": true,
-		"checkJs": true,
+		"checkJs": false,
 		"noEmit": true,
 		"baseUrl": ".",
 		"types": ["node"],

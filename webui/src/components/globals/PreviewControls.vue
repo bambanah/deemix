@@ -1,7 +1,7 @@
 <template>
 	<i
-		class="absolute top-0 right-0 flex items-center justify-center w-full h-full text-center text-white transition-opacity duration-200 ease-in-out bg-black bg-opacity-50 rounded opacity-0 material-icons preview_controls"
-		:title="$t('globals.play_hint')"
+		class="rounded material-icons preview_controls absolute right-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50 text-center text-white opacity-0 transition-opacity duration-200 ease-in-out"
+		:title="$t('globals.play_hint').toString()"
 		@mouseenter="previewMouseEnter"
 		@mouseleave="previewMouseLeave"
 	>
@@ -10,15 +10,16 @@
 </template>
 
 <script>
-import {
-	previewMouseEnter,
-	previewMouseLeave,
-} from "@components/globals/TheTrackPreview.vue";
+import EventBus from "@/utils/EventBus";
 
 export default {
 	methods: {
-		previewMouseEnter,
-		previewMouseLeave,
+		previewMouseEnter: () => {
+			EventBus.$emit("trackPreview:previewMouseEnter");
+		},
+		previewMouseLeave: () => {
+			EventBus.$emit("trackPreview:previewMouseLeave");
+		},
 	},
 };
 </script>

@@ -174,7 +174,6 @@ export default defineComponent({
 
 		getArtistData(unref(artistID))
 			.then((artistData) => {
-				console.log(artistData);
 				hasDataLoaded.value = true;
 
 				const { artistName, artistPictureXL, artistReleases } =
