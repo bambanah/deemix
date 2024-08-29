@@ -7,7 +7,11 @@
 		class="bg-panels-bg text-foreground left-0 top-0 flex h-screen flex-col"
 		role="navigation"
 	>
-		<DeemixIcon />
+		<img
+			src="@/assets/deemix-icon.svg"
+			alt="deemix-icon"
+			class="mx-auto w-20"
+		/>
 		<router-link
 			v-for="link in links"
 			:key="link.name"
@@ -60,7 +64,7 @@
 						{ 'theme_toggler--active': currentTheme === theme },
 						`theme_toggler--${theme}`,
 					]"
-					class="border theme_toggler border-grayscale-500 gap h-6 w-6 cursor-pointer rounded-full"
+					class="theme_toggler border-grayscale-500 gap h-6 w-6 cursor-pointer rounded-full border"
 					@click="currentTheme = theme"
 				/>
 			</div>
@@ -69,6 +73,9 @@
 </template>
 
 <script>
+import { links } from "@/data/sidebar";
+import { useStore } from "@/store";
+import { useTheme } from "@/use/theme";
 import {
 	computed,
 	defineComponent,
@@ -76,12 +83,6 @@ import {
 	reactive,
 	toRefs,
 } from "vue";
-
-import { links } from "@/data/sidebar";
-import { useTheme } from "@/use/theme";
-import { useStore } from "@/store";
-
-import DeemixIcon from "../assets/deemix-icon.svg";
 
 export default defineComponent({
 	setup(_, ctx) {
@@ -117,7 +118,6 @@ export default defineComponent({
 			THEMES,
 			currentTheme,
 			isSlim: false,
-			DeemixIcon,
 		};
 	},
 });

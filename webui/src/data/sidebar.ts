@@ -27,13 +27,13 @@ export const links = [
 		icon: "star",
 		label: "sidebar.favorites",
 	},
-	{
-		name: "analyzer",
-		ariaLabel: "link analyzer",
-		routerName: "Link Analyzer",
-		icon: "link",
-		label: "sidebar.linkAnalyzer",
-	},
+	// {
+	// 	name: "analyzer",
+	// 	ariaLabel: "link analyzer",
+	// 	routerName: "Link Analyzer",
+	// 	icon: "link",
+	// 	label: "sidebar.linkAnalyzer",
+	// },
 	{
 		name: "settings",
 		ariaLabel: "settings",
