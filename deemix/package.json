@@ -12,7 +12,7 @@
 	"dependencies": {
 		"@spotify/web-api-ts-sdk": "^1.2.0",
 		"async": "^3.2.0",
-		"deezer-js": "../deezer-js",
+		"deezer-js": "workspace:*",
 		"got": "^11.8.2",
 		"html-entities": "^2.3.3",
 		"metaflac-js2": "^1.0.8",

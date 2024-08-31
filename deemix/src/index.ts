@@ -1,12 +1,25 @@
-const got = require("got");
-const {
+import got from "got";
+import {
 	generateTrackItem,
 	generateAlbumItem,
 	generatePlaylistItem,
 	generateArtistItem,
 	generateArtistTopItem,
-} = require("./itemgen.js");
-const { LinkNotSupported, LinkNotRecognized } = require("./errors.js");
+} from "./itemgen.js";
+import { LinkNotSupported, LinkNotRecognized } from "./errors.js";
+import { Deezer } from "deezer-js";
+
+import * as typesIndex from "./types";
+import settings from "./settings.js";
+import downloader from "./downloader.js";
+import decryption from "./decryption.js";
+import tagger from "./tagger.js";
+import * as utilsIndex from "./utils/index.js";
+import localpaths from "./utils/localpaths.js";
+import pathtemplates from "./utils/pathtemplates.js";
+import deezer from "./utils/deezer.js";
+import Plugin from "./plugins/index.js";
+import Spotify from "./plugins/spotify.js";
 
 async function parseLink(link: string) {
 	if (link.includes("deezer.page.link")) {
@@ -50,11 +63,11 @@ async function parseLink(link: string) {
 }
 
 async function generateDownloadObject(
-	dz,
-	link,
-	bitrate,
-	plugins = {},
-	listener
+	dz: Deezer,
+	link: string,
+	bitrate: number,
+	plugins: Record<string, Plugin> = {},
+	listener: any
 ) {
 	let link_type, link_id;
 	[link, link_type, link_id] = await parseLink(link);
@@ -65,6 +78,7 @@ async function generateDownloadObject(
 		let item = null;
 		for (let i = 0; i < pluginNames.length; i++) {
 			currentPlugin = plugins[pluginNames[i]];
+
 			item = await currentPlugin.generateDownloadObject(
 				dz,
 				link,
@@ -92,38 +106,39 @@ async function generateDownloadObject(
 	throw new LinkNotSupported(link);
 }
 
-module.exports = {
+// Aggregating the exports into organized objects
+export const types = {
+	...typesIndex,
+};
+
+const itemgen = {
+	generateTrackItem,
+	generateAlbumItem,
+	generatePlaylistItem,
+	generateArtistItem,
+	generateArtistTopItem,
+};
+
+const utils = {
+	...utilsIndex,
+	localpaths,
+	pathtemplates,
+	deezer,
+};
+
+const plugins = {
+	Spotify,
+};
+
+// Exporting the organized objects
+export {
 	parseLink,
 	generateDownloadObject,
-	types: {
-		...require("./types/index.js"),
-		...require("./types/Album.js"),
-		...require("./types/Artist.js"),
-		...require("./types/Date.js"),
-		...require("./types/Lyrics.js"),
-		...require("./types/Picture.js"),
-		...require("./types/Playlist.js"),
-		...require("./types/Track.js"),
-		downloadObjects: require("./types/DownloadObjects.js"),
-	},
-	itemgen: {
-		generateTrackItem,
-		generateAlbumItem,
-		generatePlaylistItem,
-		generateArtistItem,
-		generateArtistTopItem,
-	},
-	settings: require("./settings.js"),
-	downloader: require("./downloader.js"),
-	decryption: require("./decryption.js"),
-	tagger: require("./tagger.js"),
-	utils: {
-		...require("./utils/index.js"),
-		localpaths: require("./utils/localpaths.js"),
-		pathtemplates: require("./utils/pathtemplates.js"),
-		deezer: require("./utils/deezer.js"),
-	},
-	plugins: {
-		spotify: require("./plugins/spotify.js"),
-	},
+	settings,
+	downloader,
+	decryption,
+	tagger,
+	itemgen,
+	utils,
+	plugins,
 };

@@ -1,9 +1,8 @@
-// @ts-expect-error
 import { Deezer } from "deezer-js";
-import { ApiHandler } from "../../../types";
+import { currentVersion, deemixVersion, sessionDZ } from "../../../app";
 import { logger } from "../../../helpers/logger";
 import { getLoginCredentials } from "../../../helpers/loginStorage";
-import { sessionDZ, deemixVersion, currentVersion } from "../../../app";
+import { ApiHandler } from "../../../types";
 
 const path: ApiHandler["path"] = "/connect";
 let update: any = null;

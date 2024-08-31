@@ -1,15 +1,12 @@
-import type { RequestHandler } from "express";
-// @ts-expect-error
-import deemix from "deemix";
-// @ts-expect-error
+import * as deemix from "deemix";
 import { Deezer } from "deezer-js";
-
+import type { RequestHandler } from "express";
+import { sessionDZ } from "../../../app";
 import type {
 	ApiHandler,
-	GetTrackResponse,
 	GetAlbumResponse,
+	GetTrackResponse,
 } from "../../../types";
-import { sessionDZ } from "../../../app";
 
 export interface AnalyzeQuery {
 	term?: string;

@@ -3,8 +3,7 @@ import fs from "fs";
 import os from "os";
 import { join as joinPath } from "path";
 import { createLogger, format, transports } from "winston";
-// @ts-expect-error
-import deemix from "deemix";
+import * as deemix from "deemix";
 
 const { combine, timestamp, errors, colorize, printf } = format;
 

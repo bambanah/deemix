@@ -1,8 +1,7 @@
-// @ts-expect-error
 import { Deezer } from "deezer-js";
-import { ApiHandler } from "../../../types";
 import { sessionDZ } from "../../../app";
 import { resetLoginCredentials } from "../../../helpers/loginStorage";
+import { ApiHandler } from "../../../types";
 
 const path: ApiHandler["path"] = "/logout";
 

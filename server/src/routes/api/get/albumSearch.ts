@@ -1,9 +1,7 @@
-import type { RequestHandler } from "express";
-// @ts-expect-error
 import { Deezer } from "deezer-js";
-
-import type { ApiHandler } from "../../../types";
+import type { RequestHandler } from "express";
 import { sessionDZ } from "../../../app";
+import type { ApiHandler } from "../../../types";
 
 export interface RawAlbumQuery {
 	term: string;

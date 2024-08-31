@@ -1,7 +1,6 @@
-// @ts-expect-error
 import { Deezer } from "deezer-js";
-import { ApiHandler } from "../../../types";
 import { sessionDZ } from "../../../app";
+import { ApiHandler } from "../../../types";
 import { getAlbumDetails } from "./albumSearch";
 
 const path: ApiHandler["path"] = "/newReleases";

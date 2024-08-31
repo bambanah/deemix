@@ -5,8 +5,7 @@ import express, { Application } from "express";
 import ejs from "ejs";
 import { Server as WsServer, OPEN as WsOpen } from "ws";
 import initDebug from "debug";
-// @ts-expect-error
-import deemix from "deemix";
+import * as deemix from "deemix";
 import { registerMiddlewares } from "./middlewares";
 import indexRouter from "./routes";
 import { getErrorCb, getListeningCb } from "./helpers/server-callbacks";
