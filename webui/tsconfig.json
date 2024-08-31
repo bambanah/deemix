@@ -5,6 +5,7 @@
 		"allowJs": true,
 		"checkJs": false,
 		"noEmit": true,
+		"strict": false,
 		"baseUrl": ".",
 		"types": ["node"],
 		"paths": {

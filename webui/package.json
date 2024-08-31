@@ -2,6 +2,7 @@
 	"name": "deemix-webui",
 	"version": "3.11.2",
 	"private": true,
+	"main": "src/main.ts",
 	"scripts": {
 		"dev": "vite build -w",
 		"build": "vite build",
@@ -35,6 +36,7 @@
 		"jest": "27.0.6",
 		"postcss-import": "^16.1.0",
 		"prettier": "2.3.2",
+		"typescript": "^5.5.4",
 		"vite": "^3.0.2",
 		"vite-svg-loader": "^3.6.0",
 		"vue-template-compiler": "2.6.14",

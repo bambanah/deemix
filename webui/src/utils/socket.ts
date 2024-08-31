@@ -12,7 +12,7 @@ class CustomSocket extends WebSocket {
 		this.send(JSON.stringify({ key, data }));
 	}
 
-	on(key: string, cb: (ev: MessageEvent<any>) => any) {
+	on(key: string, cb: (ev: any) => any) {
 		if (!Object.keys(this.listeners).includes(key)) {
 			this.listeners[key] = cb;
 

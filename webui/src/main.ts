@@ -125,6 +125,7 @@ function initClient() {
 }
 
 document.addEventListener("DOMContentLoaded", startApp);
+// @ts-expect-error
 if (window.api) {
 	initClient();
 }
