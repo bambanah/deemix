@@ -13,7 +13,7 @@ const handler: ApiHandler["handler"] = async (req, res) => {
 
 	const url = req.body.url.split(/[\s;]+/);
 	let bitrate = req.body.bitrate;
-	if (bitrate === "null" || bitrate === null)
+	if (bitrate === "null" || !bitrate)
 		bitrate = deemix.getSettings().settings.maxBitrate;
 	bitrate = Number(bitrate);
 	let obj: any;
