@@ -294,6 +294,7 @@ export default {
 			const {
 				uuid,
 				downloaded,
+				alreadyDownloaded,
 				failed,
 				progress,
 				conversion,
@@ -305,7 +306,7 @@ export default {
 			} = update;
 
 			if (uuid && this.queue.includes(uuid)) {
-				if (downloaded) {
+				if (downloaded || alreadyDownloaded) {
 					this.queueList[uuid].downloaded++;
 				}
 

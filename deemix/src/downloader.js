@@ -1,7 +1,6 @@
 const { Track } = require("./types/Track.js");
 const { StaticPicture } = require("./types/Picture.js");
 const { streamTrack, generateCryptedStreamURL } = require("./decryption.js");
-const { tagID3, tagFLAC } = require("./tagger.js");
 const {
 	USER_AGENT_HEADER,
 	pipeline,
@@ -29,6 +28,7 @@ const fs = require("fs");
 const { tmpdir } = require("os");
 const { queue, each } = require("async");
 const { exec } = require("child_process");
+const { checkShouldDownload, tagTrack } = require("./utils/download-utils");
 
 const extensions = {
 	[TrackFormats.FLAC]: ".flac",
@@ -413,7 +413,6 @@ class Downloader {
 		// Generate track object
 		if (!track) {
 			track = new Track();
-			this.log(itemData, "getTags");
 			try {
 				await track.parseData(
 					this.dz,
@@ -432,21 +431,13 @@ class Downloader {
 				console.trace(e);
 				throw e;
 			}
-			this.log(itemData, "gotTags");
 		}
 		if (this.downloadObject.isCanceled) throw new DownloadCanceled();
-
-		itemData = {
-			id: track.id,
-			title: track.title,
-			artist: track.mainArtist.name,
-		};
 
 		// Check if the track is encoded
 		if (track.MD5 === "") throw new DownloadFailed("notEncoded", track);
 
 		// Check the target bitrate
-		this.log(itemData, "getBitrate");
 		let selectedFormat;
 		try {
 			selectedFormat = await getPreferredBitrate(
@@ -476,7 +467,6 @@ class Downloader {
 		}
 		track.bitrate = selectedFormat;
 		track.album.bitrate = selectedFormat;
-		this.log(itemData, "gotBitrate");
 
 		// Apply Settings
 		track.applySettings(this.settings);
@@ -490,6 +480,63 @@ class Downloader {
 		fs.mkdirSync(filepath, { recursive: true });
 		const extension = extensions[track.bitrate];
 		let writepath = `${filepath}/${filename}${extension}`;
+
+		if (this.settings.overwriteFile === OverwriteOption.KEEP_BOTH) {
+			const baseFilename = `${filepath}/${filename}`;
+			let currentFilename;
+			let c = 0;
+			do {
+				c++;
+				currentFilename = `${baseFilename} (${c})${extension}`;
+			} while (fs.existsSync(currentFilename));
+			writepath = currentFilename;
+		}
+
+		const shouldDownload = checkShouldDownload(
+			filename,
+			filepath,
+			extension,
+			writepath,
+			this.settings.overwriteFile,
+			track
+		);
+
+		// Adding tags
+		if (
+			!shouldDownload &&
+			[OverwriteOption.ONLY_TAGS, OverwriteOption.OVERWRITE].includes(
+				this.settings.overwriteFile
+			)
+		) {
+			tagTrack(extension, writepath, track, this.settings.tags);
+		}
+
+		if (!shouldDownload) {
+			if (this.listener) {
+				this.listener.send("updateQueue", {
+					uuid: this.downloadObject.uuid,
+					alreadyDownloaded: true,
+					downloadPath: String(writepath),
+					extrasPath: String(this.downloadObject.extrasPath),
+				});
+			}
+
+			returnData.filename = writepath.slice(extrasPath.length + 1);
+			returnData.data = itemData;
+			returnData.path = String(writepath);
+
+			this.downloadObject.files.push(returnData);
+
+			this.downloadObject.completeTrackProgress(this.listener);
+			this.downloadObject.downloaded += 1;
+			return returnData;
+		}
+
+		itemData = {
+			id: track.id,
+			title: track.title,
+			artist: track.mainArtist.name,
+		};
 
 		// Save extrasPath
 		if (extrasPath && !this.downloadObject.extrasPath) {
@@ -511,7 +558,6 @@ class Downloader {
 		}_${this.settings.embeddedArtworkSize}${ext}`;
 
 		// Download and cache the coverart
-		this.log(itemData, "getAlbumArt");
 		if (!this.coverQueue[track.album.embeddedCoverPath]) {
 			this.coverQueue[track.album.embeddedCoverPath] = downloadImage(
 				track.album.embeddedCoverURL,
@@ -522,7 +568,6 @@ class Downloader {
 			await this.coverQueue[track.album.embeddedCoverPath];
 		if (this.coverQueue[track.album.embeddedCoverPath])
 			delete this.coverQueue[track.album.embeddedCoverPath];
-		this.log(itemData, "gotAlbumArt");
 
 		// Save local album art
 		if (coverPath) {
@@ -624,88 +669,19 @@ class Downloader {
 			}
 		}
 
-		// Check for overwrite settings
-		let trackAlreadyDownloaded = fs.existsSync(writepath);
-
-		// Don't overwrite and don't mind extension
-		if (
-			!trackAlreadyDownloaded &&
-			this.settings.overwriteFile === OverwriteOption.DONT_CHECK_EXT
-		) {
-			const extensions = [".mp3", ".flac", ".opus", ".m4a"];
-			const baseFilename = `${filepath}/${filename}`;
-			for (let i = 0; i < extensions.length; i++) {
-				const ext = extensions[i];
-				trackAlreadyDownloaded = fs.existsSync(baseFilename + ext);
-				if (trackAlreadyDownloaded) break;
-			}
-		}
-
-		// Overwrite only lower bitrates
-		if (
-			trackAlreadyDownloaded &&
-			this.settings.overwriteFile === OverwriteOption.ONLY_LOWER_BITRATES &&
-			extension === ".mp3"
-		) {
-			const stats = fs.statSync(writepath);
-			const fileSizeKb = (stats.size * 8) / 1024;
-			const bitrateAprox = fileSizeKb / track.duration;
-			if (selectedFormat !== 0 && bitrateAprox < 310 && selectedFormat === 3) {
-				trackAlreadyDownloaded = false;
-			}
-		}
-
-		// Don't overwrite and keep both files
-		if (
-			trackAlreadyDownloaded &&
-			this.settings.overwriteFile === OverwriteOption.KEEP_BOTH
-		) {
-			const baseFilename = `${filepath}/${filename}`;
-			let currentFilename;
-			let c = 0;
-			do {
-				c++;
-				currentFilename = `${baseFilename} (${c})${extension}`;
-			} while (fs.existsSync(currentFilename));
-			trackAlreadyDownloaded = false;
-			writepath = currentFilename;
-		}
-
 		// Download the track
-		if (
-			!trackAlreadyDownloaded ||
-			this.settings.overwriteFile === OverwriteOption.OVERWRITE
-		) {
-			track.downloadURL = track.urls[formatsName[track.bitrate]];
-			if (!track.downloadURL) throw new DownloadFailed("notAvailable", track);
-			try {
-				await streamTrack(writepath, track, this.downloadObject, this.listener);
-			} catch (e) {
-				if (e instanceof got.HTTPError)
-					throw new DownloadFailed("notAvailable", track);
-				throw e;
-			}
-			this.log(itemData, "downloaded");
-		} else {
-			this.log(itemData, "alreadyDownloaded");
-			this.downloadObject.completeTrackProgress(this.listener);
+		track.downloadURL = track.urls[formatsName[track.bitrate]];
+		if (!track.downloadURL) throw new DownloadFailed("notAvailable", track);
+		try {
+			await streamTrack(writepath, track, this.downloadObject, this.listener);
+		} catch (e) {
+			if (e instanceof got.HTTPError)
+				throw new DownloadFailed("notAvailable", track);
+			throw e;
 		}
 
-		// Adding tags
-		if (
-			!trackAlreadyDownloaded ||
-			([OverwriteOption.ONLY_TAGS, OverwriteOption.OVERWRITE].includes(
-				this.settings.overwriteFile
-			) &&
-				!track.local)
-		) {
-			this.log(itemData, "tagging");
-			if (extension === ".mp3") {
-				tagID3(writepath, track, this.settings.tags);
-			} else if (extension === ".flac") {
-				tagFLAC(writepath, track, this.settings.tags);
-			}
-			this.log(itemData, "tagged");
+		if (!track.local) {
+			tagTrack(extension, writepath, track, this.settings.tags);
 		}
 
 		if (track.searched) returnData.searched = true;
