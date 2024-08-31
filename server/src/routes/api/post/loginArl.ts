@@ -1,13 +1,12 @@
-import { RequestHandler } from "express";
-// @ts-expect-error
 import { Deezer } from "deezer-js";
+import { RequestHandler } from "express";
 import { sessionDZ } from "../../../app";
-import { ApiHandler } from "../../../types";
 import { logger } from "../../../helpers/logger";
 import {
-	saveLoginCredentials,
 	resetLoginCredentials,
+	saveLoginCredentials,
 } from "../../../helpers/loginStorage";
+import { ApiHandler } from "../../../types";
 
 export interface RawLoginArlBody {
 	arl: string;

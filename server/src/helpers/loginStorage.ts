@@ -1,6 +1,5 @@
+import * as deemix from "deemix";
 import fs from "fs";
-// @ts-expect-error
-import deemix from "deemix";
 import { LoginFile } from "../types";
 
 const configFolder = deemix.utils.localpaths.getConfigFolder();

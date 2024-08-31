@@ -1,8 +1,7 @@
 import fs from "fs";
 import { sep } from "path";
 import { v4 as uuidv4 } from "uuid";
-// @ts-expect-error
-import deemix from "deemix";
+import * as deemix from "deemix";
 import got from "got";
 import { Settings, Listener } from "./types";
 import { NotLoggedIn, CantStream } from "./helpers/errors";
@@ -56,7 +55,7 @@ export class DeemixApp {
 		this.currentJob = null;
 
 		this.plugins = {
-			spotify: new deemix.plugins.spotify(),
+			spotify: new deemix.plugins.Spotify(),
 		};
 		this.deezerAvailable = null;
 		this.latestVersion = null;

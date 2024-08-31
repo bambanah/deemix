@@ -1,12 +1,10 @@
-import { RequestHandler } from "express";
-// @ts-expect-error
 import { Deezer } from "deezer-js";
-import { ApiHandler } from "../../../types";
+import { RequestHandler } from "express";
 import { sessionDZ } from "../../../app";
-
-import { isObjectEmpy } from "../../../helpers/primitive-checks";
 import { BadRequestError } from "../../../helpers/errors";
 import { logger } from "../../../helpers/logger";
+import { isObjectEmpy } from "../../../helpers/primitive-checks";
+import { ApiHandler } from "../../../types";
 
 export interface RawChartTracksQuery {
 	id: string;

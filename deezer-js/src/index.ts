@@ -1,8 +1,8 @@
-const got = require("got");
-const { CookieJar, Cookie } = require("tough-cookie");
-const { API } = require("./api.js");
-const { GW } = require("./gw.js");
-const { DeezerError, WrongLicense, WrongGeolocation } = require("./errors.js");
+import got from "got";
+import { CookieJar, Cookie } from "tough-cookie";
+import { API } from "./api.js";
+import { GW } from "./gw.js";
+import { DeezerError, WrongLicense, WrongGeolocation } from "./errors.js";
 
 // Number associtation for formats
 const TrackFormats = {
@@ -16,7 +16,28 @@ const TrackFormats = {
 	LOCAL: 0,
 };
 
+interface User {
+	id?: number;
+	name?: string;
+	picture?: string;
+	license_token?: string;
+	can_stream_hq?: boolean;
+	can_stream_lossless?: boolean;
+	country?: string;
+	language?: string;
+	loved_tracks?: number;
+}
+
 class Deezer {
+	logged_in: boolean;
+	http_headers: { "User-Agent": string };
+	cookie_jar: CookieJar;
+	current_user: User;
+	childs: User[];
+	selected_account: number;
+	api: API;
+	gw: GW;
+
 	constructor() {
 		this.http_headers = {
 			"User-Agent":
@@ -221,11 +242,9 @@ class Deezer {
 	}
 }
 
-module.exports = {
-	TrackFormats,
-	Deezer,
-	api: { ...require("./api.js") },
-	gw: { ...require("./gw.js") },
-	utils: { ...require("./utils.js") },
-	errors: { ...require("./errors.js") },
-};
+export { TrackFormats, Deezer };
+
+export * as api from "./api.js";
+export * as gw from "./gw.js";
+export * as utils from "./utils.js";
+export * as errors from "./errors.js";
