@@ -126,6 +126,7 @@ function removeDuplicateArtists(artist, artists) {
 
 function formatListener(key, data) {
 	let message = "";
+
 	switch (key) {
 		case "startAddingArtist":
 			return `Started gathering ${data.name}'s albums (${data.id})`;
@@ -134,14 +135,13 @@ function formatListener(key, data) {
 		case "updateQueue":
 			message = `[${data.uuid}]`;
 			if (data.downloaded)
-				message += ` Completed download of ${data.downloadPath.slice(
-					data.extrasPath.length + 1
-				)}`;
+				message += ` Completed download of ${data.downloadPath.split("/").at(-1)}`;
 			if (data.failed)
 				message += ` ${data.data.artist} - ${data.data.title} :: ${data.error}`;
-			if (data.progress) message += ` Download at ${data.progress}%`;
-			if (data.conversion) message += ` Conversion at ${data.conversion}%`;
-			return message;
+			if (data.progress) message += ` Download: ${data.progress}%`;
+			if (data.conversion) message += ` Conversion: ${data.conversion}%`;
+
+			return message === `[${data.uuid}]` ? "" : message;
 		case "downloadInfo":
 			message = data.state;
 			switch (data.state) {
@@ -172,9 +172,6 @@ function formatListener(key, data) {
 					break;
 				case "downloading":
 					message = "Downloading track.";
-					if (data.alreadyStarted)
-						message += ` Recovering download from ${data.value}.`;
-					else message += ` Downloading ${data.value} bytes.`;
 					break;
 				case "downloadTimeout":
 					message = "Deezer timedout when downloading track, retrying...";
@@ -215,11 +212,11 @@ function formatListener(key, data) {
 		case "removedFromQueue":
 			return `[${data}] Removed from the queue`;
 		case "finishDownload":
-			return `[${data}] Finished downloading`;
+			return `[${data}] Download complete`;
 		case "startConversion":
 			return `[${data}] Started converting`;
 		case "finishConversion":
-			return `[${data.uuid}] Finished converting`;
+			return `[${data.uuid}] Conversion complete`;
 		default:
 			return message;
 	}
