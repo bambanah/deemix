@@ -6,7 +6,7 @@ import type { TranslateResult } from "vue-i18n";
 const sharedOptions = {
 	gravity: "bottom",
 	position: "left",
-};
+} as const;
 
 const toastsWithId = {};
 
@@ -28,7 +28,7 @@ export const toast = function (
 				const messages = toast.querySelectorAll(".toast-message");
 
 				messages.forEach((message) => {
-					message.innerText = msg;
+					(message as HTMLElement).innerText = msg.toString();
 				});
 			});
 		}
@@ -84,7 +84,7 @@ export const toast = function (
 		}
 		const messageNode = document.createElement("span");
 		messageNode.classList.add("toast-message");
-		messageNode.appendChild(document.createTextNode(msg));
+		messageNode.appendChild(document.createTextNode(msg.toString()));
 
 		const toastNode = document.createElement("toast");
 		toastNode.appendChild(iconNode);
@@ -119,6 +119,7 @@ export const toast = function (
 			},
 			offset: {
 				x: localStorage.getItem("slimSidebar") === "true" ? "3rem" : "14rem",
+				y: undefined,
 			},
 		}).showToast();
 		if (id) {
