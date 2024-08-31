@@ -8,10 +8,12 @@ const {
 } = require("./itemgen.js");
 const { LinkNotSupported, LinkNotRecognized } = require("./errors.js");
 
-async function parseLink(link) {
+async function parseLink(link: string) {
 	if (link.includes("deezer.page.link")) {
-		link = await got.get(link, { https: { rejectUnauthorized: false } }); // Resolve URL shortner
-		link = link.url;
+		const response = await got.get(link, {
+			https: { rejectUnauthorized: false },
+		}); // Resolve URL shortner
+		link = response.url;
 	}
 	// Remove extra stuff
 	if (link.includes("?")) link = link.slice(0, link.indexOf("?"));

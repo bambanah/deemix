@@ -3,8 +3,10 @@
 	"version": "3.8.0",
 	"private": true,
 	"description": "A barebones deezer downloader library",
-	"main": "src/index.js",
-	"scripts": {},
+	"main": "src/index.ts",
+	"scripts": {
+		"build": "tsup src/index.ts --format esm,cjs --clean"
+	},
 	"author": "RemixDev",
 	"license": "GPL-3.0-or-later",
 	"dependencies": {
@@ -15,5 +17,8 @@
 		"html-entities": "^2.3.3",
 		"metaflac-js2": "^1.0.8",
 		"tough-cookie": "^4.0.0"
+	},
+	"devDependencies": {
+		"tsup": "^8.2.4"
 	}
 }
