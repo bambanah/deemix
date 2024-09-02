@@ -1,6 +1,6 @@
 import { Deezer } from "deezer-js";
 import got from "got";
-import downloader from "./downloader";
+import { Downloader } from "./downloader";
 import { LinkNotRecognized, LinkNotSupported } from "./errors";
 import {
 	generateAlbumItem,
@@ -112,4 +112,4 @@ export * as types from "./types";
 export * as utils from "./utils";
 
 // Exporting the organized objects
-export { downloader, generateDownloadObject, itemgen, parseLink };
+export { Downloader, generateDownloadObject, itemgen, parseLink };

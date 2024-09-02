@@ -15,7 +15,12 @@ import { VARIOUS_ARTISTS } from "./index";
 import { Lyrics } from "./Lyrics";
 import { Picture } from "./Picture";
 import { Playlist } from "./Playlist";
-import { APITrack } from "deezer-js/src/api";
+import {
+	APIAlbum,
+	APIPlaylist,
+	APITrack,
+	EnrichedAPITrack,
+} from "deezer-js/src/api";
 const { map_track, map_album } = utils;
 
 export const formatsName = {
@@ -32,12 +37,12 @@ export const formatsName = {
 class Track {
 	id: string;
 	title: string;
-	MD5: string;
-	mediaVersion: string;
+	MD5?: string;
+	mediaVersion?: number;
 	trackToken: string;
-	trackTokenExpiration: number;
+	trackTokenExpiration?: string;
 	duration: number;
-	fallbackID: string;
+	fallbackID: number;
 	albumsFallback: any[];
 	filesizes: Record<string, any>;
 	local: boolean;
@@ -45,8 +50,8 @@ class Track {
 	artist: { Main: any[]; Featured?: any[] };
 	artists: any[];
 	album: Album | null;
-	trackNumber: string;
-	discNumber: string;
+	trackNumber: number;
+	discNumber: number;
 	date: CustomDate;
 	lyrics: Lyrics | null;
 	bpm: number;
@@ -73,11 +78,9 @@ class Track {
 		this.id = "0";
 		this.title = "";
 		this.MD5 = "";
-		this.mediaVersion = "";
 		this.trackToken = "";
-		this.trackTokenExpiration = 0;
 		this.duration = 0;
-		this.fallbackID = "0";
+		this.fallbackID = 0;
 		this.albumsFallback = [];
 		this.filesizes = {};
 		this.local = false;
@@ -85,8 +88,8 @@ class Track {
 		this.artist = { Main: [] };
 		this.artists = [];
 		this.album = null;
-		this.trackNumber = "0";
-		this.discNumber = "0";
+		this.trackNumber = 0;
+		this.discNumber = 0;
 		this.date = new CustomDate();
 		this.lyrics = null;
 		this.bpm = 0;
@@ -107,7 +110,7 @@ class Track {
 		this.urls = {};
 	}
 
-	parseEssentialData(trackAPI: APITrack) {
+	parseEssentialData(trackAPI: EnrichedAPITrack) {
 		this.id = String(trackAPI.id);
 		this.duration = trackAPI.duration;
 		this.trackToken = trackAPI.track_token;
@@ -115,8 +118,7 @@ class Track {
 		this.MD5 = trackAPI.md5_origin;
 		this.mediaVersion = trackAPI.media_version;
 		this.filesizes = trackAPI.filesizes;
-		this.fallbackID = "0";
-		if (trackAPI.fallback_id) this.fallbackID = trackAPI.fallback_id;
+		this.fallbackID = trackAPI.fallback_id ?? 0;
 		this.local = parseInt(this.id) < 0;
 		this.urls = {};
 	}
@@ -124,21 +126,21 @@ class Track {
 	async parseData(
 		dz: Deezer,
 		id,
-		existingTrack?: DeezerTrack,
-		albumAPI,
-		playlistAPI
+		existingTrack?: APITrack,
+		albumAPI: APIAlbum,
+		playlistAPI: APIPlaylist,
+		refetch: boolean = true
 	) {
-		if (id) {
+		if (id && refetch) {
 			const gwTrack = await dz.gw.get_track_with_fallback(id);
 			const newTrack = map_track(gwTrack);
 
-			if (!existingTrack) existingTrack = {};
+			this.parseEssentialData(newTrack);
+
 			existingTrack = { ...existingTrack, ...newTrack };
 		} else if (!existingTrack) {
 			throw new NoDataToParse();
 		}
-
-		this.parseEssentialData(existingTrack);
 
 		// only public api has bpm
 		if (!existingTrack.bpm && !this.local) {
@@ -256,7 +258,7 @@ class Track {
 		this.album.mainArtist = this.mainArtist;
 	}
 
-	parseTrack(trackAPI: any) {
+	parseTrack(trackAPI: APITrack) {
 		this.title = trackAPI.title;
 
 		this.discNumber = trackAPI.disk_number;
@@ -266,7 +268,7 @@ class Track {
 			this.replayGain = generateReplayGainString(trackAPI.gain);
 		this.ISRC = trackAPI.isrc;
 		this.trackNumber = trackAPI.track_position;
-		this.contributors = trackAPI.song_contributors;
+		this.contributors = trackAPI.contributors;
 		this.rank = trackAPI.rank;
 		this.bpm = trackAPI.bpm;
 
@@ -286,8 +288,8 @@ class Track {
 			this.date.fixDayMonth();
 		}
 
-		trackAPI.contributors.forEach((artist: any) => {
-			const isVariousArtists = String(artist.id) === VARIOUS_ARTISTS;
+		trackAPI.contributors?.forEach((artist: any) => {
+			const isVariousArtists = artist.id === VARIOUS_ARTISTS;
 			const isMainArtist = artist.role === "Main";
 
 			if (trackAPI.contributors.length > 1 && isVariousArtists) return;

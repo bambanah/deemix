@@ -2,14 +2,14 @@ import { Picture } from "./Picture";
 import { VARIOUS_ARTISTS } from "./index";
 
 export class Artist {
-	id: string;
+	id: number;
 	name: string;
 	pic: Picture;
 	role: string;
 	save: boolean;
 
-	constructor(art_id = "0", name = "", role = "", pic_md5 = "") {
-		this.id = String(art_id);
+	constructor(art_id: number = 0, name = "", role = "", pic_md5 = "") {
+		this.id = art_id;
 		this.name = name;
 		this.pic = new Picture(pic_md5, "artist");
 		this.role = role;

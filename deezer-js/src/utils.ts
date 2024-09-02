@@ -1,3 +1,6 @@
+import { APITrack, EnrichedAPITrack } from "./api";
+import { GWTrack } from "./gw";
+
 // Explicit Content Lyrics
 export const LyricsStatus = {
 	NOT_EXPLICIT: 0, // Not Explicit
@@ -413,8 +416,8 @@ export function map_playlist(playlist) {
 }
 
 // maps gw-light api tracks to standard api
-export function map_track(track) {
-	let result: Record<string, any> = {
+export function map_track(track: GWTrack): EnrichedAPITrack {
+	let result: EnrichedAPITrack = <any>{
 		id: track.SNG_ID,
 		readable: true, // not provided
 		title: track.SNG_TITLE,
@@ -461,91 +464,95 @@ export function map_track(track) {
 		track_token: track.TRACK_TOKEN,
 		track_token_expire: track.TRACK_TOKEN_EXPIRE,
 	};
-	if (parseInt(track.SNG_ID) > 0) {
-		result.title_version = (track.VERSION || "").trim();
-		if (
-			result.title_version &&
-			result.title_short.includes(result.title_version)
-		) {
-			result.title_short = result.title_short
-				.replace(result.title_version, "")
-				.trim();
-		}
-		result.title = `${result.title_short} ${result.title_version}`.trim();
-		result.track_position = track.TRACK_NUMBER;
-		result.disk_number = track.DISK_NUMBER;
-		result.rank = track.RANK || track.RANK_SNG;
-		result.release_date = track.PHYSICAL_RELEASE_DATE;
-		result.explicit_lyrics = is_explicit(track.EXPLICIT_LYRICS);
-		result.explicit_content_lyrics =
-			track.EXPLICIT_TRACK_CONTENT.EXPLICIT_LYRICS_STATUS;
-		result.explicit_content_cover =
-			track.EXPLICIT_TRACK_CONTENT.EXPLICIT_COVER_STATUS;
-		result.preview = track.MEDIA[0].HREF;
-		result.gain = track.GAIN;
-		if (track.ARTISTS) {
-			track.ARTISTS.forEach((contributor) => {
-				if (contributor.ART_ID === result.artist.id) {
-					result.artist = {
-						...result.artist,
-						picture_small: `https://e-cdns-images.dzcdn.net/images/artist/${contributor.ART_PICTURE}/56x56-000000-80-0-0.jpg`,
-						picture_medium: `https://e-cdns-images.dzcdn.net/images/artist/${contributor.ART_PICTURE}/250x250-000000-80-0-0.jpg`,
-						picture_big: `https://e-cdns-images.dzcdn.net/images/artist/${contributor.ART_PICTURE}/500x500-000000-80-0-0.jpg`,
-						picture_xl: `https://e-cdns-images.dzcdn.net/images/artist/${contributor.ART_PICTURE}/1000x1000-000000-80-0-0.jpg`,
-						md5_image: contributor.ART_PICTURE,
-					};
-				}
-				result.contributors.push({
-					id: contributor.ART_ID,
-					name: contributor.ART_NAME,
-					link: `https://www.deezer.com/artist/${contributor.ART_ID}`,
-					share: `https://www.deezer.com/artist/${contributor.ART_ID}`,
-					picture: `https://www.deezer.com/artist/${contributor.ART_ID}/image`,
+
+	if (track.SNG_ID <= 0) {
+		result.token = track.TOKEN;
+		result.user_id = track.USER_ID;
+		result.filesizes.mp3_misc = track.FILESIZE_MP3_MISC;
+
+		return result;
+	}
+
+	result.title_version = (track.VERSION || "").trim();
+	if (
+		result.title_version &&
+		result.title_short.includes(result.title_version)
+	) {
+		result.title_short = result.title_short
+			.replace(result.title_version, "")
+			.trim();
+	}
+	result.title = `${result.title_short} ${result.title_version}`.trim();
+	result.track_position = track.TRACK_NUMBER;
+	result.disk_number = track.DISK_NUMBER;
+	result.rank = track.RANK || track.RANK_SNG;
+	result.release_date = track.PHYSICAL_RELEASE_DATE;
+	result.explicit_lyrics = is_explicit(track.EXPLICIT_LYRICS);
+	result.explicit_content_lyrics =
+		track.EXPLICIT_TRACK_CONTENT.EXPLICIT_LYRICS_STATUS;
+	result.explicit_content_cover =
+		track.EXPLICIT_TRACK_CONTENT.EXPLICIT_COVER_STATUS;
+	result.preview = track.MEDIA[0].HREF;
+	result.gain = track.GAIN;
+	if (track.ARTISTS) {
+		track.ARTISTS.forEach((contributor) => {
+			if (contributor.ART_ID === result.artist.id) {
+				result.artist = {
+					...result.artist,
 					picture_small: `https://e-cdns-images.dzcdn.net/images/artist/${contributor.ART_PICTURE}/56x56-000000-80-0-0.jpg`,
 					picture_medium: `https://e-cdns-images.dzcdn.net/images/artist/${contributor.ART_PICTURE}/250x250-000000-80-0-0.jpg`,
 					picture_big: `https://e-cdns-images.dzcdn.net/images/artist/${contributor.ART_PICTURE}/500x500-000000-80-0-0.jpg`,
 					picture_xl: `https://e-cdns-images.dzcdn.net/images/artist/${contributor.ART_PICTURE}/1000x1000-000000-80-0-0.jpg`,
 					md5_image: contributor.ART_PICTURE,
-					tracklist: `https://api.deezer.com/artist/${contributor.ART_ID}/top?limit=50`,
-					type: "artist",
-					role: RoleID[contributor.ROLE_ID],
-					// Extras
-					order: contributor.ARTISTS_SONGS_ORDER,
-					rank: contributor.RANK,
-				});
+				};
+			}
+			result.contributors.push({
+				id: contributor.ART_ID,
+				name: contributor.ART_NAME,
+				link: `https://www.deezer.com/artist/${contributor.ART_ID}`,
+				share: `https://www.deezer.com/artist/${contributor.ART_ID}`,
+				picture: `https://www.deezer.com/artist/${contributor.ART_ID}/image`,
+				picture_small: `https://e-cdns-images.dzcdn.net/images/artist/${contributor.ART_PICTURE}/56x56-000000-80-0-0.jpg`,
+				picture_medium: `https://e-cdns-images.dzcdn.net/images/artist/${contributor.ART_PICTURE}/250x250-000000-80-0-0.jpg`,
+				picture_big: `https://e-cdns-images.dzcdn.net/images/artist/${contributor.ART_PICTURE}/500x500-000000-80-0-0.jpg`,
+				picture_xl: `https://e-cdns-images.dzcdn.net/images/artist/${contributor.ART_PICTURE}/1000x1000-000000-80-0-0.jpg`,
+				md5_image: contributor.ART_PICTURE,
+				tracklist: `https://api.deezer.com/artist/${contributor.ART_ID}/top?limit=50`,
+				type: "artist",
+				role: RoleID[contributor.ROLE_ID],
+				// Extras
+				order: contributor.ARTISTS_SONGS_ORDER,
+				rank: contributor.RANK,
 			});
-		}
-		// Extras
-		result = {
-			...result,
-			lyrics_id: track.LYRICS_ID,
-			physical_release_date: track.PHYSICAL_RELEASE_DATE,
-			song_contributors: track.SNG_CONTRIBUTORS,
-		};
-		if (track.FALLBACK) result.fallback_id = track.FALLBACK.SNG_ID;
-		if (track.DIGITAL_RELEASE_DATE)
-			result.digital_release_date = track.DIGITAL_RELEASE_DATE;
-		if (track.GENRE_ID) result.genre_id = track.GENRE_ID;
-		if (track.COPYRIGHT) result.copyright = track.COPYRIGHT;
-		if (track.LYRICS) result.lyrics = track.LYRICS;
-		if (track.ALBUM_FALLBACK) result.alternative_albums = track.ALBUM_FALLBACK;
-		result.filesizes = {
-			...result.filesizes,
-			aac_64: track.FILESIZE_AAC_64,
-			mp3_64: track.FILESIZE_MP3_64,
-			mp3_128: track.FILESIZE_MP3_128,
-			mp3_256: track.FILESIZE_MP3_256,
-			mp3_320: track.FILESIZE_MP3_320,
-			mp4_ra1: track.FILESIZE_MP4_RA1,
-			mp4_ra2: track.FILESIZE_MP4_RA2,
-			mp4_ra3: track.FILESIZE_MP4_RA3,
-			flac: track.FILESIZE_FLAC,
-		};
-	} else {
-		result.token = track.TOKEN;
-		result.user_id = track.USER_ID;
-		result.filesizes.mp3_misc = track.FILESIZE_MP3_MISC;
+		});
 	}
+	// Extras
+	result = {
+		...result,
+		lyrics_id: track.LYRICS_ID,
+		physical_release_date: track.PHYSICAL_RELEASE_DATE,
+		song_contributors: track.SNG_CONTRIBUTORS,
+	};
+	if (track.FALLBACK) result.fallback_id = track.FALLBACK.SNG_ID;
+	if (track.DIGITAL_RELEASE_DATE)
+		result.digital_release_date = track.DIGITAL_RELEASE_DATE;
+	if (track.GENRE_ID) result.genre_id = track.GENRE_ID;
+	if (track.COPYRIGHT) result.copyright = track.COPYRIGHT;
+	if (track.LYRICS) result.lyrics = track.LYRICS;
+	if (track.ALBUM_FALLBACK) result.alternative_albums = track.ALBUM_FALLBACK;
+	result.filesizes = {
+		...result.filesizes,
+		aac_64: track.FILESIZE_AAC_64,
+		mp3_64: track.FILESIZE_MP3_64,
+		mp3_128: track.FILESIZE_MP3_128,
+		mp3_256: track.FILESIZE_MP3_256,
+		mp3_320: track.FILESIZE_MP3_320,
+		mp4_ra1: track.FILESIZE_MP4_RA1,
+		mp4_ra2: track.FILESIZE_MP4_RA2,
+		mp4_ra3: track.FILESIZE_MP4_RA3,
+		flac: track.FILESIZE_FLAC,
+	};
+
 	return result;
 }
 

@@ -33,16 +33,16 @@ export interface APIArtist {
 	name: string;
 	link: string;
 	share: string;
-	picture: string;
-	picture_small: string;
-	picture_medium: string;
-	picture_big: string;
-	picture_xl: string;
-	nb_album: number;
-	nb_fan: number;
+	picture?: string;
+	picture_small?: string;
+	picture_medium?: string;
+	picture_big?: string;
+	picture_xl?: string;
+	nb_album?: number;
+	nb_fan?: number;
 	radio: boolean;
 	tracklist: string;
-	role: string;
+	role?: string;
 }
 
 export interface APIAlbum {
@@ -80,7 +80,10 @@ export interface APITrack {
 	gain: number;
 	available_countries: string[]; // List of countries as strings
 	alternative?: APITrack; // Assuming alternative is of type Track
-	contributors: APIContributor[]; // Assuming Contributor is an object
+	alternative_albums?: {
+		data: APIAlbum[];
+	};
+	contributors?: APIContributor[]; // Assuming Contributor is an object
 	md5_image: string;
 	track_token: string;
 	artist: APIArtist;
@@ -98,6 +101,51 @@ export interface APIContributor {
 	picture_big: string;
 	picture_xl: string;
 	role: string;
+}
+
+export interface APIPlaylist {}
+
+// Contains additional information from GW
+export interface EnrichedAPITrack
+	extends Omit<APITrack, "album" | "artist" | "contributors"> {
+	type?: string;
+	md5_origin?: string;
+	filesizes?: Record<string, any>;
+	media_version?: number;
+	track_token_expire?: string;
+	token: string;
+	user_id: string;
+	lyrics_id?: string;
+	physical_release_date?: string;
+	song_contributors?: any;
+	fallback_id?: number;
+	digital_release_date?: string;
+	genre_id?: number;
+	copyright?: string;
+	lyrics?: string;
+	alternative_albums?: any;
+	album?: EnrichedAPIAlbum;
+	artist: EnrichedAPIArtist;
+	contributors: EnrichedAPIContributor[];
+}
+
+export interface EnrichedAPIContributor extends APIContributor {
+	md5_image: string;
+	tracklist: string;
+	type: string;
+	order: string;
+	rank: any;
+}
+
+export interface EnrichedAPIAlbum extends APIAlbum {
+	md5_image?: string;
+	tracklist?: string;
+	type?: string;
+}
+
+export interface EnrichedAPIArtist extends APIArtist {
+	md5_image?: string;
+	type?: string;
 }
 
 type APIArgs = Record<string | number, string | number>;
@@ -495,7 +543,7 @@ export class API {
 		return this.api_call("search/user", args);
 	}
 
-	get_track(song_id: string): Promise<APITrack> {
+	get_track(song_id: string | number): Promise<APITrack> {
 		return this.api_call(`track/${song_id}`) as Promise<APITrack>;
 	}
 

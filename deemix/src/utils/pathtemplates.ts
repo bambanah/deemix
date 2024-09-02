@@ -1,5 +1,9 @@
 import { TrackFormats } from "deezer-js";
 import { CustomDate } from "../types/CustomDate";
+import Track from "@/types/Track";
+import { IDownloadObject } from "@/types/DownloadObjects";
+import { Settings } from "@/settings";
+import { APITrack } from "deezer-js/src/api";
 
 const bitrateLabels = {
 	[TrackFormats.MP4_RA3]: "360 HQ",
@@ -60,13 +64,68 @@ export function pad(num, max_val, settings) {
 	return num + "";
 }
 
-export function generatePath(track, downloadObject, settings) {
+const shouldCreatePlaylistFolder = (track: Track, settings: Settings) => {
+	return (
+		settings.createPlaylistFolder &&
+		track.playlist &&
+		!settings.tags.savePlaylistAsCompilation
+	);
+};
+
+const shouldCreateArtistFolder = (track: Track, settings: Settings) => {
+	return (
+		(settings.createArtistFolder && !track.playlist) ||
+		(settings.createArtistFolder &&
+			track.playlist &&
+			settings.tags.savePlaylistAsCompilation) ||
+		(settings.createArtistFolder &&
+			track.playlist &&
+			settings.createStructurePlaylist)
+	);
+};
+
+const shouldCreateAlbumFolder = (
+	track: Track,
+	settings: Settings,
+	singleTrack: boolean
+) => {
+	return (
+		settings.createAlbumFolder &&
+		(!singleTrack || (singleTrack && settings.createSingleFolder)) &&
+		(!track.playlist ||
+			(track.playlist && settings.tags.savePlaylistAsCompilation) ||
+			(track.playlist && settings.createStructurePlaylist))
+	);
+};
+
+const shouldCreateCDFolder = (
+	track: Track,
+	settings: Settings,
+	singleTrack: boolean
+) => {
+	return (
+		track.album &&
+		parseInt(track.album?.discTotal) > 1 &&
+		settings.createAlbumFolder &&
+		settings.createCDFolder &&
+		(!singleTrack || (singleTrack && settings.createSingleFolder)) &&
+		(!track.playlist ||
+			(track.playlist && settings.tags.savePlaylistAsCompilation) ||
+			(track.playlist && settings.createStructurePlaylist))
+	);
+};
+
+export function generatePath(
+	track: Track,
+	downloadObject: IDownloadObject,
+	settings: Settings
+) {
 	let filenameTemplate = "%artist% - %title%";
 	let singleTrack = false;
 	if (downloadObject.type === "track") {
-		if (settings.createSingleFolder)
-			filenameTemplate = settings.albumTracknameTemplate;
-		else filenameTemplate = settings.tracknameTemplate;
+		filenameTemplate = settings.createSingleFolder
+			? settings.albumTracknameTemplate
+			: settings.tracknameTemplate;
 		singleTrack = true;
 	} else if (downloadObject.type === "album") {
 		filenameTemplate = settings.albumTracknameTemplate;
@@ -75,35 +134,19 @@ export function generatePath(track, downloadObject, settings) {
 	}
 
 	let filename = generateTrackName(filenameTemplate, track, settings);
-	let filepath, artistPath, coverPath, extrasPath;
 
-	filepath = settings.downloadLocation || ".";
+	let filepath = settings.downloadLocation || ".";
+	let artistPath: string, coverPath: string, extrasPath: string;
 
-	if (
-		settings.createPlaylistFolder &&
-		track.playlist &&
-		!settings.tags.savePlaylistAsCompilation
-	) {
-		filepath += `/${generatePlaylistName(
-			settings.playlistNameTemplate,
-			track.playlist,
-			settings
-		)}`;
+	if (shouldCreatePlaylistFolder(track, settings)) {
+		filepath += `/${generatePlaylistName(track, settings)}`;
 	}
 
 	if (track.playlist && !settings.tags.savePlaylistAsCompilation) {
 		extrasPath = filepath;
 	}
 
-	if (
-		(settings.createArtistFolder && !track.playlist) ||
-		(settings.createArtistFolder &&
-			track.playlist &&
-			settings.tags.savePlaylistAsCompilation) ||
-		(settings.createArtistFolder &&
-			track.playlist &&
-			settings.createStructurePlaylist)
-	) {
+	if (shouldCreateArtistFolder(track, settings)) {
 		filepath += `/${generateArtistName(
 			settings.artistNameTemplate,
 			track.album.mainArtist,
@@ -113,13 +156,7 @@ export function generatePath(track, downloadObject, settings) {
 		artistPath = filepath;
 	}
 
-	if (
-		settings.createAlbumFolder &&
-		(!singleTrack || (singleTrack && settings.createSingleFolder)) &&
-		(!track.playlist ||
-			(track.playlist && settings.tags.savePlaylistAsCompilation) ||
-			(track.playlist && settings.createStructurePlaylist))
-	) {
+	if (shouldCreateAlbumFolder(track, settings, singleTrack)) {
 		filepath += `/${generateAlbumName(
 			settings.albumNameTemplate,
 			track.album,
@@ -131,15 +168,7 @@ export function generatePath(track, downloadObject, settings) {
 
 	if (!extrasPath) extrasPath = filepath;
 
-	if (
-		parseInt(track.album.discTotal) > 1 &&
-		settings.createAlbumFolder &&
-		settings.createCDFolder &&
-		(!singleTrack || (singleTrack && settings.createSingleFolder)) &&
-		(!track.playlist ||
-			(track.playlist && settings.tags.savePlaylistAsCompilation) ||
-			(track.playlist && settings.createStructurePlaylist))
-	) {
+	if (shouldCreateCDFolder(track, settings, singleTrack)) {
 		filepath += `/CD${track.discNumber}`;
 	}
 
@@ -159,8 +188,13 @@ export function generatePath(track, downloadObject, settings) {
 	};
 }
 
-export function generateTrackName(filename, track, settings) {
+export function generateTrackName(
+	filename: string,
+	track: Track,
+	settings: Settings
+) {
 	const c = settings.illegalCharacterReplacer;
+
 	filename = filename.replaceAll("%title%", fixName(track.title, c));
 	filename = filename.replaceAll("%artist%", fixName(track.mainArtist.name, c));
 	filename = filename.replaceAll(
@@ -188,37 +222,49 @@ export function generateTrackName(filename, track, settings) {
 		filename = filename
 			.replaceAll(" %featartists%", "")
 			.replaceAll("%featartists%", "");
-	filename = filename.replaceAll("%album%", fixName(track.album.title, c));
-	filename = filename.replaceAll(
-		"%albumartist%",
-		fixName(track.album.mainArtist.name, c)
-	);
-	filename = filename.replaceAll(
-		"%tracknumber%",
-		pad(track.trackNumber, track.album.trackTotal, settings)
-	);
-	filename = filename.replaceAll("%tracktotal%", track.album.trackTotal);
-	filename = filename.replaceAll("%discnumber%", track.discNumber);
-	filename = filename.replaceAll("%disctotal%", track.album.discTotal);
-	if (track.album.genre.length)
-		filename = filename.replaceAll("%genre%", fixName(track.album.genre[0], c));
-	else filename = filename.replaceAll("%genre%", "Unknown");
-	filename = filename.replaceAll("%year%", track.date.year);
+
+	if (track.album) {
+		filename = filename.replaceAll("%album%", fixName(track.album.title, c));
+		filename = filename.replaceAll(
+			"%albumartist%",
+			fixName(track.album.mainArtist.name, c)
+		);
+		filename = filename.replaceAll(
+			"%tracknumber%",
+			pad(track.trackNumber, track.album.trackTotal, settings)
+		);
+		filename = filename.replaceAll("%tracktotal%", track.album.trackTotal);
+
+		if (track.album.genre.length) {
+			filename = filename.replaceAll(
+				"%genre%",
+				fixName(track.album.genre[0], c)
+			);
+		} else {
+			filename = filename.replaceAll("%genre%", "Unknown");
+		}
+
+		filename = filename.replaceAll("%disctotal%", track.album.discTotal);
+		filename = filename.replaceAll("%label%", fixName(track.album.label, c));
+		filename = filename.replaceAll("%upc%", track.album.barcode);
+		filename = filename.replaceAll("%album_id%", track.album.id);
+	}
+
+	filename = filename.replaceAll("%discnumber%", String(track.discNumber));
+	filename = filename.replaceAll("%year%", String(track.date.year));
 	filename = filename.replaceAll("%date%", track.dateString);
-	filename = filename.replaceAll("%bpm%", track.bpm);
-	filename = filename.replaceAll("%label%", fixName(track.album.label, c));
+	filename = filename.replaceAll("%bpm%", String(track.bpm));
 	filename = filename.replaceAll("%isrc%", track.ISRC);
-	filename = filename.replaceAll("%upc%", track.album.barcode);
-	if (track.explicit)
+	if (track.explicit) {
 		filename = filename.replaceAll("%explicit%", "(Explicit)");
-	else
+	} else {
 		filename = filename
 			.replaceAll(" %explicit%", "")
 			.replaceAll("%explicit%", "");
+	}
 
 	filename = filename.replaceAll("%track_id%", track.id);
-	filename = filename.replaceAll("%album_id%", track.album.id);
-	filename = filename.replaceAll("%artist_id%", track.mainArtist.id);
+	filename = filename.replaceAll("%artist_id%", String(track.mainArtist.id));
 	if (track.playlist) {
 		filename = filename.replaceAll("%playlist_id%", track.playlist.playlistID);
 		filename = filename.replaceAll(
@@ -227,16 +273,20 @@ export function generateTrackName(filename, track, settings) {
 		);
 	} else {
 		filename = filename.replaceAll("%playlist_id%", "");
-		filename = filename.replaceAll(
-			"%position%",
-			pad(track.trackNumber, track.album.trackTotal, settings)
-		);
+		if (track.album) {
+			filename = filename.replaceAll(
+				"%position%",
+				pad(track.trackNumber, track.album.trackTotal, settings)
+			);
+		}
 	}
+
 	filename = filename.replaceAll("\\", "/");
 	return antiDot(fixLongName(filename));
 }
 
 export function generateAlbumName(foldername, album, settings, playlist) {
+	console.log("Create album");
 	const c = settings.illegalCharacterReplacer;
 	if (playlist && settings.tags.savePlaylistAsCompilation) {
 		foldername = foldername.replaceAll(
@@ -320,14 +370,20 @@ export function generateArtistName(foldername, artist, settings, rootArtist) {
 	return antiDot(fixLongName(foldername));
 }
 
-export function generatePlaylistName(foldername, playlist, settings) {
-	const c = settings.illegalCharacterReplacer;
+export function generatePlaylistName(
+	{ playlist }: Track,
+	{ illegalCharacterReplacer, playlistNameTemplate, dateFormat }: Settings
+) {
+	const c = illegalCharacterReplacer;
 	const today = new Date();
 	const today_dz = new CustomDate(
 		String(today.getDate()).padStart(2, "0"),
 		String(today.getMonth() + 1).padStart(2, "0"),
 		String(today.getFullYear())
 	);
+
+	let foldername = playlistNameTemplate;
+
 	foldername = foldername.replaceAll("%playlist%", fixName(playlist.title, c));
 	foldername = foldername.replaceAll(
 		"%playlist_id%",
@@ -344,11 +400,9 @@ export function generatePlaylistName(foldername, playlist, settings) {
 		"%explicit%",
 		playlist.explicit ? "(Explicit)" : ""
 	);
-	foldername = foldername.replaceAll(
-		"%today%",
-		today_dz.format(settings.dateFormat)
-	);
+	foldername = foldername.replaceAll("%today%", today_dz.format(dateFormat));
 	foldername = foldername.replaceAll("\\", "/");
+
 	return antiDot(fixLongName(foldername));
 }
 

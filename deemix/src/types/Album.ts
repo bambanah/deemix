@@ -1,3 +1,4 @@
+import { APIAlbum } from "deezer-js/src/api";
 import { removeDuplicateArtists, removeFeatures } from "../utils";
 import { Artist } from "./Artist";
 import { CustomDate } from "./CustomDate";
@@ -59,7 +60,7 @@ export class Album {
 		this.isPlaylist = false;
 	}
 
-	parseAlbum(albumAPI) {
+	parseAlbum(albumAPI: APIAlbum) {
 		this.title = albumAPI.title;
 
 		// Getting artist image ID
@@ -85,7 +86,7 @@ export class Album {
 		}
 
 		albumAPI.contributors.forEach((artist) => {
-			const isVariousArtists = String(artist.id) === VARIOUS_ARTISTS;
+			const isVariousArtists = artist.id === VARIOUS_ARTISTS;
 			const isMainArtist = artist.role === "Main";
 
 			if (isVariousArtists) {
