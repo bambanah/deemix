@@ -7,10 +7,7 @@ import * as deemix from "deemix";
 
 const { combine, timestamp, errors, colorize, printf } = format;
 
-const logFolder: string = joinPath(
-	deemix.utils.localpaths.getConfigFolder(),
-	"logs"
-);
+const logFolder: string = joinPath(deemix.utils.getConfigFolder(), "logs");
 
 const logFilename = joinPath(
 	logFolder,

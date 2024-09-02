@@ -1,20 +1,20 @@
-const { sep } = require("path");
-const { homedir } = require("os");
-const fs = require("fs");
-const { canWrite } = require("./index.js");
+import { canWrite } from "../utils";
+import fs from "fs";
+import { homedir } from "os";
+import { sep } from "path";
 
 const homedata = homedir();
 let userdata = "";
 let musicdata = "";
 
-function checkPath(path) {
+function checkPath(path: string) {
 	if (path === "") return "";
 	if (!fs.existsSync(path)) return "";
 	if (!canWrite(path)) return "";
 	return path;
 }
 
-function getConfigFolder() {
+export function getConfigFolder() {
 	if (userdata !== "") return userdata;
 	if (process.env.XDG_CONFIG_HOME && userdata === "") {
 		userdata = `${process.env.XDG_CONFIG_HOME}${sep}`;
@@ -40,7 +40,7 @@ function getConfigFolder() {
 	return userdata;
 }
 
-function getMusicFolder() {
+export function getMusicFolder() {
 	if (musicdata !== "") return musicdata;
 	if (process.env.XDG_MUSIC_DIR && musicdata === "") {
 		musicdata = `${process.env.XDG_MUSIC_DIR}${sep}`;
@@ -93,8 +93,3 @@ function getMusicFolder() {
 	if (process.env.DEEMIX_MUSIC_DIR) musicdata = process.env.DEEMIX_MUSIC_DIR;
 	return musicdata;
 }
-
-module.exports = {
-	getConfigFolder,
-	getMusicFolder,
-};

@@ -1,8 +1,10 @@
-class Plugin {
+export default class BasePlugin {
 	/* constructor () {} */
-	async setup() {}
+	setup() {
+		return this;
+	}
 
-	async parseLink(link) {
+	async parseLink(link: string) {
 		return [link, undefined, undefined];
 	}
 
@@ -11,5 +13,3 @@ class Plugin {
 		return null;
 	}
 }
-
-module.exports = Plugin;

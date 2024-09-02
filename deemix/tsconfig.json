@@ -4,6 +4,7 @@
 
 		"target": "es2016",
 		"module": "commonjs",
+		"lib": ["es2021"],
 
 		"allowJs": true,
 		// "checkJs": true,
@@ -14,7 +15,11 @@
 		"forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
 
 		"strict": false /* Enable all strict type-checking options. */,
-		"noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
-		"skipLibCheck": true /* Skip type checking all .d.ts files. */
+		"noImplicitAny": false /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
+		"skipLibCheck": true /* Skip type checking all .d.ts files. */,
+
+		"paths": {
+			"@/*": ["./src/*"]
+		}
 	}
 }

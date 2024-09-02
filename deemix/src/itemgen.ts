@@ -1,14 +1,30 @@
-const { Single, Collection } = require("./types/DownloadObjects.js");
-const {
+import { Single, Collection } from "./types/DownloadObjects";
+import {
 	GenerationError,
 	ISRCnotOnDeezer,
 	InvalidID,
 	NotYourPrivatePlaylist,
-} = require("./errors.js");
+} from "./errors";
 const { map_user_playlist, map_track, map_album } = require("deezer-js").utils;
-const { each } = require("async");
+import { each } from "async";
+import { Deezer } from "deezer-js";
+import { Album } from "./types/Album";
 
-async function generateTrackItem(dz, id, bitrate, trackAPI, albumAPI) {
+export async function generateTrackItem(
+	dz: Deezer,
+	id: string,
+	bitrate: number,
+	trackAPI?: {
+		id: any;
+		title: any;
+		album: { cover_small: string };
+		md5_image: any;
+		track_token: any;
+		artist: { name: any };
+		explicit_lyrics: any;
+	},
+	albumAPI?: any
+) {
 	// Get essential track info
 	if (!trackAPI) {
 		if (String(id).startsWith("isrc") || parseInt(id) > 0) {
@@ -33,7 +49,7 @@ async function generateTrackItem(dz, id, bitrate, trackAPI, albumAPI) {
 	if (!/^-?\d+$/.test(id))
 		throw new InvalidID(`https://deezer.com/track/${id}`);
 
-	let cover;
+	let cover: string;
 	if (trackAPI.album.cover_small) {
 		cover =
 			trackAPI.album.cover_small.slice(0, -24) + "/75x75-000000-80-0-0.jpg";
@@ -58,13 +74,28 @@ async function generateTrackItem(dz, id, bitrate, trackAPI, albumAPI) {
 	});
 }
 
-async function generateAlbumItem(dz, id, bitrate, rootArtist) {
+export async function generateAlbumItem(
+	dz: Deezer,
+	id: string | any[],
+	bitrate: number,
+	rootArtist?: { id: any; name: any; picture_small: any }
+) {
 	// Get essential album info
-	let albumAPI;
+	let albumAPI: {
+		id: any;
+		root_artist: any;
+		nb_tracks: number;
+		tracks: { data: string | any[] };
+		cover_small: string;
+		md5_image: any;
+		title: any;
+		artist: { name: any };
+		explicit_lyrics: any;
+	};
 	if (String(id).startsWith("upc")) {
-		const upcs = [id.slice(4)];
-		upcs.push(parseInt(upcs[0])); // Try UPC without leading zeros as well
-		let lastError;
+		const upcs = [id.slice(4).toString()];
+		upcs.push(parseInt(upcs[0], 10).toString()); // Try UPC without leading zeros as well
+		let lastError: { message: string };
 		await each(upcs, async (upc) => {
 			try {
 				albumAPI = await dz.api.get_album(`upc:${upc}`);
@@ -100,7 +131,8 @@ async function generateAlbumItem(dz, id, bitrate, rootArtist) {
 			throw new GenerationError(`https://deezer.com/album/${id}`, e.message);
 		}
 	}
-	if (!/^\d+$/.test(id)) throw new InvalidID(`https://deezer.com/album/${id}`);
+	if (!/^\d+$/.test(String(id)))
+		throw new InvalidID(`https://deezer.com/album/${id}`);
 
 	// Get extra info about album
 	// This saves extra api calls when downloading
@@ -128,7 +160,7 @@ async function generateAlbumItem(dz, id, bitrate, rootArtist) {
 
 	const tracksArray = await dz.gw.get_album_tracks(id);
 
-	let cover;
+	let cover: string;
 	if (albumAPI.cover_small) {
 		cover = albumAPI.cover_small.slice(0, -24) + "/75x75-000000-80-0-0.jpg";
 	} else {
@@ -138,12 +170,14 @@ async function generateAlbumItem(dz, id, bitrate, rootArtist) {
 	const totalSize = tracksArray.length;
 	albumAPI.nb_tracks = totalSize;
 	const collection = [];
-	tracksArray.forEach((trackAPI, pos) => {
-		trackAPI = map_track(trackAPI);
-		delete trackAPI.track_token;
-		trackAPI.position = pos + 1;
-		collection.push(trackAPI);
-	});
+	tracksArray.forEach(
+		(trackAPI: { track_token: any; position: any }, pos: number) => {
+			trackAPI = map_track(trackAPI);
+			delete trackAPI.track_token;
+			trackAPI.position = pos + 1;
+			collection.push(trackAPI);
+		}
+	);
 
 	return new Collection({
 		type: "album",
@@ -161,12 +195,36 @@ async function generateAlbumItem(dz, id, bitrate, rootArtist) {
 	});
 }
 
-async function generatePlaylistItem(
-	dz,
-	id,
-	bitrate,
-	playlistAPI,
-	playlistTracksAPI
+export async function generatePlaylistItem(
+	dz: Deezer,
+	id: string,
+	bitrate: number,
+	playlistAPI?: {
+		id?: string;
+		title: any;
+		description?: string;
+		duration?: number;
+		public: any;
+		is_loved_track?: boolean;
+		collaborative?: boolean;
+		nb_tracks: any;
+		fans?: any;
+		link?: string;
+		share?: any;
+		picture?: any;
+		picture_small: any;
+		picture_medium?: any;
+		picture_big?: any;
+		picture_xl?: any;
+		checksum?: any;
+		tracklist?: string;
+		creation_date?: string;
+		creator: any;
+		type?: string;
+		various_artist?: any;
+		explicit?: any;
+	},
+	playlistTracksAPI?: any[]
 ) {
 	if (!playlistAPI) {
 		if (!/^\d+$/.test(id))
@@ -205,15 +263,20 @@ async function generatePlaylistItem(
 	const totalSize = playlistTracksAPI.length;
 	playlistAPI.nb_tracks = totalSize;
 	const collection = [];
-	playlistTracksAPI.forEach((trackAPI, pos) => {
-		trackAPI = map_track(trackAPI);
-		if (trackAPI.explicit_lyrics) {
-			playlistAPI.explicit = true;
+	playlistTracksAPI.forEach(
+		(
+			trackAPI: { explicit_lyrics: any; track_token: any; position: any },
+			pos: number
+		) => {
+			trackAPI = map_track(trackAPI);
+			if (trackAPI.explicit_lyrics) {
+				playlistAPI.explicit = true;
+			}
+			delete trackAPI.track_token;
+			trackAPI.position = pos + 1;
+			collection.push(trackAPI);
 		}
-		delete trackAPI.track_token;
-		trackAPI.position = pos + 1;
-		collection.push(trackAPI);
-	});
+	);
 
 	if (!playlistAPI.explicit) playlistAPI.explicit = false;
 
@@ -233,14 +296,25 @@ async function generatePlaylistItem(
 	});
 }
 
-async function generateArtistItem(dz, id, bitrate, listener, tab = "all") {
+export async function generateArtistItem(
+	dz: Deezer,
+	id: string,
+	bitrate: number,
+	listener: {
+		send: (
+			arg0: string,
+			arg1: { id: any; name: any; picture_small: any }
+		) => void;
+	},
+	tab = "all"
+) {
 	let path = "";
 	if (tab !== "all") path = "/" + tab;
 
 	if (!/^\d+$/.test(id))
 		throw new InvalidID(`https://deezer.com/artist/${id}${path}`);
 	// Get essential artist info
-	let artistAPI;
+	let artistAPI: { id: any; name: any; picture_small: any };
 	try {
 		artistAPI = await dz.api.get_artist(id);
 	} catch (e) {
@@ -280,7 +354,7 @@ async function generateArtistItem(dz, id, bitrate, listener, tab = "all") {
 		});
 	} else {
 		const tabReleases = artistDiscographyAPI[tab] || [];
-		await each(tabReleases, async (album) => {
+		await each(tabReleases, async (album: Album) => {
 			try {
 				const albumData = await generateAlbumItem(
 					dz,
@@ -301,11 +375,24 @@ async function generateArtistItem(dz, id, bitrate, listener, tab = "all") {
 	return albumList;
 }
 
-async function generateArtistTopItem(dz, id, bitrate) {
+export async function generateArtistTopItem(
+	dz: Deezer,
+	id: string,
+	bitrate: number
+) {
 	if (!/^\d+$/.test(id))
 		throw new InvalidID(`https://deezer.com/artist/${id}/top_track`);
 	// Get essential artist info
-	let artistAPI;
+	let artistAPI: {
+		id: string;
+		name: string;
+		nb_fan: any;
+		picture: any;
+		picture_small: any;
+		picture_medium: any;
+		picture_big: any;
+		picture_xl: any;
+	};
 	try {
 		artistAPI = await dz.api.get_artist(id);
 	} catch (e) {
@@ -355,11 +442,3 @@ async function generateArtistTopItem(dz, id, bitrate) {
 		artistTopTracksAPI_gw
 	);
 }
-
-module.exports = {
-	generateTrackItem,
-	generateAlbumItem,
-	generatePlaylistItem,
-	generateArtistItem,
-	generateArtistTopItem,
-};

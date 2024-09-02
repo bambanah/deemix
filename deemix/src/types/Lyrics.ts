@@ -1,6 +1,11 @@
-const { decode } = require("html-entities");
+import { decode } from "html-entities";
 
-class Lyrics {
+export class Lyrics {
+	id: string;
+	sync: string;
+	unsync: string;
+	syncID3: any[];
+
 	constructor(lyr_id = "0") {
 		this.id = lyr_id;
 		this.sync = "";
@@ -30,7 +35,3 @@ class Lyrics {
 		}
 	}
 }
-
-module.exports = {
-	Lyrics,
-};

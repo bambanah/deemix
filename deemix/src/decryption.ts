@@ -1,17 +1,17 @@
-const got = require("got");
-const fs = require("fs");
-const {
+import got from "got";
+import fs from "fs";
+import {
 	_md5,
 	_ecbCrypt,
 	_ecbDecrypt,
 	generateBlowfishKey,
 	decryptChunk,
-} = require("./utils/crypto.js");
-const { DownloadCanceled, DownloadEmpty } = require("./errors.js");
+} from "./utils/crypto";
+import { DownloadCanceled, DownloadEmpty } from "./errors";
 
-const { USER_AGENT_HEADER, pipeline } = require("./utils/index.js");
+import { USER_AGENT_HEADER, pipeline } from "./utils/index";
 
-function generateStreamPath(sngID, md5, mediaVersion, format) {
+export function generateStreamPath(sngID, md5, mediaVersion, format) {
 	let urlPart = md5 + "¤" + format + "¤" + sngID + "¤" + mediaVersion;
 	const md5val = _md5(urlPart);
 	let step2 = md5val + "¤" + urlPart + "¤";
@@ -20,28 +20,28 @@ function generateStreamPath(sngID, md5, mediaVersion, format) {
 	return urlPart;
 }
 
-function reverseStreamPath(urlPart) {
+export function reverseStreamPath(urlPart) {
 	const step2 = _ecbDecrypt("jo6aey6haid2Teih", urlPart);
 	const [, md5, format, sngID, mediaVersion] = step2.split("¤");
 	return [sngID, md5, mediaVersion, format];
 }
 
-function generateCryptedStreamURL(sngID, md5, mediaVersion, format) {
+export function generateCryptedStreamURL(sngID, md5, mediaVersion, format) {
 	const urlPart = generateStreamPath(sngID, md5, mediaVersion, format);
 	return "https://e-cdns-proxy-" + md5[0] + ".dzcdn.net/mobile/1/" + urlPart;
 }
 
-function generateStreamURL(sngID, md5, mediaVersion, format) {
+export function generateStreamURL(sngID, md5, mediaVersion, format) {
 	const urlPart = generateStreamPath(sngID, md5, mediaVersion, format);
 	return "https://cdns-proxy-" + md5[0] + ".dzcdn.net/api/1/" + urlPart;
 }
 
-function reverseStreamURL(url) {
+export function reverseStreamURL(url) {
 	const urlPart = url.slice(url.find("/1/") + 3);
 	return reverseStreamPath(urlPart);
 }
 
-async function streamTrack(writepath, track, downloadObject, listener) {
+export async function streamTrack(writepath, track, downloadObject, listener) {
 	if (downloadObject && downloadObject.isCanceled) throw new DownloadCanceled();
 	const headers = { "User-Agent": USER_AGENT_HEADER };
 	let chunkLength = 0;
@@ -214,12 +214,3 @@ async function streamTrack(writepath, track, downloadObject, listener) {
 		}
 	}
 }
-
-module.exports = {
-	generateStreamPath,
-	generateStreamURL,
-	generateCryptedStreamURL,
-	reverseStreamPath,
-	reverseStreamURL,
-	streamTrack,
-};

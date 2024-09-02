@@ -1,23 +1,73 @@
-const { map_track, map_album } = require("deezer-js").utils;
-const { Artist } = require("./Artist.js");
-const { Album } = require("./Album.js");
-const { Playlist } = require("./Playlist.js");
-const { Picture } = require("./Picture.js");
-const { Lyrics } = require("./Lyrics.js");
-const { Date: dzDate } = require("./Date.js");
-const { VARIOUS_ARTISTS } = require("./index.js");
-const { changeCase } = require("../utils/index.js");
-const { FeaturesOption } = require("../settings.js");
-const { NoDataToParse, AlbumDoesntExists } = require("../errors.js");
-
-const {
+import { Deezer, TrackFormats, utils } from "deezer-js";
+import { AlbumDoesntExists, NoDataToParse } from "../errors";
+import { FeaturesOption } from "../settings";
+import {
+	andCommaConcat,
+	changeCase,
 	generateReplayGainString,
 	removeDuplicateArtists,
 	removeFeatures,
-	andCommaConcat,
-} = require("../utils/index.js");
+} from "../utils/index";
+import { Album } from "./Album";
+import { Artist } from "./Artist";
+import { CustomDate } from "./CustomDate";
+import { VARIOUS_ARTISTS } from "./index";
+import { Lyrics } from "./Lyrics";
+import { Picture } from "./Picture";
+import { Playlist } from "./Playlist";
+const { map_track, map_album } = utils;
+
+export const formatsName = {
+	[TrackFormats.FLAC]: "FLAC",
+	[TrackFormats.LOCAL]: "MP3_MISC",
+	[TrackFormats.MP3_320]: "MP3_320",
+	[TrackFormats.MP3_128]: "MP3_128",
+	[TrackFormats.DEFAULT]: "MP3_MISC",
+	[TrackFormats.MP4_RA3]: "MP4_RA3",
+	[TrackFormats.MP4_RA2]: "MP4_RA2",
+	[TrackFormats.MP4_RA1]: "MP4_RA1",
+} as const;
 
 class Track {
+	id: string;
+	title: string;
+	MD5: string;
+	mediaVersion: string;
+	trackToken: string;
+	trackTokenExpiration: number;
+	duration: number;
+	fallbackID: string;
+	albumsFallback: any[];
+	filesizes: Record<string, any>;
+	local: boolean;
+	mainArtist: Artist | null;
+	artist: { Main: any[] };
+	artists: any[];
+	album: Album | null;
+	trackNumber: string;
+	discNumber: string;
+	date: CustomDate;
+	lyrics: Lyrics | null;
+	bpm: number;
+	contributors: Record<string, any>;
+	copyright: string;
+	explicit: boolean;
+	ISRC: string;
+	replayGain: string;
+	playlist: null;
+	position: null;
+	searched: boolean;
+	bitrate: keyof typeof formatsName;
+	dateString: string;
+	artistsString: string;
+	mainArtistsString: string;
+	featArtistsString: string;
+	fullArtistsString: string;
+	urls: Record<(typeof formatsName)[keyof typeof formatsName], string>;
+	downloadURL: string;
+	rank: any;
+	artistString: any;
+
 	constructor() {
 		this.id = "0";
 		this.title = "";
@@ -36,7 +86,7 @@ class Track {
 		this.album = null;
 		this.trackNumber = "0";
 		this.discNumber = "0";
-		this.date = new dzDate();
+		this.date = new CustomDate();
 		this.lyrics = null;
 		this.bpm = 0;
 		this.contributors = {};
@@ -70,7 +120,7 @@ class Track {
 		this.urls = {};
 	}
 
-	async parseData(dz, id, trackAPI, albumAPI, playlistAPI) {
+	async parseData(dz: Deezer, id, trackAPI, albumAPI, playlistAPI) {
 		if (id) {
 			let trackAPI_new = await dz.gw.get_track_with_fallback(id);
 			trackAPI_new = map_track(trackAPI_new);
@@ -198,7 +248,7 @@ class Track {
 		this.album.mainArtist = this.mainArtist;
 	}
 
-	parseTrack(trackAPI) {
+	parseTrack(trackAPI: any) {
 		this.title = trackAPI.title;
 
 		this.discNumber = trackAPI.disk_number;
@@ -228,7 +278,7 @@ class Track {
 			this.date.fixDayMonth();
 		}
 
-		trackAPI.contributors.forEach((artist) => {
+		trackAPI.contributors.forEach((artist: any) => {
 			const isVariousArtists = String(artist.id) === VARIOUS_ARTISTS;
 			const isMainArtist = artist.role === "Main";
 
@@ -250,7 +300,7 @@ class Track {
 		});
 
 		if (trackAPI.alternative_albums) {
-			trackAPI.alternative_albums.data.forEach((album) => {
+			trackAPI.alternative_albums.data.forEach((album: any) => {
 				if (
 					album.RIGHTS.STREAM_ADS_AVAILABLE ||
 					album.RIGHTS.STREAM_SUB_AVAILABLE
@@ -404,6 +454,4 @@ class Track {
 	}
 }
 
-module.exports = {
-	Track,
-};
+export default Track;

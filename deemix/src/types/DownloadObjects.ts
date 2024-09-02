@@ -1,4 +1,25 @@
-class IDownloadObject {
+import BasePlugin from "@/plugins/base";
+
+export class IDownloadObject {
+	type: any;
+	id: any;
+	bitrate: any;
+	title: any;
+	artist: any;
+	cover: any;
+	explicit: any;
+	size: any;
+	downloaded: any;
+	failed: any;
+	progress: any;
+	errors: any;
+	files: any;
+	extrasPath: any;
+	progressNext: number;
+	uuid: string;
+	isCanceled: boolean;
+	__type__: "Single" | "Collection" | "Convertable";
+
 	constructor(obj) {
 		this.type = obj.type;
 		this.id = obj.id;
@@ -39,16 +60,6 @@ class IDownloadObject {
 			extrasPath: this.extrasPath,
 			__type__: this.__type__,
 		};
-	}
-
-	getResettedDict() {
-		const item = this.toDict();
-		item.downloaded = 0;
-		item.failed = 0;
-		item.progress = 0;
-		item.errors = [];
-		item.files = [];
-		return item;
 	}
 
 	getSlimmedDict() {
@@ -97,7 +108,8 @@ class IDownloadObject {
 	}
 }
 
-class Single extends IDownloadObject {
+export class Single extends IDownloadObject {
+	single: any;
 	constructor(obj) {
 		super(obj);
 		this.size = 1;
@@ -107,8 +119,8 @@ class Single extends IDownloadObject {
 
 	toDict() {
 		const item = super.toDict();
-		item.single = this.single;
-		return item;
+
+		return { ...item, single: this.single };
 	}
 
 	completeTrackProgress(listener) {
@@ -122,7 +134,8 @@ class Single extends IDownloadObject {
 	}
 }
 
-class Collection extends IDownloadObject {
+export class Collection extends IDownloadObject {
+	collection: any;
 	constructor(obj) {
 		super(obj);
 		this.collection = obj.collection;
@@ -131,8 +144,8 @@ class Collection extends IDownloadObject {
 
 	toDict() {
 		const item = super.toDict();
-		item.collection = this.collection;
-		return item;
+
+		return { ...item, collection: this.collection };
 	}
 
 	completeTrackProgress(listener) {
@@ -146,7 +159,9 @@ class Collection extends IDownloadObject {
 	}
 }
 
-class Convertable extends Collection {
+export class Convertable extends Collection {
+	plugin: BasePlugin;
+	conversion_data: any;
 	constructor(obj) {
 		super(obj);
 		this.plugin = obj.plugin;
@@ -156,15 +171,11 @@ class Convertable extends Collection {
 
 	toDict() {
 		const item = super.toDict();
-		item.plugin = this.plugin;
-		item.conversion_data = this.conversion_data;
-		return item;
+
+		return {
+			...item,
+			plugin: this.plugin,
+			conversion_data: this.conversion_data,
+		};
 	}
 }
-
-module.exports = {
-	IDownloadObject,
-	Single,
-	Collection,
-	Convertable,
-};

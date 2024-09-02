@@ -5,12 +5,13 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 
 import { WEBUI_DIR } from "./helpers/paths";
+import { Deezer } from "deezer-js";
 
 const MemoryStore = require("memorystore")(session);
 
 declare module "express-session" {
 	export interface SessionData {
-		dz: any;
+		dz: Deezer;
 	}
 }
 

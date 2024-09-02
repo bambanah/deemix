@@ -1,7 +1,13 @@
-const { Picture } = require("./Picture.js");
-const { VARIOUS_ARTISTS } = require("./index.js");
+import { Picture } from "./Picture";
+import { VARIOUS_ARTISTS } from "./index";
 
-class Artist {
+export class Artist {
+	id: string;
+	name: string;
+	pic: Picture;
+	role: string;
+	save: boolean;
+
 	constructor(art_id = "0", name = "", role = "", pic_md5 = "") {
 		this.id = String(art_id);
 		this.name = name;
@@ -14,7 +20,3 @@ class Artist {
 		return this.id === VARIOUS_ARTISTS;
 	}
 }
-
-module.exports = {
-	Artist,
-};

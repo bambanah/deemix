@@ -1,4 +1,8 @@
-class Date {
+export class CustomDate {
+	day: string;
+	month: string;
+	year: string;
+
 	constructor(day = "00", month = "00", year = "XXXX") {
 		this.day = day;
 		this.month = month;
@@ -21,7 +25,3 @@ class Date {
 		return template;
 	}
 }
-
-module.exports = {
-	Date,
-};

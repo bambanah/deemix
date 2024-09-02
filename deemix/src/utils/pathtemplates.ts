@@ -1,5 +1,5 @@
-const { TrackFormats } = require("deezer-js");
-const { Date: dzDate } = require("../types/Date.js");
+import { TrackFormats } from "deezer-js";
+import { CustomDate } from "../types/CustomDate";
 
 const bitrateLabels = {
 	[TrackFormats.MP4_RA3]: "360 HQ",
@@ -12,13 +12,13 @@ const bitrateLabels = {
 	[TrackFormats.LOCAL]: "MP3",
 };
 
-function fixName(txt, char = "_") {
+export function fixName(txt, char = "_") {
 	txt = txt + "";
 	txt = txt.replace(/[\0/\\:*?"<>|]/g, char);
 	return txt.normalize("NFC");
 }
 
-function fixLongName(name) {
+export function fixLongName(name) {
 	if (name.includes("/")) {
 		const sepName = name.split("/");
 		name = "";
@@ -33,7 +33,7 @@ function fixLongName(name) {
 	return name;
 }
 
-function antiDot(str) {
+export function antiDot(str) {
 	while (
 		str[str.length - 1] === "." ||
 		str[str.length - 1] === " " ||
@@ -47,7 +47,7 @@ function antiDot(str) {
 	return str;
 }
 
-function pad(num, max_val, settings) {
+export function pad(num, max_val, settings) {
 	let paddingSize;
 	if (parseInt(settings.paddingSize) === 0) {
 		paddingSize = (max_val + "").length;
@@ -60,7 +60,7 @@ function pad(num, max_val, settings) {
 	return num + "";
 }
 
-function generatePath(track, downloadObject, settings) {
+export function generatePath(track, downloadObject, settings) {
 	let filenameTemplate = "%artist% - %title%";
 	let singleTrack = false;
 	if (downloadObject.type === "track") {
@@ -159,7 +159,7 @@ function generatePath(track, downloadObject, settings) {
 	};
 }
 
-function generateTrackName(filename, track, settings) {
+export function generateTrackName(filename, track, settings) {
 	const c = settings.illegalCharacterReplacer;
 	filename = filename.replaceAll("%title%", fixName(track.title, c));
 	filename = filename.replaceAll("%artist%", fixName(track.mainArtist.name, c));
@@ -236,7 +236,7 @@ function generateTrackName(filename, track, settings) {
 	return antiDot(fixLongName(filename));
 }
 
-function generateAlbumName(foldername, album, settings, playlist) {
+export function generateAlbumName(foldername, album, settings, playlist) {
 	const c = settings.illegalCharacterReplacer;
 	if (playlist && settings.tags.savePlaylistAsCompilation) {
 		foldername = foldername.replaceAll(
@@ -299,7 +299,7 @@ function generateAlbumName(foldername, album, settings, playlist) {
 	return antiDot(fixLongName(foldername));
 }
 
-function generateArtistName(foldername, artist, settings, rootArtist) {
+export function generateArtistName(foldername, artist, settings, rootArtist) {
 	const c = settings.illegalCharacterReplacer;
 	foldername = foldername.replaceAll("%artist%", fixName(artist.name, c));
 	foldername = foldername.replaceAll("%artist_id%", artist.id);
@@ -320,10 +320,10 @@ function generateArtistName(foldername, artist, settings, rootArtist) {
 	return antiDot(fixLongName(foldername));
 }
 
-function generatePlaylistName(foldername, playlist, settings) {
+export function generatePlaylistName(foldername, playlist, settings) {
 	const c = settings.illegalCharacterReplacer;
 	const today = new Date();
-	const today_dz = new dzDate(
+	const today_dz = new CustomDate(
 		String(today.getDate()).padStart(2, "0"),
 		String(today.getMonth() + 1).padStart(2, "0"),
 		String(today.getFullYear())
@@ -352,7 +352,7 @@ function generatePlaylistName(foldername, playlist, settings) {
 	return antiDot(fixLongName(foldername));
 }
 
-function generateDownloadObjectName(foldername, queueItem, settings) {
+export function generateDownloadObjectName(foldername, queueItem, settings) {
 	const c = settings.illegalCharacterReplacer;
 	foldername = foldername.replaceAll("%title%", fixName(queueItem.title, c));
 	foldername = foldername.replaceAll("%artist%", fixName(queueItem.artist, c));
@@ -366,12 +366,3 @@ function generateDownloadObjectName(foldername, queueItem, settings) {
 	foldername = foldername.replaceAll("\\", "/").replace("/", c);
 	return antiDot(fixLongName(foldername));
 }
-
-module.exports = {
-	generatePath,
-	generateTrackName,
-	generateAlbumName,
-	generateArtistName,
-	generatePlaylistName,
-	generateDownloadObjectName,
-};

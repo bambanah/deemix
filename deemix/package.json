@@ -19,6 +19,7 @@
 		"tough-cookie": "^4.0.0"
 	},
 	"devDependencies": {
+		"@types/async": "^3.2.24",
 		"tsup": "^8.2.4"
 	}
 }

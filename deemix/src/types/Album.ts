@@ -1,10 +1,36 @@
-const { removeDuplicateArtists, removeFeatures } = require("../utils/index.js");
-const { Artist } = require("./Artist.js");
-const { Date } = require("./Date.js");
-const { Picture } = require("./Picture.js");
-const { VARIOUS_ARTISTS } = require("./index.js");
+import { removeDuplicateArtists, removeFeatures } from "../utils";
+import { Artist } from "./Artist";
+import { CustomDate } from "./CustomDate";
+import { Picture } from "./Picture";
+import { VARIOUS_ARTISTS } from "./index";
 
-class Album {
+export class Album {
+	id: string;
+	title: string;
+	pic: any;
+	artist: { Main: any[] };
+	artists: any[];
+	mainArtist: Artist | null;
+	date: CustomDate;
+	dateString: string;
+	trackTotal: string;
+	discTotal: string;
+	embeddedCoverPath: string;
+	embeddedCoverURL: string;
+	explicit: boolean;
+	genre: any[];
+	barcode: string;
+	label: string;
+	copyright: string;
+	recordType: string;
+	bitrate: number;
+	rootArtist: Artist | null;
+	variousArtists: Artist | null;
+	playlistId: null;
+	owner: null;
+	isPlaylist: boolean;
+	playlistID: any;
+
 	constructor(alb_id = "0", title = "", pic_md5 = "") {
 		this.id = alb_id;
 		this.title = title;
@@ -12,7 +38,7 @@ class Album {
 		this.artist = { Main: [] };
 		this.artists = [];
 		this.mainArtist = null;
-		this.date = new Date();
+		this.date = new CustomDate();
 		this.dateString = "";
 		this.trackTotal = "0";
 		this.discTotal = "0";
@@ -152,7 +178,3 @@ class Album {
 		return removeFeatures(this.title);
 	}
 }
-
-module.exports = {
-	Album,
-};

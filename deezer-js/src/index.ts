@@ -1,8 +1,8 @@
 import got from "got";
 import { CookieJar, Cookie } from "tough-cookie";
-import { API } from "./api.js";
-import { GW } from "./gw.js";
-import { DeezerError, WrongLicense, WrongGeolocation } from "./errors.js";
+import { API } from "./api";
+import { GW } from "./gw";
+import { DeezerError, WrongLicense, WrongGeolocation } from "./errors";
 
 // Number associtation for formats
 const TrackFormats = {
@@ -14,7 +14,7 @@ const TrackFormats = {
 	MP4_RA1: 13,
 	DEFAULT: 8,
 	LOCAL: 0,
-};
+} as const;
 
 interface User {
 	id?: number;
@@ -54,15 +54,22 @@ class Deezer {
 		this.gw = new GW(this.cookie_jar, this.http_headers);
 	}
 
-	async login(email, password, re_captcha_token, child = 0) {
-		if (child) child = parseInt(child);
+	async login(
+		email: string,
+		password: string,
+		reCaptchaToken: string,
+		child: string | number = 0
+	) {
+		if (child && typeof child === "string") child = parseInt(child);
+
 		// Check if user already logged in
 		let user_data = await this.gw.get_user_data();
-		if (!user_data || (user_data && Object.keys(user_data).length === 0))
+		if (!user_data || (user_data && Object.keys(user_data).length === 0)) {
 			return (this.logged_in = false);
+		}
+
 		if (user_data.USER.USER_ID === 0) return (this.logged_in = false);
-		// Get the checkFormLogin
-		const check_form_login = user_data.checkFormLogin;
+
 		const login = await got
 			.post("https://www.deezer.com/ajax/action.php", {
 				headers: this.http_headers,
@@ -74,13 +81,14 @@ class Deezer {
 					type: "login",
 					mail: email,
 					password,
-					checkFormLogin: check_form_login,
-					reCaptchaToken: re_captcha_token,
+					checkFormLogin: user_data.checkFormLogin,
+					reCaptchaToken,
 				},
 			})
 			.text();
+
 		// Check if user logged in
-		if (login.text.indexOf("success") === -1) {
+		if (login.indexOf("success") === -1) {
 			this.logged_in = false;
 			return false;
 		}
@@ -91,13 +99,13 @@ class Deezer {
 		return true;
 	}
 
-	async login_via_arl(arl, child = 0) {
-		arl = arl.trim();
-		if (child) child = parseInt(child);
+	async login_via_arl(arl: string, child: string | number = 0) {
+		if (child && typeof child === "string") child = parseInt(child);
+
 		// Create cookie
 		const cookie_obj = new Cookie({
 			key: "arl",
-			value: arl,
+			value: arl.trim(),
 			domain: ".deezer.com",
 			path: "/",
 			httpOnly: true,
@@ -244,7 +252,7 @@ class Deezer {
 
 export { TrackFormats, Deezer };
 
-export * as api from "./api.js";
-export * as gw from "./gw.js";
-export * as utils from "./utils.js";
-export * as errors from "./errors.js";
+export * as api from "./api";
+export * as gw from "./gw";
+export * as utils from "./utils";
+export * as errors from "./errors";
