@@ -183,12 +183,12 @@ class Deezer {
 		this.current_user = this.childs[child_n];
 		this.selected_account = child_n;
 		let lang = this.current_user.language
-			.toString()
+			?.toString()
 			.replace(/[^0-9A-Za-z *,-.;=]/g, "");
-		if (lang.slice(2, 1) === "-") {
+		if (lang?.slice(2, 1) === "-") {
 			lang = lang.slice(0, 5);
 		} else {
-			lang = lang.slice(0, 2);
+			lang = lang?.slice(0, 2);
 		}
 		this.http_headers["Accept-Language"] = lang;
 
@@ -215,7 +215,7 @@ class Deezer {
 			throw new WrongLicense(format);
 
 		let response;
-		const result = [];
+		const result: (DeezerError | null)[] = [];
 
 		try {
 			response = await got
@@ -237,7 +237,7 @@ class Deezer {
 					},
 				})
 				.json();
-		} catch (e) {
+		} catch {
 			return [];
 		}
 

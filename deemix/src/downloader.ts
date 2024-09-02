@@ -238,7 +238,7 @@ async function getPreferredBitrate(
 	}
 
 	const is360Format = Object.keys(formats_360).includes(preferredBitrate);
-	let formats;
+	let formats: Record<string, string>;
 	if (!shouldFallback) {
 		formats = { ...formats_360, ...formats_non_360 };
 	} else if (is360Format) {
@@ -720,7 +720,7 @@ class Downloader {
 		return returnData;
 	}
 
-	async downloadWrapper(extraData, track: Track) {
+	async downloadWrapper(extraData, track?: Track) {
 		const { trackAPI } = extraData;
 		// Temp metadata to generate logs
 		const itemData = {

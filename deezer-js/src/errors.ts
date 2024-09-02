@@ -16,9 +16,9 @@ export class WrongLicense extends DeezerError {
 }
 
 export class WrongGeolocation extends DeezerError {
-	country: string;
+	country?: string;
 
-	constructor(country: string) {
+	constructor(country?: string) {
 		super(`The track you requested can't be streamed in country ${country}`);
 		this.name = "WrongGeolocation";
 		this.country = country;

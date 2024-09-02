@@ -1,16 +1,15 @@
 {
 	"compilerOptions": {
 		/* https://aka.ms/tsconfig */
-		"target": "es2016",
+		"target": "es2021",
 		"module": "commonjs",
 		"rootDir": "./src",
-		"allowJs": true,
-		"checkJs": true,
 		"outDir": "./dist",
 		"noEmit": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"strict": false,
+		"noImplicitAny": false,
 		"skipLibCheck": true
 	}
 }
