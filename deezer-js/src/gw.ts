@@ -1,20 +1,21 @@
-const got = require("got");
-const {
+import got from "got";
+import {
 	map_artist_album,
 	map_user_track,
 	map_user_artist,
 	map_user_album,
 	map_user_playlist,
-} = require("./utils");
-const { GWAPIError } = require("./errors");
+} from "./utils";
+import { GWAPIError } from "./errors";
+import { APIOptions } from ".";
 
-const PlaylistStatus = {
+export const PlaylistStatus = {
 	PUBLIC: 0,
 	PRIVATE: 1,
 	COLLABORATIVE: 2,
 };
 
-const EMPTY_TRACK_OBJ = {
+export const EMPTY_TRACK_OBJ = {
 	SNG_ID: 0,
 	SNG_TITLE: "",
 	DURATION: 0,
@@ -27,14 +28,18 @@ const EMPTY_TRACK_OBJ = {
 	ART_NAME: "",
 };
 
-class GW {
+export class GW {
+	http_headers: any;
+	cookie_jar: any;
+	api_token: any;
+
 	constructor(cookie_jar, headers) {
 		this.http_headers = headers;
 		this.cookie_jar = cookie_jar;
 		this.api_token = null;
 	}
 
-	async api_call(method, args, params) {
+	async api_call(method: string, args?: any, params?: any) {
 		if (typeof args === undefined) args = {};
 		if (typeof params === undefined) params = {};
 		if (!this.api_token && method !== "deezer.getUserData")
@@ -108,7 +113,7 @@ class GW {
 		return this.api_call("deezer.getUserData");
 	}
 
-	get_user_profile_page(user_id, tab, options = {}) {
+	get_user_profile_page(user_id, tab, options: APIOptions = {}) {
 		const limit = options.limit || 10;
 		return this.api_call("deezer.pageProfile", {
 			USER_ID: user_id,
@@ -117,7 +122,7 @@ class GW {
 		});
 	}
 
-	get_user_favorite_ids(checksum = null, options = {}) {
+	get_user_favorite_ids(checksum = null, options: APIOptions = {}) {
 		const limit = options.limit || 10000;
 		const start = options.start || 0;
 		return this.api_call("song.getFavoriteIds", { nb: limit, start, checksum });
@@ -194,7 +199,7 @@ class GW {
 		});
 	}
 
-	async get_artist_top_tracks(art_id, options = {}) {
+	async get_artist_top_tracks(art_id, options: APIOptions = {}) {
 		const limit = options.limit || 100;
 		const tracks_array = [];
 		const body = await this.api_call("artist.getTopTrack", {
@@ -208,7 +213,7 @@ class GW {
 		return tracks_array;
 	}
 
-	get_artist_discography(art_id, options = {}) {
+	get_artist_discography(art_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 25;
 		return this.api_call("album.getDiscography", {
@@ -316,6 +321,9 @@ class GW {
 	add_song_to_favorites(sng_id) {
 		return this.gw_api_call("favorite_song.add", { SNG_ID: sng_id });
 	}
+	gw_api_call(arg0: string, arg1: {}) {
+		throw new Error("Method not implemented.");
+	}
 
 	remove_song_from_favorites(sng_id) {
 		return this.gw_api_call("favorite_song.remove", { SNG_ID: sng_id });
@@ -382,7 +390,7 @@ class GW {
 		});
 	}
 
-	search_music(query, type, options = {}) {
+	search_music(query, type, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 10;
 		return this.api_call("search.music", {
@@ -396,11 +404,11 @@ class GW {
 
 	// Extra calls
 
-	async get_artist_discography_tabs(art_id, options = {}) {
+	async get_artist_discography_tabs(art_id, options: APIOptions = {}) {
 		const limit = options.limit || 100;
 		let index = 0;
 		let releases = [];
-		const result = { all: [] };
+		const result = { all: [], featured: [], more: [] };
 		const ids = [];
 
 		// Get all releases
@@ -427,11 +435,9 @@ class GW {
 				} else {
 					if (release.ROLE_ID === 5) {
 						// Handle albums where the artist is featured
-						if (!result.featured) result.featured = [];
 						result.featured.push(obj);
 					} else if (release.ROLE_ID === 0) {
 						// Handle "more" albums
-						if (!result.more) result.more = [];
 						result.more.push(obj);
 						result.all.push(obj);
 					}
@@ -461,7 +467,7 @@ class GW {
 		return body;
 	}
 
-	async get_user_playlists(user_id, options = {}) {
+	async get_user_playlists(user_id, options: APIOptions = {}) {
 		const limit = options.limit || 25;
 		const user_profile_page = await this.get_user_profile_page(
 			user_id,
@@ -477,7 +483,7 @@ class GW {
 		return result;
 	}
 
-	async get_user_albums(user_id, options = {}) {
+	async get_user_albums(user_id, options: APIOptions = {}) {
 		const limit = options.limit || 25;
 		let data = await this.get_user_profile_page(user_id, "albums", { limit });
 		data = data.TAB.albums.data;
@@ -488,7 +494,7 @@ class GW {
 		return result;
 	}
 
-	async get_user_artists(user_id, options = {}) {
+	async get_user_artists(user_id, options: APIOptions = {}) {
 		const limit = options.limit || 25;
 		let data = await this.get_user_profile_page(user_id, "artists", { limit });
 		data = data.TAB.artists.data;
@@ -499,7 +505,7 @@ class GW {
 		return result;
 	}
 
-	async get_user_tracks(user_id, options = {}) {
+	async get_user_tracks(user_id, options: APIOptions = {}) {
 		const user_data = await this.get_user_data();
 		if (user_data.USER.USER_ID === user_id)
 			return this.get_my_favorite_tracks(options);
@@ -514,7 +520,7 @@ class GW {
 	}
 
 	// TODO: Optimise this function
-	async get_my_favorite_tracks(options = {}) {
+	async get_my_favorite_tracks(options: APIOptions = {}) {
 		const limit = options.limit || 25;
 		const ids_raw = await this.get_user_favorite_ids(null, { limit });
 		const ids = ids_raw.data.map((x) => x.SNG_ID);
@@ -532,9 +538,3 @@ class GW {
 		return result;
 	}
 }
-
-module.exports = {
-	PlaylistStatus,
-	EMPTY_TRACK_OBJ,
-	GW,
-};

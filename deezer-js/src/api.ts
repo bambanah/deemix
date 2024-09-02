@@ -1,4 +1,4 @@
-import { get } from "got";
+import got from "got";
 import {
 	APIError,
 	ItemsLimitExceededException,
@@ -10,6 +10,7 @@ import {
 	DataException,
 	IndividualAccountChangedNotAllowedException,
 } from "./errors";
+import { APIOptions } from ".";
 
 // Possible values for order parameter in search
 export const SearchOrder = {
@@ -26,27 +27,35 @@ export const SearchOrder = {
 	DURATION_DESC: "DURATION_DESC",
 };
 
+type APIArgs = Record<string | number, string | number>;
+
 export class API {
+	http_headers: any;
+	cookie_jar: any;
+	access_token: string;
+
 	constructor(cookie_jar, headers) {
 		this.http_headers = headers;
 		this.cookie_jar = cookie_jar;
 		this.access_token = null;
 	}
 
-	async api_call(method, args) {
-		if (typeof args === "undefined") args = {};
-		if (this.access_token) args.access_token = this.access_token;
+	async api_call(method: string, args: APIArgs = {}) {
+		if (this.access_token) args["access_token"] = this.access_token;
+
 		let result_json;
 		try {
-			result_json = await get("https://api.deezer.com/" + method, {
-				searchParams: args,
-				cookieJar: this.cookie_jar,
-				headers: this.http_headers,
-				https: {
-					rejectUnauthorized: false,
-				},
-				timeout: 30000,
-			}).json();
+			result_json = await got
+				.get("https://api.deezer.com/" + method, {
+					searchParams: args,
+					cookieJar: this.cookie_jar,
+					headers: this.http_headers,
+					https: {
+						rejectUnauthorized: false,
+					},
+					timeout: 30000,
+				})
+				.json();
 		} catch (e) {
 			console.debug("[ERROR] deezer.api", method, args, e.name, e.message);
 			if (
@@ -125,19 +134,19 @@ export class API {
 		return this.get_album(`upc:${upc}`);
 	}
 
-	get_album_comments(album_id, options = {}) {
+	get_album_comments(album_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 25;
 		return this.api_call(`album/${album_id}/comments`, { index, limit });
 	}
 
-	get_album_fans(album_id, options = {}) {
+	get_album_fans(album_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 100;
 		return this.api_call(`album/${album_id}/fans`, { index, limit });
 	}
 
-	get_album_tracks(album_id, options = {}) {
+	get_album_tracks(album_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || -1;
 		return this.api_call(`album/${album_id}/tracks`, { index, limit });
@@ -147,79 +156,79 @@ export class API {
 		return this.api_call(`artist/${artist_id}`);
 	}
 
-	get_artist_top(artist_id, options = {}) {
+	get_artist_top(artist_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 10;
 		return this.api_call(`artist/${artist_id}/top`, { index, limit });
 	}
 
-	get_artist_albums(artist_id, options = {}) {
+	get_artist_albums(artist_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || -1;
 		return this.api_call(`artist/${artist_id}/albums`, { index, limit });
 	}
 
-	get_artist_comments(artist_id, options = {}) {
+	get_artist_comments(artist_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 10;
 		return this.api_call(`artist/${artist_id}/comments`, { index, limit });
 	}
 
-	get_artist_fans(artist_id, options = {}) {
+	get_artist_fans(artist_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 100;
 		return this.api_call(`artist/${artist_id}/fans`, { index, limit });
 	}
 
-	get_artist_related(artist_id, options = {}) {
+	get_artist_related(artist_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 20;
 		return this.api_call(`artist/${artist_id}/related`, { index, limit });
 	}
 
-	get_artist_radio(artist_id, options = {}) {
+	get_artist_radio(artist_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 25;
 		return this.api_call(`artist/${artist_id}/radio`, { index, limit });
 	}
 
-	get_artist_playlists(artist_id, options = {}) {
+	get_artist_playlists(artist_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || -1;
 		return this.api_call(`artist/${artist_id}/playlists`, { index, limit });
 	}
 
-	get_chart(genre_id = 0, options = {}) {
+	get_chart(genre_id = 0, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 10;
 		return this.api_call(`chart/${genre_id}`, { index, limit });
 	}
 
-	get_chart_tracks(genre_id = 0, options = {}) {
+	get_chart_tracks(genre_id = 0, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 10;
 		return this.api_call(`chart/${genre_id}/tracks`, { index, limit });
 	}
 
-	get_chart_albums(genre_id = 0, options = {}) {
+	get_chart_albums(genre_id = 0, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 10;
 		return this.api_call(`chart/${genre_id}/albums`, { index, limit });
 	}
 
-	get_chart_artists(genre_id = 0, options = {}) {
+	get_chart_artists(genre_id = 0, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 10;
 		return this.api_call(`chart/${genre_id}/artists`, { index, limit });
 	}
 
-	get_chart_playlists(genre_id = 0, options = {}) {
+	get_chart_playlists(genre_id = 0, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 10;
 		return this.api_call(`chart/${genre_id}/playlists`, { index, limit });
 	}
 
-	get_chart_podcasts(genre_id = 0, options = {}) {
+	get_chart_podcasts(genre_id = 0, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 10;
 		return this.api_call(`chart/${genre_id}/podcasts`, { index, limit });
@@ -229,7 +238,7 @@ export class API {
 		return this.api_call(`comment/${comment_id}`);
 	}
 
-	get_editorials(options = {}) {
+	get_editorials(options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 10;
 		return this.api_call("editorial", { index, limit });
@@ -239,25 +248,25 @@ export class API {
 		return this.api_call(`editorial/${genre_id}`);
 	}
 
-	get_editorial_selection(genre_id = 0, options = {}) {
+	get_editorial_selection(genre_id = 0, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 10;
 		return this.api_call(`editorial/${genre_id}/selection`, { index, limit });
 	}
 
-	get_editorial_charts(genre_id = 0, options = {}) {
+	get_editorial_charts(genre_id = 0, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 10;
 		return this.api_call(`editorial/${genre_id}/charts`, { index, limit });
 	}
 
-	get_editorial_releases(genre_id = 0, options = {}) {
+	get_editorial_releases(genre_id = 0, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 10;
 		return this.api_call(`editorial/${genre_id}/releases`, { index, limit });
 	}
 
-	get_genres(options = {}) {
+	get_genres(options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 10;
 		return this.api_call("genre", { index, limit });
@@ -267,13 +276,13 @@ export class API {
 		return this.api_call(`genre/${genre_id}`);
 	}
 
-	get_genre_artists(genre_id = 0, options = {}) {
+	get_genre_artists(genre_id = 0, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 10;
 		return this.api_call(`genre/${genre_id}/artists`, { index, limit });
 	}
 
-	get_genre_radios(genre_id = 0, options = {}) {
+	get_genre_radios(genre_id = 0, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 10;
 		return this.api_call(`genre/${genre_id}/radios`, { index, limit });
@@ -291,49 +300,49 @@ export class API {
 		return this.api_call(`playlist/${playlist_id}`);
 	}
 
-	get_playlist_comments(album_id, options = {}) {
+	get_playlist_comments(album_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 10;
 		return this.api_call(`playlist/${album_id}/comments`, { index, limit });
 	}
 
-	get_playlist_fans(album_id, options = {}) {
+	get_playlist_fans(album_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 100;
 		return this.api_call(`playlist/${album_id}/fans`, { index, limit });
 	}
 
-	get_playlist_tracks(album_id, options = {}) {
+	get_playlist_tracks(album_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || -1;
 		return this.api_call(`playlist/${album_id}/tracks`, { index, limit });
 	}
 
-	get_playlist_radio(album_id, options = {}) {
+	get_playlist_radio(album_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 100;
 		return this.api_call(`playlist/${album_id}/radio`, { index, limit });
 	}
 
-	get_radios(options = {}) {
+	get_radios(options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 10;
 		return this.api_call("radio", { index, limit });
 	}
 
-	get_radios_genres(options = {}) {
+	get_radios_genres(options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 25;
 		return this.api_call("radio/genres", { index, limit });
 	}
 
-	get_radios_top(options = {}) {
+	get_radios_top(options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 50;
 		return this.api_call("radio/top", { index, limit });
 	}
 
-	get_radios_lists(options = {}) {
+	get_radios_lists(options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 25;
 		return this.api_call("radio/lists", { index, limit });
@@ -343,7 +352,7 @@ export class API {
 		return this.api_call(`radio/${radio_id}`);
 	}
 
-	get_radio_tracks(radio_id, options = {}) {
+	get_radio_tracks(radio_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 40;
 		return this.api_call(`radio/${radio_id}/tracks`, { index, limit });
@@ -362,53 +371,53 @@ export class API {
 		return query.trim();
 	}
 
-	_generate_search_args(query, options = {}) {
+	_generate_search_args(query, options: APIOptions = {}) {
 		const strict = options.strict || false;
 		const order = options.order || SearchOrder.RANKING;
 		const index = options.index || 0;
 		const limit = options.limit || 25;
-		const args = { q: query, index, limit };
+		const args: APIArgs = { q: query, index, limit };
 		if (strict) args.strict = "on";
 		if (order) args.order = order;
 		return args;
 	}
 
-	search(query, options = {}) {
+	search(query, options: APIOptions = {}) {
 		const args = this._generate_search_args(query, options);
 		return this.api_call("search", args);
 	}
 
-	advanced_search(filters, options = {}) {
+	advanced_search(filters, options: APIOptions = {}) {
 		const query = this._generate_search_advanced_query(filters);
 		return this.search(query, options);
 	}
 
-	search_album(query, options = {}) {
+	search_album(query, options: APIOptions = {}) {
 		const args = this._generate_search_args(query, options);
 		return this.api_call("search/album", args);
 	}
 
-	search_artist(query, options = {}) {
+	search_artist(query, options: APIOptions = {}) {
 		const args = this._generate_search_args(query, options);
 		return this.api_call("search/artist", args);
 	}
 
-	search_playlist(query, options = {}) {
+	search_playlist(query, options: APIOptions = {}) {
 		const args = this._generate_search_args(query, options);
 		return this.api_call("search/playlist", args);
 	}
 
-	search_radio(query, options = {}) {
+	search_radio(query, options: APIOptions = {}) {
 		const args = this._generate_search_args(query, options);
 		return this.api_call("search/radio", args);
 	}
 
-	search_track(query, options = {}) {
+	search_track(query, options: APIOptions = {}) {
 		const args = this._generate_search_args(query, options);
 		return this.api_call("search/track", args);
 	}
 
-	search_user(query, options = {}) {
+	search_user(query, options: APIOptions = {}) {
 		const args = this._generate_search_args(query, options);
 		return this.api_call("search/user", args);
 	}
@@ -425,49 +434,49 @@ export class API {
 		return this.api_call(`user/${user_id}`);
 	}
 
-	get_user_albums(user_id, options = {}) {
+	get_user_albums(user_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 25;
 		return this.api_call(`user/${user_id}/albums`, { index, limit });
 	}
 
-	get_user_artists(user_id, options = {}) {
+	get_user_artists(user_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 25;
 		return this.api_call(`user/${user_id}/artists`, { index, limit });
 	}
 
-	get_user_flow(user_id, options = {}) {
+	get_user_flow(user_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 25;
 		return this.api_call(`user/${user_id}/flow`, { index, limit });
 	}
 
-	get_user_following(user_id, options = {}) {
+	get_user_following(user_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 25;
 		return this.api_call(`user/${user_id}/followings`, { index, limit });
 	}
 
-	get_user_followers(user_id, options = {}) {
+	get_user_followers(user_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 25;
 		return this.api_call(`user/${user_id}/followers`, { index, limit });
 	}
 
-	get_user_playlists(user_id, options = {}) {
+	get_user_playlists(user_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 25;
 		return this.api_call(`user/${user_id}/playlists`, { index, limit });
 	}
 
-	get_user_radios(user_id, options = {}) {
+	get_user_radios(user_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 25;
 		return this.api_call(`user/${user_id}/radios`, { index, limit });
 	}
 
-	get_user_tracks(user_id, options = {}) {
+	get_user_tracks(user_id, options: APIOptions = {}) {
 		const index = options.index || 0;
 		const limit = options.limit || 25;
 		return this.api_call(`user/${user_id}/tracks`, { index, limit });

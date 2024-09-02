@@ -28,6 +28,14 @@ interface User {
 	loved_tracks?: number;
 }
 
+export interface APIOptions {
+	index?: number;
+	limit?: number;
+	start?: number;
+	strict?: boolean;
+	order?: string;
+}
+
 class Deezer {
 	logged_in: boolean;
 	http_headers: { "User-Agent": string };

@@ -116,7 +116,7 @@ export class DownloadFailed extends DownloadError {
 	errid: keyof typeof ErrorMessages;
 	track: Track;
 
-	constructor(errid: keyof typeof ErrorMessages, track: Track) {
+	constructor(errid: keyof typeof ErrorMessages, track?: Track) {
 		super();
 
 		this.errid = errid;
