@@ -18,7 +18,7 @@ export class CustomDate {
 		}
 	}
 
-	format(template) {
+	format(template: string) {
 		template = template.replaceAll(/D+/g, this.day);
 		template = template.replaceAll(/M+/g, this.month);
 		template = template.replaceAll(/Y+/g, this.year);

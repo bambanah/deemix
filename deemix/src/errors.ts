@@ -155,28 +155,28 @@ export class DownloadCanceled extends DeemixError {
 }
 
 export class TrackError extends DeemixError {
-	constructor(message: string) {
+	constructor(message?: string) {
 		super(message);
 		this.name = "TrackError";
 	}
 }
 
 export class MD5NotFound extends TrackError {
-	constructor(message: any) {
+	constructor(message?: string) {
 		super(message);
 		this.name = "MD5NotFound";
 	}
 }
 
 export class NoDataToParse extends TrackError {
-	constructor(message: any) {
+	constructor(message?: string) {
 		super(message);
 		this.name = "NoDataToParse";
 	}
 }
 
 export class AlbumDoesntExists extends TrackError {
-	constructor(message: any) {
+	constructor(message?: string) {
 		super(message);
 		this.name = "AlbumDoesntExists";
 	}

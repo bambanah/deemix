@@ -13,7 +13,8 @@ export class Playlist {
 	label: string;
 	explicit: any;
 	genre: string[];
-	date: any;
+	date: CustomDate;
+	dateString?: string;
 	discTotal: string;
 	playlistID: any;
 	owner: any;
