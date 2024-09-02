@@ -1,5 +1,16 @@
 # deemix
 
+## 3.9.0
+
+### Minor Changes
+
+- 54f44ca: Significantly faster when tracks already downloaded
+
+### Patch Changes
+
+- Updated dependencies [ad518d0]
+  - deezer-js@1.5.0
+
 ## 3.8.0
 
 ### Minor Changes
