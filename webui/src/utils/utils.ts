@@ -74,28 +74,15 @@ export function copyToClipboard(text: string) {
 	ghostInput.remove();
 }
 
-// On scroll event, returns currentTarget = null
-// Probably on other events too
-export function debounce(
-	func: { apply: (arg0: any, arg1: IArguments) => void },
-	wait: number | undefined,
-	immediate: any
-) {
-	let timeout: NodeJS.Timeout | null;
-	return function () {
-		const context = this;
-		const args = arguments;
-		const later = function () {
-			timeout = null;
-			if (!immediate) func.apply(context, args);
-		};
-		const callNow = immediate && !timeout;
+export function debounce<F extends (...args: Parameters<F>) => ReturnType<F>>(
+	func: F,
+	waitFor: number
+): (...args: Parameters<F>) => void {
+	let timeout: NodeJS.Timeout;
 
-		if (timeout) clearTimeout(timeout);
-
-		timeout = setTimeout(later, wait);
-
-		if (callNow) func.apply(context, args);
+	return (...args: Parameters<F>): void => {
+		clearTimeout(timeout);
+		timeout = setTimeout(() => func(...args), waitFor);
 	};
 }
 

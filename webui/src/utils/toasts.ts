@@ -121,7 +121,10 @@ export const toast = function (
 				x: localStorage.getItem("slimSidebar") === "true" ? "3rem" : "14rem",
 				y: undefined,
 			},
-		}).showToast();
+		});
+
+		toastObj.showToast();
+
 		if (id) {
 			toastsWithId[id] = toastObj;
 
