@@ -1,4 +1,4 @@
-export const VARIOUS_ARTISTS = "5080";
+export const VARIOUS_ARTISTS = 5080;
 
 export * from "./Album";
 export * from "./Artist";

@@ -1,5 +1,5 @@
 import {
-	downloader,
+	Downloader,
 	generateDownloadObject,
 	plugins,
 	settings,
@@ -351,7 +351,7 @@ export class DeemixApp {
 
 			if (typeof downloadObject === "undefined") return;
 
-			this.currentJob = new downloader.Downloader(
+			this.currentJob = new Downloader(
 				dz,
 				downloadObject,
 				this.settings,

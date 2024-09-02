@@ -3,7 +3,7 @@ import BasePlugin from "@/plugins/base";
 export class IDownloadObject {
 	type: any;
 	id: any;
-	bitrate: any;
+	bitrate: string;
 	title: any;
 	artist: any;
 	cover: any;

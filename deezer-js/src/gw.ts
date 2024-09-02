@@ -16,6 +16,40 @@ export const PlaylistStatus = {
 };
 
 export interface GWTrack {
+	ALB_ID: string;
+	TRACK_TOKEN_EXPIRE: string;
+	TOKEN: string;
+	USER_ID: any;
+	FILESIZE_MP3_MISC: any;
+	VERSION: string;
+	TRACK_NUMBER: number;
+	DISK_NUMBER: number;
+	RANK: any;
+	RANK_SNG: any;
+	PHYSICAL_RELEASE_DATE: string;
+	EXPLICIT_LYRICS(EXPLICIT_LYRICS: any): boolean;
+	EXPLICIT_TRACK_CONTENT: any;
+	MEDIA: any;
+	GAIN: number;
+	ARTISTS: any;
+	LYRICS_ID: any;
+	SNG_CONTRIBUTORS: any;
+	FALLBACK: any;
+	DIGITAL_RELEASE_DATE: any;
+	GENRE_ID: any;
+	COPYRIGHT: any;
+	LYRICS: any;
+	ALBUM_FALLBACK: any;
+	FILESIZE_AAC_64: any;
+	FILESIZE_MP3_64: any;
+	FILESIZE_MP3_128: any;
+	FILESIZE_MP3_256: any;
+	FILESIZE_MP3_320: any;
+	FILESIZE_MP4_RA1: any;
+	FILESIZE_MP4_RA2: any;
+	FILESIZE_MP4_RA3: any;
+	FILESIZE_FLAC: any;
+	TRACK_TOKEN: string;
 	SNG_ID: number;
 	SNG_TITLE: string;
 	DURATION: number;
@@ -26,6 +60,7 @@ export interface GWTrack {
 	ALB_PICTURE: string;
 	ART_ID: number;
 	ART_NAME: string;
+	ISRC: string;
 }
 
 export const EMPTY_TRACK_OBJ = {
@@ -460,7 +495,7 @@ export class GW {
 		return result;
 	}
 
-	async get_track_with_fallback(sng_id) {
+	async get_track_with_fallback(sng_id): Promise<GWTrack> {
 		let body;
 		if (parseInt(sng_id) > 0) {
 			try {
