@@ -11,6 +11,7 @@ import {
 	IndividualAccountChangedNotAllowedException,
 } from "./errors";
 import { APIOptions } from ".";
+import { CookieJar } from "tough-cookie";
 
 // Possible values for order parameter in search
 export const SearchOrder = {
@@ -30,11 +31,11 @@ export const SearchOrder = {
 type APIArgs = Record<string | number, string | number>;
 
 export class API {
-	http_headers: any;
-	cookie_jar: any;
-	access_token: string;
+	http_headers: { "User-Agent": string };
+	cookie_jar: CookieJar;
+	access_token: string | null;
 
-	constructor(cookie_jar, headers) {
+	constructor(cookie_jar: CookieJar, headers: { "User-Agent": string }) {
 		this.http_headers = headers;
 		this.cookie_jar = cookie_jar;
 		this.access_token = null;

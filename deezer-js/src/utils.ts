@@ -24,7 +24,7 @@ export function is_explicit(explicit_content_lyrics) {
 
 // maps gw-light api user/tracks to standard api
 export function map_user_track(track) {
-	const result = {
+	const result: Record<string, any> = {
 		id: track.SNG_ID,
 		title: track.SNG_TITLE,
 		link: "https://www.deezer.com/track/" + track.SNG_ID,
@@ -71,6 +71,7 @@ export function map_user_track(track) {
 		},
 		type: "track",
 	};
+
 	if (parseInt(track.SNG_ID) >= 0) {
 		let art_picture = track.ART_PICTURE;
 		if (!art_picture) {
@@ -104,6 +105,7 @@ export function map_user_track(track) {
 			art_picture +
 			"/1000x1000-000000-80-0-0.jpg";
 	}
+
 	return result;
 }
 
@@ -222,7 +224,7 @@ export function map_user_playlist(playlist, default_user_name = "") {
 
 // maps gw-light api albums to standard api
 export function map_album(album) {
-	const result = {
+	const result: Record<string, any> = {
 		id: album.ALB_ID,
 		title: album.ALB_TITLE,
 		title_short: album.ALB_TITLE,
@@ -412,7 +414,7 @@ export function map_playlist(playlist) {
 
 // maps gw-light api tracks to standard api
 export function map_track(track) {
-	let result = {
+	let result: Record<string, any> = {
 		id: track.SNG_ID,
 		readable: true, // not provided
 		title: track.SNG_TITLE,
