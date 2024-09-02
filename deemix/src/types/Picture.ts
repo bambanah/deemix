@@ -1,4 +1,7 @@
-class Picture {
+export class Picture {
+	md5: string;
+	type: string;
+
 	constructor(md5 = "", pic_type = "") {
 		this.md5 = md5;
 		this.type = pic_type;
@@ -21,8 +24,10 @@ class Picture {
 	}
 }
 
-class StaticPicture {
-	constructor(url) {
+export class StaticPicture {
+	staticURL: string;
+
+	constructor(url: string) {
 		this.staticURL = url;
 	}
 
@@ -30,8 +35,3 @@ class StaticPicture {
 		return this.staticURL;
 	}
 }
-
-module.exports = {
-	Picture,
-	StaticPicture,
-};

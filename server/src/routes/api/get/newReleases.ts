@@ -65,7 +65,7 @@ const apiHandler: ApiHandler = { path, handler };
 export default apiHandler;
 
 async function channelNewReleases(
-	dz: any,
+	dz: Deezer,
 	channelName: string
 ): Promise<any[]> {
 	const channelData = await dz.gw.get_page(channelName);

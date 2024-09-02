@@ -1,6 +1,6 @@
 import { Deezer } from "deezer-js";
 import { RequestHandler } from "express";
-import { sessionDZ } from "../../../app";
+import { DeemixApp, sessionDZ } from "../../../app";
 import { logger } from "../../../helpers/logger";
 import {
 	resetLoginCredentials,
@@ -29,9 +29,9 @@ const handler: RequestHandler<{}, {}, RawLoginArlBody, {}> = async (
 	_
 ) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer();
-	const deemix = req.app.get("deemix");
-	const dz = sessionDZ[req.session.id];
-	const isSingleUser = req.app.get("isSingleUser");
+	const deemix: DeemixApp = req.app.get("deemix");
+	const dz: Deezer = sessionDZ[req.session.id];
+	const isSingleUser: boolean = req.app.get("isSingleUser");
 
 	if (!req.body) {
 		return res.status(400).send();
@@ -41,12 +41,12 @@ const handler: RequestHandler<{}, {}, RawLoginArlBody, {}> = async (
 		return res.status(400).send();
 	}
 
-	const loginParams: (string | number)[] = [req.body.arl];
+	const loginParams: { arl: string; child?: number } = { arl: req.body.arl };
 
 	// TODO Handle the child === 0 case, don't want to rely on the login_via_arl default param (it may change in the
 	//  future)
 	if (req.body.child) {
-		loginParams.push(req.body.child);
+		loginParams.child = req.body.child;
 	}
 
 	let response;
@@ -54,7 +54,7 @@ const handler: RequestHandler<{}, {}, RawLoginArlBody, {}> = async (
 	if (process.env.NODE_ENV !== "test") {
 		if (!dz.logged_in) {
 			try {
-				response = await dz.login_via_arl(...loginParams);
+				response = await dz.login_via_arl(loginParams.arl, loginParams.child);
 			} catch (e) {
 				logger.error(e);
 				response = false;
@@ -65,7 +65,7 @@ const handler: RequestHandler<{}, {}, RawLoginArlBody, {}> = async (
 		}
 	} else {
 		const testDz = new Deezer();
-		response = await testDz.login_via_arl(...loginParams);
+		response = await testDz.login_via_arl(loginParams.arl, loginParams.child);
 	}
 	if (response === LoginStatus.FAILED) sessionDZ[req.session.id] = new Deezer();
 	if (!(await deemix.isDeezerAvailable())) response = LoginStatus.NOT_AVAILABLE;

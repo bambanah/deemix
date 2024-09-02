@@ -1,20 +1,24 @@
-const Plugin = require("./index.js");
-const { getConfigFolder } = require("../utils/localpaths.js");
-const {
-	generateTrackItem,
-	generateAlbumItem,
-	TrackNotOnDeezer,
-	AlbumNotOnDeezer,
-	InvalidID,
-} = require("../itemgen.js");
-const { Convertable, Collection } = require("../types/DownloadObjects.js");
-const { sep } = require("path");
-const fs = require("fs");
-const { SpotifyApi } = require("@spotify/web-api-ts-sdk");
-const got = require("got");
-const { queue } = require("async");
+import BasePlugin from "./base";
+import { getConfigFolder } from "../utils/localpaths";
+import { generateTrackItem, generateAlbumItem } from "../itemgen";
+import { TrackNotOnDeezer, AlbumNotOnDeezer, InvalidID } from "../errors";
+import { Convertable, Collection } from "../types/DownloadObjects";
+import { sep } from "path";
+import fs from "fs";
+import { SpotifyApi } from "@spotify/web-api-ts-sdk";
+import got from "got";
+import { queue } from "async";
+import { Deezer } from "deezer-js";
+import { Settings } from "@/settings";
+import Track from "@/types/Track";
 
-class Spotify extends Plugin {
+export default class Spotify extends BasePlugin {
+	credentials: { clientId: string; clientSecret: string };
+	settings: { fallbackSearch: boolean };
+	enabled: boolean;
+	configFolder: any;
+	sp: any;
+
 	constructor(configFolder = undefined) {
 		super();
 		this.credentials = { clientId: "", clientSecret: "" };
@@ -79,7 +83,7 @@ class Spotify extends Plugin {
 		}
 	}
 
-	async generateTrackItem(dz, link_id, bitrate) {
+	async generateTrackItem(dz: Deezer, link_id: string, bitrate: number) {
 		const cache = this.loadCache();
 
 		let cachedTrack;
@@ -117,7 +121,7 @@ class Spotify extends Plugin {
 		throw new TrackNotOnDeezer(`https://open.spotify.com/track/${link_id}`);
 	}
 
-	async generateAlbumItem(dz, link_id, bitrate) {
+	async generateAlbumItem(dz: Deezer, link_id, bitrate) {
 		const cache = this.loadCache();
 
 		let cachedAlbum;
@@ -242,7 +246,12 @@ class Spotify extends Plugin {
 		return cachedAlbum;
 	}
 
-	async convert(dz, downloadObject, settings, listener = null) {
+	async convert(
+		dz: Deezer,
+		downloadObject: Convertable,
+		settings: Settings,
+		listener: any = null
+	): Promise<Collection> {
 		const cache = this.loadCache();
 
 		let conversion = 0;
@@ -250,7 +259,7 @@ class Spotify extends Plugin {
 
 		const collection = [];
 		if (listener) listener.send("startConversion", downloadObject.uuid);
-		const q = queue(async (data) => {
+		const q = queue(async (data: { track: Track; pos: number }, callback) => {
 			const { track, pos } = data;
 			if (downloadObject.isCanceled) return;
 
@@ -310,6 +319,7 @@ class Spotify extends Plugin {
 			collection[pos] = trackAPI;
 
 			conversionNext += (1 / downloadObject.size) * 100;
+
 			if (
 				Math.round(conversionNext) !== conversion &&
 				Math.round(conversionNext) % 2 === 0
@@ -321,22 +331,25 @@ class Spotify extends Plugin {
 						conversion,
 					});
 			}
+
+			callback();
 		}, settings.queueConcurrency);
 
 		downloadObject.conversion_data.forEach((track, pos) => {
-			q.push({ track, pos });
+			q.push({ track, pos }, () => {});
 		});
 
 		await q.drain();
 
 		downloadObject.collection.tracks = collection;
 		downloadObject.size = collection.length;
-		downloadObject = new Collection(downloadObject.toDict());
+
+		const returnCollection = new Collection(downloadObject.toDict());
 		if (listener)
-			listener.send("finishConversion", downloadObject.getSlimmedDict());
+			listener.send("finishConversion", returnCollection.getSlimmedDict());
 
 		fs.writeFileSync(this.configFolder + "cache.json", JSON.stringify(cache));
-		return downloadObject;
+		return returnCollection;
 	}
 
 	_convertPlaylistStructure(spotifyPlaylist) {
@@ -514,5 +527,3 @@ class Spotify extends Plugin {
 		this.saveSettings();
 	}
 }
-
-module.exports = Spotify;

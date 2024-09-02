@@ -74,7 +74,7 @@ function parseQuery(query: RawAlbumQuery): AlbumSearchParams {
 	};
 }
 
-async function getAlbumDetails(dz: any, albumId: string): Promise<any> {
+async function getAlbumDetails(dz: Deezer, albumId: string): Promise<any> {
 	const result = await dz.gw.get_album_page(albumId);
 	const output = result.DATA;
 

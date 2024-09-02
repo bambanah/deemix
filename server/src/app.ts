@@ -1,25 +1,32 @@
+import {
+	downloader,
+	generateDownloadObject,
+	plugins,
+	settings,
+	types,
+	utils,
+} from "deemix";
+import { Deezer } from "deezer-js";
 import fs from "fs";
+import got from "got";
 import { sep } from "path";
 import { v4 as uuidv4 } from "uuid";
-import * as deemix from "deemix";
-import got from "got";
-import { Settings, Listener } from "./types";
-import { NotLoggedIn, CantStream } from "./helpers/errors";
-
-import { GUI_PACKAGE } from "./helpers/paths";
+import { CantStream, NotLoggedIn } from "./helpers/errors";
 import { logger } from "./helpers/logger";
+import { GUI_PACKAGE } from "./helpers/paths";
+import { Listener } from "./types";
+import { Spotify } from "deemix/src/plugins";
 
 // Types
-const Downloader = deemix.downloader.Downloader;
-const { Single, Collection, Convertable } = deemix.types.downloadObjects;
+const { Single, Collection, Convertable } = types.downloadObjects;
 
 // Functions
-export const getAccessToken = deemix.utils.deezer.getAccessToken;
-export const getArlFromAccessToken = deemix.utils.deezer.getArlFromAccessToken;
+export const getAccessToken = utils.getDeezerAccessTokenFromEmailPassword;
+export const getArlFromAccessToken = utils.getDeezerArlFromAccessToken;
 
 // Constants
-export const configFolder: string = deemix.utils.localpaths.getConfigFolder();
-export const defaultSettings: Settings = deemix.settings.DEFAULTS;
+export const configFolder: string = utils.getConfigFolder();
+export const defaultSettings: settings.Settings = settings.DEFAULTS;
 export const deemixVersion =
 	require("../node_modules/deemix/package.json").version;
 const currentVersionTemp = JSON.parse(
@@ -42,20 +49,20 @@ export class DeemixApp {
 	deezerAvailable: string | null;
 	latestVersion: string | null;
 
-	plugins: any;
+	plugins: Record<string, Spotify>;
 	settings: any;
 
 	listener: Listener;
 
 	constructor(listener: Listener) {
-		this.settings = deemix.settings.load(configFolder);
+		this.settings = settings.load(configFolder);
 
 		this.queueOrder = [];
 		this.queue = {};
 		this.currentJob = null;
 
 		this.plugins = {
-			spotify: new deemix.plugins.Spotify(),
+			spotify: new plugins.Spotify(),
 		};
 		this.deezerAvailable = null;
 		this.latestVersion = null;
@@ -170,7 +177,7 @@ export class DeemixApp {
 
 	saveSettings(newSettings: any, newSpotifySettings: any) {
 		newSettings.executeCommand = this.settings.executeCommand;
-		deemix.settings.save(newSettings, configFolder);
+		settings.save(newSettings, configFolder);
 		this.settings = newSettings;
 		this.plugins.spotify.saveSettings(newSpotifySettings);
 	}
@@ -187,7 +194,7 @@ export class DeemixApp {
 	}
 
 	async addToQueue(
-		dz: any,
+		dz: Deezer,
 		url: string[],
 		bitrate: number,
 		retry: boolean = false
@@ -217,7 +224,7 @@ export class DeemixApp {
 			logger.info(`Adding ${link} to queue`);
 			let downloadObj;
 			try {
-				downloadObj = await deemix.generateDownloadObject(
+				downloadObj = await generateDownloadObject(
 					dz,
 					link,
 					bitrate,
@@ -288,7 +295,7 @@ export class DeemixApp {
 		return slimmedObjects;
 	}
 
-	async startQueue(dz: any): Promise<any> {
+	async startQueue(dz: Deezer): Promise<any> {
 		do {
 			if (this.currentJob !== null || this.queueOrder.length === 0) {
 				// Should not start another download
@@ -314,7 +321,12 @@ export class DeemixApp {
 					.readFileSync(configFolder + `queue${sep}${currentUUID}.json`)
 					.toString()
 			);
-			let downloadObject: any;
+			let downloadObject:
+				| types.downloadObjects.Single
+				| types.downloadObjects.Collection
+				| types.downloadObjects.Convertable
+				| undefined = undefined;
+
 			switch (currentItem.__type__) {
 				case "Single":
 					downloadObject = new Single(currentItem);
@@ -323,10 +335,10 @@ export class DeemixApp {
 					downloadObject = new Collection(currentItem);
 					break;
 				case "Convertable":
-					downloadObject = new Convertable(currentItem);
-					downloadObject = await this.plugins[downloadObject.plugin].convert(
+					const convertable = new Convertable(currentItem);
+					downloadObject = await this.plugins[convertable.plugin].convert(
 						dz,
-						downloadObject,
+						convertable,
 						this.settings,
 						this.listener
 					);
@@ -336,7 +348,10 @@ export class DeemixApp {
 					);
 					break;
 			}
-			this.currentJob = new Downloader(
+
+			if (typeof downloadObject === "undefined") return;
+
+			this.currentJob = new downloader.Downloader(
 				dz,
 				downloadObject,
 				this.settings,
@@ -358,8 +373,10 @@ export class DeemixApp {
 					this.queue[currentUUID].status = "completed";
 				}
 
-				const savedObject = downloadObject.getSlimmedDict();
-				savedObject.status = this.queue[currentUUID].status;
+				const savedObject = {
+					...downloadObject.getSlimmedDict(),
+					status: this.queue[currentUUID].status,
+				};
 
 				// Save queue status
 				this.queue[currentUUID] = savedObject;

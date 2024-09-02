@@ -1,8 +1,26 @@
-const { Artist } = require("./Artist.js");
-const { Date } = require("./Date.js");
-const { Picture, StaticPicture } = require("./Picture.js");
+import { Artist } from "./Artist";
+import { CustomDate } from "./CustomDate";
+import { Picture, StaticPicture } from "./Picture";
 
-class Playlist {
+export class Playlist {
+	id: string;
+	title: any;
+	artist: { Main: any[] };
+	artists: any[];
+	trackTotal: any;
+	recordType: string;
+	barcode: string;
+	label: string;
+	explicit: any;
+	genre: string[];
+	date: any;
+	discTotal: string;
+	playlistID: any;
+	owner: any;
+	pic: Picture | StaticPicture;
+	variousArtists: Artist;
+	mainArtist: any;
+
 	constructor(playlistAPI) {
 		this.id = `pl_${playlistAPI.id}`;
 		this.title = playlistAPI.title;
@@ -18,7 +36,7 @@ class Playlist {
 		const year = playlistAPI.creation_date.slice(0, 4);
 		const month = playlistAPI.creation_date.slice(5, 7);
 		const day = playlistAPI.creation_date.slice(8, 10);
-		this.date = new Date(day, month, year);
+		this.date = new CustomDate(day, month, year);
 
 		this.discTotal = "1";
 		this.playlistID = playlistAPI.id;
@@ -50,7 +68,3 @@ class Playlist {
 		}
 	}
 }
-
-module.exports = {
-	Playlist,
-};

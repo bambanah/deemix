@@ -1,5 +1,5 @@
-const got = require("got");
-const {
+import { get } from "got";
+import {
 	APIError,
 	ItemsLimitExceededException,
 	PermissionException,
@@ -9,10 +9,10 @@ const {
 	InvalidQueryException,
 	DataException,
 	IndividualAccountChangedNotAllowedException,
-} = require("./errors.js");
+} from "./errors";
 
 // Possible values for order parameter in search
-const SearchOrder = {
+export const SearchOrder = {
 	RANKING: "RANKING",
 	TRACK_ASC: "TRACK_ASC",
 	TRACK_DESC: "TRACK_DESC",
@@ -26,7 +26,7 @@ const SearchOrder = {
 	DURATION_DESC: "DURATION_DESC",
 };
 
-class API {
+export class API {
 	constructor(cookie_jar, headers) {
 		this.http_headers = headers;
 		this.cookie_jar = cookie_jar;
@@ -38,17 +38,15 @@ class API {
 		if (this.access_token) args.access_token = this.access_token;
 		let result_json;
 		try {
-			result_json = await got
-				.get("https://api.deezer.com/" + method, {
-					searchParams: args,
-					cookieJar: this.cookie_jar,
-					headers: this.http_headers,
-					https: {
-						rejectUnauthorized: false,
-					},
-					timeout: 30000,
-				})
-				.json();
+			result_json = await get("https://api.deezer.com/" + method, {
+				searchParams: args,
+				cookieJar: this.cookie_jar,
+				headers: this.http_headers,
+				https: {
+					rejectUnauthorized: false,
+				},
+				timeout: 30000,
+			}).json();
 		} catch (e) {
 			console.debug("[ERROR] deezer.api", method, args, e.name, e.message);
 			if (
@@ -517,8 +515,3 @@ class API {
 		return "0";
 	}
 }
-
-module.exports = {
-	SearchOrder,
-	API,
-};

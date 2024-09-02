@@ -1,4 +1,4 @@
-import { checkNewRelease } from "../../../src/utils/dates.js";
+import { checkNewRelease } from "../../../src/utils/dates";
 
 describe("date utils", () => {
 	describe("checkNewRelease", () => {

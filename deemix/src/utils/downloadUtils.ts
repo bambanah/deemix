@@ -1,6 +1,6 @@
-const { OverwriteOption } = require("../settings.js");
-const fs = require("fs");
-const { tagID3, tagFLAC } = require("../tagger.js");
+import { OverwriteOption } from "../settings";
+import fs from "fs";
+import { tagID3, tagFLAC } from "../tagger";
 
 export const checkShouldDownload = (
 	filename,

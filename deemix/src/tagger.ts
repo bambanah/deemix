@@ -1,10 +1,11 @@
-const ID3Writer = require("./utils/id3-writer.js");
-const Metaflac = require("metaflac-js2");
-const fs = require("fs");
+import ID3Writer from "./utils/id3-writer";
+import Metaflac from "metaflac-js2";
+import fs from "fs";
+import Track from "./types/Track";
 
-function tagID3(path, track, save) {
+function tagID3(path: string, track: Track, save: any) {
 	const songBuffer = fs.readFileSync(path);
-	const tag = new ID3Writer(songBuffer);
+	const tag: any = new ID3Writer(songBuffer);
 	tag.separateWithNull = String.fromCharCode(0);
 
 	if (save.title) tag.setFrame("TIT2", track.title);
@@ -58,7 +59,7 @@ function tagID3(path, track, save) {
 	// The 'Date' frame is a numeric string in the DDMM format.
 	if (save.date) tag.setFrame("TDAT", "" + track.date.day + track.date.month);
 
-	if (save.length) tag.setFrame("TLEN", parseInt(track.duration) * 1000);
+	if (save.length) tag.setFrame("TLEN", track.duration * 1000);
 	if (save.bpm && track.bpm) tag.setFrame("TBPM", track.bpm);
 	if (save.label) tag.setFrame("TPUB", track.album.label);
 	if (save.isrc) tag.setFrame("TSRC", track.ISRC);
@@ -515,8 +516,8 @@ function tagID3v1(taggedSongBuffer, track, save) {
 	if (save.trackNumber) {
 		if (track.trackNumber <= 65535) {
 			if (track.trackNumber > 255) {
-				tagBuffer.writeUInt8(parseInt(track.trackNumber >> 8), 125);
-				tagBuffer.writeUInt8(parseInt(track.trackNumber & 255), 126);
+				tagBuffer.writeUInt8(track.trackNumber >> 8, 125);
+				tagBuffer.writeUInt8(track.trackNumber & 255, 126);
 			} else {
 				tagBuffer.writeUInt8(parseInt(track.trackNumber), 126);
 			}
@@ -539,8 +540,4 @@ function tagID3v1(taggedSongBuffer, track, save) {
 	return Buffer.from(buffer);
 }
 
-module.exports = {
-	tagID3,
-	tagFLAC,
-	tagID3v1,
-};
+export { tagID3, tagFLAC, tagID3v1 };

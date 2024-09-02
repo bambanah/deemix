@@ -1,5 +1,5 @@
 // Explicit Content Lyrics
-const LyricsStatus = {
+export const LyricsStatus = {
 	NOT_EXPLICIT: 0, // Not Explicit
 	EXPLICIT: 1, // Explicit
 	UNKNOWN: 2, // Unknown
@@ -10,20 +10,20 @@ const LyricsStatus = {
 	PARTIALLY_NO_ADVICE: 7, // Partially No Advice Available (Album "lyrics" only)
 };
 
-const ReleaseType = ["single", "album", "compile", "ep", "bundle"];
+export const ReleaseType = ["single", "album", "compile", "ep", "bundle"];
 
 // TODO: add missing role ids
-const RoleID = ["Main", null, null, null, null, "Featured"];
+export const RoleID = ["Main", null, null, null, null, "Featured"];
 
 // get explicit lyrics boolean from explicit_content_lyrics
-function is_explicit(explicit_content_lyrics) {
+export function is_explicit(explicit_content_lyrics) {
 	return [LyricsStatus.EXPLICIT, LyricsStatus.PARTIALLY_EXPLICIT].includes(
 		parseInt(explicit_content_lyrics) || LyricsStatus.UNKNOWN
 	);
 }
 
 // maps gw-light api user/tracks to standard api
-function map_user_track(track) {
+export function map_user_track(track) {
 	const result = {
 		id: track.SNG_ID,
 		title: track.SNG_TITLE,
@@ -108,7 +108,7 @@ function map_user_track(track) {
 }
 
 // maps gw-light api user/artists to standard api
-function map_user_artist(artist) {
+export function map_user_artist(artist) {
 	return {
 		id: artist.ART_ID,
 		name: artist.ART_NAME,
@@ -138,7 +138,7 @@ function map_user_artist(artist) {
 }
 
 // maps gw-light api user/albums to standard api
-function map_user_album(album) {
+export function map_user_album(album) {
 	return {
 		id: album.ALB_ID,
 		title: album.ALB_TITLE,
@@ -176,7 +176,7 @@ function map_user_album(album) {
 }
 
 // maps gw-light api user/playlists to standard api
-function map_user_playlist(playlist, default_user_name = "") {
+export function map_user_playlist(playlist, default_user_name = "") {
 	return {
 		id: playlist.PLAYLIST_ID,
 		title: playlist.TITLE,
@@ -221,7 +221,7 @@ function map_user_playlist(playlist, default_user_name = "") {
 }
 
 // maps gw-light api albums to standard api
-function map_album(album) {
+export function map_album(album) {
 	const result = {
 		id: album.ALB_ID,
 		title: album.ALB_TITLE,
@@ -320,7 +320,7 @@ function map_album(album) {
 }
 
 // maps gw-light api artist/albums to standard api
-function map_artist_album(album) {
+export function map_artist_album(album) {
 	return {
 		id: album.ALB_ID,
 		title: album.ALB_TITLE,
@@ -354,7 +354,7 @@ function map_artist_album(album) {
 }
 
 // maps gw-light api playlists to standard api
-function map_playlist(playlist) {
+export function map_playlist(playlist) {
 	return {
 		id: playlist.PLAYLIST_ID,
 		title: playlist.TITLE,
@@ -411,7 +411,7 @@ function map_playlist(playlist) {
 }
 
 // maps gw-light api tracks to standard api
-function map_track(track) {
+export function map_track(track) {
 	let result = {
 		id: track.SNG_ID,
 		readable: true, // not provided
@@ -548,7 +548,7 @@ function map_track(track) {
 }
 
 // Cleanup terms that can hurt search results
-function clean_search_query(term) {
+export function clean_search_query(term) {
 	term = term.replaceAll(/ feat[\.]? /g, " ");
 	term = term.replaceAll(/ ft[\.]? /g, " ");
 	term = term.replaceAll(/\(feat[\.]? /g, " ");
@@ -556,19 +556,3 @@ function clean_search_query(term) {
 	term = term.replace(" & ", " ").replace("–", "-").replace("—", "-");
 	return term;
 }
-
-module.exports = {
-	LyricsStatus,
-	ReleaseType,
-	RoleID,
-	is_explicit,
-	map_user_track,
-	map_user_artist,
-	map_user_album,
-	map_user_playlist,
-	map_album,
-	map_artist_album,
-	map_playlist,
-	map_track,
-	clean_search_query,
-};

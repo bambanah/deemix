@@ -1,34 +1,39 @@
-const { Track } = require("./types/Track.js");
-const { StaticPicture } = require("./types/Picture.js");
-const { streamTrack, generateCryptedStreamURL } = require("./decryption.js");
-const {
-	USER_AGENT_HEADER,
-	pipeline,
-	shellEscape,
-} = require("./utils/index.js");
-const { DEFAULTS, OverwriteOption } = require("./settings.js");
-const {
-	generatePath,
+import { each, queue } from "async";
+import { exec } from "child_process";
+import { Deezer, TrackFormats, errors as _errors, utils } from "deezer-js";
+import {
+	createWriteStream,
+	existsSync,
+	mkdirSync,
+	readFileSync,
+	unlinkSync,
+	writeFileSync,
+} from "fs";
+import { HTTPError, ReadError, TimeoutError, default as got } from "got";
+import { tmpdir } from "os";
+import { generateCryptedStreamURL, streamTrack } from "./decryption";
+import {
+	DownloadCanceled,
+	DownloadFailed,
+	ErrorMessages,
+	PreferredBitrateNotFound,
+	TrackNot360,
+} from "./errors";
+import { DEFAULTS, OverwriteOption, Settings } from "./settings";
+import { IDownloadObject } from "./types/DownloadObjects";
+import { StaticPicture } from "./types/Picture";
+import Track, { formatsName } from "./types/Track";
+import { USER_AGENT_HEADER, pipeline, shellEscape } from "./utils";
+import { checkShouldDownload, tagTrack } from "./utils/downloadUtils";
+import {
 	generateAlbumName,
 	generateArtistName,
 	generateDownloadObjectName,
-} = require("./utils/pathtemplates.js");
-const {
-	PreferredBitrateNotFound,
-	TrackNot360,
-	DownloadFailed,
-	ErrorMessages,
-	DownloadCanceled,
-} = require("./errors.js");
-const { TrackFormats } = require("deezer-js");
-const { WrongLicense, WrongGeolocation } = require("deezer-js").errors;
-const { map_track } = require("deezer-js").utils;
-const got = require("got");
-const fs = require("fs");
-const { tmpdir } = require("os");
-const { queue, each } = require("async");
-const { exec } = require("child_process");
-const { checkShouldDownload, tagTrack } = require("./utils/download-utils");
+	generatePath,
+} from "./utils/pathtemplates";
+
+const { WrongLicense, WrongGeolocation } = _errors;
+const { map_track } = utils;
 
 const extensions = {
 	[TrackFormats.FLAC]: ".flac",
@@ -39,40 +44,40 @@ const extensions = {
 	[TrackFormats.MP4_RA3]: ".mp4",
 	[TrackFormats.MP4_RA2]: ".mp4",
 	[TrackFormats.MP4_RA1]: ".mp4",
-};
+} as const;
 
-const formatsName = {
+const formats_non_360 = {
 	[TrackFormats.FLAC]: "FLAC",
-	[TrackFormats.LOCAL]: "MP3_MISC",
 	[TrackFormats.MP3_320]: "MP3_320",
 	[TrackFormats.MP3_128]: "MP3_128",
-	[TrackFormats.DEFAULT]: "MP3_MISC",
+};
+const formats_360 = {
 	[TrackFormats.MP4_RA3]: "MP4_RA3",
 	[TrackFormats.MP4_RA2]: "MP4_RA2",
 	[TrackFormats.MP4_RA1]: "MP4_RA1",
 };
 
 const TEMPDIR = tmpdir() + "/deemix-imgs";
-fs.mkdirSync(TEMPDIR, { recursive: true });
+mkdirSync(TEMPDIR, { recursive: true });
 
 async function downloadImage(
-	url,
-	path,
+	url: string,
+	path: string,
 	overwrite = OverwriteOption.DONT_OVERWRITE
 ) {
 	if (
-		fs.existsSync(path) &&
+		existsSync(path) &&
 		![
 			OverwriteOption.OVERWRITE,
 			OverwriteOption.ONLY_TAGS,
 			OverwriteOption.KEEP_BOTH,
 		].includes(overwrite)
 	) {
-		const file = fs.readFileSync(path);
+		const file = readFileSync(path);
 		if (file.length !== 0) return path;
-		fs.unlinkSync(path);
+		unlinkSync(path);
 	}
-	let timeout = null;
+	let timeout: NodeJS.Timeout | null = null;
 	let error = "";
 
 	const downloadStream = got
@@ -87,7 +92,7 @@ async function downloadImage(
 				downloadStream.destroy();
 			}, 5000);
 		});
-	const fileWriterStream = fs.createWriteStream(path);
+	const fileWriterStream = createWriteStream(path);
 
 	timeout = setTimeout(() => {
 		error = "DownloadTimeout";
@@ -97,8 +102,8 @@ async function downloadImage(
 	try {
 		await pipeline(downloadStream, fileWriterStream);
 	} catch (e) {
-		fs.unlinkSync(path);
-		if (e instanceof got.HTTPError) {
+		unlinkSync(path);
+		if (e instanceof HTTPError) {
 			if (url.includes("images.dzcdn.net")) {
 				const urlBase = url.slice(0, url.lastIndexOf("/") + 1);
 				const pictureURL = url.slice(urlBase.length);
@@ -117,8 +122,8 @@ async function downloadImage(
 			return null;
 		}
 		if (
-			e instanceof got.ReadError ||
-			e instanceof got.TimeoutError ||
+			e instanceof ReadError ||
+			e instanceof TimeoutError ||
 			[
 				"ESOCKETTIMEDOUT",
 				"ERR_STREAM_PREMATURE_CLOSE",
@@ -136,22 +141,22 @@ async function downloadImage(
 }
 
 async function getPreferredBitrate(
-	dz,
-	track,
-	preferredBitrate,
-	shouldFallback,
-	feelingLucky,
-	uuid,
-	listener
+	dz: Deezer,
+	track: Track,
+	preferredBitrate: string,
+	shouldFallback: boolean,
+	feelingLucky: boolean,
+	uuid: string,
+	listener: any
 ) {
 	preferredBitrate = parseInt(preferredBitrate);
 
 	let falledBack = false;
-	let hasAlternative = track.fallbackID !== 0;
+	let hasAlternative = track.fallbackID !== "0";
 	let isGeolocked = false;
 	let wrongLicense = false;
 
-	async function testURL(track, url, formatName) {
+	async function testURL(track: Track, url: string, formatName: string) {
 		if (!url) return false;
 		let request;
 		try {
@@ -175,16 +180,21 @@ async function getPreferredBitrate(
 				if (track.filesizes[`${formatName.toLowerCase()}`] === 0) return false;
 				return true;
 			}
-			if (e instanceof got.ReadError || e instanceof got.TimeoutError) {
+			if (e instanceof ReadError || e instanceof TimeoutError) {
 				return await testURL(track, url, formatName);
 			}
-			if (e instanceof got.HTTPError) return false;
+			if (e instanceof HTTPError) return false;
 			console.trace(e);
 			throw e;
 		}
 	}
 
-	async function getCorrectURL(track, formatName, formatNumber, feelingLucky) {
+	async function getCorrectURL(
+		track: Track,
+		formatName: string,
+		formatNumber: number,
+		feelingLucky: boolean
+	) {
 		// Check the track with the legit method
 		let url;
 		wrongLicense =
@@ -210,7 +220,7 @@ async function getPreferredBitrate(
 				track.mediaVersion,
 				formatNumber
 			);
-			if (await testURL(track, url, formatName, formatNumber)) return url;
+			if (await testURL(track, url, formatName)) return url;
 			url = undefined;
 		}
 		return url;
@@ -226,17 +236,6 @@ async function getPreferredBitrate(
 		track.urls.MP3_MISC = url;
 		return TrackFormats.LOCAL;
 	}
-
-	const formats_non_360 = {
-		[TrackFormats.FLAC]: "FLAC",
-		[TrackFormats.MP3_320]: "MP3_320",
-		[TrackFormats.MP3_128]: "MP3_128",
-	};
-	const formats_360 = {
-		[TrackFormats.MP4_RA3]: "MP4_RA3",
-		[TrackFormats.MP4_RA2]: "MP4_RA2",
-		[TrackFormats.MP4_RA1]: "MP4_RA1",
-	};
 
 	const is360Format = Object.keys(formats_360).includes(preferredBitrate);
 	let formats;
@@ -322,7 +321,21 @@ async function getPreferredBitrate(
 }
 
 class Downloader {
-	constructor(dz, downloadObject, settings, listener) {
+	dz: Deezer;
+	downloadObject: IDownloadObject;
+	settings: Settings;
+	bitrate: any;
+	listener: any;
+	playlistCovername: null;
+	playlistURLs: any[];
+	coverQueue: {};
+
+	constructor(
+		dz: Deezer,
+		downloadObject: IDownloadObject,
+		settings: Settings,
+		listener
+	) {
 		this.dz = dz;
 		this.downloadObject = downloadObject;
 		this.settings = settings || DEFAULTS;
@@ -367,18 +380,23 @@ class Downloader {
 			} else if (this.downloadObject.__type__ === "Collection") {
 				const tracks = [];
 
-				const q = queue(async (data) => {
-					const { track, pos } = data;
-					tracks[pos] = await this.downloadWrapper({
-						trackAPI: track,
-						albumAPI: this.downloadObject.collection.albumAPI,
-						playlistAPI: this.downloadObject.collection.playlistAPI,
-					});
-				}, this.settings.queueConcurrency);
+				const q = queue(
+					async (data: { track: Track; pos: number }, callback) => {
+						const { track, pos } = data;
+						tracks[pos] = await this.downloadWrapper({
+							trackAPI: track,
+							albumAPI: this.downloadObject.collection.albumAPI,
+							playlistAPI: this.downloadObject.collection.playlistAPI,
+						});
+
+						callback();
+					},
+					this.settings.queueConcurrency
+				);
 
 				if (this.downloadObject.collection.tracks.length) {
 					this.downloadObject.collection.tracks.forEach((track, pos) => {
-						q.push({ track, pos });
+						q.push({ track, pos }, () => {});
 					});
 
 					await q.drain();
@@ -397,7 +415,7 @@ class Downloader {
 		}
 	}
 
-	async download(extraData, track) {
+	async download(extraData, track: Track) {
 		const returnData = {};
 		const { trackAPI, albumAPI, playlistAPI } = extraData;
 		trackAPI.size = this.downloadObject.size;
@@ -477,7 +495,7 @@ class Downloader {
 		if (this.downloadObject.isCanceled) throw new DownloadCanceled();
 
 		// Make sure the filepath exsists
-		fs.mkdirSync(filepath, { recursive: true });
+		mkdirSync(filepath, { recursive: true });
 		const extension = extensions[track.bitrate];
 		let writepath = `${filepath}/${filename}${extension}`;
 
@@ -488,7 +506,7 @@ class Downloader {
 			do {
 				c++;
 				currentFilename = `${baseFilename} (${c})${extension}`;
-			} while (fs.existsSync(currentFilename));
+			} while (existsSync(currentFilename));
 			writepath = currentFilename;
 		}
 
@@ -660,12 +678,12 @@ class Downloader {
 		// Save lyrics in lrc file
 		if (this.settings.syncedLyrics && track.lyrics.sync) {
 			if (
-				!fs.existsSync(`${filepath}/${filename}.lrc`) ||
+				!existsSync(`${filepath}/${filename}.lrc`) ||
 				[OverwriteOption.OVERWRITE, OverwriteOption.ONLY_TAGS].includes(
 					this.settings.overwriteFile
 				)
 			) {
-				fs.writeFileSync(`${filepath}/${filename}.lrc`, track.lyrics.sync);
+				writeFileSync(`${filepath}/${filename}.lrc`, track.lyrics.sync);
 			}
 		}
 
@@ -675,7 +693,7 @@ class Downloader {
 		try {
 			await streamTrack(writepath, track, this.downloadObject, this.listener);
 		} catch (e) {
-			if (e instanceof got.HTTPError)
+			if (e instanceof HTTPError)
 				throw new DownloadFailed("notAvailable", track);
 			throw e;
 		}
@@ -702,7 +720,7 @@ class Downloader {
 		return returnData;
 	}
 
-	async downloadWrapper(extraData, track) {
+	async downloadWrapper(extraData, track: Track) {
 		const { trackAPI } = extraData;
 		// Temp metadata to generate logs
 		const itemData = {
@@ -871,16 +889,16 @@ class Downloader {
 				const filename = `${track.data.artist} - ${track.data.title}`;
 				let searchedFile;
 				try {
-					searchedFile = fs
-						.readFileSync(`${this.downloadObject.extrasPath}/searched.txt`)
-						.toString();
+					searchedFile = readFileSync(
+						`${this.downloadObject.extrasPath}/searched.txt`
+					).toString();
 				} catch {
 					searchedFile = "";
 				}
 				if (searchedFile.indexOf(filename) === -1) {
 					if (searchedFile !== "") searchedFile += "\r\n";
 					searchedFile += filename + "\r\n";
-					fs.writeFileSync(
+					writeFileSync(
 						`${this.downloadObject.extrasPath}/searched.txt`,
 						searchedFile
 					);
@@ -973,10 +991,7 @@ class Downloader {
 		// Create errors logfile
 		try {
 			if (this.settings.logErrors && errors !== "") {
-				fs.writeFileSync(
-					`${this.downloadObject.extrasPath}/errors.txt`,
-					errors
-				);
+				writeFileSync(`${this.downloadObject.extrasPath}/errors.txt`, errors);
 			}
 		} catch (e) {
 			this.afterDownloadErrorReport("CreateErrorLog", e);
@@ -985,7 +1000,7 @@ class Downloader {
 		// Create searched logfile
 		try {
 			if (this.settings.logSearched && searched !== "") {
-				fs.writeFileSync(
+				writeFileSync(
 					`${this.downloadObject.extrasPath}/searched.txt`,
 					searched
 				);
@@ -1022,7 +1037,7 @@ class Downloader {
 						this.downloadObject,
 						this.settings
 					) || "playlist";
-				fs.writeFileSync(
+				writeFileSync(
 					`${this.downloadObject.extrasPath}/${filename}.m3u8`,
 					playlist.join("\n")
 				);
@@ -1056,7 +1071,7 @@ class Downloader {
 	}
 }
 
-module.exports = {
+export default {
 	Downloader,
 	downloadImage,
 	getPreferredBitrate,

@@ -1,25 +1,15 @@
+import { Deezer } from "deezer-js";
 import got from "got";
+import downloader from "./downloader";
+import { LinkNotRecognized, LinkNotSupported } from "./errors";
 import {
-	generateTrackItem,
 	generateAlbumItem,
-	generatePlaylistItem,
 	generateArtistItem,
 	generateArtistTopItem,
-} from "./itemgen.js";
-import { LinkNotSupported, LinkNotRecognized } from "./errors.js";
-import { Deezer } from "deezer-js";
-
-import * as typesIndex from "./types";
-import settings from "./settings.js";
-import downloader from "./downloader.js";
-import decryption from "./decryption.js";
-import tagger from "./tagger.js";
-import * as utilsIndex from "./utils/index.js";
-import localpaths from "./utils/localpaths.js";
-import pathtemplates from "./utils/pathtemplates.js";
-import deezer from "./utils/deezer.js";
-import Plugin from "./plugins/index.js";
-import Spotify from "./plugins/spotify.js";
+	generatePlaylistItem,
+	generateTrackItem,
+} from "./itemgen";
+import BasePlugin from "@/plugins/base";
 
 async function parseLink(link: string) {
 	if (link.includes("deezer.page.link")) {
@@ -66,7 +56,7 @@ async function generateDownloadObject(
 	dz: Deezer,
 	link: string,
 	bitrate: number,
-	plugins: Record<string, Plugin> = {},
+	plugins: Record<string, BasePlugin> = {},
 	listener: any
 ) {
 	let link_type, link_id;
@@ -106,11 +96,6 @@ async function generateDownloadObject(
 	throw new LinkNotSupported(link);
 }
 
-// Aggregating the exports into organized objects
-export const types = {
-	...typesIndex,
-};
-
 const itemgen = {
 	generateTrackItem,
 	generateAlbumItem,
@@ -119,26 +104,12 @@ const itemgen = {
 	generateArtistTopItem,
 };
 
-const utils = {
-	...utilsIndex,
-	localpaths,
-	pathtemplates,
-	deezer,
-};
-
-const plugins = {
-	Spotify,
-};
+export * as decryption from "./decryption";
+export * as plugins from "./plugins";
+export * as settings from "./settings";
+export * as tagger from "./tagger";
+export * as types from "./types";
+export * as utils from "./utils";
 
 // Exporting the organized objects
-export {
-	parseLink,
-	generateDownloadObject,
-	settings,
-	downloader,
-	decryption,
-	tagger,
-	itemgen,
-	utils,
-	plugins,
-};
+export { downloader, generateDownloadObject, itemgen, parseLink };

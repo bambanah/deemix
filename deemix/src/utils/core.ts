@@ -1,13 +1,14 @@
-const stream = require("stream");
-const { promisify } = require("util");
-const pipeline = promisify(stream.pipeline);
-const { accessSync, constants } = require("fs");
-const { ErrorMessages } = require("../errors.js");
+import { accessSync, constants } from "fs";
+import stream from "stream";
+import { promisify } from "util";
+import { ErrorMessages } from "../errors";
 
-const USER_AGENT_HEADER =
+export const pipeline = promisify(stream.pipeline);
+
+export const USER_AGENT_HEADER =
 	"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36";
 
-function canWrite(path) {
+export function canWrite(path) {
 	try {
 		accessSync(path, constants.R_OK | constants.W_OK);
 	} catch {
@@ -16,11 +17,11 @@ function canWrite(path) {
 	return true;
 }
 
-function generateReplayGainString(trackGain) {
+export function generateReplayGainString(trackGain) {
 	return `${Math.round((parseFloat(trackGain) + 18.4) * -100) / 100} dB`;
 }
 
-function changeCase(txt, type) {
+export function changeCase(txt, type) {
 	switch (type) {
 		case "lower":
 			return txt.toLowerCase();
@@ -52,7 +53,7 @@ function changeCase(txt, type) {
 	}
 }
 
-function removeFeatures(title) {
+export function removeFeatures(title) {
 	let clean = title;
 	let found = false;
 	let pos;
@@ -80,7 +81,7 @@ function removeFeatures(title) {
 	return clean;
 }
 
-function andCommaConcat(lst) {
+export function andCommaConcat(lst) {
 	const tot = lst.length;
 	let result = "";
 	lst.forEach((art, i) => {
@@ -96,7 +97,7 @@ function andCommaConcat(lst) {
 	return result;
 }
 
-function uniqueArray(arr) {
+export function uniqueArray(arr) {
 	arr.forEach((namePrinc, iPrinc) => {
 		arr.forEach((nameRest, iRest) => {
 			if (
@@ -110,13 +111,13 @@ function uniqueArray(arr) {
 	return arr;
 }
 
-function shellEscape(s) {
+export function shellEscape(s) {
 	if (typeof s !== "string") return "";
 	if (!/[^\w@%+=:,./-]/g.test(s)) return s;
 	return "'" + s.replaceAll("'", "'\"'\"'") + "'";
 }
 
-function removeDuplicateArtists(artist, artists) {
+export function removeDuplicateArtists(artist, artists) {
 	artists = uniqueArray(artists);
 	Object.keys(artist).forEach((role) => {
 		artist[role] = uniqueArray(artist[role]);
@@ -124,7 +125,7 @@ function removeDuplicateArtists(artist, artists) {
 	return [artist, artists];
 }
 
-function formatListener(key, data) {
+export function formatListener(key, data) {
 	let message = "";
 
 	switch (key) {
@@ -221,17 +222,3 @@ function formatListener(key, data) {
 			return message;
 	}
 }
-
-module.exports = {
-	USER_AGENT_HEADER,
-	generateReplayGainString,
-	removeFeatures,
-	andCommaConcat,
-	uniqueArray,
-	removeDuplicateArtists,
-	pipeline,
-	canWrite,
-	changeCase,
-	shellEscape,
-	formatListener,
-};

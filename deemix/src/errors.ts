@@ -1,82 +1,96 @@
-class DeemixError extends Error {
-	constructor(message) {
+import Track from "./types/Track";
+
+export class DeemixError extends Error {
+	constructor(message?: string) {
 		super(message);
 		this.name = "DeemixError";
 	}
 }
 
-class GenerationError extends DeemixError {
-	constructor(link, message) {
+export class GenerationError extends DeemixError {
+	link: string;
+
+	constructor(link: string, message: string) {
 		super(message);
 		this.link = link;
 		this.name = "GenerationError";
 	}
 }
 
-class ISRCnotOnDeezer extends GenerationError {
-	constructor(link) {
+export class ISRCnotOnDeezer extends GenerationError {
+	errid: string;
+
+	constructor(link: string) {
 		super(link, "Track ISRC is not available on deezer");
 		this.name = "ISRCnotOnDeezer";
 		this.errid = "ISRCnotOnDeezer";
 	}
 }
 
-class NotYourPrivatePlaylist extends GenerationError {
-	constructor(link) {
+export class NotYourPrivatePlaylist extends GenerationError {
+	errid: string;
+	constructor(link: string) {
 		super(link, "You can't download others private playlists.");
 		this.name = "NotYourPrivatePlaylist";
 		this.errid = "notYourPrivatePlaylist";
 	}
 }
 
-class TrackNotOnDeezer extends GenerationError {
-	constructor(link) {
+export class TrackNotOnDeezer extends GenerationError {
+	errid: string;
+	constructor(link: string) {
 		super(link, "Track not found on deezer!");
 		this.name = "TrackNotOnDeezer";
 		this.errid = "trackNotOnDeezer";
 	}
 }
 
-class AlbumNotOnDeezer extends GenerationError {
-	constructor(link) {
+export class AlbumNotOnDeezer extends GenerationError {
+	errid: string;
+	constructor(link: string) {
 		super(link, "Album not found on deezer!");
 		this.name = "AlbumNotOnDeezer";
 		this.errid = "albumNotOnDeezer";
 	}
 }
 
-class InvalidID extends GenerationError {
-	constructor(link) {
+export class InvalidID extends GenerationError {
+	errid: string;
+	constructor(link: string) {
 		super(link, "Link ID is invalid!");
 		this.name = "InvalidID";
 		this.errid = "invalidID";
 	}
 }
 
-class LinkNotSupported extends GenerationError {
-	constructor(link) {
+export class LinkNotSupported extends GenerationError {
+	errid: string;
+
+	constructor(link: string) {
 		super(link, "Link is not supported.");
 		this.name = "LinkNotSupported";
 		this.errid = "unsupportedURL";
 	}
 }
 
-class LinkNotRecognized extends GenerationError {
-	constructor(link) {
+export class LinkNotRecognized extends GenerationError {
+	errid: string;
+
+	constructor(link: string) {
 		super(link, "Link is not recognized.");
 		this.name = "LinkNotRecognized";
 		this.errid = "invalidURL";
 	}
 }
 
-class DownloadError extends DeemixError {
+export class DownloadError extends DeemixError {
 	constructor() {
 		super();
 		this.name = "DownloadError";
 	}
 }
 
-const ErrorMessages = {
+export const ErrorMessages = {
 	notOnDeezer: "Track not available on Deezer!",
 	notEncoded: "Track not yet encoded!",
 	notEncodedNoAlternative: "Track not yet encoded and no alternative found!",
@@ -98,9 +112,13 @@ const ErrorMessages = {
 		"Your account can't stream the track from your current country and no alternative found.",
 };
 
-class DownloadFailed extends DownloadError {
-	constructor(errid, track) {
+export class DownloadFailed extends DownloadError {
+	errid: keyof typeof ErrorMessages;
+	track: Track;
+
+	constructor(errid: keyof typeof ErrorMessages, track: Track) {
 		super();
+
 		this.errid = errid;
 		this.message = ErrorMessages[errid];
 		this.name = "DownloadFailed";
@@ -108,81 +126,58 @@ class DownloadFailed extends DownloadError {
 	}
 }
 
-class TrackNot360 extends DownloadError {
+export class TrackNot360 extends DownloadError {
 	constructor() {
 		super();
 		this.name = "TrackNot360";
 	}
 }
 
-class PreferredBitrateNotFound extends DownloadError {
+export class PreferredBitrateNotFound extends DownloadError {
 	constructor() {
 		super();
 		this.name = "PreferredBitrateNotFound";
 	}
 }
 
-class DownloadEmpty extends DeemixError {
+export class DownloadEmpty extends DeemixError {
 	constructor() {
 		super();
 		this.name = "DownloadEmpty";
 	}
 }
 
-class DownloadCanceled extends DeemixError {
+export class DownloadCanceled extends DeemixError {
 	constructor() {
 		super();
 		this.name = "DownloadCanceled";
 	}
 }
 
-class TrackError extends DeemixError {
-	constructor(message) {
+export class TrackError extends DeemixError {
+	constructor(message: string) {
 		super(message);
 		this.name = "TrackError";
 	}
 }
 
-class MD5NotFound extends TrackError {
-	constructor(message) {
+export class MD5NotFound extends TrackError {
+	constructor(message: any) {
 		super(message);
 		this.name = "MD5NotFound";
 	}
 }
 
-class NoDataToParse extends TrackError {
-	constructor(message) {
+export class NoDataToParse extends TrackError {
+	constructor(message: any) {
 		super(message);
 		this.name = "NoDataToParse";
 	}
 }
 
-class AlbumDoesntExists extends TrackError {
-	constructor(message) {
+export class AlbumDoesntExists extends TrackError {
+	constructor(message: any) {
 		super(message);
 		this.name = "AlbumDoesntExists";
 	}
 }
-
-module.exports = {
-	DeemixError,
-	GenerationError,
-	ISRCnotOnDeezer,
-	NotYourPrivatePlaylist,
-	TrackNotOnDeezer,
-	AlbumNotOnDeezer,
-	InvalidID,
-	LinkNotSupported,
-	LinkNotRecognized,
-	ErrorMessages,
-	DownloadError,
-	DownloadFailed,
-	TrackNot360,
-	PreferredBitrateNotFound,
-	DownloadEmpty,
-	DownloadCanceled,
-	TrackError,
-	MD5NotFound,
-	NoDataToParse,
-	AlbumDoesntExists,
-};

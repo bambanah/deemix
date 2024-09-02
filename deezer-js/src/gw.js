@@ -5,8 +5,8 @@ const {
 	map_user_artist,
 	map_user_album,
 	map_user_playlist,
-} = require("./utils.js");
-const { GWAPIError } = require("./errors.js");
+} = require("./utils");
+const { GWAPIError } = require("./errors");
 
 const PlaylistStatus = {
 	PUBLIC: 0,

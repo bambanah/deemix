@@ -1,9 +1,9 @@
-const { TrackFormats } = require("deezer-js");
-const { getMusicFolder, getConfigFolder } = require("./utils/localpaths.js");
-const fs = require("fs");
+import { TrackFormats } from "deezer-js";
+import { getMusicFolder, getConfigFolder } from "./utils/localpaths";
+import fs from "fs";
 
 // Should the lib overwrite files?
-const OverwriteOption = {
+export const OverwriteOption = {
 	OVERWRITE: "y", // Yes, overwrite the file
 	DONT_OVERWRITE: "n", // No, don't overwrite the file
 	DONT_CHECK_EXT: "e", // No, and don't check for extensions
@@ -13,14 +13,100 @@ const OverwriteOption = {
 };
 
 // What should I do with featured artists?
-const FeaturesOption = {
+export const FeaturesOption = {
 	NO_CHANGE: "0", // Do nothing
 	REMOVE_TITLE: "1", // Remove from track title
 	REMOVE_TITLE_ALBUM: "3", // Remove from track title and album title
 	MOVE_TITLE: "2", // Move to track title
 };
 
-const DEFAULTS = {
+export interface Tags {
+	title: boolean;
+	artist: boolean;
+	artists: boolean;
+	album: boolean;
+	cover: boolean;
+	trackNumber: boolean;
+	trackTotal: boolean;
+	discNumber: boolean;
+	discTotal: boolean;
+	albumArtist: boolean;
+	genre: boolean;
+	year: boolean;
+	date: boolean;
+	explicit: boolean;
+	isrc: boolean;
+	length: boolean;
+	barcode: boolean;
+	bpm: boolean;
+	replayGain: boolean;
+	label: boolean;
+	lyrics: boolean;
+	syncedLyrics: boolean;
+	copyright: boolean;
+	composer: boolean;
+	involvedPeople: boolean;
+	source: boolean;
+	rating: boolean;
+	savePlaylistAsCompilation: boolean;
+	useNullSeparator: boolean;
+	saveID3v1: boolean;
+	multiArtistSeparator: string;
+	singleAlbumArtist: boolean;
+	coverDescriptionUTF8: boolean;
+}
+
+export interface Settings {
+	downloadLocation: string;
+	tracknameTemplate: string;
+	albumTracknameTemplate: string;
+	playlistTracknameTemplate: string;
+	createPlaylistFolder: boolean;
+	playlistNameTemplate: string;
+	createArtistFolder: boolean;
+	artistNameTemplate: string;
+	createAlbumFolder: boolean;
+	albumNameTemplate: string;
+	createCDFolder: boolean;
+	createStructurePlaylist: boolean;
+	createSingleFolder: boolean;
+	padTracks: boolean;
+	padSingleDigit: boolean;
+	paddingSize: string;
+	illegalCharacterReplacer: string;
+	queueConcurrency: number;
+	maxBitrate: string;
+	feelingLucky: boolean;
+	fallbackBitrate: boolean;
+	fallbackSearch: boolean;
+	fallbackISRC: boolean;
+	logErrors: boolean;
+	logSearched: boolean;
+	overwriteFile: string;
+	createM3U8File: boolean;
+	playlistFilenameTemplate: string;
+	syncedLyrics: boolean;
+	embeddedArtworkSize: number;
+	embeddedArtworkPNG: boolean;
+	localArtworkSize: number;
+	localArtworkFormat: string;
+	saveArtwork: boolean;
+	coverImageTemplate: string;
+	saveArtworkArtist: boolean;
+	artistImageTemplate: string;
+	jpegImageQuality: number;
+	dateFormat: string;
+	albumVariousArtists: boolean;
+	removeAlbumVersion: boolean;
+	removeDuplicateArtists: boolean;
+	featuredToTitle: string;
+	titleCasing: string;
+	artistCasing: string;
+	executeCommand: string;
+	tags: Tags;
+}
+
+export const DEFAULTS: Settings = {
 	downloadLocation: getMusicFolder(),
 	tracknameTemplate: "%artist% - %title%",
 	albumTracknameTemplate: "%tracknumber% - %title%",
@@ -104,7 +190,7 @@ const DEFAULTS = {
 	},
 };
 
-function save(settings, configFolder) {
+export function save(settings: Settings, configFolder) {
 	configFolder = configFolder || getConfigFolder();
 	if (!fs.existsSync(configFolder)) fs.mkdirSync(configFolder);
 
@@ -114,16 +200,18 @@ function save(settings, configFolder) {
 	);
 }
 
-function load(configFolder) {
+export function load(configFolder: string) {
 	configFolder = configFolder || getConfigFolder();
 	if (!fs.existsSync(configFolder)) fs.mkdirSync(configFolder);
 
 	if (!fs.existsSync(configFolder + "config.json"))
 		save(DEFAULTS, configFolder);
 
-	let settings;
+	let settings: Settings;
 	try {
-		settings = JSON.parse(fs.readFileSync(configFolder + "config.json"));
+		settings = JSON.parse(
+			fs.readFileSync(configFolder + "config.json").toString()
+		);
 	} catch (e) {
 		if (e.name === "SyntaxError") save(DEFAULTS, configFolder);
 		settings = JSON.parse(JSON.stringify(DEFAULTS));
@@ -132,7 +220,7 @@ function load(configFolder) {
 	return settings;
 }
 
-function check(settings) {
+function check(settings: Settings) {
 	let changes = 0;
 	Object.keys(DEFAULTS).forEach((_iSet) => {
 		if (
@@ -175,11 +263,3 @@ function check(settings) {
 	});
 	return changes;
 }
-
-module.exports = {
-	OverwriteOption,
-	FeaturesOption,
-	DEFAULTS,
-	save,
-	load,
-};
