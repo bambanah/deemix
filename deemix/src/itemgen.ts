@@ -9,21 +9,14 @@ const { map_user_playlist, map_track, map_album } = require("deezer-js").utils;
 import { each } from "async";
 import { Deezer } from "deezer-js";
 import { Album } from "./types/Album";
+import { APIAlbum, APITrack } from "deezer-js/src/api";
 
 export async function generateTrackItem(
 	dz: Deezer,
 	id: string,
 	bitrate: number,
-	trackAPI?: {
-		id: any;
-		title: any;
-		album: { cover_small: string };
-		md5_image: any;
-		track_token: any;
-		artist: { name: any };
-		explicit_lyrics: any;
-	},
-	albumAPI?: any
+	trackAPI?: APITrack,
+	albumAPI?: APIAlbum
 ) {
 	// Get essential track info
 	if (!trackAPI) {
@@ -76,22 +69,12 @@ export async function generateTrackItem(
 
 export async function generateAlbumItem(
 	dz: Deezer,
-	id: string | any[],
+	id: string,
 	bitrate: number,
 	rootArtist?: { id: any; name: any; picture_small: any }
 ) {
 	// Get essential album info
-	let albumAPI: {
-		id: any;
-		root_artist: any;
-		nb_tracks: number;
-		tracks: { data: string | any[] };
-		cover_small: string;
-		md5_image: any;
-		title: any;
-		artist: { name: any };
-		explicit_lyrics: any;
-	};
+	let albumAPI: APIAlbum;
 	if (String(id).startsWith("upc")) {
 		const upcs = [id.slice(4).toString()];
 		upcs.push(parseInt(upcs[0], 10).toString()); // Try UPC without leading zeros as well

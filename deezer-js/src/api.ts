@@ -28,6 +28,78 @@ export const SearchOrder = {
 	DURATION_DESC: "DURATION_DESC",
 };
 
+export interface APIArtist {
+	id: number;
+	name: string;
+	link: string;
+	share: string;
+	picture: string;
+	picture_small: string;
+	picture_medium: string;
+	picture_big: string;
+	picture_xl: string;
+	nb_album: number;
+	nb_fan: number;
+	radio: boolean;
+	tracklist: string;
+	role: string;
+}
+
+export interface APIAlbum {
+	id: string;
+	title: string;
+	link: string;
+	cover: string;
+	cover_small: string;
+	cover_medium: string;
+	cover_big: string;
+	cover_xl: string;
+	release_date: string; // Assuming the date is in string format (e.g., "YYYY-MM-DD")
+}
+
+export interface APITrack {
+	id: number;
+	readable: boolean;
+	title: string;
+	title_short: string;
+	title_version: string;
+	unseen: boolean;
+	isrc: string;
+	link: string;
+	share: string;
+	duration: number;
+	track_position: number;
+	disk_number: number;
+	rank: number;
+	release_date: string; // Assuming the date is in string format (e.g., "YYYY-MM-DD")
+	explicit_lyrics: boolean;
+	explicit_content_lyrics: number;
+	explicit_content_cover: number;
+	preview: string;
+	bpm: number;
+	gain: number;
+	available_countries: string[]; // List of countries as strings
+	alternative?: APITrack; // Assuming alternative is of type Track
+	contributors: APIContributor[]; // Assuming Contributor is an object
+	md5_image: string;
+	track_token: string;
+	artist: APIArtist;
+	album: APIAlbum;
+}
+
+export interface APIContributor {
+	id: number;
+	name: string;
+	link: string;
+	share: string;
+	picture: string;
+	picture_small: string;
+	picture_medium: string;
+	picture_big: string;
+	picture_xl: string;
+	role: string;
+}
+
 type APIArgs = Record<string | number, string | number>;
 
 export class API {
@@ -41,7 +113,7 @@ export class API {
 		this.access_token = null;
 	}
 
-	async api_call(method: string, args: APIArgs = {}) {
+	async api_call(method: string, args: APIArgs = {}): Promise<unknown> {
 		if (this.access_token) args["access_token"] = this.access_token;
 
 		let result_json;
@@ -127,8 +199,8 @@ export class API {
 		return result_json;
 	}
 
-	get_album(album_id) {
-		return this.api_call(`album/${album_id}`);
+	get_album(album_id: string): Promise<APIAlbum> {
+		return this.api_call(`album/${album_id}`) as Promise<APIAlbum>;
 	}
 
 	get_album_by_UPC(upc) {
@@ -423,8 +495,8 @@ export class API {
 		return this.api_call("search/user", args);
 	}
 
-	get_track(song_id) {
-		return this.api_call(`track/${song_id}`);
+	get_track(song_id: string): Promise<APITrack> {
+		return this.api_call(`track/${song_id}`) as Promise<APITrack>;
 	}
 
 	get_track_by_ISRC(isrc) {
