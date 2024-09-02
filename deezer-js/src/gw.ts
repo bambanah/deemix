@@ -15,6 +15,19 @@ export const PlaylistStatus = {
 	COLLABORATIVE: 2,
 };
 
+export interface GWTrack {
+	SNG_ID: number;
+	SNG_TITLE: string;
+	DURATION: number;
+	MD5_ORIGIN: number;
+	MEDIA_VERSION: number;
+	FILESIZE: number;
+	ALB_TITLE: string;
+	ALB_PICTURE: string;
+	ART_ID: number;
+	ART_NAME: string;
+}
+
 export const EMPTY_TRACK_OBJ = {
 	SNG_ID: 0,
 	SNG_TITLE: "",
@@ -26,7 +39,7 @@ export const EMPTY_TRACK_OBJ = {
 	ALB_PICTURE: "",
 	ART_ID: 0,
 	ART_NAME: "",
-};
+} satisfies GWTrack;
 
 export class GW {
 	http_headers: any;
@@ -39,7 +52,7 @@ export class GW {
 		this.api_token = null;
 	}
 
-	async api_call(method: string, args?: any, params?: any) {
+	async api_call(method: string, args?: any, params?: any): Promise<any> {
 		if (typeof args === undefined) args = {};
 		if (typeof params === undefined) params = {};
 		if (!this.api_token && method !== "deezer.getUserData")
@@ -132,7 +145,7 @@ export class GW {
 		return this.api_call("deezer.getChildAccounts");
 	}
 
-	get_track(sng_id) {
+	get_track(sng_id): Promise<GWTrack> {
 		return this.api_call("song.getData", { SNG_ID: sng_id });
 	}
 
@@ -510,7 +523,7 @@ export class GW {
 		if (user_data.USER.USER_ID === user_id)
 			return this.get_my_favorite_tracks(options);
 		const limit = options.limit || 25;
-		let data = this.get_user_profile_page(user_id, "loved", { limit });
+		let data = await this.get_user_profile_page(user_id, "loved", { limit });
 		data = data.TAB.loved.data;
 		const result = [];
 		data.forEach((track) => {
