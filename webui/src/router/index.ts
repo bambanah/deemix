@@ -3,23 +3,22 @@ import { emitter } from "@/utils/emitter";
 import {
 	createRouter,
 	createWebHistory,
-	type RouteComponent,
 	type RouteRecordRaw,
 } from "vue-router";
 
 // Pages
-import About from "@/components/pages/About.vue";
-import Artist from "@/components/pages/Artist.vue";
-import Charts from "@/components/pages/Charts.vue";
-import Errors from "@/components/pages/Errors.vue";
-import Favorites from "@/components/pages/Favorites.vue";
-import Home from "@/components/pages/Home.vue";
-import InfoArl from "@/components/pages/InfoArl.vue";
-import InfoSpotifyFeatures from "@/components/pages/InfoSpotifyFeatures.vue";
-import LinkAnalyzer from "@/components/pages/LinkAnalyzer.vue";
-import Search from "@/components/pages/Search.vue";
-import Settings from "@/components/pages/Settings.vue";
-import Tracklist from "@/components/pages/Tracklist.vue";
+import About from "@/views/About.vue";
+import Artist from "@/views/Artist.vue";
+import Charts from "@/views/Charts.vue";
+import Errors from "@/views/Errors.vue";
+import Favorites from "@/views/Favorites.vue";
+import Home from "@/views/Home.vue";
+import InfoArl from "@/views/InfoArl.vue";
+import InfoSpotifyFeatures from "@/views/InfoSpotifyFeatures.vue";
+import LinkAnalyzer from "@/views/LinkAnalyzer.vue";
+import Search from "@/views/Search.vue";
+import Settings from "@/views/Settings.vue";
+import Tracklist from "@/views/Tracklist.vue";
 
 const routes: RouteRecordRaw[] = [
 	{
