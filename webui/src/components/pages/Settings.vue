@@ -1126,9 +1126,16 @@ export default {
 		};
 	},
 	computed: {
-		user() {
-			return loginStore.user;
-		},
+		arl: () => loginStore.arl,
+		accessToken: () => loginStore.accessToken,
+		user: () => loginStore.user,
+		isLoggedIn: () => loginStore.isLoggedIn,
+		clientMode: () => loginStore.clientMode,
+		previewVolume: () => appInfoStore.previewVolume,
+		hasSlimDownloads: () => appInfoStore.hasSlimDownloads,
+		hasSlimSidebar: () => appInfoStore.hasSlimSidebar,
+		showBitrateTags: () => appInfoStore.showBitrateTags,
+		showSearchButton: () => appInfoStore.showSearchButton,
 		needToWait() {
 			return Object.keys(this.getSettings).length === 0;
 		},
