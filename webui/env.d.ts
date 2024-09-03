@@ -9,4 +9,13 @@ declare module "vue" {
 	export { configureCompat };
 }
 
+declare global {
+	interface Location {
+		base: string;
+	}
+	interface String {
+		capitalize(): string;
+	}
+}
+
 export {};

@@ -1,6 +1,11 @@
 import { fetchData } from "@/utils/api";
 import EventBus from "@/utils/EventBus";
-import { createRouter, createWebHistory } from "vue-router";
+import {
+	createRouter,
+	createWebHistory,
+	type RouteComponent,
+	type RouteRecordRaw,
+} from "vue-router";
 
 // Pages
 import About from "@/components/pages/About.vue";
@@ -16,7 +21,7 @@ import Search from "@/components/pages/Search.vue";
 import Settings from "@/components/pages/Settings.vue";
 import Tracklist from "@/components/pages/Tracklist.vue";
 
-const routes = [
+const routes: RouteRecordRaw[] = [
 	{
 		path: "/",
 		name: "Home",
@@ -109,7 +114,7 @@ const routes = [
 	},
 	// 404 client side
 	{
-		path: "*",
+		path: "/",
 		component: Home,
 	},
 ];
