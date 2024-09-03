@@ -285,7 +285,6 @@ export function generateTrackName(
 }
 
 export function generateAlbumName(foldername, album, settings, playlist) {
-	console.log("Create album");
 	const c = settings.illegalCharacterReplacer;
 	if (playlist && settings.tags.savePlaylistAsCompilation) {
 		foldername = foldername.replaceAll(
