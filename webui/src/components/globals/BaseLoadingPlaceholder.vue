@@ -1,10 +1,14 @@
+<script setup lang="ts">
+defineProps<{ hidden?: boolean; additionalClasses?: string; text?: string }>();
+</script>
+
 <template>
 	<div
-		v-show="!props.hidden"
+		v-show="!hidden"
 		class="flex h-full flex-1 flex-col items-center justify-center"
-		:class="props.additionalClasses"
+		:class="additionalClasses"
 	>
-		<span class="mb-5">{{ props.text || "Loading..." }}</span>
+		<span class="mb-5">{{ text || "Loading..." }}</span>
 
 		<div class="lds-ring">
 			<div></div>

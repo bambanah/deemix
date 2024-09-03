@@ -1,8 +1,14 @@
+<script setup lang="ts">
+defineProps({
+	withArrow: {
+		type: Boolean,
+		default: true,
+	},
+});
+</script>
+
 <template>
-	<details
-		:class="[data.staticClass, { 'with-arrow': props.withArrow }]"
-		:style="data.staticStyle"
-	>
+	<details :class="{ 'with-arrow': withArrow }">
 		<summary class="cursor-pointer">
 			<slot name="title">Setting</slot>
 		</summary>
@@ -12,17 +18,6 @@
 		</div>
 	</details>
 </template>
-
-<script>
-export default {
-	props: {
-		withArrow: {
-			type: Boolean,
-			default: true,
-		},
-	},
-};
-</script>
 
 <style>
 details > summary::marker {

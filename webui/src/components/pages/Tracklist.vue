@@ -28,10 +28,10 @@
 						<i class="material-icons">music_note</i>
 					</th>
 					<th>#</th>
-					<th>{{ $tc("globals.listTabs.title", 1) }}</th>
-					<th>{{ $tc("globals.listTabs.artist", 1) }}</th>
+					<th>{{ t("globals.listTabs.title", 1) }}</th>
+					<th>{{ t("globals.listTabs.artist", 1) }}</th>
 					<th v-if="type === 'playlist'">
-						{{ $tc("globals.listTabs.album", 1) }}
+						{{ t("globals.listTabs.album", 1) }}
 					</th>
 					<th>
 						<i class="material-icons">timer</i>
@@ -61,7 +61,7 @@
 										}"
 										:data-preview="track.preview"
 										:data-link-only="track.link"
-										:title="$tc('globals.play_hint')"
+										:title="t('globals.play_hint')"
 										class="material-icons"
 										v-on="{ click: track.preview ? playPausePreview : false }"
 									>
@@ -164,7 +164,7 @@
 									'cursor-pointer': track.preview_url,
 								}"
 								:data-preview="track.preview_url"
-								:title="$tc('globals.play_hint')"
+								:title="t('globals.play_hint')"
 								class="material-icons"
 								@click="playPausePreview"
 							>
@@ -210,8 +210,8 @@
 				@click.stop="addToQueue"
 			>
 				{{
-					`${$t("globals.download", {
-						thing: $tc(`globals.listTabs.${type}`, 1),
+					`${t("globals.download", {
+						thing: t(`globals.listTabs.${type}`, 1),
 					})}`
 				}}
 			</button>
@@ -220,7 +220,7 @@
 				class="btn btn-primary flex items-center"
 				@click.stop="addToQueue"
 			>
-				{{ $t("tracklist.downloadSelection")
+				{{ t("tracklist.downloadSelection")
 				}}<i class="material-icons ml-2">file_download</i>
 			</button>
 		</footer>
@@ -232,8 +232,14 @@ import { isEmpty } from "lodash-es";
 import { sendAddToQueue } from "@/utils/downloads";
 import Utils from "@/utils/utils";
 import EventBus from "@/utils/EventBus";
+import { useI18n } from "vue-i18n";
 
 export default {
+	setup() {
+		const { t } = useI18n();
+
+		return { t };
+	},
 	data() {
 		return {
 			title: "",
@@ -309,7 +315,7 @@ export default {
 			this.title = albumTitle;
 			this.explicit = explicit_lyrics;
 			this.label = albumLabel;
-			this.metadata = `${artistName} • ${this.$tc(
+			this.metadata = `${artistName} • ${this.t(
 				"globals.listTabs.trackN",
 				numberOfTracks
 			)}`;
@@ -340,9 +346,9 @@ export default {
 			this.title = playlistTitle;
 			this.image = playlistCover;
 			this.release_date = creation_date.substring(0, 10);
-			this.metadata = `${this.$t("globals.by", {
+			this.metadata = `${this.t("globals.by", {
 				artist: creatorName,
-			})} • ${this.$tc("globals.listTabs.trackN", numberOfTracks)}`;
+			})} • ${this.t("globals.listTabs.trackN", numberOfTracks)}`;
 
 			if (isEmpty(playlistTracks)) {
 				this.body = null;
@@ -370,9 +376,9 @@ export default {
 				? images[0].url
 				: "https://e-cdns-images.dzcdn.net/images/cover/d41d8cd98f00b204e9800998ecf8427e/1000x1000-000000-80-0-0.jpg";
 			this.release_date = "";
-			this.metadata = `${this.$t("globals.by", {
+			this.metadata = `${this.t("globals.by", {
 				artist: ownerName,
-			})} • ${this.$tc("globals.listTabs.trackN", numberOfTracks)}`;
+			})} • ${this.t("globals.listTabs.trackN", numberOfTracks)}`;
 
 			if (isEmpty(playlistTracks)) {
 				this.body = null;

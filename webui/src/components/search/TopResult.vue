@@ -31,7 +31,7 @@
 			{{ fansNumber }}
 		</p>
 		<span class="bg-primary rounded-xl p-1 px-2 text-center text-xs capitalize">
-			{{ $tc(`globals.listTabs.${$attrs.info.type}`, 1) }}
+			{{ t(`globals.listTabs.${$attrs.info.type}`, 1) }}
 		</span>
 	</div>
 </template>
@@ -39,10 +39,16 @@
 <script>
 import { upperCaseFirstLowerCaseRest } from "@/utils/texts";
 import CoverContainer from "@/components/globals/CoverContainer.vue";
+import { useI18n } from "vue-i18n";
 
 export default {
 	components: {
 		CoverContainer,
+	},
+	setup() {
+		const { t } = useI18n();
+
+		return { t };
 	},
 	computed: {
 		fansNumber() {
@@ -55,10 +61,10 @@ export default {
 			}
 
 			return this.$attrs.info.type === "artist"
-				? this.$t("search.fans", { n: number })
-				: this.$t("globals.by", { artist: this.$attrs.info.artist }) +
+				? this.t("search.fans", { n: number })
+				: this.t("globals.by", { artist: this.$attrs.info.artist }) +
 						" - " +
-						this.$tc("globals.listTabs.trackN", this.$attrs.info.nb_song);
+						this.t("globals.listTabs.trackN", this.$attrs.info.nb_song);
 		},
 	},
 	methods: {

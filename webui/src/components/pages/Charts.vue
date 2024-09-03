@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<h1 class="mb-8 text-5xl">
-			{{ $t("charts.title") }} {{ country ? `- ${country}` : "" }}
+			{{ t("charts.title") }} {{ country ? `- ${country}` : "" }}
 		</h1>
 
 		<div v-if="country === ''">
@@ -29,14 +29,14 @@
 
 		<div v-else>
 			<button class="btn btn-primary" @click="onChangeCountry">
-				{{ $t("charts.changeCountry") }}
+				{{ t("charts.changeCountry") }}
 			</button>
 			<button
 				:data-link="'https://www.deezer.com/playlist/' + id"
 				class="btn btn-primary"
 				@click.stop="addToQueue"
 			>
-				{{ $t("charts.download") }}
+				{{ t("charts.download") }}
 			</button>
 			<table class="table--charts table">
 				<tbody>
@@ -97,7 +97,7 @@
 							@click.stop="addToQueue"
 						>
 							<i
-								:title="$tc('globals.download_hint')"
+								:title="t('globals.download_hint')"
 								class="material-icons group-hover:text-primary transition-colors duration-150 ease-in-out"
 							>
 								get_app
@@ -112,14 +112,20 @@
 
 <script>
 import PreviewControls from "@/components/globals/PreviewControls.vue";
-import { sendAddToQueue } from "@/utils/downloads";
-import { convertDuration } from "@/utils/utils";
 import { getChartsData, getChartTracks } from "@/data/charts";
+import { sendAddToQueue } from "@/utils/downloads";
 import EventBus from "@/utils/EventBus";
+import { convertDuration } from "@/utils/utils";
+import { useI18n } from "vue-i18n";
 
 export default {
 	components: {
 		PreviewControls,
+	},
+	setup() {
+		const { t } = useI18n();
+
+		return { t };
 	},
 	data() {
 		return {

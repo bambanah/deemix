@@ -8,7 +8,7 @@
 		role="navigation"
 	>
 		<img
-			src="@/assets/deemix-icon.svg"
+			src="@/assets/deemix-icon.svg?url"
 			alt="deemix-icon"
 			class="mx-auto w-20"
 		/>
@@ -31,7 +31,7 @@
 				:class="{ hidden: isSlim }"
 				class="whitespace-no-wrap main-tablinks-text ml-3 overflow-hidden capitalize"
 			>
-				{{ $t(link.label) }}
+				{{ t(link.label) }}
 			</span>
 			<span
 				v-if="link.name === 'about' && updateAvailable"
@@ -84,9 +84,12 @@ import {
 	reactive,
 	toRefs,
 } from "vue";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
 	setup(_, ctx) {
+		const { t } = useI18n();
+
 		const currInstance = getCurrentInstance();
 
 		const activeTab = links.find(
@@ -119,6 +122,7 @@ export default defineComponent({
 			THEMES,
 			currentTheme,
 			isSlim: false,
+			t,
 		};
 	},
 });
@@ -132,10 +136,10 @@ export default defineComponent({
 .slim-sidebar .deemix-icon-container {
 	margin: 0.5rem 0;
 }
-.slim-sidebar .deemix-icon-container::v-deep svg {
+.slim-sidebar .deemix-icon-container:deep(svg) {
 	height: 30px;
 }
-.deemix-icon-container::v-deep svg {
+.deemix-icon-container:deep(svg) {
 	height: 75px;
 }
 

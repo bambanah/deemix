@@ -8,6 +8,7 @@ const DEFAULT_LANG = storedLocale || "en";
 document.querySelector("html").setAttribute("lang", DEFAULT_LANG);
 
 const i18n = createI18n({
+	legacy: false,
 	locale: DEFAULT_LANG,
 	fallbackLocale: "en",
 	messages: locales,

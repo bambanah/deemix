@@ -247,6 +247,9 @@ importers:
       '@vue/compat':
         specifier: ^3.1.0
         version: 3.4.38(vue@3.4.38(typescript@5.5.4))
+      deemix:
+        specifier: workspace:*
+        version: link:../deemix
       flag-icon-css:
         specifier: 3.5.0
         version: 3.5.0

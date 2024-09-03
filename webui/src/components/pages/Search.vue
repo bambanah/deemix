@@ -1,8 +1,8 @@
 <template>
 	<div id="search_tab">
 		<div v-show="isQueryEmpty && !isSearching">
-			<h2>{{ $t("search.startSearching") }}</h2>
-			<p>{{ $t("search.description") }}</p>
+			<h2>{{ t("search.startSearching") }}</h2>
+			<p>{{ t("search.description") }}</p>
 		</div>
 
 		<BaseLoadingPlaceholder text="Searching..." :hidden="!isSearching" />
@@ -65,6 +65,7 @@ import {
 import { standardizeData } from "@/data/standardize";
 import { useMainSearch } from "@/use/main-search";
 import { useSearch } from "@/use/search";
+import { useI18n } from "vue-i18n";
 
 const resetObj = { data: [], next: 0, total: 0, hasLoaded: false };
 
@@ -83,6 +84,7 @@ export default defineComponent({
 		},
 	},
 	setup(_, ctx) {
+		const { t } = useI18n();
 		const state = reactive({
 			currentTab: {
 				name: "",
@@ -247,6 +249,7 @@ export default defineComponent({
 			searchResult,
 			performMainSearch,
 			performSearch,
+			t,
 		};
 	},
 	computed: {

@@ -1,13 +1,13 @@
 <template>
 	<div id="home_tab">
-		<h1 class="mb-8 text-5xl">{{ $t("globals.welcome") }}</h1>
+		<h1 class="mb-8 text-5xl">{{ t("globals.welcome") }}</h1>
 
 		<section
 			v-if="!isLoggedIn"
 			ref="notLogged"
 			class="border-grayscale-500 border-0 border-t border-solid py-6"
 		>
-			<p id="home_not_logged_text" class="mb-4">{{ $t("home.needTologin") }}</p>
+			<p id="home_not_logged_text" class="mb-4">{{ t("home.needTologin") }}</p>
 			<router-link
 				v-slot="{ navigate }"
 				custom
@@ -16,7 +16,7 @@
 				:to="{ name: 'Settings' }"
 			>
 				<button role="link" @click="navigate" @keypress.enter="navigate">
-					{{ $t("home.openSettings") }}
+					{{ t("home.openSettings") }}
 				</button>
 			</router-link>
 		</section>
@@ -25,7 +25,7 @@
 			v-if="playlists.length"
 			class="border-grayscale-500 border-0 border-t border-solid py-6"
 		>
-			<h2 class="mb-6 text-3xl">{{ $t("home.sections.popularPlaylists") }}</h2>
+			<h2 class="mb-6 text-3xl">{{ t("home.sections.popularPlaylists") }}</h2>
 			<div class="release-grid">
 				<router-link
 					v-for="release in playlists"
@@ -49,7 +49,7 @@
 						<p class="primary-text">{{ release.title }}</p>
 						<p class="secondary-text">
 							{{
-								`${$t("globals.by", { artist: release.user.name })} - ${$tc(
+								`${t("globals.by", { artist: release.user.name })} - ${t(
 									"globals.listTabs.trackN",
 									release.nb_tracks
 								)}`
@@ -64,7 +64,7 @@
 			v-if="albums.length"
 			class="border-grayscale-500 border-0 border-t border-solid py-6"
 		>
-			<h2 class="mb-6 text-3xl">{{ $t("home.sections.popularAlbums") }}</h2>
+			<h2 class="mb-6 text-3xl">{{ t("home.sections.popularAlbums") }}</h2>
 			<div class="release-grid">
 				<router-link
 					v-for="release in albums"
@@ -88,7 +88,7 @@
 						/>
 						<p class="primary-text">{{ release.title }}</p>
 						<p class="secondary-text">
-							{{ `${$t("globals.by", { artist: release.artist.name })}` }}
+							{{ `${t("globals.by", { artist: release.artist.name })}` }}
 						</p>
 					</div>
 				</router-link>
@@ -103,12 +103,18 @@ import { getHomeData } from "@/data/home";
 import { pinia } from "@/stores";
 import { useLoginStore } from "@/stores/login";
 import { sendAddToQueue } from "@/utils/downloads";
+import { useI18n } from "vue-i18n";
 
 const loginStore = useLoginStore(pinia);
 
 export default {
 	components: {
 		CoverContainer,
+	},
+	setup() {
+		const { t } = useI18n();
+
+		return { t };
 	},
 	data() {
 		return {

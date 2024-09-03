@@ -21,8 +21,14 @@
 import { sendAddToQueue } from "@/utils/downloads";
 import { generatePath, copyToClipboard } from "@/utils/utils";
 import { downloadQualities } from "@/data/qualities";
+import { useI18n } from "vue-i18n";
 
 export default {
+	setup() {
+		const { t } = useI18n();
+
+		return { t };
+	},
 	data() {
 		return {
 			menuOpen: false,
@@ -40,7 +46,7 @@ export default {
 			// Use normal functions to keep the object instance in 'this'
 			const options = {
 				cut: {
-					label: this.$t("globals.cut"),
+					label: this.t("globals.cut"),
 					show: false,
 					position: 1,
 					action: () => {
@@ -48,7 +54,7 @@ export default {
 					},
 				},
 				copy: {
-					label: this.$t("globals.copy"),
+					label: this.t("globals.copy"),
 					show: false,
 					position: 2,
 					action: () => {
@@ -56,7 +62,7 @@ export default {
 					},
 				},
 				copyLink: {
-					label: this.$t("globals.copyLink"),
+					label: this.t("globals.copyLink"),
 					show: false,
 					position: 3,
 					action: () => {
@@ -64,7 +70,7 @@ export default {
 					},
 				},
 				copyImageLink: {
-					label: this.$t("globals.copyImageLink"),
+					label: this.t("globals.copyImageLink"),
 					show: false,
 					position: 4,
 					action: () => {
@@ -72,7 +78,7 @@ export default {
 					},
 				},
 				copyDeezerLink: {
-					label: this.$t("globals.copyDeezerLink"),
+					label: this.t("globals.copyDeezerLink"),
 					show: false,
 					position: 5,
 					action: () => {
@@ -80,7 +86,7 @@ export default {
 					},
 				},
 				paste: {
-					label: this.$t("globals.paste"),
+					label: this.t("globals.paste"),
 					show: false,
 					position: 6,
 					action: () => {
@@ -100,7 +106,7 @@ export default {
 
 			downloadQualities.forEach((quality, index) => {
 				options[quality.objName] = {
-					label: `${this.$t("globals.download", { thing: quality.label })}`,
+					label: `${this.t("globals.download", { thing: quality.label })}`,
 					show: false,
 					position: nextValuePosition + index,
 					action: sendAddToQueue.bind(null, this.deezerHref, quality.value),
