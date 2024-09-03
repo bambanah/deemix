@@ -1,32 +1,24 @@
-import App from "@/App.vue";
-import i18n from "@/plugins/i18n";
-import router from "@/router";
+import { useAppInfoStore } from "@/stores/appInfo";
+import { useLoginStore } from "@/stores/login";
 import { fetchData, postToServer } from "@/utils/api";
 import { sendAddToQueue } from "@/utils/downloads";
 import { socket } from "@/utils/socket";
 import { toast } from "@/utils/toasts";
 import { isValidURL } from "@/utils/utils";
-import Vue from "vue";
-import { useAppInfoStore } from "@/stores/appInfo";
-import { useLoginStore } from "./stores/login";
-import { createPinia, PiniaVuePlugin } from "pinia";
+import { createApp } from "vue";
+import { pinia } from "./stores";
+
+import App from "@/App.vue";
+import i18n from "@/plugins/i18n";
+import router from "@/router";
 
 import "@/styles/css/global.css";
 
 import "@/styles/vendor/material-icons.css";
 import "@/styles/vendor/OpenSans.css";
-import { pinia } from "./stores";
+import { useI18n } from "vue-i18n";
 
 /* ===== Random utils ===== */
-
-declare global {
-	interface Location {
-		base: string;
-	}
-	interface String {
-		capitalize(): string;
-	}
-}
 
 String.prototype.capitalize = function () {
 	return this.charAt(0).toUpperCase() + this.slice(1);
@@ -35,13 +27,13 @@ String.prototype.capitalize = function () {
 location.base = "/";
 
 /* ===== App initialization ===== */
-Vue.use(PiniaVuePlugin);
+const app = createApp(App);
 
-new Vue({
-	el: "#app",
-	router,
-	render: (h) => h(App),
-}).$mount("#app");
+app.use(pinia);
+app.use(router);
+app.use(i18n);
+
+app.mount("#app");
 
 async function startApp() {
 	const connectResponse = await fetchData("connect");
@@ -74,7 +66,7 @@ async function startApp() {
 		const accountNum = localStorage.getItem("accountNum");
 
 		async function login(arl: string, accountNum: number) {
-			toast(i18n.t("toasts.loggingIn"), "loading", false, "login-toast");
+			toast(i18n.global.t("toasts.loggingIn"), "loading", false, "login-toast");
 			arl = arl.trim();
 			let result;
 
@@ -110,18 +102,28 @@ async function startApp() {
 	}
 
 	if (connectResponse.checkForUpdates) {
-		toast(i18n.t("toasts.checkingUpdates"), "loading", false, "updates-toast");
+		toast(
+			i18n.global.t("toasts.checkingUpdates"),
+			"loading",
+			false,
+			"updates-toast"
+		);
 		const updates = await fetchData("checkForUpdates");
 		appInfoStore.setUpdateInfo(updates);
 		if (updates.updateAvailable) {
 			toast(
-				i18n.t("toasts.updateAvailable"),
+				i18n.global.t("toasts.updateAvailable"),
 				"browser_updated",
 				true,
 				"updates-toast"
 			);
 		} else {
-			toast(i18n.t("toasts.noUpdateAvailable"), "done", true, "updates-toast");
+			toast(
+				i18n.global.t("toasts.noUpdateAvailable"),
+				"done",
+				true,
+				"updates-toast"
+			);
 		}
 	}
 }
@@ -149,7 +151,7 @@ document.addEventListener("paste", (pasteEvent: ClipboardEvent) => {
 	if (!pastedText) return;
 
 	if (isValidURL(pastedText)) {
-		if (router.currentRoute.name === "Link Analyzer") {
+		if (router.currentRoute.value.name === "Link Analyzer") {
 			socket.emit("analyzeLink", pastedText);
 		} else {
 			if (pastedText.includes("\n"))
@@ -180,6 +182,7 @@ function setClientModeKeyBindings() {
 		}
 	});
 }
+
 function loggedIn(data: { status: number; user: any; arl: string | null }) {
 	const { status, user } = data;
 	const loginStore = useLoginStore(pinia);
@@ -188,24 +191,29 @@ function loggedIn(data: { status: number; user: any; arl: string | null }) {
 		case 1:
 		case 3:
 			// Login ok
-			toast(i18n.t("toasts.loggedIn"), "done", true, "login-toast");
+			toast(i18n.global.t("toasts.loggedIn"), "done", true, "login-toast");
 
 			loginStore.login(data);
 			break;
 		case 2:
 			// Already logged in
-			toast(i18n.t("toasts.alreadyLogged"), "done", true, "login-toast");
+			toast(i18n.global.t("toasts.alreadyLogged"), "done", true, "login-toast");
 
 			loginStore.setUser(user);
 			break;
 		case 0:
 			// Login failed
-			toast(i18n.t("toasts.loginFailed"), "close", true, "login-toast");
+			toast(i18n.global.t("toasts.loginFailed"), "close", true, "login-toast");
 
 			loginStore.removeARL();
 			break;
 		case -1:
-			toast(i18n.t("toasts.deezerNotAvailable"), "close", true, "login-toast");
+			toast(
+				i18n.global.t("toasts.deezerNotAvailable"),
+				"close",
+				true,
+				"login-toast"
+			);
 
 		// TODO
 		// $('#open_login_prompt').show()
@@ -223,12 +231,17 @@ socket.on("message", function (msg: string) {
 	console.log(msg);
 });
 socket.on("restoringQueue", function () {
-	toast(i18n.t("toasts.restoringQueue"), "loading", false, "restoring_queue");
+	toast(
+		i18n.global.t("toasts.restoringQueue"),
+		"loading",
+		false,
+		"restoring_queue"
+	);
 });
 
 socket.on("cancellingCurrentItem", function (uuid: string) {
 	toast(
-		i18n.t("toasts.cancellingCurrentItem"),
+		i18n.global.t("toasts.cancellingCurrentItem"),
 		"loading",
 		false,
 		"cancelling_" + uuid
@@ -237,7 +250,7 @@ socket.on("cancellingCurrentItem", function (uuid: string) {
 
 socket.on("currentItemCancelled", function (uuid: string) {
 	toast(
-		i18n.t("toasts.currentItemCancelled"),
+		i18n.global.t("toasts.currentItemCancelled"),
 		"done",
 		true,
 		"cancelling_" + uuid
@@ -246,7 +259,7 @@ socket.on("currentItemCancelled", function (uuid: string) {
 
 socket.on("startAddingArtist", function (data: { name: string; id: string }) {
 	toast(
-		i18n.t("toasts.startAddingArtist", { artist: data.name }),
+		i18n.global.t("toasts.startAddingArtist", { artist: data.name }),
 		"loading",
 		false,
 		"artist_" + data.id
@@ -255,7 +268,7 @@ socket.on("startAddingArtist", function (data: { name: string; id: string }) {
 
 socket.on("finishAddingArtist", function (data: { name: string; id: string }) {
 	toast(
-		i18n.t("toasts.finishAddingArtist", { artist: data.name }),
+		i18n.global.t("toasts.finishAddingArtist", { artist: data.name }),
 		"done",
 		true,
 		"artist_" + data.id
@@ -264,7 +277,7 @@ socket.on("finishAddingArtist", function (data: { name: string; id: string }) {
 
 socket.on("startConvertingSpotifyPlaylist", function (id: string) {
 	toast(
-		i18n.t("toasts.startConvertingSpotifyPlaylist"),
+		i18n.global.t("toasts.startConvertingSpotifyPlaylist"),
 		"loading",
 		false,
 		"spotifyplaylist_" + id
@@ -273,7 +286,7 @@ socket.on("startConvertingSpotifyPlaylist", function (id: string) {
 
 socket.on("finishConvertingSpotifyPlaylist", function (id: string) {
 	toast(
-		i18n.t("toasts.finishConvertingSpotifyPlaylist"),
+		i18n.global.t("toasts.finishConvertingSpotifyPlaylist"),
 		"done",
 		true,
 		"spotifyplaylist_" + id
@@ -287,7 +300,7 @@ socket.on("errorMessage", function (error: Error) {
 socket.on("queueError", function (queueItem: any) {
 	if (queueItem.errid) {
 		toast(
-			queueItem.link + " - " + i18n.t(`errors.ids.${queueItem.errid}`),
+			queueItem.link + " - " + i18n.global.t(`errors.ids.${queueItem.errid}`),
 			"error"
 		);
 	} else {
@@ -297,13 +310,13 @@ socket.on("queueError", function (queueItem: any) {
 
 socket.on("alreadyInQueue", function (data: { title: string }) {
 	toast(
-		i18n.t("toasts.alreadyInQueue", { item: data.title }),
+		i18n.global.t("toasts.alreadyInQueue", { item: data.title }),
 		"playlist_add_check"
 	);
 });
 
 socket.on("queueErrorNotLoggedIn", function () {
-	toast(i18n.t("toasts.loginNeededToDownload"), "report");
+	toast(i18n.global.t("toasts.loginNeededToDownload"), "report");
 });
 const bitrateLabels = {
 	15: "360 HQ",
@@ -319,7 +332,7 @@ socket.on(
 	"queueErrorCantStream",
 	function (bitrate: keyof typeof bitrateLabels) {
 		toast(
-			i18n.t("toasts.queueErrorCantStream", {
+			i18n.global.t("toasts.queueErrorCantStream", {
 				bitrate: bitrateLabels[bitrate],
 			}),
 			"report"
@@ -331,7 +344,7 @@ socket.on(
 	"startGeneratingItems",
 	function (data: { total: number; uuid: string }) {
 		toast(
-			i18n.t("toasts.startGeneratingItems", { n: data.total }),
+			i18n.global.t("toasts.startGeneratingItems", { n: data.total }),
 			"loading",
 			false,
 			"batch_" + data.uuid
@@ -343,7 +356,7 @@ socket.on(
 	"finishGeneratingItems",
 	function (data: { total: number; uuid: string }) {
 		toast(
-			i18n.t("toasts.finishGeneratingItems", { n: data.total }),
+			i18n.global.t("toasts.finishGeneratingItems", { n: data.total }),
 			"done",
 			true,
 			"batch_" + data.uuid
