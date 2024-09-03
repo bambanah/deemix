@@ -1,12 +1,12 @@
 <template>
 	<header id="search" aria-label="searchbar" :class="{ showSearchButton }">
-		<div v-if="!showSearchButton" class="search__icon">
+		<div v-show="!showSearchButton" class="search__icon">
 			<i class="material-icons">search</i>
 		</div>
 
 		<input
 			id="searchbar"
-			ref="searchbar"
+			:ref="searchbar"
 			class="w-full"
 			autocomplete="off"
 			type="search"
@@ -19,7 +19,7 @@
 		<!-- @keyup.enter.exact="onEnter"
 			@keyup.ctrl.enter="onCTRLEnter" -->
 		<a
-			v-if="showSearchButton"
+			v-show="showSearchButton"
 			href="#"
 			class="searchButton"
 			@contextmenu="rightClickPerformSearch"
@@ -29,7 +29,7 @@
 	</header>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref } from "vue";
 import { isValidURL } from "@/utils/utils";
 import { sendAddToQueue } from "@/utils/downloads";
@@ -53,33 +53,30 @@ export default defineComponent({
 	computed: {
 		showSearchButton: () => appInfoStore.showSearchButton,
 	},
-	created() {
-		const focusSearchBar = (keyEvent) => {
+	mounted() {
+		document.addEventListener("keydown", this.focusSearchBar);
+		document.addEventListener("keyup", this.deleteSearchBarContent);
+	},
+	unmounted() {
+		document.removeEventListener("keydown", this.focusSearchBar);
+		document.removeEventListener("keyup", this.deleteSearchBarContent);
+	},
+	methods: {
+		focusSearchBar: (keyEvent) => {
 			if (keyEvent.keyCode === 70 && keyEvent.ctrlKey) {
 				keyEvent.preventDefault();
-				this.$refs.searchbar.focus();
+				$refs.searchbar.focus();
 			}
-		};
-
-		const deleteSearchBarContent = (keyEvent) => {
+		},
+		deleteSearchBarContent: (keyEvent) => {
 			if (
 				!(keyEvent.key === "Backspace" && keyEvent.ctrlKey && keyEvent.shiftKey)
 			)
 				return;
 
-			this.$refs.searchbar.value = "";
-			this.$refs.searchbar.focus();
-		};
-
-		document.addEventListener("keydown", focusSearchBar);
-		document.addEventListener("keyup", deleteSearchBarContent);
-
-		this.$on("hook:destroyed", () => {
-			document.removeEventListener("keydown", focusSearchBar);
-			document.removeEventListener("keyup", deleteSearchBarContent);
-		});
-	},
-	methods: {
+			$refs.searchbar.value = "";
+			$refs.searchbar.focus();
+		},
 		async clickPerformSearch(ev) {
 			ev.preventDefault();
 			const term = this.$refs.searchbar.value;
@@ -116,7 +113,7 @@ export default defineComponent({
 
 			if (isSearchingURL) {
 				if (modifierKey) {
-					this.$root.$emit("ContextMenu:searchbar", term);
+					emitter.emit("ContextMenu:searchbar", term);
 					return;
 				}
 

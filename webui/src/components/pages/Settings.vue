@@ -1219,16 +1219,16 @@ export default {
 		socket.on("updateSettings", this.updateSettings);
 		// socket.on('accountChanged', this.accountChanged)
 		socket.on("familyAccounts", this.initAccounts);
+
 		if (this.clientMode) {
 			window.api.receive("downloadFolderSelected", this.downloadFolderSelected);
 			window.api.receive("applogin_arl", this.loggedInViaDeezer);
 		}
-
-		this.$on("hook:destroyed", () => {
-			socket.off("updateSettings");
-			// socket.off('accountChanged')
-			socket.off("familyAccounts");
-		});
+	},
+	unmounted() {
+		socket.off("updateSettings");
+		// socket.off('accountChanged')
+		socket.off("familyAccounts");
 	},
 	methods: {
 		onTemplateVariableClick(templateName) {
