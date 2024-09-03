@@ -31,7 +31,6 @@ interface ArtistRelease {
 function formatArtistReleases(
 	artistReleases: { [key: string]: any[] } | undefined
 ) {
-	console.log(artistReleases);
 	const formattedReleases: Record<string, ArtistRelease[]> = {};
 
 	for (const releaseType in artistReleases) {
