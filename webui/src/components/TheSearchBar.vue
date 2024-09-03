@@ -34,7 +34,7 @@ import { defineComponent, ref } from "vue";
 import { isValidURL } from "@/utils/utils";
 import { sendAddToQueue } from "@/utils/downloads";
 import { fetchData } from "@/utils/api";
-import EventBus from "@/utils/EventBus";
+import { emitter } from "@/utils/emitter";
 import { useAppInfoStore } from "@/stores/appInfo";
 import { pinia } from "@/stores";
 import { useI18n } from "vue-i18n";
@@ -126,16 +126,16 @@ export default defineComponent({
 						const isError = !!analyzedData.errorCode;
 
 						if (isError) {
-							EventBus.$emit("analyze_notSupported", analyzedData);
+							emitter.emit("analyze_notSupported", analyzedData);
 							return;
 						}
 
 						if (analyzedData.type === "track") {
-							EventBus.$emit("analyze_track", analyzedData);
+							emitter.emit("analyze_track", analyzedData);
 						}
 
 						if (analyzedData.type === "album") {
-							EventBus.$emit("analyze_album", analyzedData);
+							emitter.emit("analyze_album", analyzedData);
 						}
 						return;
 					} catch (error) {

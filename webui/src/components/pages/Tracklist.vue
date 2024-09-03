@@ -231,7 +231,7 @@
 import { isEmpty } from "lodash-es";
 import { sendAddToQueue } from "@/utils/downloads";
 import Utils from "@/utils/utils";
-import EventBus from "@/utils/EventBus";
+import { emitter } from "@/utils/emitter";
 import { useI18n } from "vue-i18n";
 
 export default {
@@ -254,13 +254,13 @@ export default {
 		};
 	},
 	mounted() {
-		EventBus.$on("showAlbum", this.showAlbum);
-		EventBus.$on("showPlaylist", this.showPlaylist);
-		EventBus.$on("showSpotifyPlaylist", this.showSpotifyPlaylist);
+		emitter.on("showAlbum", this.showAlbum);
+		emitter.on("showPlaylist", this.showPlaylist);
+		emitter.on("showSpotifyPlaylist", this.showSpotifyPlaylist);
 	},
 	methods: {
 		playPausePreview: (e) => {
-			EventBus.$emit("trackPreview:playPausePreview", e);
+			emitter.emit("trackPreview:playPausePreview", e);
 		},
 		reset() {
 			this.title = "Loading...";

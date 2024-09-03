@@ -10,16 +10,16 @@
 </template>
 
 <script setup lang="ts">
-import EventBus from "@/utils/EventBus";
 import { useI18n } from "vue-i18n";
+import { emitter } from "@/utils/emitter";
 
 const { t } = useI18n();
 
 const previewMouseEnter = () => {
-	EventBus.$emit("trackPreview:previewMouseEnter");
+	emitter.emit("trackPreview:previewMouseEnter");
 };
 
 const previewMouseLeave = () => {
-	EventBus.$emit("trackPreview:previewMouseLeave");
+	emitter.emit("trackPreview:previewMouseLeave");
 };
 </script>

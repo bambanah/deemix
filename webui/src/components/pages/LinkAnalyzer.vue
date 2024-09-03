@@ -192,12 +192,12 @@
 </template>
 
 <script>
-import { convertDuration } from "@/utils/utils";
+import { pinia } from "@/stores";
+import { useLoginStore } from "@/stores/login";
 import { COUNTRIES } from "@/utils/countries";
 import { sendAddToQueue } from "@/utils/downloads";
-import EventBus from "@/utils/EventBus";
-import { useLoginStore } from "@/stores/login";
-import { pinia } from "@/stores";
+import { emitter } from "@/utils/emitter";
+import { convertDuration } from "@/utils/utils";
 import { useI18n } from "vue-i18n";
 
 const loginStore = useLoginStore(pinia);
@@ -225,9 +225,9 @@ export default {
 		user: () => loginStore.user,
 	},
 	mounted() {
-		EventBus.$on("analyze_track", this.showTrack);
-		EventBus.$on("analyze_album", this.showAlbum);
-		EventBus.$on("analyze_notSupported", this.notSupported);
+		emitter.on("analyze_track", this.showTrack);
+		emitter.on("analyze_album", this.showAlbum);
+		emitter.on("analyze_notSupported", this.notSupported);
 	},
 	methods: {
 		convertDuration,

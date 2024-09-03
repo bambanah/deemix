@@ -114,7 +114,7 @@
 import PreviewControls from "@/components/globals/PreviewControls.vue";
 import { getChartsData, getChartTracks } from "@/data/charts";
 import { sendAddToQueue } from "@/utils/downloads";
-import EventBus from "@/utils/EventBus";
+import { emitter } from "@/utils/emitter";
 import { convertDuration } from "@/utils/utils";
 import { useI18n } from "vue-i18n";
 
@@ -168,7 +168,7 @@ export default {
 	methods: {
 		convertDuration,
 		playPausePreview: (e) => {
-			EventBus.$emit("trackPreview:playPausePreview", e);
+			emitter.emit("trackPreview:playPausePreview", e);
 		},
 		addToQueue(e) {
 			e.stopPropagation();

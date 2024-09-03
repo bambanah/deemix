@@ -251,7 +251,7 @@ import CoverContainer from "@/components/globals/CoverContainer.vue";
 import PreviewControls from "@/components/globals/PreviewControls.vue";
 import { useFavorites } from "@/use/favorites";
 import { aggregateDownloadLinks, sendAddToQueue } from "@/utils/downloads";
-import EventBus from "@/utils/EventBus";
+import { emitter } from "@/utils/emitter";
 import { toast } from "@/utils/toasts";
 import { convertDuration } from "@/utils/utils";
 import { useI18n } from "vue-i18n";
@@ -315,7 +315,7 @@ export default defineComponent({
 	},
 	methods: {
 		playPausePreview: (e) => {
-			EventBus.$emit("trackPreview:playPausePreview", e);
+			emitter.emit("trackPreview:playPausePreview", e);
 		},
 		convertDuration,
 		downloadAllOfType() {

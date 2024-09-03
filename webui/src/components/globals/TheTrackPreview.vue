@@ -11,7 +11,7 @@
 import router from "@/router";
 import { pinia } from "@/stores";
 import { useAppInfoStore } from "@/stores/appInfo";
-import EventBus from "@/utils/EventBus";
+import { emitter } from "@/utils/emitter";
 import { adjustVolume } from "@/utils/adjust-volume";
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 
@@ -173,14 +173,14 @@ onMounted(() => {
 		next();
 	});
 
-	EventBus.$on("trackPreview:playPausePreview", playPausePreview);
-	EventBus.$on("trackPreview:previewMouseEnter", previewMouseEnter);
-	EventBus.$on("trackPreview:previewMouseLeave", previewMouseLeave);
+	emitter.on("trackPreview:playPausePreview", playPausePreview);
+	emitter.on("trackPreview:previewMouseEnter", previewMouseEnter);
+	emitter.on("trackPreview:previewMouseLeave", previewMouseLeave);
 });
 
 onBeforeUnmount(() => {
-	EventBus.$off("trackPreview:playPausePreview", playPausePreview);
-	EventBus.$off("trackPreview:previewMouseEnter", previewMouseEnter);
-	EventBus.$off("trackPreview:previewMouseLeave", previewMouseLeave);
+	emitter.off("trackPreview:playPausePreview", playPausePreview);
+	emitter.off("trackPreview:previewMouseEnter", previewMouseEnter);
+	emitter.off("trackPreview:previewMouseLeave", previewMouseLeave);
 });
 </script>
