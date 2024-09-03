@@ -11,19 +11,7 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			"@": fileURLToPath(new URL("./src", import.meta.url)),
-			vue: "@vue/compat",
 		},
 	},
-	plugins: [
-		vue({
-			template: {
-				compilerOptions: {
-					compatConfig: {
-						MODE: 3,
-					},
-				},
-			},
-		}),
-		svgLoader(),
-	],
+	plugins: [vue(), svgLoader()],
 });

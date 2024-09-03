@@ -89,6 +89,7 @@ import { useAppInfoStore } from "@/stores/appInfo";
 import { useErrorStore } from "@/stores/errors";
 import { pinia } from "@/stores";
 import { useI18n } from "vue-i18n";
+import { reactive } from "vue";
 
 const tabMinWidth = 250;
 const tabMaxWidth = 500;
@@ -110,7 +111,7 @@ export default {
 		return {
 			cachedTabWidth: parseInt(localStorage.getItem("downloadTabWidth")) || 300,
 			queue: [],
-			queueList: {},
+			queueList: reactive({}),
 			queueComplete: [],
 			isExpanded: localStorage.getItem("downloadTabOpen") === "true",
 		};
@@ -177,7 +178,6 @@ export default {
 			socket.emit("removeFromQueue", uuid);
 		},
 		onRetryDownload(uuid) {
-			console.log("Retry", uuid);
 			postToServer("retryDownload", { uuid });
 		},
 		setTabWidth(newWidth) {
@@ -252,8 +252,8 @@ export default {
 			queueItem.errors = queueItem.errors || [];
 
 			// * Here we have only queueItem objects
-			this.$set(queueItem, "current", current);
-			this.$set(this.queueList, queueItem.uuid, queueItem);
+			queueItem.current = current;
+			this.queueList[queueItem.uuid] = queueItem;
 
 			// * Used when opening the app in another tab
 			const itemIsAlreadyDownloaded =
@@ -264,11 +264,7 @@ export default {
 					queueItem.uuid
 				);
 
-				this.$set(
-					this.queueList[queueItem.uuid],
-					"status",
-					"download finished"
-				);
+				this.queueList[queueItem.uuid].status = "download finished";
 
 				if (itemIsNotInCompletedQueue) {
 					// * Add it
@@ -345,8 +341,8 @@ export default {
 			const index = this.queue.indexOf(uuid);
 
 			if (index > -1) {
-				this.$delete(this.queue, index);
-				this.$delete(this.queueList, uuid);
+				delete this.queue[index];
+				delete this.queueList[uuid];
 			}
 		},
 		removeAllDownloads(currentItem) {
@@ -369,7 +365,7 @@ export default {
 			this.queueComplete = this.finishedWithoutErrors.map((el) => el.uuid);
 
 			this.queueComplete.forEach((uuid) => {
-				this.$delete(this.queueList, uuid);
+				delete this.queueList[uuid];
 			});
 
 			this.queueComplete = [];
@@ -415,7 +411,7 @@ export default {
 			document.addEventListener("mousemove", this.handleDrag);
 		},
 		startDownload(uuid) {
-			this.$set(this.queueList[uuid], "status", "downloading");
+			this.queueList[uuid].status = "downloading";
 		},
 		finishDownload(uuid) {
 			const isInQueue =
@@ -423,7 +419,7 @@ export default {
 
 			if (!isInQueue) return;
 
-			this.$set(this.queueList[uuid], "status", "download finished");
+			this.queueList[uuid].status = "download finished";
 			toast(
 				this.t("toasts.finishDownload", { item: this.queueList[uuid].title }),
 				"done"
@@ -441,15 +437,11 @@ export default {
 			}
 		},
 		startConversion(uuid) {
-			this.$set(this.queueList[uuid], "status", "converting");
-			this.$set(this.queueList[uuid], "conversion", 0);
+			this.queueList[uuid].status = "converting";
+			this.queueList[uuid].conversion = 0;
 		},
 		finishConversion(downloadObject) {
-			this.$set(
-				this.queueList[downloadObject.uuid],
-				"size",
-				downloadObject.size
-			);
+			this.queueList[downloadObject.uuid].size = downloadObject.size;
 		},
 		async showErrorsTab(item) {
 			await this.setErrors(item);

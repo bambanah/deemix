@@ -7,7 +7,7 @@
 				aria-label="reload"
 				class="clickable inline-block"
 				role="button"
-				@click="refreshFavorites"
+				@click="onRefreshFavorites"
 			>
 				<i :class="{ spin: isRefreshingFavorites }" class="material-icons"
 					>sync</i
@@ -242,11 +242,11 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, reactive, toRefs, watch } from "vue";
 
-import { BaseTab } from "@/components/globals/BaseTab";
-import { BaseTabs } from "@/components/globals/BaseTabs";
+import BaseTab from "@/components/globals/BaseTab.vue";
+import BaseTabs from "@/components/globals/BaseTabs.vue";
 import CoverContainer from "@/components/globals/CoverContainer.vue";
 import PreviewControls from "@/components/globals/PreviewControls.vue";
 import { useFavorites } from "@/use/favorites";
@@ -293,6 +293,10 @@ export default defineComponent({
 			toast(t("toasts.refreshFavs"), "done", true);
 		});
 
+		const onRefreshFavorites = (e: MouseEvent) => {
+			refreshFavorites({});
+		};
+
 		return {
 			...toRefs(state),
 			tracks: favoriteTracks,
@@ -301,7 +305,7 @@ export default defineComponent({
 			playlists: favoritePlaylists,
 			spotifyPlaylists: favoriteSpotifyPlaylists,
 			lovedTracks: lovedTracksPlaylist,
-			refreshFavorites,
+			onRefreshFavorites,
 			isRefreshingFavorites,
 			t,
 		};
@@ -337,6 +341,7 @@ export default defineComponent({
 			}
 		},
 		addToQueue(e) {
+			e.stopPropagation();
 			sendAddToQueue(e.currentTarget.dataset.link);
 		},
 		getActiveRelease(tab = this.activeTab) {

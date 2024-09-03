@@ -46,8 +46,8 @@ import {
 } from "vue";
 
 import BaseLoadingPlaceholder from "@/components/globals/BaseLoadingPlaceholder.vue";
-import { BaseTab } from "@/components/globals/BaseTab";
-import { BaseTabs } from "@/components/globals/BaseTabs";
+import BaseTab from "@/components/globals/BaseTab.vue";
+import BaseTabs from "@/components/globals/BaseTabs.vue";
 import ResultsAlbums from "@/components/search/ResultsAlbums.vue";
 import ResultsAll from "@/components/search/ResultsAll.vue";
 import ResultsArtists from "@/components/search/ResultsArtists.vue";

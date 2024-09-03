@@ -1096,6 +1096,7 @@ import { useLoginStore } from "@/stores/login";
 import { useAppInfoStore } from "@/stores/appInfo";
 import { pinia } from "@/stores";
 import { useI18n } from "vue-i18n";
+import { reactive } from "vue";
 
 const loginStore = useLoginStore(pinia);
 const appInfoStore = useAppInfoStore(pinia);
@@ -1114,10 +1115,11 @@ export default {
 	data: () => {
 		return {
 			flags,
-			settings: {
+			settings: reactive({
 				tags: {},
 				executeCommand: "",
-			},
+				downloadLocation: "",
+			}),
 			lastSettings: {},
 			spotifyFeatures: {},
 			lastCredentials: {},
@@ -1286,7 +1288,7 @@ export default {
 			window.api.send("selectDownloadFolder", this.settings.downloadLocation);
 		},
 		downloadFolderSelected(folder) {
-			this.$set(this.settings, "downloadLocation", folder);
+			this.settings.downloadLocation = folder;
 		},
 		loadSettings(data) {
 			this.lastSettings = JSON.parse(JSON.stringify(data));

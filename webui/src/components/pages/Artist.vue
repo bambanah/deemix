@@ -135,8 +135,8 @@
 </template>
 
 <script lang="ts">
-import { BaseTab } from "@/components/globals/BaseTab";
-import { BaseTabs } from "@/components/globals/BaseTabs";
+import BaseTab from "@/components/globals/BaseTab.vue";
+import BaseTabs from "@/components/globals/BaseTabs.vue";
 import { formatArtistData, getArtistData } from "@/data/artist";
 import { checkNewRelease } from "@/utils/dates";
 import { sendAddToQueue } from "@/utils/downloads";
