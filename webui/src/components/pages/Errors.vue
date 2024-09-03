@@ -60,8 +60,11 @@
 	</div>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
+<script lang="ts">
+import { pinia } from "@/stores";
+import { useErrorStore } from "@/stores/errors";
+
+const errorStore = useErrorStore(pinia);
 
 export default {
 	data() {
@@ -79,26 +82,25 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(["getErrors"]),
 		title() {
-			return `${this.getErrors.artist} - ${this.getErrors.title}`;
+			return `${errorStore.artist} - ${errorStore.title}`;
 		},
 		errors() {
 			let errors = [];
-			this.getErrors.errors.forEach((error) => {
+			errorStore.errors.forEach((error) => {
 				if (!error.type || error.type === "track") errors.push(error);
 			});
 			return errors;
 		},
 		postErrors() {
 			let errors = [];
-			this.getErrors.errors.forEach((error) => {
+			errorStore.errors.forEach((error) => {
 				if (error.type === "post") errors.push(error);
 			});
 			return errors;
 		},
 		downloadBitrate() {
-			return this.BITRATE_LABELS[this.getErrors.bitrate];
+			return this.BITRATE_LABELS[errorStore.bitrate];
 		},
 	},
 };

@@ -32,7 +32,7 @@ export function sendToServer(key: string, data: Record<string, any>) {
 	});
 }
 
-export function postToServer(endpoint: string, data: Record<string, any>) {
+export function postToServer(endpoint: string, data?: Record<string, any>) {
 	const url = new URL(
 		`${window.location.origin}${location.base}api/${endpoint}`
 	);

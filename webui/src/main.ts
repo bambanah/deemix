@@ -1,18 +1,21 @@
 import App from "@/App.vue";
 import i18n from "@/plugins/i18n";
 import router from "@/router";
-import store from "@/store";
 import { fetchData, postToServer } from "@/utils/api";
 import { sendAddToQueue } from "@/utils/downloads";
 import { socket } from "@/utils/socket";
 import { toast } from "@/utils/toasts";
 import { isValidURL } from "@/utils/utils";
 import Vue from "vue";
+import { useAppInfoStore } from "@/stores/appInfo";
+import { useLoginStore } from "./stores/login";
+import { createPinia, PiniaVuePlugin } from "pinia";
 
 import "@/styles/css/global.css";
 
 import "@/styles/vendor/material-icons.css";
 import "@/styles/vendor/OpenSans.css";
+import { pinia } from "./stores";
 
 /* ===== Random utils ===== */
 
@@ -32,14 +35,15 @@ String.prototype.capitalize = function () {
 location.base = "/";
 
 /* ===== App initialization ===== */
-async function startApp() {
-	new Vue({
-		store,
-		router,
-		i18n,
-		render: (h) => h(App),
-	}).$mount("#app");
+Vue.use(PiniaVuePlugin);
+new Vue({
+	el: "#app",
+	router,
+	i18n,
+	render: (h) => h(App),
+}).$mount("#app");
 
+async function startApp() {
 	const connectResponse = await fetchData("connect");
 	const spotifyStatus = connectResponse.spotifyEnabled ? "enabled" : "disabled";
 
@@ -50,8 +54,11 @@ async function startApp() {
 		document.getElementById("deezer_not_available")?.classList.remove("hide");
 	}
 
-	store.dispatch("setAppInfo", connectResponse.update).catch(console.error);
-	store.dispatch("setSpotifyStatus", spotifyStatus).catch(console.error);
+	const appInfoStore = useAppInfoStore(pinia);
+	const loginStore = useLoginStore(pinia);
+
+	appInfoStore.setAppInfo(connectResponse.update);
+	loginStore.setSpotifyStatus(spotifyStatus);
 
 	let arl = localStorage.getItem("arl");
 	let accessToken = localStorage.getItem("accessToken");
@@ -92,7 +99,7 @@ async function startApp() {
 				});
 				if (newArl && newArl !== arl) {
 					arl = newArl;
-					store.dispatch("setARL", { arl });
+					loginStore.setARL(arl);
 				}
 				result = await login(newArl, Number(accountNum));
 			}
@@ -105,7 +112,7 @@ async function startApp() {
 	if (connectResponse.checkForUpdates) {
 		toast(i18n.t("toasts.checkingUpdates"), "loading", false, "updates-toast");
 		const updates = await fetchData("checkForUpdates");
-		store.dispatch("setUpdateInfo", updates).catch(console.error);
+		appInfoStore.setUpdateInfo(updates);
 		if (updates.updateAvailable) {
 			toast(
 				i18n.t("toasts.updateAvailable"),
@@ -120,7 +127,8 @@ async function startApp() {
 }
 
 function initClient() {
-	store.dispatch("setClientMode", true);
+	const loginStore = useLoginStore(pinia);
+	loginStore.setClientMode(true);
 	setClientModeKeyBindings();
 }
 
@@ -174,6 +182,7 @@ function setClientModeKeyBindings() {
 }
 function loggedIn(data: { status: number; user: any; arl: string | null }) {
 	const { status, user } = data;
+	const loginStore = useLoginStore(pinia);
 
 	switch (status) {
 		case 1:
@@ -181,19 +190,19 @@ function loggedIn(data: { status: number; user: any; arl: string | null }) {
 			// Login ok
 			toast(i18n.t("toasts.loggedIn"), "done", true, "login-toast");
 
-			store.dispatch("login", data);
+			loginStore.login(data);
 			break;
 		case 2:
 			// Already logged in
 			toast(i18n.t("toasts.alreadyLogged"), "done", true, "login-toast");
 
-			store.dispatch("setUser", user);
+			loginStore.setUser(user);
 			break;
 		case 0:
 			// Login failed
 			toast(i18n.t("toasts.loginFailed"), "close", true, "login-toast");
 
-			store.dispatch("removeARL");
+			loginStore.removeARL();
 			break;
 		case -1:
 			toast(i18n.t("toasts.deezerNotAvailable"), "close", true, "login-toast");

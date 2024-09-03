@@ -61,7 +61,7 @@
 										}"
 										:data-preview="track.preview"
 										:data-link-only="track.link"
-										:title="$t('globals.play_hint')"
+										:title="$tc('globals.play_hint')"
 										class="material-icons"
 										v-on="{ click: track.preview ? playPausePreview : false }"
 									>
@@ -164,7 +164,7 @@
 									'cursor-pointer': track.preview_url,
 								}"
 								:data-preview="track.preview_url"
-								:title="$t('globals.play_hint')"
+								:title="$tc('globals.play_hint')"
 								class="material-icons"
 								@click="playPausePreview"
 							>

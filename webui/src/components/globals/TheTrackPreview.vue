@@ -9,20 +9,18 @@
 
 <script setup lang="ts">
 import router from "@/router";
-import { useStore } from "@/store";
+import { pinia } from "@/stores";
+import { useAppInfoStore } from "@/stores/appInfo";
 import EventBus from "@/utils/EventBus";
 import { adjustVolume } from "@/utils/adjust-volume";
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 
-// Refs
 const preview = ref<HTMLAudioElement | null>(null);
 const previewStopped = ref(false);
 
-// Vuex Store
-const store = useStore();
-const previewVolume = computed(() => store.getters.getPreviewVolume);
+const appInfoStore = useAppInfoStore(pinia);
+const previewVolume = computed(() => appInfoStore.previewVolume);
 
-// Functions
 const onCanPlay = async () => {
 	if (!preview.value) return;
 

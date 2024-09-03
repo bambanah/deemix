@@ -30,12 +30,15 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import { defineComponent, ref } from "vue";
 import { isValidURL } from "@/utils/utils";
 import { sendAddToQueue } from "@/utils/downloads";
 import { fetchData } from "@/utils/api";
 import EventBus from "@/utils/EventBus";
+import { useAppInfoStore } from "@/stores/appInfo";
+import { pinia } from "@/stores";
+
+const appInfoStore = useAppInfoStore(pinia);
 
 export default defineComponent({
 	setup() {
@@ -44,9 +47,7 @@ export default defineComponent({
 		};
 	},
 	computed: {
-		...mapGetters({
-			showSearchButton: "getShowSearchButton",
-		}),
+		showSearchButton: () => appInfoStore.showSearchButton,
 	},
 	created() {
 		const focusSearchBar = (keyEvent) => {

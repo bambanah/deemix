@@ -72,9 +72,10 @@
 	</aside>
 </template>
 
-<script>
+<script lang="ts">
 import { links } from "@/data/sidebar";
-import { useStore } from "@/store";
+import { pinia } from "@/stores";
+import { useAppInfoStore } from "@/stores/appInfo";
 import { useTheme } from "@/use/theme";
 import {
 	computed,
@@ -87,7 +88,6 @@ import {
 export default defineComponent({
 	setup(_, ctx) {
 		const currInstance = getCurrentInstance();
-		const store = useStore();
 
 		const activeTab = links.find(
 			(link) => link.routerName === currInstance?.proxy.$root.$route.name
@@ -100,7 +100,8 @@ export default defineComponent({
 		const { THEMES, currentTheme } = useTheme();
 
 		/* === Add update notification near info === */
-		const updateAvailable = computed(() => store.state.appInfo.updateAvailable);
+		const appInfoStore = useAppInfoStore(pinia);
+		const updateAvailable = computed(() => appInfoStore.updateAvailable);
 
 		currInstance?.proxy.$root.$router.afterEach((to) => {
 			const linkInSidebar = state.links.find(

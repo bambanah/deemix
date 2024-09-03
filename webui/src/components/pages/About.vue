@@ -14,7 +14,7 @@
 		<ul>
 			<li>
 				{{ $t("about.updates.currentWebuiVersion") }}:
-				<span>{{ __VER__ || $t("about.updates.versionNotAvailable") }}</span>
+				<span>{{ $t("about.updates.versionNotAvailable") }}</span>
 			</li>
 			<li>
 				{{ $t("about.updates.currentVersion") }}:
@@ -179,10 +179,12 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import { computed, defineComponent, onMounted, reactive, toRefs } from "vue";
+import { useAppInfoStore } from "@/stores/appInfo";
 
 import { useOnline } from "@/use/online";
+import { pinia } from "@/stores";
 
 // import paypal from "@/assets/paypal.svg";
 
@@ -196,7 +198,7 @@ export default defineComponent({
 		});
 		const { isOnline } = useOnline();
 
-		function initUpdate(appInfo) {
+		function initUpdate(appInfo: typeof appInfoStore.appInfo) {
 			const { currentCommit, latestCommit, updateAvailable, deemixVersion } =
 				appInfo;
 
@@ -206,10 +208,12 @@ export default defineComponent({
 			state.deemixVersion = deemixVersion;
 		}
 
-		const getAppInfo = computed(() => ctx.root.$store.getters.getAppInfo);
+		const appInfoStore = useAppInfoStore(pinia);
+
+		const appInfo = computed(() => appInfoStore.appInfo);
 
 		onMounted(() => {
-			initUpdate(getAppInfo.value);
+			initUpdate(appInfo.value);
 		});
 
 		return {

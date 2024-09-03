@@ -5,7 +5,7 @@
 		<section
 			v-if="!isLoggedIn"
 			ref="notLogged"
-			class="border-t border-grayscale-500 border-0 border-solid py-6"
+			class="border-grayscale-500 border-0 border-t border-solid py-6"
 		>
 			<p id="home_not_logged_text" class="mb-4">{{ $t("home.needTologin") }}</p>
 			<router-link
@@ -23,7 +23,7 @@
 
 		<section
 			v-if="playlists.length"
-			class="border-t border-grayscale-500 border-0 border-solid py-6"
+			class="border-grayscale-500 border-0 border-t border-solid py-6"
 		>
 			<h2 class="mb-6 text-3xl">{{ $t("home.sections.popularPlaylists") }}</h2>
 			<div class="release-grid">
@@ -62,7 +62,7 @@
 
 		<section
 			v-if="albums.length"
-			class="border-t border-grayscale-500 border-0 border-solid py-6"
+			class="border-grayscale-500 border-0 border-t border-solid py-6"
 		>
 			<h2 class="mb-6 text-3xl">{{ $t("home.sections.popularAlbums") }}</h2>
 			<div class="release-grid">
@@ -97,13 +97,14 @@
 	</div>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
-
-import { sendAddToQueue } from "@/utils/downloads";
-import { getHomeData } from "@/data/home";
-
+<script lang="ts">
 import CoverContainer from "@/components/globals/CoverContainer.vue";
+import { getHomeData } from "@/data/home";
+import { pinia } from "@/stores";
+import { useLoginStore } from "@/stores/login";
+import { sendAddToQueue } from "@/utils/downloads";
+
+const loginStore = useLoginStore(pinia);
 
 export default {
 	components: {
@@ -116,7 +117,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(["isLoggedIn"]),
+		isLoggedIn: () => loginStore.isLoggedIn,
 	},
 	async created() {
 		const homeData = await getHomeData();

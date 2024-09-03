@@ -1,9 +1,12 @@
 import { ref, computed } from "vue";
 
-import store from "@/store";
 import { fetchData } from "@/utils/api";
 import { toast } from "@/utils/toasts";
 import i18n from "@/plugins/i18n";
+import { useLoginStore } from "@/stores/login";
+import { pinia } from "@/stores";
+
+const loginStore = useLoginStore(pinia);
 
 const favoriteArtists = ref([]);
 const favoriteAlbums = ref([]);
@@ -11,7 +14,7 @@ const favoriteSpotifyPlaylists = ref([]);
 const favoritePlaylists = ref([]);
 const favoriteTracks = ref([]);
 const lovedTracksPlaylist = ref("");
-const isLoggedWithSpotify = computed(() => store.getters.isLoggedWithSpotify);
+const isLoggedWithSpotify = computed(() => loginStore.isLoggedWithSpotify);
 
 const isRefreshingFavorites = ref(false);
 
@@ -32,7 +35,7 @@ const setSpotifyPlaylists = (response) => {
 		favoriteSpotifyPlaylists.value = [];
 		switch (response.error) {
 			case "spotifyNotEnabled":
-				store.dispatch("setSpotifyStatus", "disabled").catch(console.error);
+				loginStore.setSpotifyStatus("disabled");
 				break;
 			case "wrongSpotifyUsername":
 				toast(
@@ -56,12 +59,12 @@ const refreshFavorites = async ({ isInitial = false }) => {
 		isRefreshingFavorites.value = true;
 	}
 
-	await store.dispatch("refreshSpotifyStatus");
+	await loginStore.refreshSpotifyStatus();
 
 	fetchData("getUserFavorites").then(setAllFavorites).catch(console.error);
 
 	if (isLoggedWithSpotify.value) {
-		const spotifyUser = store.getters.getSpotifyUser.id;
+		const spotifyUser = loginStore.spotifyUser.id;
 
 		fetchData("getUserSpotifyPlaylists", { spotifyUser })
 			.then(setSpotifyPlaylists)
