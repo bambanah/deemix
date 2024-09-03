@@ -1,24 +1,20 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import { fetchData } from "@/utils/api";
+import EventBus from "@/utils/EventBus";
+import { createRouter, createWebHistory } from "vue-router";
 
 // Pages
 import About from "@/components/pages/About.vue";
-import InfoArl from "@/components/pages/InfoArl.vue";
-import InfoSpotifyFeatures from "@/components/pages/InfoSpotifyFeatures.vue";
 import Artist from "@/components/pages/Artist.vue";
 import Charts from "@/components/pages/Charts.vue";
 import Errors from "@/components/pages/Errors.vue";
 import Favorites from "@/components/pages/Favorites.vue";
 import Home from "@/components/pages/Home.vue";
+import InfoArl from "@/components/pages/InfoArl.vue";
+import InfoSpotifyFeatures from "@/components/pages/InfoSpotifyFeatures.vue";
 import LinkAnalyzer from "@/components/pages/LinkAnalyzer.vue";
 import Search from "@/components/pages/Search.vue";
 import Settings from "@/components/pages/Settings.vue";
 import Tracklist from "@/components/pages/Tracklist.vue";
-
-import { fetchData } from "@/utils/api";
-import EventBus from "@/utils/EventBus";
-
-Vue.use(VueRouter);
 
 const routes = [
 	{
@@ -118,18 +114,17 @@ const routes = [
 	},
 ];
 
-const router = new VueRouter({
-	mode: "history",
-	base: location.base,
+const router = createRouter({
+	history: createWebHistory(location.base),
 	routes,
 	scrollBehavior() {
-		return { x: 0, y: 0 };
+		return { left: 0, right: 0 };
 	},
 });
 
 router.beforeEach((to, _, next) => {
 	if (to.name && to.name !== "Home") {
-		document.title = to.name + " · Deemix";
+		document.title = to.name.toString() + " · Deemix";
 	} else {
 		document.title = "Deemix";
 	}

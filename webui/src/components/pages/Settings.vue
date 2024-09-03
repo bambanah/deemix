@@ -1106,13 +1106,14 @@ export default {
 		BaseAccordion,
 		TemplateVariablesList,
 	},
-	data() {
+	data: () => {
 		return {
 			// flags,
 			currentLocale: this.$i18n.locale,
 			locales: this.$i18n.availableLocales,
 			settings: {
 				tags: {},
+				executeCommand: "",
 			},
 			lastSettings: {},
 			spotifyFeatures: {},

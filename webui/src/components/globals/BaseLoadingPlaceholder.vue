@@ -1,4 +1,4 @@
-<template functional>
+<template>
 	<div
 		v-show="!props.hidden"
 		class="flex h-full flex-1 flex-col items-center justify-center"
