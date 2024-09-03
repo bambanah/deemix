@@ -21,8 +21,6 @@ import {
 } from "./utils/pathtemplates";
 import { Album, Playlist } from "./types";
 
-const { performance } = require("perf_hooks");
-
 const { map_track } = utils;
 
 const extensions = {
@@ -138,8 +136,6 @@ export class Downloader {
 		extraData: { trackAPI: APITrack; albumAPI?: APIAlbum; playlistAPI?: any },
 		track?: Track
 	) {
-		const startTime = performance.now();
-
 		const returnData = {};
 		const { trackAPI, albumAPI, playlistAPI } = extraData;
 
@@ -233,8 +229,6 @@ export class Downloader {
 			console.trace(e);
 			throw e;
 		}
-
-		console.log(`Parsing: ${performance.now() - startTime}ms`);
 
 		if (this.downloadObject.isCanceled) throw new DownloadCanceled();
 
