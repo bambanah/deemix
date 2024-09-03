@@ -10,6 +10,8 @@ interface LoginState {
 		name: string;
 		picture: string;
 		country?: string;
+		can_stream_lossless?: boolean;
+		can_stream_hq?: boolean;
 	};
 	spotifyUser: {
 		id: string | null;

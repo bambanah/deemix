@@ -1,12 +1,18 @@
+<script setup lang="ts">
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
+</script>
+
 <template>
 	<div>
 		<div id="deezer_not_available" class="warning hide">
 			<i class="material-icons">warning</i>
-			{{ $t("toasts.deezerNotAvailable") }}
+			{{ t("toasts.deezerNotAvailable") }}
 		</div>
 		<div id="deezer_not_reachable" class="warning hide">
 			<i class="material-icons">warning</i>
-			{{ $t("toasts.deezerNotReachable") }}
+			{{ t("toasts.deezerNotReachable") }}
 		</div>
 	</div>
 </template>

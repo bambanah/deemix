@@ -10,7 +10,7 @@
 				:data-cm-link="downloadLink"
 				@click.stop="sendAddToQueue(downloadLink)"
 			>
-				<i class="material-icons text-4xl" :title="$tc('globals.download_hint')"
+				<i class="material-icons text-4xl" :title="t('globals.download_hint')"
 					>get_app</i
 				>
 			</div>
@@ -23,7 +23,7 @@
 				:class="{ active: currentTab === name }"
 				@click="currentTab = name"
 			>
-				{{ $tc(`globals.listTabs.${name}`, 2) }}
+				{{ t(`globals.listTabs.${name}`, 2) }}
 			</BaseTab>
 		</BaseTabs>
 
@@ -82,7 +82,7 @@
 									v-show="currentTab === 'all'"
 									class="uppercase-first-letter block text-xs opacity-50"
 								>
-									{{ $tc(`globals.listTabs.${release.releaseType}`) }}
+									{{ t(`globals.listTabs.${release.releaseType}`) }}
 								</span>
 							</div>
 						</td>
@@ -98,7 +98,7 @@
 					>
 						<i
 							class="material-icons hover:text-primary"
-							:title="$t('globals.download_hint').toString()"
+							:title="t('globals.download_hint').toString()"
 							>file_download</i
 						>
 					</td>
@@ -113,8 +113,8 @@
 					@click.stop="sendAddToQueue(downloadLink)"
 				>
 					{{
-						`${$t("globals.download", {
-							thing: $t("globals.listTabs.discography"),
+						`${t("globals.download", {
+							thing: t("globals.listTabs.discography"),
 						})}`
 					}}
 				</button>
@@ -125,8 +125,8 @@
 				@click.stop="sendAddToQueue(downloadLink + '/' + currentTab)"
 			>
 				{{
-					`${$t("globals.download", {
-						thing: $tc(`globals.listTabs.${currentTab}`, 2),
+					`${t("globals.download", {
+						thing: t(`globals.listTabs.${currentTab}`, 2),
 					})}`
 				}}<i class="material-icons ml-2">file_download</i>
 			</button>
@@ -150,6 +150,7 @@ import {
 	toRefs,
 	unref,
 } from "vue";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
 	components: {
@@ -157,6 +158,8 @@ export default defineComponent({
 		BaseTab,
 	},
 	setup(_, ctx) {
+		const { t } = useI18n();
+
 		const currInstance = getCurrentInstance();
 		const state = reactive({
 			currentTab: "",
@@ -214,24 +217,31 @@ export default defineComponent({
 			sortedData,
 			sendAddToQueue,
 			checkNewRelease,
+			t,
 		};
 	},
 	data() {
-		const $t = this.$t.bind(this);
-		const $tc = this.$tc.bind(this);
-
 		return {
-			head: [
-				{ title: $tc("globals.listTabs.title", 1), sortKey: "releaseTitle" },
-				{ title: $t("globals.listTabs.releaseDate"), sortKey: "releaseDate" },
-				{
-					title: $tc("globals.listTabs.track", 2),
-					sortKey: "releaseTracksNumber",
-				},
-				// { title: '', width: '32px' }
-				{ title: "", width: null },
-			],
+			head: [],
 		};
+	},
+	mounted() {
+		this.head = [
+			{
+				title: this.t("globals.listTabs.title", 1),
+				sortKey: "releaseTitle",
+			},
+			{
+				title: this.t("globals.listTabs.releaseDate"),
+				sortKey: "releaseDate",
+			},
+			{
+				title: this.t("globals.listTabs.track", 2),
+				sortKey: "releaseTracksNumber",
+			},
+			// { title: '', width: '32px' }
+			{ title: "", width: null },
+		];
 	},
 	methods: {
 		sortBy(key) {

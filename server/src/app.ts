@@ -3,7 +3,8 @@ import {
 	generateDownloadObject,
 	plugins,
 	settings,
-	types,
+	type Settings,
+	downloadObjects,
 	utils,
 } from "deemix";
 import { Deezer } from "deezer-js";
@@ -18,7 +19,7 @@ import { Listener } from "./types";
 import { Spotify } from "deemix/src/plugins";
 
 // Types
-const { Single, Collection, Convertable } = types.downloadObjects;
+const { Single, Collection, Convertable } = downloadObjects;
 
 // Functions
 export const getAccessToken = utils.getDeezerAccessTokenFromEmailPassword;
@@ -26,7 +27,7 @@ export const getArlFromAccessToken = utils.getDeezerArlFromAccessToken;
 
 // Constants
 export const configFolder: string = utils.getConfigFolder();
-export const defaultSettings: settings.Settings = settings.DEFAULTS;
+export const defaultSettings: Settings = settings.DEFAULTS;
 export const deemixVersion =
 	require("../node_modules/deemix/package.json").version;
 const currentVersionTemp = JSON.parse(
@@ -322,9 +323,9 @@ export class DeemixApp {
 					.toString()
 			);
 			let downloadObject:
-				| types.downloadObjects.Single
-				| types.downloadObjects.Collection
-				| types.downloadObjects.Convertable
+				| downloadObjects.Single
+				| downloadObjects.Collection
+				| downloadObjects.Convertable
 				| undefined = undefined;
 
 			switch (currentItem.__type__) {

@@ -8,22 +8,22 @@
 	>
 		<div class="smallmodal-content">
 			<button class="btn btn-primary quality-button" data-quality-value="9">
-				{{ $t("globals.download", { thing: "FLAC" }) }}
+				{{ t("globals.download", { thing: "FLAC" }) }}
 			</button>
 			<button class="btn btn-primary quality-button" data-quality-value="3">
-				{{ $t("globals.download", { thing: "MP3 320kbps" }) }}
+				{{ t("globals.download", { thing: "MP3 320kbps" }) }}
 			</button>
 			<button class="btn btn-primary quality-button" data-quality-value="1">
-				{{ $t("globals.download", { thing: "MP3 128kbps" }) }}
+				{{ t("globals.download", { thing: "MP3 128kbps" }) }}
 			</button>
 			<button class="btn btn-primary quality-button" data-quality-value="15">
-				{{ $t("globals.download", { thing: "360 Reality Audio [HQ]" }) }}
+				{{ t("globals.download", { thing: "360 Reality Audio [HQ]" }) }}
 			</button>
 			<button class="btn btn-primary quality-button" data-quality-value="14">
-				{{ $t("globals.download", { thing: "360 Reality Audio [MQ]" }) }}
+				{{ t("globals.download", { thing: "360 Reality Audio [MQ]" }) }}
 			</button>
 			<button class="btn btn-primary quality-button" data-quality-value="13">
-				{{ $t("globals.download", { thing: "360 Reality Audio [LQ]" }) }}
+				{{ t("globals.download", { thing: "360 Reality Audio [LQ]" }) }}
 			</button>
 		</div>
 	</div>
@@ -31,8 +31,14 @@
 
 <script>
 import { sendAddToQueue } from "@/utils/downloads";
+import { useI18n } from "vue-i18n";
 
 export default {
+	setup() {
+		const { t } = useI18n();
+
+		return { t };
+	},
 	data: () => ({
 		open: false,
 		url: "",

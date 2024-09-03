@@ -7,9 +7,9 @@ import { HTTPError } from "got";
 import { tmpdir } from "os";
 import { streamTrack } from "./decryption";
 import { DownloadCanceled, DownloadFailed, ErrorMessages } from "./errors";
-import { DEFAULTS, OverwriteOption, Settings } from "./settings";
+import { DEFAULTS, OverwriteOption } from "./settings";
 import { IDownloadObject } from "./types/DownloadObjects";
-import { StaticPicture } from "./types/Picture";
+import { StaticPicture, Settings } from "./types";
 import Track, { formatsName } from "./types/Track";
 import { downloadImage, getPreferredBitrate, shellEscape } from "./utils";
 import { checkShouldDownload, tagTrack } from "./utils/downloadUtils";
@@ -18,7 +18,6 @@ import {
 	generateArtistName,
 	generateDownloadObjectName,
 	generatePath,
-	generatePathNew,
 } from "./utils/pathtemplates";
 import { Album, Playlist } from "./types";
 

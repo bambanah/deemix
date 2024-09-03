@@ -8,7 +8,7 @@
 				:error="viewInfo.error"
 			></ResultsError>
 			<div v-else-if="viewInfo.data.length === 0">
-				<h1 class="text-center">{{ $t("search.noResultsAlbum") }}</h1>
+				<h1 class="text-center">{{ t("search.noResultsAlbum") }}</h1>
 			</div>
 
 			<div v-else class="release-grid">
@@ -46,9 +46,9 @@
 
 					<p class="secondary-text">
 						{{
-							$t("globals.by", { artist: release.artistName }) +
+							t("globals.by", { artist: release.artistName }) +
 							" - " +
-							$tc("globals.listTabs.trackN", release.albumTracks)
+							t("globals.listTabs.trackN", release.albumTracks)
 						}}
 					</p>
 				</div>
@@ -61,6 +61,7 @@
 import BaseLoadingPlaceholder from "@/components/globals/BaseLoadingPlaceholder.vue";
 import CoverContainer from "@/components/globals/CoverContainer.vue";
 import ResultsError from "@/components/search/ResultsError.vue";
+import { useI18n } from "vue-i18n";
 
 export default {
 	components: {
@@ -88,6 +89,11 @@ export default {
 			required: false,
 			default: false,
 		},
+	},
+	setup() {
+		const { t } = useI18n();
+
+		return { t };
 	},
 	computed: {
 		isLoading() {

@@ -108,7 +108,7 @@ export * as decryption from "./decryption";
 export * as plugins from "./plugins";
 export * as settings from "./settings";
 export * as tagger from "./tagger";
-export * as types from "./types";
+export * from "./types";
 export * as utils from "./utils";
 
 // Exporting the organized objects

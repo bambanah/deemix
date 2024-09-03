@@ -1,26 +1,26 @@
 <template>
 	<div id="about_tab">
-		<h1 class="mb-8 text-5xl capitalize">{{ $t("sidebar.about") }}</h1>
+		<h1 class="mb-8 text-5xl capitalize">{{ t("sidebar.about") }}</h1>
 
 		<div
 			class="mb-8 inline-flex rounded-full px-4 py-2"
 			:class="{ 'bg-green-500': isOnline, 'bg-red-500': !isOnline }"
 		>
 			<span class="uppercase-first-letter text-sm">
-				{{ $t(`about.appStatus.${isOnline ? "online" : "offline"}`) }}
+				{{ t(`about.appStatus.${isOnline ? "online" : "offline"}`) }}
 			</span>
 		</div>
 
 		<ul>
 			<li>
-				{{ $t("about.updates.currentWebuiVersion") }}:
-				<span>{{ $t("about.updates.versionNotAvailable") }}</span>
+				{{ t("about.updates.currentWebuiVersion") }}:
+				<span>{{ t("about.updates.versionNotAvailable") }}</span>
 			</li>
 			<li>
-				{{ $t("about.updates.currentVersion") }}:
-				<span>{{ current || $t("about.updates.versionNotAvailable") }}</span>
+				{{ t("about.updates.currentVersion") }}:
+				<span>{{ current || t("about.updates.versionNotAvailable") }}</span>
 			</li>
-			<li>{{ $t("about.updates.deemixVersion") }}: {{ deemixVersion }}</li>
+			<li>{{ t("about.updates.deemixVersion") }}: {{ deemixVersion }}</li>
 			<i18n
 				v-if="updateAvailable && latest"
 				path="about.updates.updateAvailable"
@@ -33,126 +33,126 @@
 		</ul>
 
 		<ul>
-			<li v-html="$t('about.usesLibrary')"></li>
-			<li v-html="$t('about.thanks')"></li>
+			<li v-html="t('about.usesLibrary')"></li>
+			<li v-html="t('about.thanks')"></li>
 			<i18n path="about.upToDate.text" tag="li">
 				<template #newsChannel>
 					<a href="https://tg.deemix.app" target="_blank">{{
-						$t("about.upToDate.newsChannel")
+						t("about.upToDate.newsChannel")
 					}}</a>
 				</template>
 			</i18n>
 		</ul>
 
-		<h2>{{ $t("about.titles.usefulLinks") }}</h2>
+		<h2>{{ t("about.titles.usefulLinks") }}</h2>
 		<ul class="no-dots">
 			<li>
 				<a href="https://deemix.app/gui" target="_blank"
-					>🌍 {{ $t("about.officialWebsite") }}</a
+					>🌍 {{ t("about.officialWebsite") }}</a
 				>
 			</li>
 			<li>
 				<a href="https://gitlab.com/RemixDev/deemix-js" target="_blank"
-					>🚀 {{ $t("about.officialRepo") }}</a
+					>🚀 {{ t("about.officialRepo") }}</a
 				>
 			</li>
 			<li>
 				<a href="https://gitlab.com/RemixDev/deemix-webui" target="_blank">
-					💻 {{ $t("about.officialWebuiRepo") }}
+					💻 {{ t("about.officialWebuiRepo") }}
 				</a>
 			</li>
 			<li>
 				<a href="https://www.reddit.com/r/deemix" target="_blank"
-					>🤖 {{ $t("about.officialSubreddit") }}</a
+					>🤖 {{ t("about.officialSubreddit") }}</a
 				>
 			</li>
 			<li>
 				<a href="https://tg.deemix.app" target="_blank"
-					>📰 {{ $t("about.newsChannel") }}</a
+					>📰 {{ t("about.newsChannel") }}</a
 				>
 			</li>
 			<li>
 				<a href="https://t.me/RemixDevNews" target="_blank"
-					>💾 {{ $t("about.devlogChannel") }}</a
+					>💾 {{ t("about.devlogChannel") }}</a
 				>
 			</li>
 		</ul>
 
 		<h2>
-			{{ $t("about.titles.bugReports") }}
+			{{ t("about.titles.bugReports") }}
 			<span class="subheading">
-				{{ $t("about.subtitles.bugReports") }}
+				{{ t("about.subtitles.bugReports") }}
 			</span>
 		</h2>
 		<ul>
 			<i18n path="about.questions.text" tag="li">
 				<template #subreddit>
 					<a href="https://www.reddit.com/r/deemix" target="_blank">{{
-						$t("about.questions.subreddit")
+						t("about.questions.subreddit")
 					}}</a>
 				</template>
 			</i18n>
 			<li>
-				{{ $t("about.beforeReporting") }}
+				{{ t("about.beforeReporting") }}
 			</li>
-			<li v-html="$t('about.beSure')"></li>
+			<li v-html="t('about.beSure')"></li>
 			<li>
-				{{ $t("about.duplicateReports") }}
+				{{ t("about.duplicateReports") }}
 			</li>
-			<li v-html="$t('about.dontOpenIssues')"></li>
+			<li v-html="t('about.dontOpenIssues')"></li>
 		</ul>
 
 		<h2>
-			{{ $t("about.titles.contributing") }}
+			{{ t("about.titles.contributing") }}
 			<span class="subheading">
-				{{ $t("about.subtitles.contributing") }}
+				{{ t("about.subtitles.contributing") }}
 			</span>
 		</h2>
 		<ul>
 			<i18n path="about.newUI.text" tag="li">
 				<template #repo>
-					<span>{{ $t("about.newUI.repo") }}</span>
+					<span>{{ t("about.newUI.repo") }}</span>
 				</template>
 			</i18n>
 			<li>
-				{{ $t("about.acceptFeatures") }}
+				{{ t("about.acceptFeatures") }}
 			</li>
 			<i18n path="about.contributeWebUI.text" tag="li">
 				<template #webui>
-					<span>{{ $t("about.contributeWebUI.webui") }}</span>
+					<span>{{ t("about.contributeWebUI.webui") }}</span>
 				</template>
 			</i18n>
 			<li>
-				{{ $t("about.otherLanguages") }}
+				{{ t("about.otherLanguages") }}
 			</li>
 			<li>
-				{{ $t("about.understandingCode") }}
+				{{ t("about.understandingCode") }}
 			</li>
 		</ul>
 
 		<h2>
-			{{ $t("about.titles.donations") }}
+			{{ t("about.titles.donations") }}
 			<span class="subheading">
-				{{ $t("about.subtitles.donations") }}
+				{{ t("about.subtitles.donations") }}
 			</span>
 		</h2>
 		<ul>
-			<li v-html="$t('about.itsFree')"></li>
+			<li v-html="t('about.itsFree')"></li>
 			<li>
-				{{ $t("about.notObligated") }}
+				{{ t("about.notObligated") }}
 			</li>
 		</ul>
 		<ul>
 			<li>
-				<!-- <i v-html="paypal" /> -->
-				<strong>PayPal:</strong>
+				<img :src="paypal" class="mr-2 h-4 w-4 align-middle" />
+				<strong>PayPal: </strong>
 				<a href="https://paypal.me/RemixDev" target="_blank"
 					>PayPal.me/RemixDev</a
 				>
 			</li>
 		</ul>
 
-		<h2>{{ $t("about.titles.license") }}</h2>
+		<h2>{{ t("about.titles.license") }}</h2>
 		<p>
 			<a
 				rel="license"
@@ -172,7 +172,7 @@
 					rel="license"
 					href="https://www.gnu.org/licenses/gpl-3.0.en.html"
 					target="_blank"
-					>{{ $t("about.lincensedUnder.gpl3") }}</a
+					>{{ t("about.lincensedUnder.gpl3") }}</a
 				>
 			</template>
 		</i18n>
@@ -185,8 +185,9 @@ import { useAppInfoStore } from "@/stores/appInfo";
 
 import { useOnline } from "@/use/online";
 import { pinia } from "@/stores";
+import { useI18n } from "vue-i18n";
 
-// import paypal from "@/assets/paypal.svg";
+import paypal from "@/assets/paypal.svg?url";
 
 export default defineComponent({
 	setup(_, ctx) {
@@ -197,6 +198,7 @@ export default defineComponent({
 			deemixVersion: null,
 		});
 		const { isOnline } = useOnline();
+		const { t } = useI18n();
 
 		function initUpdate(appInfo: typeof appInfoStore.appInfo) {
 			const { currentCommit, latestCommit, updateAvailable, deemixVersion } =
@@ -218,8 +220,9 @@ export default defineComponent({
 
 		return {
 			...toRefs(state),
-			// paypal,
+			paypal,
 			isOnline,
+			t,
 		};
 	},
 });
@@ -237,7 +240,7 @@ i {
 	vertical-align: middle;
 }
 
-i::v-deep svg {
+.paypal {
 	fill: white;
 	width: 20px;
 }

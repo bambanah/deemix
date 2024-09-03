@@ -8,17 +8,17 @@
 				:error="viewInfo.error"
 			></ResultsError>
 			<div v-else-if="viewInfo.data.length === 0">
-				<h1 class="text-center">{{ $t("search.noResultsTrack") }}</h1>
+				<h1 class="text-center">{{ t("search.noResultsTrack") }}</h1>
 			</div>
 
 			<table v-else class="table--tracks table w-full">
 				<thead v-if="wantHeaders">
 					<tr class="capitalize">
 						<th class="h-12 pb-3" colspan="2">
-							{{ $tc("globals.listTabs.title", 1) }}
+							{{ t("globals.listTabs.title", 1) }}
 						</th>
-						<th class="h-12 pb-3">{{ $tc("globals.listTabs.artist", 1) }}</th>
-						<th class="h-12 pb-3">{{ $tc("globals.listTabs.album", 1) }}</th>
+						<th class="h-12 pb-3">{{ t("globals.listTabs.artist", 1) }}</th>
+						<th class="h-12 pb-3">{{ t("globals.listTabs.album", 1) }}</th>
 						<th class="h-12 pb-3">
 							<i class="material-icons">timer</i>
 						</th>
@@ -33,13 +33,13 @@
 					>
 						<td class="table__icon table__icon--big">
 							<span
-								class="rounded relative inline-block cursor-pointer"
+								class="relative inline-block cursor-pointer rounded"
 								:data-preview="track.trackPreview"
 								@click="playPausePreview($event)"
 							>
 								<PreviewControls v-if="track.trackPreview" />
 
-								<img class="rounded coverart" :src="track.albumPicture" />
+								<img class="coverart rounded" :src="track.albumPicture" />
 							</span>
 						</td>
 
@@ -94,7 +94,7 @@
 						>
 							<i
 								class="material-icons group-hover:text-primary transition-colors duration-150 ease-in-out"
-								:title="$t('globals.download_hint')"
+								:title="t('globals.download_hint')"
 							>
 								get_app
 							</i>
@@ -115,6 +115,7 @@ import { convertDuration } from "@/utils/utils";
 
 import { formatTitle } from "@/data/search";
 import EventBus from "@/utils/EventBus";
+import { useI18n } from "vue-i18n";
 
 export default {
 	components: {
@@ -142,6 +143,11 @@ export default {
 			required: false,
 			default: false,
 		},
+	},
+	setup() {
+		const { t } = useI18n();
+
+		return { t };
 	},
 	computed: {
 		isLoading() {

@@ -12,7 +12,7 @@
 			type="search"
 			name="searchbar"
 			value=""
-			:placeholder="$t('searchbar')"
+			:placeholder="t('searchbar')"
 			autofocus
 			@keyup="keyPerformSearch($event)"
 		/>
@@ -37,13 +37,17 @@ import { fetchData } from "@/utils/api";
 import EventBus from "@/utils/EventBus";
 import { useAppInfoStore } from "@/stores/appInfo";
 import { pinia } from "@/stores";
+import { useI18n } from "vue-i18n";
 
 const appInfoStore = useAppInfoStore(pinia);
 
 export default defineComponent({
 	setup() {
+		const { t } = useI18n();
+
 		return {
 			lastTextSearch: ref(""),
+			t,
 		};
 	},
 	computed: {

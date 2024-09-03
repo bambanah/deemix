@@ -4,7 +4,7 @@
 		ref="container"
 		class="bg-panels-bg text-foreground block h-screen"
 		:class="{ 'tab-hidden': !isExpanded, 'w-8': !isExpanded }"
-		:data-label="$t('downloads')"
+		:data-label="t('downloads')"
 		aria-label="downloads"
 		@transitionend="$refs.container.style.transition = ''"
 	>
@@ -22,7 +22,7 @@
 			ref="toggler"
 			class="material-icons m-1 cursor-pointer text-2xl"
 			:class="{ 'ml-1': !isExpanded, 'ml-5': isExpanded }"
-			:title="$t('globals.toggle_download_tab_hint')"
+			:title="t('globals.toggle_download_tab_hint')"
 			@click.prevent="toggleDownloadTab"
 		></i>
 
@@ -37,21 +37,21 @@
 			<i
 				v-if="clientMode"
 				class="material-icons m-1 cursor-pointer text-2xl"
-				:title="$t('globals.open_downloads_folder')"
+				:title="t('globals.open_downloads_folder')"
 				@click="openDownloadsFolder"
 			>
 				folder_open
 			</i>
 			<i
 				class="material-icons m-1 cursor-pointer text-2xl"
-				:title="$t('globals.clean_queue_hint')"
+				:title="t('globals.clean_queue_hint')"
 				@click="cleanQueue"
 			>
 				clear_all
 			</i>
 			<i
 				class="material-icons m-1 cursor-pointer text-2xl"
-				:title="$t('globals.cancel_queue_hint')"
+				:title="t('globals.cancel_queue_hint')"
 				@click="cancelQueue"
 			>
 				delete_sweep
@@ -88,6 +88,7 @@ import { useLoginStore } from "@/stores/login";
 import { useAppInfoStore } from "@/stores/appInfo";
 import { useErrorStore } from "@/stores/errors";
 import { pinia } from "@/stores";
+import { useI18n } from "vue-i18n";
 
 const tabMinWidth = 250;
 const tabMaxWidth = 500;
@@ -99,6 +100,11 @@ const errorStore = useErrorStore(pinia);
 export default {
 	components: {
 		QueueItem,
+	},
+	setup() {
+		const { t } = useI18n();
+
+		return { t };
 	},
 	data: () => {
 		return {
@@ -220,7 +226,7 @@ export default {
 			});
 
 			if (restored) {
-				toast(this.$t("toasts.queueRestored"), "done", true, "restoring_queue");
+				toast(this.t("toasts.queueRestored"), "done", true, "restoring_queue");
 				socket.emit("queueRestored");
 			}
 		},
@@ -232,7 +238,7 @@ export default {
 						this.addToQueue(item);
 					});
 					toast(
-						this.$t("toasts.addedMoreToQueue", { n: queueItem.length }),
+						this.t("toasts.addedMoreToQueue", { n: queueItem.length }),
 						"playlist_add_check"
 					);
 					return;
@@ -289,7 +295,7 @@ export default {
 
 			if (!queueItem.silent) {
 				toast(
-					this.$t("toasts.addedToQueue", { item: queueItem.title }),
+					this.t("toasts.addedToQueue", { item: queueItem.title }),
 					"playlist_add_check"
 				);
 			}
@@ -422,7 +428,7 @@ export default {
 
 			this.$set(this.queueList[uuid], "status", "download finished");
 			toast(
-				this.$t("toasts.finishDownload", { item: this.queueList[uuid].title }),
+				this.t("toasts.finishDownload", { item: this.queueList[uuid].title }),
 				"done"
 			);
 
@@ -434,7 +440,7 @@ export default {
 			}
 
 			if (this.queue.length <= 0) {
-				toast(this.$t("toasts.allDownloaded"), "done_all");
+				toast(this.t("toasts.allDownloaded"), "done_all");
 			}
 		},
 		startConversion(uuid) {

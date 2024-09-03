@@ -8,3 +8,4 @@ export * from "./Picture";
 export * from "./Playlist";
 export * from "./Track";
 export * as downloadObjects from "./DownloadObjects";
+export * from "./Settings";

@@ -2,14 +2,14 @@
 	<section>
 		<ResultsError v-if="viewInfo.ERROR" :error="viewInfo.ERROR"></ResultsError>
 		<div v-else-if="!thereAreResults">
-			<h1 class="text-center">{{ $t("search.noResults") }}</h1>
+			<h1 class="text-center">{{ t("search.noResults") }}</h1>
 		</div>
 
 		<template v-else>
 			<section
 				v-for="section in viewInfo.ORDER"
 				:key="section"
-				class="border-t border-grayscale-500 float-none py-5 first:border-t-0"
+				class="border-grayscale-500 float-none border-t py-5 first:border-t-0"
 			>
 				<template v-if="checkSectionResults(section)">
 					<h2
@@ -21,7 +21,7 @@
 						}"
 						@click="$emit('change-search-tab', section)"
 					>
-						{{ $tc(`globals.listTabs.${section.toLowerCase()}`, 2) }}
+						{{ t(`globals.listTabs.${section.toLowerCase()}`, 2) }}
 					</h2>
 
 					<TopResult
@@ -76,6 +76,7 @@ import {
 	formatPlaylist,
 } from "@/data/search";
 import { standardizeData } from "@/data/standardize";
+import { useI18n } from "vue-i18n";
 
 export default {
 	components: {
@@ -91,6 +92,11 @@ export default {
 			type: Object,
 			required: true,
 		},
+	},
+	setup() {
+		const { t } = useI18n();
+
+		return { t };
 	},
 	computed: {
 		thereAreResults() {

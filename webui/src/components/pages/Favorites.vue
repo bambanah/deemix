@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<h1 class="mb-8 text-5xl">
-			{{ $t("favorites.title") }}
+			{{ t("favorites.title") }}
 			<div
 				ref="reloadButton"
 				aria-label="reload"
@@ -22,7 +22,7 @@
 				:class="{ active: activeTab === tab }"
 				@click="activeTab = tab"
 			>
-				{{ $tc(`globals.listTabs.${tab}`, 2) }}
+				{{ t(`globals.listTabs.${tab}`, 2) }}
 			</BaseTab>
 		</BaseTabs>
 
@@ -33,15 +33,15 @@
 			@click="downloadAllOfType"
 		>
 			{{
-				$t("globals.download", {
-					thing: $tc(`globals.listTabs.${activeTab}N`, getTabLength()),
+				t("globals.download", {
+					thing: t(`globals.listTabs.${activeTab}N`, getTabLength()),
 				})
 			}}
 		</button>
 
 		<div v-show="activeTab === 'playlist'">
 			<div v-if="playlists.length + spotifyPlaylists.length === 0">
-				<h1>{{ $t("favorites.noPlaylists") }}</h1>
+				<h1>{{ t("favorites.noPlaylists") }}</h1>
 			</div>
 			<div
 				v-if="playlists.length + spotifyPlaylists.length > 0"
@@ -67,7 +67,7 @@
 
 					<p class="secondary-text">
 						{{
-							`${$t("globals.by", { artist: release.creator.name })} - ${$tc(
+							`${t("globals.by", { artist: release.creator.name })} - ${t(
 								"globals.listTabs.trackN",
 								release.nb_tracks
 							)}`
@@ -99,7 +99,7 @@
 
 					<p class="secondary-text">
 						{{
-							`${$t("globals.by", { artist: release.creator.name })} - ${$tc(
+							`${t("globals.by", { artist: release.creator.name })} - ${t(
 								"globals.listTabs.trackN",
 								release.nb_tracks
 							)}`
@@ -111,7 +111,7 @@
 
 		<div v-show="activeTab === 'album'">
 			<div v-if="albums.length === 0">
-				<h1>{{ $t("favorites.noAlbums") }}</h1>
+				<h1>{{ t("favorites.noAlbums") }}</h1>
 			</div>
 			<div v-if="albums.length > 0" class="release-grid">
 				<router-link
@@ -131,7 +131,7 @@
 						/>
 						<p class="primary-text">{{ release.title }}</p>
 						<p class="secondary-text">
-							{{ `${$t("globals.by", { artist: release.artist.name })}` }}
+							{{ `${t("globals.by", { artist: release.artist.name })}` }}
 						</p>
 					</div>
 				</router-link>
@@ -140,7 +140,7 @@
 
 		<div v-show="activeTab === 'artist'">
 			<div v-if="artists.length == 0">
-				<h1>{{ $t("favorites.noArtists") }}</h1>
+				<h1>{{ t("favorites.noArtists") }}</h1>
 			</div>
 			<div v-if="artists.length > 0" class="release-grid">
 				<router-link
@@ -166,7 +166,7 @@
 
 		<div v-show="activeTab === 'track'">
 			<div v-if="tracks.length == 0">
-				<h1>{{ $t("favorites.noTracks") }}</h1>
+				<h1>{{ t("favorites.noTracks") }}</h1>
 			</div>
 			<table v-if="tracks.length > 0" class="table">
 				<tr v-for="track in tracks" :key="track.id" class="track_row">
@@ -229,7 +229,7 @@
 							class="table__cell-content table__cell-content--vertical-center"
 						>
 							<i
-								:title="$tc('globals.download_hint')"
+								:title="t('globals.download_hint')"
 								class="material-icons group-hover:text-primary transition-colors duration-150 ease-in-out"
 							>
 								get_app
@@ -254,6 +254,7 @@ import { aggregateDownloadLinks, sendAddToQueue } from "@/utils/downloads";
 import EventBus from "@/utils/EventBus";
 import { toast } from "@/utils/toasts";
 import { convertDuration } from "@/utils/utils";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
 	components: {
@@ -263,6 +264,8 @@ export default defineComponent({
 		BaseTab,
 	},
 	setup(_, ctx) {
+		const { t } = useI18n();
+
 		const state = reactive({
 			activeTab: "playlist",
 			tabs: ["playlist", "album", "artist", "track"],
@@ -287,7 +290,7 @@ export default defineComponent({
 
 			if (!isRefreshingTerminated) return;
 
-			toast(ctx.root.$t("toasts.refreshFavs"), "done", true);
+			toast(t("toasts.refreshFavs"), "done", true);
 		});
 
 		return {
@@ -300,6 +303,7 @@ export default defineComponent({
 			lovedTracks: lovedTracksPlaylist,
 			refreshFavorites,
 			isRefreshingFavorites,
+			t,
 		};
 	},
 	computed: {
@@ -376,7 +380,7 @@ export default defineComponent({
 			if (lovedTracks.length !== 0) {
 				return lovedTracks[0];
 			} else {
-				toast(this.$t("toasts.noLovedPlaylist"), "warning", true);
+				toast(this.t("toasts.noLovedPlaylist"), "warning", true);
 				throw new Error("No loved tracks playlist!");
 			}
 		},

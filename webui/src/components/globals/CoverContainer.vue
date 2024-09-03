@@ -17,7 +17,7 @@
 		>
 			<i
 				class="material-icons cursor-pointer text-white"
-				:title="$tc('globals.download_hint')"
+				:title="t('globals.download_hint')"
 				>get_app</i
 			>
 		</button>
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import { useI18n } from "vue-i18n";
+
 export default {
 	inheritAttrs: false,
 	props: {
@@ -44,6 +46,11 @@ export default {
 			type: String,
 			required: true,
 		},
+	},
+	setup() {
+		const { t } = useI18n();
+
+		return { t };
 	},
 };
 </script>

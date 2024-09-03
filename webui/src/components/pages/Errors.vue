@@ -1,18 +1,18 @@
 <template>
 	<div>
-		<h1 class="mb-8 text-5xl">{{ $t("errors.title", { name: title }) }}</h1>
+		<h1 class="mb-8 text-5xl">{{ t("errors.title", { name: title }) }}</h1>
 
 		<table v-if="errors.length >= 1" class="table--tracklist table">
 			<tr>
 				<th>ID</th>
 				<th class="uppercase-first-letter">
-					{{ $tc("globals.listTabs.artist", 1) }}
+					{{ t("globals.listTabs.artist", 1) }}
 				</th>
 				<th class="uppercase-first-letter">
-					{{ $tc("globals.listTabs.title", 1) }}
+					{{ t("globals.listTabs.title", 1) }}
 				</th>
 				<th class="uppercase-first-letter">
-					{{ $tc("globals.listTabs.error", 1) }}
+					{{ t("globals.listTabs.error", 1) }}
 				</th>
 			</tr>
 			<tr v-for="error in errors" :key="error.data.id">
@@ -23,7 +23,7 @@
 					<span :title="error.stack">
 						{{
 							error.errid
-								? $t(`errors.ids.${error.errid}`, { bitrate: downloadBitrate })
+								? t(`errors.ids.${error.errid}`, { bitrate: downloadBitrate })
 								: error.message
 						}}
 					</span>
@@ -31,15 +31,15 @@
 			</tr>
 		</table>
 		<div v-if="postErrors.length >= 1">
-			<h2>{{ $t("errors.postTitle") }}</h2>
+			<h2>{{ t("errors.postTitle") }}</h2>
 			<table class="table--tracklist table">
 				<tr>
 					<th>ID</th>
 					<th class="uppercase-first-letter">
-						{{ $tc("globals.listTabs.empty") }}
+						{{ t("globals.listTabs.empty") }}
 					</th>
 					<th class="uppercase-first-letter">
-						{{ $tc("globals.listTabs.error", 1) }}
+						{{ t("globals.listTabs.error", 1) }}
 					</th>
 				</tr>
 				<tr v-for="error in postErrors" :key="error.data.id">
@@ -51,7 +51,7 @@
 					</td>
 					<td>
 						<span :title="error.stack">{{
-							error.errid ? $t(`errors.ids.${error.errid}`) : error.message
+							error.errid ? t(`errors.ids.${error.errid}`) : error.message
 						}}</span>
 					</td>
 				</tr>
@@ -63,10 +63,16 @@
 <script lang="ts">
 import { pinia } from "@/stores";
 import { useErrorStore } from "@/stores/errors";
+import { useI18n } from "vue-i18n";
 
 const errorStore = useErrorStore(pinia);
 
 export default {
+	setup() {
+		const { t } = useI18n();
+
+		return { t };
+	},
 	data() {
 		return {
 			BITRATE_LABELS: {
