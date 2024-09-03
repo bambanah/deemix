@@ -3,7 +3,7 @@
 	"include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
 	"compilerOptions": {
 		"allowJs": true,
-		"checkJs": false,
+		"checkJs": true,
 		"noEmit": true,
 		"strict": false,
 		"baseUrl": ".",

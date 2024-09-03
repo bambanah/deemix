@@ -10,7 +10,7 @@
 				:data-cm-link="downloadLink"
 				@click.stop="sendAddToQueue(downloadLink)"
 			>
-				<i class="material-icons text-4xl" :title="$t('globals.download_hint')"
+				<i class="material-icons text-4xl" :title="$tc('globals.download_hint')"
 					>get_app</i
 				>
 			</div>
@@ -59,7 +59,7 @@
 					>
 						<td role="link" @click="navigate" @keypress.enter="navigate">
 							<img
-								class="rounded coverart mr-4"
+								class="coverart mr-4 rounded"
 								:src="release.releaseCover"
 								style="width: 56px; height: 56px"
 							/>
@@ -98,7 +98,7 @@
 					>
 						<i
 							class="material-icons hover:text-primary"
-							:title="$t('globals.download_hint')"
+							:title="$t('globals.download_hint').toString()"
 							>file_download</i
 						>
 					</td>
@@ -134,7 +134,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import { BaseTab } from "@/components/globals/BaseTab";
 import { BaseTabs } from "@/components/globals/BaseTabs";
 import { formatArtistData, getArtistData } from "@/data/artist";

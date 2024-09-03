@@ -17,7 +17,7 @@
 		>
 			<i
 				class="material-icons cursor-pointer text-white"
-				:title="$t('globals.download_hint')"
+				:title="$tc('globals.download_hint')"
 				>get_app</i
 			>
 		</button>

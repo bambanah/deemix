@@ -179,11 +179,11 @@
 					<td>
 						<span
 							:data-preview="track.preview"
-							class="rounded relative inline-block cursor-pointer"
+							class="relative inline-block cursor-pointer rounded"
 							@click="playPausePreview"
 						>
 							<PreviewControls v-if="track.preview" />
-							<img :src="track.album.cover_small" class="rounded coverart" />
+							<img :src="track.album.cover_small" class="coverart rounded" />
 						</span>
 					</td>
 					<td class="table__cell--large">
@@ -229,7 +229,7 @@
 							class="table__cell-content table__cell-content--vertical-center"
 						>
 							<i
-								:title="$t('globals.download_hint')"
+								:title="$tc('globals.download_hint')"
 								class="material-icons group-hover:text-primary transition-colors duration-150 ease-in-out"
 							>
 								get_app

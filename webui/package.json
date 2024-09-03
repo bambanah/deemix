@@ -14,17 +14,18 @@
 	"dependencies": {
 		"flag-icon-css": "3.5.0",
 		"lodash-es": "4.17.21",
+		"pinia": "^2.2.2",
 		"postcss": "^8.4.41",
 		"svg-country-flags": "1.2.10",
 		"tailwindcss": "^3.4.10",
 		"toastify-js": "1.11.1",
 		"vue": "^2.7.16",
 		"vue-i18n": "8.25.0",
-		"vue-router": "^3.6.5",
-		"vuex": "^3.6.2"
+		"vue-router": "^3.6.5"
 	},
 	"devDependencies": {
 		"@types/jest": "26.0.24",
+		"@types/lodash-es": "^4.17.12",
 		"@types/node": "14.14.37",
 		"@types/toastify-js": "^1.12.3",
 		"@vitejs/plugin-vue2": "^2.3.1",

@@ -79,15 +79,22 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
 import QueueItem from "@/components/downloads/QueueItem.vue";
 
 import { socket } from "@/utils/socket";
 import { toast } from "@/utils/toasts";
 import { fetchData, postToServer } from "@/utils/api";
+import { useLoginStore } from "@/stores/login";
+import { useAppInfoStore } from "@/stores/appInfo";
+import { useErrorStore } from "@/stores/errors";
+import { pinia } from "@/stores";
 
 const tabMinWidth = 250;
 const tabMaxWidth = 500;
+
+const loginStore = useLoginStore(pinia);
+const appInfoStore = useAppInfoStore(pinia);
+const errorStore = useErrorStore(pinia);
 
 export default {
 	components: {
@@ -103,11 +110,9 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters({
-			clientMode: "getClientMode",
-			isSlim: "getSlimDownloads",
-			showTags: "getShowBitrateTags",
-		}),
+		clientMode: () => loginStore.clientMode,
+		isSlim: () => appInfoStore.hasSlimDownloads,
+		showTags: () => appInfoStore.showBitrateTags,
 		finishedWithoutErrors() {
 			const isCompletedWithoutErrors = (el) =>
 				(el.status || "") === "download finished" && el.errors.length === 0;
@@ -164,7 +169,7 @@ export default {
 		});
 	},
 	methods: {
-		...mapActions(["setErrors"]),
+		setErrors: (errors) => errorStore.setErrors(errors),
 		onRemoveItem(uuid) {
 			socket.emit("removeFromQueue", uuid);
 		},

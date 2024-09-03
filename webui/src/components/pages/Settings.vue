@@ -1016,7 +1016,7 @@
 					{{ $t("settings.other.executeCommand.description") }}
 				</p>
 				<p v-if="settings.executeCommand">{{ settings.executeCommand }}</p>
-				<p v-else>{{ $t("globals.empty").capitalize() }}</p>
+				<p v-else>{{ $tc("globals.empty").capitalize() }}</p>
 			</div>
 		</BaseAccordion>
 
@@ -1079,7 +1079,6 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
 import { debounce } from "lodash-es";
 
 import TemplateVariablesList from "@/components/settings/TemplateVariablesList.vue";
@@ -1094,6 +1093,12 @@ import { copyToClipboard } from "@/utils/utils";
 import BaseAccordion from "@/components/globals/BaseAccordion.vue";
 import { fetchData, postToServer } from "@/utils/api";
 import { getFormItem } from "@/utils/forms";
+import { useLoginStore } from "@/stores/login";
+import { useAppInfoStore } from "@/stores/appInfo";
+import { pinia } from "@/stores";
+
+const loginStore = useLoginStore(pinia);
+const appInfoStore = useAppInfoStore(pinia);
 
 export default {
 	name: "Settings",
@@ -1121,59 +1126,50 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters({
-			arl: "getARL",
-			accessToken: "getAccessToken",
-			user: "getUser",
-			isLoggedIn: "isLoggedIn",
-			clientMode: "getClientMode",
-			previewVolume: "getPreviewVolume",
-			hasSlimDownloads: "getSlimDownloads",
-			hasSlimSidebar: "getSlimSidebar",
-			showBitrateTags: "getShowBitrateTags",
-			showSearchButton: "getShowSearchButton",
-		}),
+		user() {
+			return loginStore.user;
+		},
 		needToWait() {
 			return Object.keys(this.getSettings).length === 0;
 		},
 		modelVolume: {
 			get() {
-				return this.previewVolume;
+				return appInfoStore.previewVolume;
 			},
 			set: debounce(function (value) {
-				this.setPreviewVolume(value);
+				appInfoStore.setPreviewVolume(value);
 			}, 20),
 		},
 		modelSlimDownloads: {
 			get() {
-				return this.hasSlimDownloads;
+				return appInfoStore.hasSlimDownloads;
 			},
 			set(wantSlimDownloads) {
-				this.setSlimDownloads(wantSlimDownloads);
+				appInfoStore.setSlimDownloads(wantSlimDownloads);
 			},
 		},
 		modelSlimSidebar: {
 			get() {
-				return this.hasSlimSidebar;
+				return appInfoStore.hasSlimSidebar;
 			},
 			set(wantSlimSidebar) {
-				this.setSlimSidebar(wantSlimSidebar);
+				appInfoStore.setSlimSidebar(wantSlimSidebar);
 			},
 		},
 		modelShowBitrateTags: {
 			get() {
-				return this.showBitrateTags;
+				return appInfoStore.showBitrateTags;
 			},
 			set(wantShowBitrateTags) {
-				this.setShowBitrateTags(wantShowBitrateTags);
+				appInfoStore.setShowBitrateTags(wantShowBitrateTags);
 			},
 		},
 		modelShowSearchButton: {
 			get() {
-				return this.showSearchButton;
+				return appInfoStore.showSearchButton;
 			},
 			set(wantShowSearchButton) {
-				this.setShowSearchButton(wantShowSearchButton);
+				appInfoStore.setShowSearchButton(wantShowSearchButton);
 			},
 		},
 		pictureHref() {
@@ -1224,21 +1220,6 @@ export default {
 		});
 	},
 	methods: {
-		...mapActions({
-			dispatchARL: "setARL",
-			dispatchAccessTocken: "setAccessToken",
-			dispatchUser: "setUser",
-			removeARL: "removeARL",
-			setPreviewVolume: "setPreviewVolume",
-			setSlimDownloads: "setSlimDownloads",
-			setSlimSidebar: "setSlimSidebar",
-			setShowBitrateTags: "setShowBitrateTags",
-			setShowSearchButton: "setShowSearchButton",
-			dispatchLogout: "logout",
-			dispatchLogin: "login",
-			setSpotifyUserId: "setSpotifyUserId",
-			refreshSpotifyStatus: "refreshSpotifyStatus",
-		}),
 		onTemplateVariableClick(templateName) {
 			copyToClipboard(templateName);
 			toast(`Copied ${templateName} to clipboard!`);
@@ -1278,7 +1259,7 @@ export default {
 				// force cloning without linking
 				this.lastUser = (" " + this.spotifyUser).slice(1);
 				localStorage.setItem("spotifyUser", this.lastUser);
-				this.setSpotifyUserId(this.lastUser);
+				loginStore.setSpotifyUserId(this.lastUser);
 				changed = true;
 			}
 
@@ -1305,9 +1286,7 @@ export default {
 			this.spotifyFeatures = JSON.parse(JSON.stringify(credentials));
 		},
 		loggedInViaDeezer(arl) {
-			this.dispatchARL({ arl });
-			// this.login()
-			// const res = await fetchData('login', { arl, force: true, child: this.accountNum })
+			loginStore.setARL(arl);
 		},
 		async login(arl, force = false) {
 			toast(this.$t("toasts.loggingIn"), "loading", false, "login-toast");
@@ -1324,17 +1303,17 @@ export default {
 				case 3:
 					// Login ok
 					toast(this.$t("toasts.loggedIn"), "done", true, "login-toast");
-					this.dispatchLogin(data);
+					loginStore.login(data);
 					break;
 				case 2:
 					// Already logged in
 					toast(this.$t("toasts.alreadyLogged"), "done", true, "login-toast");
-					this.dispatchUser(user);
+					loginStore.setUser(user);
 					break;
 				case 0:
 					// Login failed
 					toast(this.$t("toasts.loginFailed"), "close", true, "login-toast");
-					this.removeARL();
+					loginStore.removeARL();
 					break;
 				case -1:
 					toast(
@@ -1369,8 +1348,8 @@ export default {
 			});
 
 			if (accessToken !== this.accessToken)
-				this.dispatchAccessTocken({ accessToken });
-			if (arl) this.login(arl);
+				loginStore.setAccessToken(accessToken);
+			if (arl) loginStore.login(arl);
 			else toast(this.$t("toasts.loginFailed"), "close", true, "login-toast");
 		},
 		appLogin() {
@@ -1390,7 +1369,7 @@ export default {
 			this.$refs.userpicture.src = `https://e-cdns-images.dzcdn.net/images/user/${user.picture}/125x125-000000-80-0-0.jpg`;
 			this.accountNum = accountNum;
 
-			localStorage.setItem("accountNum", this.accountNum);
+			localStorage.setItem("accountNum", this.accountNum.toString());
 		},
 		initAccounts(accounts) {
 			this.accounts = accounts;
@@ -1400,7 +1379,7 @@ export default {
 
 			if (result.logged_out) {
 				toast(this.$t("toasts.loggedOut"), "done", true, "login-toast");
-				this.dispatchLogout();
+				loginStore.logout();
 			}
 		},
 		initSettings(settings, credentials) {
@@ -1417,7 +1396,7 @@ export default {
 
 			toast(this.$t("settings.toasts.update"), "settings");
 
-			this.refreshSpotifyStatus();
+			loginStore.refreshSpotifyStatus();
 		},
 		resetToDefault() {
 			const wantsToReset = confirm(this.$t("settings.resetMessage"));

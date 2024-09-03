@@ -96,7 +96,7 @@
 				>
 					<i
 						class="material-icons text-4xl"
-						:title="$t('globals.download_hint')"
+						:title="$tc('globals.download_hint')"
 						>get_app</i
 					>
 				</div>
@@ -149,14 +149,14 @@
 				<tr v-if="data.readable !== undefined">
 					<td>{{ $t("linkAnalyzer.table.readable") }}</td>
 					<td>
-						{{ $t(data.readable ? "globals.yes" : "globals.no").capitalize() }}
+						{{ $tc(data.readable ? "globals.yes" : "globals.no").capitalize() }}
 					</td>
 				</tr>
 				<tr v-if="countries.length && user.country">
 					<td>{{ $t("linkAnalyzer.table.available") }}</td>
 					<td>
 						{{
-							$t(
+							$tc(
 								available_countries.includes(user.country.toLowerCase())
 									? "globals.yes"
 									: "globals.no"
@@ -194,11 +194,14 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import { convertDuration } from "@/utils/utils";
 import { COUNTRIES } from "@/utils/countries";
 import { sendAddToQueue } from "@/utils/downloads";
 import EventBus from "@/utils/EventBus";
+import { useLoginStore } from "@/stores/login";
+import { pinia } from "@/stores";
+
+const loginStore = useLoginStore(pinia);
 
 export default {
 	data() {
@@ -215,9 +218,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters({
-			user: "getUser",
-		}),
+		user: () => loginStore.user,
 	},
 	mounted() {
 		EventBus.$on("analyze_track", this.showTrack);
@@ -289,5 +290,3 @@ export default {
 	},
 };
 </script>
-
-<style></style>

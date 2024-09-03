@@ -33,7 +33,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import { uniqWith } from "lodash-es";
 import {
 	computed,
