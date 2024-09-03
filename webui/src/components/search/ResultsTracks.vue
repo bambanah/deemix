@@ -110,11 +110,8 @@
 import BaseLoadingPlaceholder from "@/components/globals/BaseLoadingPlaceholder.vue";
 import PreviewControls from "@/components/globals/PreviewControls.vue";
 import ResultsError from "@/components/search/ResultsError.vue";
-
-import { convertDuration } from "@/utils/utils";
-
 import { formatTitle } from "@/data/search";
-import EventBus from "@/utils/EventBus";
+import { convertDuration } from "@/utils/utils";
 import { useI18n } from "vue-i18n";
 
 export default {
@@ -158,7 +155,7 @@ export default {
 		convertDuration,
 		formatTitle,
 		playPausePreview: (e) => {
-			EventBus.$emit("trackPreview:playPausePreview", e);
+			emitter.emit("trackPreview:playPausePreview", e);
 		},
 	},
 };

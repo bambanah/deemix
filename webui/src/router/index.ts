@@ -1,5 +1,5 @@
 import { fetchData } from "@/utils/api";
-import EventBus from "@/utils/EventBus";
+import { emitter } from "@/utils/emitter";
 import {
 	createRouter,
 	createWebHistory,
@@ -149,7 +149,7 @@ router.beforeEach((to, _, next) => {
 				id: to.params.id,
 			};
 			fetchData("getTracklist", getTracklistParams).then((albumData) => {
-				EventBus.$emit("showAlbum", albumData);
+				emitter.emit("showAlbum", albumData);
 			});
 			break;
 		}
@@ -159,7 +159,7 @@ router.beforeEach((to, _, next) => {
 				id: to.params.id,
 			};
 			fetchData("getTracklist", getTracklistParams).then((playlistData) => {
-				EventBus.$emit("showPlaylist", playlistData);
+				emitter.emit("showPlaylist", playlistData);
 			});
 			break;
 		}
@@ -170,7 +170,7 @@ router.beforeEach((to, _, next) => {
 			};
 			fetchData("getTracklist", getTracklistParams).then(
 				(spotifyPlaylistData) => {
-					EventBus.$emit("showSpotifyPlaylist", spotifyPlaylistData);
+					emitter.emit("showSpotifyPlaylist", spotifyPlaylistData);
 				}
 			);
 			break;
