@@ -8,17 +8,18 @@ import {
 
 // Pages
 import About from "@/views/About.vue";
-import Artist from "@/views/Artist.vue";
 import Charts from "@/views/Charts.vue";
 import Errors from "@/views/Errors.vue";
 import Favorites from "@/views/Favorites.vue";
 import Home from "@/views/Home.vue";
 import InfoArl from "@/views/InfoArl.vue";
 import InfoSpotifyFeatures from "@/views/InfoSpotifyFeatures.vue";
-import LinkAnalyzer from "@/views/LinkAnalyzer.vue";
-import Search from "@/views/Search.vue";
-import Settings from "@/views/Settings.vue";
 import Tracklist from "@/views/Tracklist.vue";
+
+const Search = () => import("@/views/Search.vue");
+const Settings = () => import("@/views/Settings.vue");
+const Artist = () => import("@/views/Artist.vue");
+const LinkAnalyzer = () => import("@/views/LinkAnalyzer.vue");
 
 const routes: RouteRecordRaw[] = [
 	{
