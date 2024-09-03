@@ -22,6 +22,7 @@ import { sendAddToQueue } from "@/utils/downloads";
 import { generatePath, copyToClipboard } from "@/utils/utils";
 import { downloadQualities } from "@/data/qualities";
 import { useI18n } from "vue-i18n";
+import { emitter } from "@/utils/emitter";
 
 export default {
 	setup() {
@@ -129,7 +130,7 @@ export default {
 		},
 	},
 	mounted() {
-		this.$root.$on("ContextMenu:searchbar", this.showSearchbarMenu);
+		emitter.on("ContextMenu:searchbar", this.showSearchbarMenu);
 		document.body.addEventListener("contextmenu", this.showMenu);
 		document.body.addEventListener("click", this.hideMenu);
 	},

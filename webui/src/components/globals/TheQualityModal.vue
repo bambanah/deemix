@@ -31,6 +31,7 @@
 
 <script>
 import { sendAddToQueue } from "@/utils/downloads";
+import { emitter } from "@/utils/emitter";
 import { useI18n } from "vue-i18n";
 
 export default {
@@ -44,7 +45,7 @@ export default {
 		url: "",
 	}),
 	mounted() {
-		this.$root.$on("QualityModal:open", this.openModal);
+		emitter.on("QualityModal:open", this.openModal);
 		this.$refs.modal.addEventListener(
 			"webkitAnimationEnd",
 			this.handleAnimationEnd

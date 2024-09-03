@@ -157,11 +157,6 @@ export default {
 		},
 	},
 	async created() {
-		// socket.on('setChartTracks', this.setTracklist)
-		// this.$on('hook:destroyed', () => {
-		// 	socket.off('setChartTracks')
-		// })
-
 		const { data: chartsData } = await getChartsData();
 		this.initCharts(chartsData);
 	},

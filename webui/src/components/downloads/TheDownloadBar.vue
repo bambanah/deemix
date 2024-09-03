@@ -126,19 +126,7 @@ export default {
 			return Object.values(this.queueList).filter(isCompletedWithoutErrors);
 		},
 	},
-	created() {
-		const checkIfToggleBar = (keyEvent) => {
-			if (!(keyEvent.ctrlKey && keyEvent.key === "b")) return;
-
-			this.toggleDownloadTab();
-		};
-
-		document.addEventListener("keyup", checkIfToggleBar);
-
-		this.$on("hook:destroyed", () => {
-			document.removeEventListener("keyup", checkIfToggleBar);
-		});
-	},
+	created() {},
 	mounted() {
 		socket.on("startDownload", this.startDownload);
 		socket.on("startConversion", this.startConversion);
@@ -169,12 +157,21 @@ export default {
 		document.addEventListener("mouseup", () => {
 			document.removeEventListener("mousemove", this.handleDrag);
 		});
+		document.addEventListener("keyup", this.checkIfToggleBar);
 
 		window.addEventListener("beforeunload", () => {
-			localStorage.setItem("downloadTabWidth", this.cachedTabWidth);
+			localStorage.setItem("downloadTabWidth", this.cachedTabWidth.toString());
 		});
 	},
+	unmounted() {
+		document.removeEventListener("keyup", this.checkIfToggleBar);
+	},
 	methods: {
+		checkIfToggleBar: (keyEvent) => {
+			if (!(keyEvent.ctrlKey && keyEvent.key === "b")) return;
+
+			this.toggleDownloadTab();
+		},
 		setErrors: (errors) => errorStore.setErrors(errors),
 		onRemoveItem(uuid) {
 			socket.emit("removeFromQueue", uuid);
