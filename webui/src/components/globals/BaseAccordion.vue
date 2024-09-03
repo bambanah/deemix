@@ -1,4 +1,4 @@
-<template functional>
+<template>
 	<details
 		:class="[data.staticClass, { 'with-arrow': props.withArrow }]"
 		:style="data.staticStyle"

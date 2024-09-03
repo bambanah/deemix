@@ -1,7 +1,7 @@
 <template>
 	<div class="download-object" :data-link-only="generateLink">
 		<div class="download-info">
-			<div class="coverart rounded relative">
+			<div class="coverart relative rounded">
 				<img
 					width="75px"
 					:src="queueItem.cover"
@@ -58,7 +58,9 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
+
 const possibleStates = [
 	"converting",
 	"downloading",
@@ -66,7 +68,7 @@ const possibleStates = [
 	"completed",
 ];
 
-export default {
+export default defineComponent({
 	props: {
 		queueItem: {
 			type: Object,
@@ -74,7 +76,7 @@ export default {
 		},
 		showTags: Boolean,
 	},
-	data() {
+	data: () => {
 		return {
 			isLoading: false,
 		};
@@ -84,7 +86,7 @@ export default {
 			return this.queueItem.failed >= 1;
 		},
 		hasErrors() {
-			return this.queueItem.errors.length >= 1;
+			return this.queueItem.errors?.length >= 1;
 		},
 		allFailed() {
 			let allFailed = false;
@@ -218,7 +220,7 @@ export default {
 			}
 		},
 	},
-};
+});
 </script>
 
 <style>

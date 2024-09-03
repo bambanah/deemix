@@ -1,18 +1,27 @@
+import vue from "@vitejs/plugin-vue";
 import { fileURLToPath, URL } from "node:url";
-
 import { defineConfig } from "vite";
-import vue2 from "@vitejs/plugin-vue2";
-import vue2Jsx from "@vitejs/plugin-vue2-jsx";
 
 // https://vitejs.dev/config/
 export default defineConfig({
 	build: {
 		minify: false,
 	},
-	plugins: [vue2(), vue2Jsx()],
 	resolve: {
 		alias: {
 			"@": fileURLToPath(new URL("./src", import.meta.url)),
+			vue: "@vue/compat",
 		},
 	},
+	plugins: [
+		vue({
+			template: {
+				compilerOptions: {
+					compatConfig: {
+						MODE: 2,
+					},
+				},
+			},
+		}),
+	],
 });

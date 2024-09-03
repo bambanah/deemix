@@ -100,7 +100,7 @@ export default {
 	components: {
 		QueueItem,
 	},
-	data() {
+	data: () => {
 		return {
 			cachedTabWidth: parseInt(localStorage.getItem("downloadTabWidth")) || 300,
 			queue: [],

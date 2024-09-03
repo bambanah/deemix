@@ -36,10 +36,10 @@ location.base = "/";
 
 /* ===== App initialization ===== */
 Vue.use(PiniaVuePlugin);
+
 new Vue({
 	el: "#app",
 	router,
-	i18n,
 	render: (h) => h(App),
 }).$mount("#app");
 
