@@ -1,5 +1,11 @@
 # deezer-js
 
+## 1.6.0
+
+### Minor Changes
+
+- a2e64c5: Significantly improved typing
+
 ## 1.5.0
 
 ### Minor Changes
