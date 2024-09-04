@@ -1,5 +1,18 @@
 # deemix-webui
 
+## 4.0.0
+
+### Major Changes
+
+- a2e64c5: Complete overhaul to bundle server and webui together
+
+### Patch Changes
+
+- Updated dependencies [a2e64c5]
+- Updated dependencies [a2e64c5]
+  - deezer-js@1.6.0
+  - deemix@3.10.0
+
 ## 3.11.2
 
 ### Patch Changes

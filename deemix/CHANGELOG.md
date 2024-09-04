@@ -1,5 +1,16 @@
 # deemix
 
+## 3.10.0
+
+### Minor Changes
+
+- a2e64c5: Significantly improved typing
+
+### Patch Changes
+
+- Updated dependencies [a2e64c5]
+  - deezer-js@1.6.0
+
 ## 3.9.0
 
 ### Minor Changes
