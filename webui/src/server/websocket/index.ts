@@ -1,10 +1,10 @@
-import { Server as WsServer } from "ws";
+import { WebSocketServer } from "ws";
 
 import { logger } from "../helpers/logger";
 import { DeemixApp } from "../deemixApp";
 import wsModules from "./modules";
 
-export const registerWebsocket = (wss: WsServer, deemix: DeemixApp) => {
+export const registerWebsocket = (wss: WebSocketServer, deemix: DeemixApp) => {
 	wss.on("connection", (ws) => {
 		console.log("Connected");
 		ws.on("message", (message) => {

@@ -21,6 +21,7 @@ export class Playlist {
 	pic: Picture | StaticPicture;
 	variousArtists: Artist;
 	mainArtist: any;
+	bitrate?: number;
 
 	constructor(playlistAPI) {
 		this.id = `pl_${playlistAPI.id}`;

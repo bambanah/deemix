@@ -5,22 +5,32 @@ import {
 	InvalidID,
 	NotYourPrivatePlaylist,
 } from "./errors";
-const { map_user_playlist, map_track, map_album } = require("deezer-js").utils;
+import {
+	utils,
+	APIAlbum,
+	APIArtist,
+	APIPlaylist,
+	APITrack,
+	EnrichedAPITrack,
+	EnrichedAPIAlbum,
+	GWTrack,
+} from "deezer-js";
 import { each } from "async";
 import { Deezer } from "deezer-js";
 import { Album } from "./types/Album";
-import { APIAlbum, APITrack } from "deezer-js/src/api";
+
+const { map_user_playlist, map_track, map_album } = utils;
 
 export async function generateTrackItem(
 	dz: Deezer,
-	id: string,
+	id: number | string,
 	bitrate: number,
-	trackAPI?: APITrack,
+	trackAPI?: APITrack | EnrichedAPITrack,
 	albumAPI?: APIAlbum
 ) {
 	// Get essential track info
 	if (!trackAPI) {
-		if (String(id).startsWith("isrc") || parseInt(id) > 0) {
+		if (String(id).startsWith("isrc") || (typeof id === "number" && id > 0)) {
 			try {
 				trackAPI = await dz.api.get_track(id);
 			} catch (e) {
@@ -39,7 +49,7 @@ export async function generateTrackItem(
 	} else {
 		id = trackAPI.id;
 	}
-	if (!/^-?\d+$/.test(id))
+	if (!/^-?\d+$/.test(String(id)))
 		throw new InvalidID(`https://deezer.com/track/${id}`);
 
 	let cover: string;
@@ -74,7 +84,7 @@ export async function generateAlbumItem(
 	rootArtist?: { id: any; name: any; picture_small: any }
 ) {
 	// Get essential album info
-	let albumAPI: APIAlbum;
+	let albumAPI: APIAlbum | EnrichedAPIAlbum;
 	if (String(id).startsWith("upc")) {
 		const upcs = [id.slice(4).toString()];
 		upcs.push(parseInt(upcs[0], 10).toString()); // Try UPC without leading zeros as well
@@ -99,7 +109,7 @@ export async function generateAlbumItem(
 		try {
 			const albumAPI_gw_page = await dz.gw.get_album_page(id);
 			if (albumAPI_gw_page.DATA) {
-				albumAPI = map_album(albumAPI_gw_page.DATA);
+				albumAPI = <any>map_album(albumAPI_gw_page.DATA);
 				id = albumAPI_gw_page.DATA.ALB_ID;
 				const albumAPI_new = await dz.api.get_album(id);
 				albumAPI = { ...albumAPI, ...albumAPI_new };
@@ -153,14 +163,12 @@ export async function generateAlbumItem(
 	const totalSize = tracksArray.length;
 	albumAPI.nb_tracks = totalSize;
 	const collection = [];
-	tracksArray.forEach(
-		(trackAPI: { track_token: any; position: any }, pos: number) => {
-			trackAPI = map_track(trackAPI);
-			delete trackAPI.track_token;
-			trackAPI.position = pos + 1;
-			collection.push(trackAPI);
-		}
-	);
+	tracksArray.forEach((trackAPI: GWTrack, pos: number) => {
+		const mappedTrack = map_track(trackAPI);
+		delete mappedTrack.track_token;
+		mappedTrack.position = pos + 1;
+		collection.push(mappedTrack);
+	});
 
 	return new Collection({
 		type: "album",
@@ -182,31 +190,7 @@ export async function generatePlaylistItem(
 	dz: Deezer,
 	id: string,
 	bitrate: number,
-	playlistAPI?: {
-		id?: string;
-		title: any;
-		description?: string;
-		duration?: number;
-		public: any;
-		is_loved_track?: boolean;
-		collaborative?: boolean;
-		nb_tracks: any;
-		fans?: any;
-		link?: string;
-		share?: any;
-		picture?: any;
-		picture_small: any;
-		picture_medium?: any;
-		picture_big?: any;
-		picture_xl?: any;
-		checksum?: any;
-		tracklist?: string;
-		creation_date?: string;
-		creator: any;
-		type?: string;
-		various_artist?: any;
-		explicit?: any;
-	},
+	playlistAPI?: APIPlaylist,
 	playlistTracksAPI?: any[]
 ) {
 	if (!playlistAPI) {
@@ -246,20 +230,15 @@ export async function generatePlaylistItem(
 	const totalSize = playlistTracksAPI.length;
 	playlistAPI.nb_tracks = totalSize;
 	const collection = [];
-	playlistTracksAPI.forEach(
-		(
-			trackAPI: { explicit_lyrics: any; track_token: any; position: any },
-			pos: number
-		) => {
-			trackAPI = map_track(trackAPI);
-			if (trackAPI.explicit_lyrics) {
-				playlistAPI.explicit = true;
-			}
-			delete trackAPI.track_token;
-			trackAPI.position = pos + 1;
-			collection.push(trackAPI);
+	playlistTracksAPI.forEach((trackAPI: GWTrack, pos: number) => {
+		const mappedTrack = map_track(trackAPI);
+		if (mappedTrack.explicit_lyrics) {
+			playlistAPI.explicit = true;
 		}
-	);
+		delete mappedTrack.track_token;
+		mappedTrack.position = pos + 1;
+		collection.push(mappedTrack);
+	});
 
 	if (!playlistAPI.explicit) playlistAPI.explicit = false;
 
@@ -297,7 +276,7 @@ export async function generateArtistItem(
 	if (!/^\d+$/.test(id))
 		throw new InvalidID(`https://deezer.com/artist/${id}${path}`);
 	// Get essential artist info
-	let artistAPI: { id: any; name: any; picture_small: any };
+	let artistAPI: Partial<APIArtist>;
 	try {
 		artistAPI = await dz.api.get_artist(id);
 	} catch (e) {
@@ -316,7 +295,9 @@ export async function generateArtistItem(
 	if (listener) {
 		listener.send("startAddingArtist", rootArtist);
 	}
-	const artistDiscographyAPI = await dz.gw.get_artist_discography_tabs(id, 100);
+	const artistDiscographyAPI = await dz.gw.get_artist_discography_tabs(id, {
+		limit: 100,
+	});
 	const albumList = [];
 	if (tab === "discography") {
 		delete artistDiscographyAPI.all;
@@ -366,16 +347,7 @@ export async function generateArtistTopItem(
 	if (!/^\d+$/.test(id))
 		throw new InvalidID(`https://deezer.com/artist/${id}/top_track`);
 	// Get essential artist info
-	let artistAPI: {
-		id: string;
-		name: string;
-		nb_fan: any;
-		picture: any;
-		picture_small: any;
-		picture_medium: any;
-		picture_big: any;
-		picture_xl: any;
-	};
+	let artistAPI: Partial<APIArtist>;
 	try {
 		artistAPI = await dz.api.get_artist(id);
 	} catch (e) {

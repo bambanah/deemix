@@ -8,7 +8,7 @@ import { tmpdir } from "os";
 import { streamTrack } from "./decryption";
 import { DownloadCanceled, DownloadFailed, ErrorMessages } from "./errors";
 import { DEFAULTS, OverwriteOption } from "./settings";
-import { IDownloadObject } from "./types/DownloadObjects";
+import { Collection, IDownloadObject, Single } from "./types/DownloadObjects";
 import { StaticPicture, Settings } from "./types";
 import Track, { formatsName } from "./types/Track";
 import { downloadImage, getPreferredBitrate, shellEscape } from "./utils";
@@ -41,7 +41,7 @@ export class Downloader {
 	dz: Deezer;
 	downloadObject: IDownloadObject;
 	settings: Settings;
-	bitrate: string;
+	bitrate: number;
 	listener: any;
 	playlistCovername: null;
 	playlistURLs: any[];
@@ -88,23 +88,25 @@ export class Downloader {
 
 	async start() {
 		if (!this.downloadObject.isCanceled) {
-			if (this.downloadObject.__type__ === "Single") {
+			if (this.downloadObject instanceof Single) {
 				const track = await this.downloadWrapper({
 					trackAPI: this.downloadObject.single.trackAPI,
 					albumAPI: this.downloadObject.single.albumAPI,
 				});
 				if (track) await this.afterDownloadSingle(track);
-			} else if (this.downloadObject.__type__ === "Collection") {
+			} else if (this.downloadObject instanceof Collection) {
 				const tracks = [];
 
 				const q = queue(
-					async (data: { track: Track; pos: number }, callback) => {
-						const { track, pos } = data;
-						tracks[pos] = await this.downloadWrapper({
-							trackAPI: track,
-							albumAPI: this.downloadObject.collection.albumAPI,
-							playlistAPI: this.downloadObject.collection.playlistAPI,
-						});
+					async (data: { track: APITrack; pos: number }, callback) => {
+						if (this.downloadObject instanceof Collection) {
+							const { track, pos } = data;
+							tracks[pos] = await this.downloadWrapper({
+								trackAPI: track,
+								albumAPI: this.downloadObject.collection.albumAPI,
+								playlistAPI: this.downloadObject.collection.playlistAPI,
+							});
+						}
 
 						callback();
 					},
@@ -136,7 +138,7 @@ export class Downloader {
 		extraData: { trackAPI: APITrack; albumAPI?: APIAlbum; playlistAPI?: any },
 		track?: Track
 	) {
-		const returnData = {};
+		const returnData = <any>{};
 		const { trackAPI, albumAPI, playlistAPI } = extraData;
 
 		if (this.downloadObject.isCanceled) throw new DownloadCanceled();
@@ -205,7 +207,13 @@ export class Downloader {
 
 			this.downloadObject.files.push(returnData);
 
-			this.downloadObject.completeTrackProgress(this.listener);
+			if (
+				this.downloadObject instanceof Single ||
+				this.downloadObject instanceof Collection
+			) {
+				this.downloadObject.completeTrackProgress(this.listener);
+			}
+
 			this.downloadObject.downloaded += 1;
 			return returnData;
 		}
@@ -455,7 +463,10 @@ export class Downloader {
 		return returnData;
 	}
 
-	async downloadWrapper(extraData: { trackAPI: APITrack }, track?: Track) {
+	async downloadWrapper(
+		extraData: { trackAPI: APITrack; albumAPI?: APIAlbum; playlistAPI?: any },
+		track?: Track
+	) {
 		const { trackAPI } = extraData;
 
 		// Temp metadata to generate logs
@@ -474,11 +485,10 @@ export class Downloader {
 					const track = e.track;
 					if (track.fallbackID !== 0) {
 						this.warn(itemData, e.errid, "fallback");
-						let newTrack = await this.dz.gw.get_track_with_fallback(
+						let gwTrack = await this.dz.gw.get_track_with_fallback(
 							track.fallbackID
 						);
-						newTrack = map_track(newTrack);
-						track.parseEssentialData(newTrack);
+						track.parseEssentialData(map_track(gwTrack));
 						return await this.downloadWrapper(extraData, track);
 					}
 					if (track.albumsFallback.length && this.settings.fallbackISRC) {
@@ -493,10 +503,9 @@ export class Downloader {
 						}
 						if (fallbackID !== 0) {
 							this.warn(itemData, e.errid, "fallback");
-							let newTrack =
+							let gwTrack =
 								await this.dz.gw.get_track_with_fallback(fallbackID);
-							newTrack = map_track(newTrack);
-							track.parseEssentialData(newTrack);
+							track.parseEssentialData(map_track(gwTrack));
 							return await this.downloadWrapper(extraData, track);
 						}
 					}
@@ -508,10 +517,9 @@ export class Downloader {
 							track.album.title
 						);
 						if (searchedID !== "0") {
-							let newTrack =
+							let gwTrack =
 								await this.dz.gw.get_track_with_fallback(searchedID);
-							newTrack = map_track(newTrack);
-							track.parseEssentialData(newTrack);
+							track.parseEssentialData(map_track(gwTrack));
 							track.searched = true;
 							this.log(itemData, "searchFallback");
 							return await this.downloadWrapper(extraData, track);
@@ -544,7 +552,12 @@ export class Downloader {
 		}
 
 		if (result.error) {
-			this.downloadObject.completeTrackProgress(this.listener);
+			if (
+				this.downloadObject instanceof Single ||
+				this.downloadObject instanceof Collection
+			) {
+				this.downloadObject.completeTrackProgress(this.listener);
+			}
 			this.downloadObject.failed += 1;
 			this.downloadObject.errors.push(result.error);
 			if (this.listener) {
@@ -583,7 +596,7 @@ export class Downloader {
 		}
 	}
 
-	async afterDownloadSingle(track) {
+	async afterDownloadSingle(track: any) {
 		if (!track) return;
 		if (!this.downloadObject.extrasPath) {
 			this.downloadObject.extrasPath = this.settings.downloadLocation;
@@ -592,7 +605,7 @@ export class Downloader {
 		// Save local album artwork
 		try {
 			if (this.settings.saveArtwork && track.albumPath) {
-				await each(track.albumURLs, async (image) => {
+				await each(track.albumURLs, async (image: any) => {
 					await downloadImage(
 						image.url,
 						`${track.albumPath}/${track.albumFilename}.${image.ext}`,
@@ -607,7 +620,7 @@ export class Downloader {
 		// Save local artist artwork
 		try {
 			if (this.settings.saveArtworkArtist && track.artistPath) {
-				await each(track.artistURLs, async (image) => {
+				await each(track.artistURLs, async (image: any) => {
 					await downloadImage(
 						image.url,
 						`${track.artistPath}/${track.artistFilename}.${image.ext}`,
@@ -693,7 +706,7 @@ export class Downloader {
 			// Save local album artwork
 			try {
 				if (this.settings.saveArtwork && track.albumPath) {
-					await each(track.albumURLs, async (image) => {
+					await each(track.albumURLs, async (image: any) => {
 						await downloadImage(
 							image.url,
 							`${track.albumPath}/${track.albumFilename}.${image.ext}`,
@@ -708,7 +721,7 @@ export class Downloader {
 			// Save local artist artwork
 			try {
 				if (this.settings.saveArtworkArtist && track.artistPath) {
-					await each(track.artistURLs, async (image) => {
+					await each(track.artistURLs, async (image: any) => {
 						await downloadImage(
 							image.url,
 							`${track.artistPath}/${track.artistFilename}.${image.ext}`,

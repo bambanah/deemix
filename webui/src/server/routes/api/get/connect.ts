@@ -14,7 +14,7 @@ const handler: ApiHandler["handler"] = async (req, res) => {
 	const isSingleUser = req.app.get("isSingleUser");
 
 	if (!update) {
-		logger.info(`Currently running deemix-gui version ${currentVersion}`);
+		logger.info(`Currently running deemix-webui version ${currentVersion}`);
 		logger.info(`deemix-lib version ${deemixVersion}`);
 		update = {
 			currentCommit: currentVersion,

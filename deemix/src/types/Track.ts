@@ -1,6 +1,14 @@
-import { Deezer, TrackFormats, utils } from "deezer-js";
+import {
+	Deezer,
+	TrackFormats,
+	utils,
+	EnrichedAPITrack,
+	APIAlbum,
+	APIPlaylist,
+	APITrack,
+} from "deezer-js";
 import { AlbumDoesntExists, NoDataToParse } from "../errors";
-import { FeaturesOption, Settings } from "../settings";
+import { FeaturesOption } from "../settings";
 import {
 	andCommaConcat,
 	changeCase,
@@ -15,12 +23,8 @@ import { VARIOUS_ARTISTS } from "./index";
 import { Lyrics } from "./Lyrics";
 import { Picture } from "./Picture";
 import { Playlist } from "./Playlist";
-import {
-	APIAlbum,
-	APIPlaylist,
-	APITrack,
-	EnrichedAPITrack,
-} from "deezer-js/src/api";
+import { Settings } from "./Settings";
+
 const { map_track, map_album } = utils;
 
 export const formatsName = {
@@ -35,12 +39,13 @@ export const formatsName = {
 } as const;
 
 class Track {
-	id: string;
+	id: number;
+	name?: string;
 	title: string;
 	MD5?: string;
 	mediaVersion?: number;
 	trackToken: string;
-	trackTokenExpiration?: string;
+	trackTokenExpiration?: number;
 	duration: number;
 	fallbackID: number;
 	albumsFallback: any[];
@@ -61,7 +66,7 @@ class Track {
 	ISRC: string;
 	replayGain: string;
 	playlist: Playlist | null;
-	position: null;
+	position: number | null;
 	searched: boolean;
 	bitrate: keyof typeof formatsName;
 	dateString: string;
@@ -75,7 +80,7 @@ class Track {
 	artistString: any;
 
 	constructor() {
-		this.id = "0";
+		this.id = 0;
 		this.title = "";
 		this.MD5 = "";
 		this.trackToken = "";
@@ -111,7 +116,7 @@ class Track {
 	}
 
 	parseEssentialData(trackAPI: EnrichedAPITrack) {
-		this.id = String(trackAPI.id);
+		this.id = trackAPI.id;
 		this.duration = trackAPI.duration;
 		this.trackToken = trackAPI.track_token;
 		this.trackTokenExpiration = trackAPI.track_token_expire;
@@ -119,7 +124,7 @@ class Track {
 		this.mediaVersion = trackAPI.media_version;
 		this.filesizes = trackAPI.filesizes;
 		this.fallbackID = trackAPI.fallback_id ?? 0;
-		this.local = parseInt(this.id) < 0;
+		this.local = this.id < 0;
 		this.urls = {};
 	}
 
@@ -127,8 +132,8 @@ class Track {
 		dz: Deezer,
 		id,
 		existingTrack?: APITrack,
-		albumAPI: APIAlbum,
-		playlistAPI: APIPlaylist,
+		albumAPI?: APIAlbum,
+		playlistAPI?: APIPlaylist,
 		refetch: boolean = true
 	) {
 		if (id && refetch) {
@@ -196,7 +201,7 @@ class Track {
 				} catch {
 					albumAPI_gw = {};
 				}
-				if (!albumAPI) albumAPI = {};
+				if (!albumAPI) albumAPI = <any>{};
 				albumAPI = { ...albumAPI_gw, ...albumAPI };
 			}
 
@@ -207,7 +212,9 @@ class Track {
 			// Getting artist image ID
 			// ex: https://e-cdns-images.dzcdn.net/images/artist/f2bc007e9133c946ac3c3907ddc5d2ea/56x56-000000-80-0-0.jpg
 			if (!this.album.mainArtist.pic.md5) {
-				const artistAPI = await dz.api.get_artist(this.album.mainArtist.id);
+				const artistAPI: any = await dz.api.get_artist(
+					this.album.mainArtist.id
+				);
 				this.album.mainArtist.pic.md5 = artistAPI.picture_small.slice(
 					artistAPI.picture_small.search("artist/") + 7,
 					-24
@@ -247,7 +254,7 @@ class Track {
 		this.title = trackAPI.title;
 		this.album = new Album(trackAPI.album.title);
 		this.album.pic = new Picture(trackAPI.md5_image || "", "cover");
-		this.mainArtist = new Artist("0", trackAPI.artist.name, "Main");
+		this.mainArtist = new Artist(0, trackAPI.artist.name, "Main");
 		this.artists = [trackAPI.artist.name];
 		this.artist = {
 			Main: [trackAPI.artist.name],
@@ -363,7 +370,7 @@ class Track {
 		// Check if should save the playlist as a compilation
 		if (settings.tags.savePlaylistAsCompilation && this.playlist) {
 			this.trackNumber = this.position;
-			this.discNumber = "1";
+			this.discNumber = 1;
 			this.album.makePlaylistCompilation(this.playlist);
 		} else {
 			if (this.album.date) this.date = this.album.date;

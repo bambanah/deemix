@@ -22,14 +22,14 @@ const formats_360 = {
 export async function getPreferredBitrate(
 	dz: Deezer,
 	track: Track,
-	preferredBitrate: string,
+	preferredBitrate: number,
 	shouldFallback: boolean,
 	feelingLucky: boolean,
 	uuid: string,
 	listener: any
 ) {
 	let falledBack = false;
-	let hasAlternative = track.fallbackID !== "0";
+	let hasAlternative = track.fallbackID !== 0;
 	let isGeolocked = false;
 	let wrongLicense = false;
 
@@ -114,8 +114,10 @@ export async function getPreferredBitrate(
 		return TrackFormats.LOCAL;
 	}
 
-	const is360Format = Object.keys(formats_360).includes(preferredBitrate);
-	let formats: Record<string, string>;
+	const is360Format = Object.keys(formats_360).includes(
+		preferredBitrate.toString()
+	);
+	let formats: Record<number, string>;
 	if (!shouldFallback) {
 		formats = { ...formats_360, ...formats_non_360 };
 	} else if (is360Format) {
@@ -128,7 +130,7 @@ export async function getPreferredBitrate(
 	await track.checkAndRenewTrackToken(dz);
 	for (let i = 0; i < Object.keys(formats).length; i++) {
 		// Check bitrates
-		const formatNumber = Object.keys(formats).reverse()[i];
+		const formatNumber = parseInt(Object.keys(formats).reverse()[i]);
 		const formatName = formats[formatNumber];
 
 		// Current bitrate is higher than preferred bitrate; skip

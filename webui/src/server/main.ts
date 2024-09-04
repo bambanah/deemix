@@ -1,8 +1,8 @@
 import initDebug from "debug";
 import * as deemix from "deemix";
-import express from "express";
+import express, { type Express } from "express";
 import ViteExpress from "vite-express";
-import { OPEN as WsOpen, WebSocketServer } from "ws";
+import { WebSocketServer } from "ws";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { DeemixApp } from "./deemixApp";
@@ -32,7 +32,7 @@ const isSingleUser =
 		? !!argv.singleuser
 		: process.env.DEEMIX_SINGLE_USER === "true";
 
-const app = express();
+const app: Express = express();
 
 if (isSingleUser) loadLoginCredentials();
 
@@ -46,7 +46,7 @@ const listener: Listener = {
 		if (logLine) logger.info(logLine);
 		if (["downloadInfo", "downloadWarn"].includes(key)) return;
 		wss.clients.forEach((client) => {
-			if (client.readyState === WsOpen) {
+			if (client.readyState === WebSocket.OPEN) {
 				client.send(JSON.stringify({ key, data }));
 			}
 		});

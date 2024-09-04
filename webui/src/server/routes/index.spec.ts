@@ -1,5 +1,5 @@
 import request from "supertest";
-import { server } from "../index";
+import { server } from "../main";
 
 const { app } = server;
 

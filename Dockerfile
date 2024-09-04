@@ -19,8 +19,10 @@ RUN pnpm install -r --offline && pnpm build
 FROM base AS runner
 
 COPY --from=builder /app/package.json ./
-COPY --from=builder /app/server/dist/ ./server/dist/
-COPY --from=builder /app/webui/public/ ./webui/public/
+
+COPY --from=builder /app/webui/ ./webui/
+# COPY --from=builder --exclude=client/ /app/webui/ ./webui/
+# COPY --from=builder /app/webui/src/client/dist/ ./webui/src/client/dist/
 
 ENV DEEMIX_DATA_DIR=/config/
 ENV DEEMIX_MUSIC_DIR=/downloads/
@@ -28,4 +30,4 @@ ENV DEEMIX_HOST=0.0.0.0
 
 EXPOSE 6595
 
-ENTRYPOINT ["node", "server/dist/app.js"]
+ENTRYPOINT ["pnpm", "start"]

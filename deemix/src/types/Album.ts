@@ -8,14 +8,15 @@ import { VARIOUS_ARTISTS } from "./index";
 export class Album {
 	id: string;
 	title: string;
+	name?: string;
 	pic: any;
 	artist: { Main: any[] };
 	artists: any[];
 	mainArtist: Artist | null;
 	date: CustomDate;
 	dateString: string;
-	trackTotal: string;
-	discTotal: string;
+	trackTotal: number;
+	discTotal: number;
 	embeddedCoverPath: string;
 	embeddedCoverURL: string;
 	explicit: boolean;
@@ -41,8 +42,8 @@ export class Album {
 		this.mainArtist = null;
 		this.date = new CustomDate();
 		this.dateString = "";
-		this.trackTotal = "0";
-		this.discTotal = "0";
+		this.trackTotal = 0;
+		this.discTotal = 0;
 		this.embeddedCoverPath = "";
 		this.embeddedCoverURL = "";
 		this.explicit = false;
@@ -123,7 +124,7 @@ export class Album {
 			this.date.fixDayMonth();
 		}
 
-		this.discTotal = albumAPI.nb_disk || "1";
+		this.discTotal = albumAPI.nb_disk || 1;
 		this.copyright = albumAPI.copyright || "";
 
 		if (this.pic.md5 === "") {

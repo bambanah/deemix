@@ -101,6 +101,9 @@ importers:
       '@types/tough-cookie':
         specifier: ^4.0.5
         version: 4.0.5
+      tsup:
+        specifier: ^8.2.4
+        version: 8.2.4(jiti@1.21.6)(postcss@8.4.44)(tsx@4.19.0)(typescript@5.5.4)(yaml@2.5.0)
 
   gui:
     dependencies:
@@ -185,7 +188,7 @@ importers:
         version: 1.11.1
       ts-loader:
         specifier: 9.5.1
-        version: 9.5.1(typescript@5.5.4)(webpack@5.93.0(esbuild@0.12.19))
+        version: 9.5.1(typescript@5.5.4)(webpack@5.93.0(esbuild@0.23.1))
       utf-8-validate:
         specifier: 5.0.5
         version: 5.0.5
@@ -261,7 +264,7 @@ importers:
         version: 17.0.32
       '@vitejs/plugin-vue':
         specifier: ^5.1.3
-        version: 5.1.3(vite@5.4.2(@types/node@20.16.3)(terser@5.31.6))(vue@3.4.38(typescript@5.5.4))
+        version: 5.1.3(vite@5.4.2(@types/node@20.16.3)(lightningcss@1.26.0)(terser@5.31.6))(vue@3.4.38(typescript@5.5.4))
       '@vue/compiler-sfc':
         specifier: ^3.1.0
         version: 3.4.38
@@ -274,9 +277,12 @@ importers:
       babel-jest:
         specifier: ^29.7.0
         version: 29.7.0(@babel/core@7.25.2)
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
       esbuild:
-        specifier: 0.12.19
-        version: 0.12.19
+        specifier: ^0.23.1
+        version: 0.23.1
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@20.16.3)(node-notifier@10.0.1)(ts-node@9.1.1(typescript@5.5.4))
@@ -294,7 +300,7 @@ importers:
         version: 6.1.3
       ts-jest:
         specifier: ^29.2.5
-        version: 29.2.5(@babel/core@7.25.2)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.25.2))(esbuild@0.12.19)(jest@29.7.0(@types/node@20.16.3)(node-notifier@10.0.1)(ts-node@9.1.1(typescript@5.5.4)))(typescript@5.5.4)
+        version: 29.2.5(@babel/core@7.25.2)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.25.2))(esbuild@0.23.1)(jest@29.7.0(@types/node@20.16.3)(node-notifier@10.0.1)(ts-node@9.1.1(typescript@5.5.4)))(typescript@5.5.4)
       ts-node:
         specifier: 9.1.1
         version: 9.1.1(typescript@5.5.4)
@@ -309,7 +315,7 @@ importers:
         version: 5.5.4
       vite:
         specifier: ^5.4.2
-        version: 5.4.2(@types/node@20.16.3)(terser@5.31.6)
+        version: 5.4.2(@types/node@20.16.3)(lightningcss@1.26.0)(terser@5.31.6)
       vite-svg-loader:
         specifier: ^5.1.0
         version: 5.1.0(vue@3.4.38(typescript@5.5.4))
@@ -2108,6 +2114,11 @@ packages:
   create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
 
+  cross-env@7.0.3:
+    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
+    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
+    hasBin: true
+
   cross-spawn@5.1.0:
     resolution: {integrity: sha512-pTgQJ5KC0d2hcY8eyL1IzlBPYjTkyH72XRZPnLyKus2mBfNjQs3klqbJU2VILqZryAZUt9JOb3h/mWMy23/f5A==}
 
@@ -2232,6 +2243,11 @@ packages:
   detect-indent@6.1.0:
     resolution: {integrity: sha512-reYkTUJAZb9gUuZ2RvVCNhVHdg62RHnJ7WJl8ftMi4diZ6NWlciOzQN88pUhSELEwflJht4oQDv0F0BMlwaYtA==}
     engines: {node: '>=8'}
+
+  detect-libc@1.0.3:
+    resolution: {integrity: sha512-pGjwhsmsp4kL2RTz08wcOlGN83otlqHeD/Z5T8GXZB+/YcpQ/dgo+lbU8ZsGxV0HIvqqxo9l7mqYwyYMD9bKDg==}
+    engines: {node: '>=0.10'}
+    hasBin: true
 
   detect-newline@3.1.0:
     resolution: {integrity: sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==}
@@ -2400,10 +2416,6 @@ packages:
 
   es6-error@4.1.1:
     resolution: {integrity: sha512-Um/+FxMr9CISWh0bi5Zv0iOD+4cFh5qLeks1qhAopKVAJw3drgKbKySikp7wGhDL0HPeaja0P5ULZrxLkniUVg==}
-
-  esbuild@0.12.19:
-    resolution: {integrity: sha512-5NuT1G6THW7l3fsSCDkcPepn24R0XtyPjKoqKHD8LfhqMXzCdz0mrS9HgO6hIhzVT7zt0T+JGbzCqF5AH8hS9w==}
-    hasBin: true
 
   esbuild@0.21.5:
     resolution: {integrity: sha512-mg3OPMV4hXywwpoDxu3Qda5xCKQi+vCTZq8S9J/EpkhB2HzKXq4SNFZE3+NK93JYxc8VMSep+lOUSC/RVKaBqw==}
@@ -3309,6 +3321,70 @@ packages:
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
+
+  lightningcss-darwin-arm64@1.26.0:
+    resolution: {integrity: sha512-n4TIvHO1NY1ondKFYpL2ZX0bcC2y6yjXMD6JfyizgR8BCFNEeArINDzEaeqlfX9bXz73Bpz/Ow0nu+1qiDrBKg==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [arm64]
+    os: [darwin]
+
+  lightningcss-darwin-x64@1.26.0:
+    resolution: {integrity: sha512-Rf9HuHIDi1R6/zgBkJh25SiJHF+dm9axUZW/0UoYCW1/8HV0gMI0blARhH4z+REmWiU1yYT/KyNF3h7tHyRXUg==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [x64]
+    os: [darwin]
+
+  lightningcss-freebsd-x64@1.26.0:
+    resolution: {integrity: sha512-C/io7POAxp6sZxFSVGezjajMlCKQ8KSwISLLGRq8xLQpQMokYrUoqYEwmIX8mLmF6C/CZPk0gFmRSzd8biWM0g==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [x64]
+    os: [freebsd]
+
+  lightningcss-linux-arm-gnueabihf@1.26.0:
+    resolution: {integrity: sha512-Aag9kqXqkyPSW+dXMgyWk66C984Nay2pY8Nws+67gHlDzV3cWh7TvFlzuaTaVFMVqdDTzN484LSK3u39zFBnzg==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [arm]
+    os: [linux]
+
+  lightningcss-linux-arm64-gnu@1.26.0:
+    resolution: {integrity: sha512-iJmZM7fUyVjH+POtdiCtExG+67TtPUTer7K/5A8DIfmPfrmeGvzfRyBltGhQz13Wi15K1lf2cPYoRaRh6vcwNA==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [arm64]
+    os: [linux]
+
+  lightningcss-linux-arm64-musl@1.26.0:
+    resolution: {integrity: sha512-XxoEL++tTkyuvu+wq/QS8bwyTXZv2y5XYCMcWL45b8XwkiS8eEEEej9BkMGSRwxa5J4K+LDeIhLrS23CpQyfig==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [arm64]
+    os: [linux]
+
+  lightningcss-linux-x64-gnu@1.26.0:
+    resolution: {integrity: sha512-1dkTfZQAYLj8MUSkd6L/+TWTG8V6Kfrzfa0T1fSlXCXQHrt1HC1/UepXHtKHDt/9yFwyoeayivxXAsApVxn6zA==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [x64]
+    os: [linux]
+
+  lightningcss-linux-x64-musl@1.26.0:
+    resolution: {integrity: sha512-yX3Rk9m00JGCUzuUhFEojY+jf/6zHs3XU8S8Vk+FRbnr4St7cjyMXdNjuA2LjiT8e7j8xHRCH8hyZ4H/btRE4A==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [x64]
+    os: [linux]
+
+  lightningcss-win32-arm64-msvc@1.26.0:
+    resolution: {integrity: sha512-X/597/cFnCogy9VItj/+7Tgu5VLbAtDF7KZDPdSw0MaL6FL940th1y3HiOzFIlziVvAtbo0RB3NAae1Oofr+Tw==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [arm64]
+    os: [win32]
+
+  lightningcss-win32-x64-msvc@1.26.0:
+    resolution: {integrity: sha512-pYS3EyGP3JRhfqEFYmfFDiZ9/pVNfy8jVIYtrx9TVNusVyDK3gpW1w/rbvroQ4bDJi7grdUtyrYU6V2xkY/bBw==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [x64]
+    os: [win32]
+
+  lightningcss@1.26.0:
+    resolution: {integrity: sha512-a/XZ5hdgifrofQJUArr5AiJjx26SwMam3SJUSMjgebZbESZ96i+6Qsl8tLi0kaUsdMzBWXh9sN1Oe6hp2/dkQw==}
+    engines: {node: '>= 12.0.0'}
 
   lilconfig@2.1.0:
     resolution: {integrity: sha512-utWOt/GHzuUxnLKxB6dk81RoOeoNeHgbrXiuGk4yyF5qlRz+iIVWu56E2fqGHFrXz0QNUhLB/8nKqvRH66JKGQ==}
@@ -6415,9 +6491,9 @@ snapshots:
       '@typescript-eslint/types': 8.4.0
       eslint-visitor-keys: 3.4.3
 
-  '@vitejs/plugin-vue@5.1.3(vite@5.4.2(@types/node@20.16.3)(terser@5.31.6))(vue@3.4.38(typescript@5.5.4))':
+  '@vitejs/plugin-vue@5.1.3(vite@5.4.2(@types/node@20.16.3)(lightningcss@1.26.0)(terser@5.31.6))(vue@3.4.38(typescript@5.5.4))':
     dependencies:
-      vite: 5.4.2(@types/node@20.16.3)(terser@5.31.6)
+      vite: 5.4.2(@types/node@20.16.3)(lightningcss@1.26.0)(terser@5.31.6)
       vue: 3.4.38(typescript@5.5.4)
 
   '@volar/code-gen@0.38.9':
@@ -7173,6 +7249,10 @@ snapshots:
 
   create-require@1.1.1: {}
 
+  cross-env@7.0.3:
+    dependencies:
+      cross-spawn: 7.0.3
+
   cross-spawn@5.1.0:
     dependencies:
       lru-cache: 4.1.5
@@ -7274,6 +7354,9 @@ snapshots:
   destroy@1.2.0: {}
 
   detect-indent@6.1.0: {}
+
+  detect-libc@1.0.3:
+    optional: true
 
   detect-newline@3.1.0: {}
 
@@ -7475,8 +7558,6 @@ snapshots:
 
   es6-error@4.1.1:
     optional: true
-
-  esbuild@0.12.19: {}
 
   esbuild@0.21.5:
     optionalDependencies:
@@ -8700,6 +8781,52 @@ snapshots:
       prelude-ls: 1.2.1
       type-check: 0.4.0
 
+  lightningcss-darwin-arm64@1.26.0:
+    optional: true
+
+  lightningcss-darwin-x64@1.26.0:
+    optional: true
+
+  lightningcss-freebsd-x64@1.26.0:
+    optional: true
+
+  lightningcss-linux-arm-gnueabihf@1.26.0:
+    optional: true
+
+  lightningcss-linux-arm64-gnu@1.26.0:
+    optional: true
+
+  lightningcss-linux-arm64-musl@1.26.0:
+    optional: true
+
+  lightningcss-linux-x64-gnu@1.26.0:
+    optional: true
+
+  lightningcss-linux-x64-musl@1.26.0:
+    optional: true
+
+  lightningcss-win32-arm64-msvc@1.26.0:
+    optional: true
+
+  lightningcss-win32-x64-msvc@1.26.0:
+    optional: true
+
+  lightningcss@1.26.0:
+    dependencies:
+      detect-libc: 1.0.3
+    optionalDependencies:
+      lightningcss-darwin-arm64: 1.26.0
+      lightningcss-darwin-x64: 1.26.0
+      lightningcss-freebsd-x64: 1.26.0
+      lightningcss-linux-arm-gnueabihf: 1.26.0
+      lightningcss-linux-arm64-gnu: 1.26.0
+      lightningcss-linux-arm64-musl: 1.26.0
+      lightningcss-linux-x64-gnu: 1.26.0
+      lightningcss-linux-x64-musl: 1.26.0
+      lightningcss-win32-arm64-msvc: 1.26.0
+      lightningcss-win32-x64-msvc: 1.26.0
+    optional: true
+
   lilconfig@2.1.0: {}
 
   lilconfig@3.1.2: {}
@@ -9864,16 +9991,16 @@ snapshots:
 
   term-size@2.2.1: {}
 
-  terser-webpack-plugin@5.3.10(esbuild@0.12.19)(webpack@5.93.0(esbuild@0.12.19)):
+  terser-webpack-plugin@5.3.10(esbuild@0.23.1)(webpack@5.93.0(esbuild@0.23.1)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
       schema-utils: 3.3.0
       serialize-javascript: 6.0.2
       terser: 5.31.6
-      webpack: 5.93.0(esbuild@0.12.19)
+      webpack: 5.93.0(esbuild@0.23.1)
     optionalDependencies:
-      esbuild: 0.12.19
+      esbuild: 0.23.1
 
   terser@5.31.6:
     dependencies:
@@ -9955,7 +10082,7 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  ts-jest@29.2.5(@babel/core@7.25.2)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.25.2))(esbuild@0.12.19)(jest@29.7.0(@types/node@20.16.3)(node-notifier@10.0.1)(ts-node@9.1.1(typescript@5.5.4)))(typescript@5.5.4):
+  ts-jest@29.2.5(@babel/core@7.25.2)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.25.2))(esbuild@0.23.1)(jest@29.7.0(@types/node@20.16.3)(node-notifier@10.0.1)(ts-node@9.1.1(typescript@5.5.4)))(typescript@5.5.4):
     dependencies:
       bs-logger: 0.2.6
       ejs: 3.1.10
@@ -9973,9 +10100,9 @@ snapshots:
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
       babel-jest: 29.7.0(@babel/core@7.25.2)
-      esbuild: 0.12.19
+      esbuild: 0.23.1
 
-  ts-loader@9.5.1(typescript@5.5.4)(webpack@5.93.0(esbuild@0.12.19)):
+  ts-loader@9.5.1(typescript@5.5.4)(webpack@5.93.0(esbuild@0.23.1)):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.17.1
@@ -9983,7 +10110,7 @@ snapshots:
       semver: 7.6.3
       source-map: 0.7.4
       typescript: 5.5.4
-      webpack: 5.93.0(esbuild@0.12.19)
+      webpack: 5.93.0(esbuild@0.23.1)
 
   ts-node-dev@1.1.6(node-notifier@10.0.1)(typescript@5.5.4):
     dependencies:
@@ -10171,7 +10298,7 @@ snapshots:
       svgo: 3.3.2
       vue: 3.4.38(typescript@5.5.4)
 
-  vite@5.4.2(@types/node@20.16.3)(terser@5.31.6):
+  vite@5.4.2(@types/node@20.16.3)(lightningcss@1.26.0)(terser@5.31.6):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.4.44
@@ -10179,6 +10306,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 20.16.3
       fsevents: 2.3.3
+      lightningcss: 1.26.0
       terser: 5.31.6
 
   vue-demi@0.14.10(vue@3.4.38(typescript@5.5.4)):
@@ -10238,7 +10366,7 @@ snapshots:
 
   webpack-sources@3.2.3: {}
 
-  webpack@5.93.0(esbuild@0.12.19):
+  webpack@5.93.0(esbuild@0.23.1):
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.5
@@ -10261,7 +10389,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(esbuild@0.12.19)(webpack@5.93.0(esbuild@0.12.19))
+      terser-webpack-plugin: 5.3.10(esbuild@0.23.1)(webpack@5.93.0(esbuild@0.23.1))
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     transitivePeerDependencies:

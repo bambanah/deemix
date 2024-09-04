@@ -17,7 +17,7 @@ export const PlaylistStatus = {
 
 export interface GWTrack {
 	ALB_ID: string;
-	TRACK_TOKEN_EXPIRE: string;
+	TRACK_TOKEN_EXPIRE: number;
 	TOKEN: string;
 	USER_ID: any;
 	FILESIZE_MP3_MISC: any;
@@ -74,7 +74,7 @@ export const EMPTY_TRACK_OBJ = {
 	ALB_PICTURE: "",
 	ART_ID: 0,
 	ART_NAME: "",
-} satisfies GWTrack;
+} satisfies Partial<GWTrack>;
 
 export class GW {
 	http_headers: any;

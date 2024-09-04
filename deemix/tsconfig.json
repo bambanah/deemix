@@ -6,9 +6,6 @@
 		"module": "commonjs",
 		"lib": ["es2021"],
 
-		"allowJs": true,
-		// "checkJs": true,
-
 		"outDir": "./dist",
 
 		"esModuleInterop": true,

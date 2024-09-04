@@ -1,11 +1,11 @@
 import {
 	Downloader,
 	generateDownloadObject,
-	plugins,
 	settings,
 	type Settings,
 	downloadObjects,
 	utils,
+	SpotifyPlugin,
 } from "deemix";
 import { Deezer } from "deezer-js";
 import fs from "fs";
@@ -16,7 +16,6 @@ import { CantStream, NotLoggedIn } from "./helpers/errors";
 import { logger } from "./helpers/logger";
 import { WEBUI_PACKAGE } from "./helpers/paths";
 import { Listener } from "./types";
-import { Spotify } from "deemix/src/plugins";
 
 // Types
 const { Single, Collection, Convertable } = downloadObjects;
@@ -50,7 +49,7 @@ export class DeemixApp {
 	deezerAvailable: string | null;
 	latestVersion: string | null;
 
-	plugins: Record<string, Spotify>;
+	plugins: Record<string, SpotifyPlugin>;
 	settings: any;
 
 	listener: Listener;
@@ -63,7 +62,7 @@ export class DeemixApp {
 		this.currentJob = null;
 
 		this.plugins = {
-			spotify: new plugins.Spotify(),
+			spotify: new SpotifyPlugin(),
 		};
 		this.deezerAvailable = null;
 		this.latestVersion = null;
@@ -337,7 +336,7 @@ export class DeemixApp {
 					break;
 				case "Convertable":
 					const convertable = new Convertable(currentItem);
-					downloadObject = await this.plugins[convertable.plugin].convert(
+					downloadObject = await convertable.plugin.convert(
 						dz,
 						convertable,
 						this.settings,
