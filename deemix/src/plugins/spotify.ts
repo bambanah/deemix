@@ -143,7 +143,7 @@ export default class SpotifyPlugin extends BasePlugin {
 	async generatePlaylistItem(dz, link_id, bitrate) {
 		if (!this.enabled) throw new Error("Spotify plugin not enabled");
 
-		let spotifyPlaylist = await this.sp.playlists.getPlaylist(link_id);
+		const spotifyPlaylist = await this.sp.playlists.getPlaylist(link_id);
 
 		const playlistAPI: any = this._convertPlaylistStructure(spotifyPlaylist);
 		playlistAPI.various_artist = await dz.api.get_artist(5080); // Useful for save as compilation

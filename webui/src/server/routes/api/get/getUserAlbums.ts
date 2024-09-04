@@ -1,6 +1,6 @@
 import { Deezer } from "deezer-js";
-import { sessionDZ } from "../../../deemixApp";
-import { ApiHandler } from "../../../types";
+import { sessionDZ } from "@/deemixApp";
+import { ApiHandler } from "@/types";
 
 const path: ApiHandler["path"] = "/getUserAlbums";
 

@@ -485,7 +485,7 @@ export class Downloader {
 					const track = e.track;
 					if (track.fallbackID !== 0) {
 						this.warn(itemData, e.errid, "fallback");
-						let gwTrack = await this.dz.gw.get_track_with_fallback(
+						const gwTrack = await this.dz.gw.get_track_with_fallback(
 							track.fallbackID
 						);
 						track.parseEssentialData(map_track(gwTrack));
@@ -503,7 +503,7 @@ export class Downloader {
 						}
 						if (fallbackID !== 0) {
 							this.warn(itemData, e.errid, "fallback");
-							let gwTrack =
+							const gwTrack =
 								await this.dz.gw.get_track_with_fallback(fallbackID);
 							track.parseEssentialData(map_track(gwTrack));
 							return await this.downloadWrapper(extraData, track);
@@ -517,7 +517,7 @@ export class Downloader {
 							track.album.title
 						);
 						if (searchedID !== "0") {
-							let gwTrack =
+							const gwTrack =
 								await this.dz.gw.get_track_with_fallback(searchedID);
 							track.parseEssentialData(map_track(gwTrack));
 							track.searched = true;
