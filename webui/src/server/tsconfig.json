@@ -1,64 +1,8 @@
 {
 	"extends": "../../tsconfig.config.json",
 	"compilerOptions": {
-		/* Projects */
-		"incremental": true,
-		"composite": true,
-
-		/* Language and Environment */
-		"target": "ESNext",
-		"lib": ["DOM", "ESNext"],
-		"useDefineForClassFields": true,
-		"moduleDetection": "force",
-
-		/* Modules */
-		"module": "ES2022",
-		"rootDir": "./",
-		"moduleResolution": "Bundler",
-		"typeRoots": ["./node_modules/@types", "./src/types"],
-		"resolvePackageJsonExports": true,
-		"resolvePackageJsonImports": true,
-		"resolveJsonModule": true,
-
-		/* JavaScript Support */
-
-		/* Emit */
-		"declaration": true,
-		"declarationMap": false,
-		"sourceMap": false,
-		"outDir": "../../dist",
-
-		/* Interop Constraints */
-		"isolatedModules": true,
-		// "verbatimModuleSyntax": true,
-		// "isolatedDeclarations": true,
-		"forceConsistentCasingInFileNames": true,
-
-		/* Type Checking */
-		"strict": false,
-		"noImplicitAny": false,
-		// "strictNullChecks": true,
-		// "strictFunctionTypes": true,
-		// "strictBindCallApply": true,
-		// "strictPropertyInitialization": true,
-		// "noImplicitThis": true,
-		// "useUnknownInCatchVariables": true,
-		// "alwaysStrict": true,
-		// "noUnusedLocals": true,
-		// "noUnusedParameters": true,
-		// "exactOptionalPropertyTypes": true,
-		// "noImplicitReturns": true,
-		// "noFallthroughCasesInSwitch": true,
-		// "noUncheckedIndexedAccess": true,
-		// "noImplicitOverride": true,
-		// "noPropertyAccessFromIndexSignature": true,
-		// "allowUnusedLabels": false,
-		// "allowUnreachableCode": false,
-
-		/* Completeness */
-		"skipDefaultLibCheck": true,
-		"skipLibCheck": true
-	},
-	"include": ["./**/*.ts"],
-	"exclude": ["**/*.spec.ts"]
+		"paths": {
+			"@/*": ["./src/server/*"]
+		}
+	}
 }

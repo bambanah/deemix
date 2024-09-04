@@ -1,15 +1,10 @@
 {
+	"extends": "../tsconfig.shared.json",
 	"compilerOptions": {
-		/* https://aka.ms/tsconfig */
-		"target": "es2021",
-		"module": "commonjs",
-		"rootDir": "./src",
 		"outDir": "./dist",
-		"noEmit": true,
-		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
-		"strict": false,
-		"noImplicitAny": false,
-		"skipLibCheck": true
+
+		"paths": {
+			"@/*": ["./src/*"]
+		}
 	}
 }
