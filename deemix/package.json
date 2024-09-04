@@ -3,11 +3,10 @@
 	"version": "3.9.0",
 	"private": true,
 	"description": "A barebones deezer downloader library",
-	"main": "dist/index.js",
-	"type": "module",
+	"main": "src/index.ts",
 	"scripts": {
 		"build": "tsup src/index.ts --format esm,cjs --dts --clean",
-		"prepare": "pnpm build"
+		"lint:ts": "tsc --noEmit"
 	},
 	"author": "RemixDev",
 	"license": "GPL-3.0-or-later",
@@ -24,6 +23,7 @@
 	},
 	"devDependencies": {
 		"@types/async": "^3.2.24",
-		"tsup": "^8.2.4"
+		"tsup": "^8.2.4",
+		"typescript": "^5.5.4"
 	}
 }
