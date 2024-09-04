@@ -1,15 +1,8 @@
 {
 	"extends": "../../tsconfig.config.json",
 	"compilerOptions": {
-		"composite": true,
-		"allowJs": true,
-		"checkJs": true,
-		"noEmit": true,
-		"strict": false,
-		"types": ["node"],
 		"paths": {
 			"@/*": ["./src/client/*"]
 		}
-	},
-	"include": ["./**/*.ts", "./**/*.vue", "./**/*.js"]
+	}
 }
