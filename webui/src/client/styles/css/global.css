@@ -119,7 +119,7 @@
 @layer components {
 	/* Button */
 	.btn {
-		@apply border rounded text-grayscale-900 relative h-8 border-solid border-transparent px-2 py-0 text-sm font-semibold uppercase;
+		@apply text-grayscale-900 relative h-8 rounded border border-solid border-transparent px-2 py-0 text-sm font-semibold uppercase;
 
 		font-family: inherit;
 		transition: transform 50ms ease-in-out;
@@ -157,7 +157,7 @@
 	}
 
 	.section-tabs__tab {
-		@apply rounded-b border-foreground bg-background-main flex-1 border-t-4 p-3 text-center text-xl capitalize;
+		@apply border-foreground bg-background-main flex-1 rounded-b border-t-4 p-3 text-center text-xl capitalize;
 	}
 
 	.section-tabs__tab.active {

@@ -1,4 +1,4 @@
-import { upperCaseFirstLowerCaseRest } from "../../../src/utils/texts";
+import { upperCaseFirstLowerCaseRest } from "../../../utils/texts";
 
 describe("texts utils", () => {
 	describe("upperCaseFirstLowerCaseRest", () => {

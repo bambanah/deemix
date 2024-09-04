@@ -1,6 +1,6 @@
 import { Application } from "express";
 import request from "supertest";
-import { server } from "../src/index";
+import { server } from "../index";
 
 export const sendGet = (app: Application) => (uri: string) =>
 	request(app).get(uri).send();

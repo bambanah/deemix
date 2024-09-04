@@ -1,0 +1,15 @@
+{
+	"extends": ["@vue/tsconfig/tsconfig.dom.json", "../../tsconfig.config.json"],
+	"compilerOptions": {
+		"composite": true,
+		"allowJs": true,
+		"checkJs": true,
+		"noEmit": true,
+		"strict": false,
+		"types": ["node"],
+		"paths": {
+			"@/*": ["./src/client/*"]
+		}
+	},
+	"include": ["./**/*.ts"]
+}

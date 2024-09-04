@@ -2,7 +2,7 @@ import {
 	isValidURL,
 	convertDuration,
 	convertDurationSeparated,
-} from "../../../src/utils/utils";
+} from "../../../utils/utils";
 
 describe("utils utils (needs refactor)", () => {
 	describe("isValidURL", () => {
