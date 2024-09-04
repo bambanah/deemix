@@ -1,8 +1,12 @@
 import { Deezer } from "deezer-js";
-import { currentVersion, deemixVersion, sessionDZ } from "../../../deemixApp";
-import { logger } from "../../../helpers/logger";
-import { getLoginCredentials } from "../../../helpers/loginStorage";
-import { ApiHandler } from "../../../types";
+import { sessionDZ } from "@/deemixApp";
+import { logger } from "@/helpers/logger";
+import { getLoginCredentials } from "@/helpers/loginStorage";
+import { ApiHandler } from "@/types";
+import {
+	DEEMIX_PACKAGE_VERSION,
+	WEBUI_PACKAGE_VERSION,
+} from "@/helpers/versions";
 
 const path: ApiHandler["path"] = "/connect";
 let update: any = null;
@@ -14,11 +18,13 @@ const handler: ApiHandler["handler"] = async (req, res) => {
 	const isSingleUser = req.app.get("isSingleUser");
 
 	if (!update) {
-		logger.info(`Currently running deemix-webui version ${currentVersion}`);
-		logger.info(`deemix-lib version ${deemixVersion}`);
+		logger.info(
+			`Currently running deemix-webui version ${WEBUI_PACKAGE_VERSION}`
+		);
+		logger.info(`deemix-lib version ${DEEMIX_PACKAGE_VERSION}`);
 		update = {
-			currentCommit: currentVersion,
-			deemixVersion,
+			currentCommit: WEBUI_PACKAGE_VERSION,
+			deemixVersion: DEEMIX_PACKAGE_VERSION,
 		};
 	}
 

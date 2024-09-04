@@ -16,7 +16,7 @@ export const checkShouldDownload = (
 	)
 		return true;
 
-	let trackAlreadyDownloaded = fs.existsSync(writepath);
+	const trackAlreadyDownloaded = fs.existsSync(writepath);
 
 	if (
 		trackAlreadyDownloaded &&

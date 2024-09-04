@@ -190,7 +190,7 @@ import { useI18n } from "vue-i18n";
 import paypal from "@/assets/paypal.svg?url";
 
 export default defineComponent({
-	setup(_) {
+	setup() {
 		const state = reactive({
 			current: null,
 			latest: null,

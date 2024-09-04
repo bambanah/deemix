@@ -1,21 +1,21 @@
+import { CantStream, NotLoggedIn } from "@/helpers/errors";
+import { logger } from "@/helpers/logger";
+import { WEBUI_PACKAGE_VERSION } from "@/helpers/versions";
+import { Listener } from "@/types";
 import {
 	Downloader,
+	downloadObjects,
 	generateDownloadObject,
 	settings,
-	type Settings,
-	downloadObjects,
-	utils,
 	SpotifyPlugin,
+	utils,
+	type Settings,
 } from "deemix";
 import { Deezer } from "deezer-js";
 import fs from "fs";
 import got from "got";
 import { sep } from "path";
 import { v4 as uuidv4 } from "uuid";
-import { CantStream, NotLoggedIn } from "./helpers/errors";
-import { logger } from "./helpers/logger";
-import { WEBUI_PACKAGE } from "./helpers/paths";
-import { Listener } from "./types";
 
 // Types
 const { Single, Collection, Convertable } = downloadObjects;
@@ -27,12 +27,6 @@ export const getArlFromAccessToken = utils.getDeezerArlFromAccessToken;
 // Constants
 export const configFolder: string = utils.getConfigFolder();
 export const defaultSettings: Settings = settings.DEFAULTS;
-export const deemixVersion = JSON.parse(
-	String(fs.readFileSync("./node_modules/deemix/package.json"))
-).version;
-const currentVersion = JSON.parse(
-	String(fs.readFileSync(WEBUI_PACKAGE))
-).version;
 
 export const sessionDZ: any = {};
 
@@ -146,7 +140,7 @@ export class DeemixApp {
 	}
 
 	isUpdateAvailable(): boolean {
-		const currentVersionObj: any = this.parseVersion(currentVersion);
+		const currentVersionObj: any = this.parseVersion(WEBUI_PACKAGE_VERSION);
 		const latestVersionObj: any = this.parseVersion(this.latestVersion);
 		if (currentVersionObj === null || latestVersionObj === null) return false;
 		if (latestVersionObj.year > currentVersionObj.year) return true;
@@ -335,7 +329,7 @@ export class DeemixApp {
 					break;
 				case "Convertable":
 					const convertable = new Convertable(currentItem);
-					downloadObject = await convertable.plugin.convert(
+					downloadObject = await this.plugins[convertable.plugin].convert(
 						dz,
 						convertable,
 						this.settings,

@@ -2,7 +2,7 @@ import initDebug from "debug";
 import * as deemix from "deemix";
 import express, { type Express } from "express";
 import ViteExpress from "vite-express";
-import { WebSocketServer } from "ws";
+import { WebSocketServer, WebSocket } from "ws";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { DeemixApp } from "./deemixApp";
