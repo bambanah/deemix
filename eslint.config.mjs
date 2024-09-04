@@ -18,7 +18,6 @@ export default tslint.config(
 			},
 		},
 		rules: {
-			"vue/multi-word-component-names": "off",
 			"vue/no-v-html": "off",
 			"vue/require-explicit-emits": "off",
 			"@typescript-eslint/no-explicit-any": "off",

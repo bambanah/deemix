@@ -1102,7 +1102,7 @@ const loginStore = useLoginStore(pinia);
 const appInfoStore = useAppInfoStore(pinia);
 
 export default {
-	name: "Settings",
+	name: "SettingsView",
 	components: {
 		BaseAccordion,
 		TemplateVariablesList,

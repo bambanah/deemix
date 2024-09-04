@@ -7,18 +7,18 @@ import {
 } from "vue-router";
 
 // Pages
-import About from "@/views/About.vue";
-import Charts from "@/views/Charts.vue";
-import Errors from "@/views/Errors.vue";
-import Favorites from "@/views/Favorites.vue";
-import Home from "@/views/Home.vue";
+import About from "@/views/AboutView.vue";
+import Charts from "@/views/ChartsView.vue";
+import Errors from "@/views/ErrorsView.vue";
+import Favorites from "@/views/FavoritesView.vue";
+import Home from "@/views/HomeView.vue";
 import InfoArl from "@/views/InfoArl.vue";
 import InfoSpotifyFeatures from "@/views/InfoSpotifyFeatures.vue";
-import Tracklist from "@/views/Tracklist.vue";
+import Tracklist from "@/views/TrackList.vue";
 
-const Search = () => import("@/views/Search.vue");
-const Settings = () => import("@/views/Settings.vue");
-const Artist = () => import("@/views/Artist.vue");
+const Search = () => import("@/views/SearchBar.vue");
+const Settings = () => import("@/views/SettingsPage.vue");
+const Artist = () => import("@/views/ArtistView.vue");
 const LinkAnalyzer = () => import("@/views/LinkAnalyzer.vue");
 
 const routes: RouteRecordRaw[] = [
