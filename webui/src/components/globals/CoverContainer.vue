@@ -13,7 +13,7 @@
 			:data-link="link"
 			class="download_overlay hover:bg-primary absolute rounded-full border-0 bg-black p-0 text-center opacity-0"
 			tabindex="0"
-			v-on="$listeners"
+			v-bind="$attrs"
 		>
 			<i
 				class="material-icons cursor-pointer text-white"
@@ -24,7 +24,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import { useI18n } from "vue-i18n";
 
 export default {

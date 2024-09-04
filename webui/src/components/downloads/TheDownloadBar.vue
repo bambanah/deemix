@@ -382,7 +382,7 @@ export default {
 				this.setTabWidth(this.cachedTabWidth);
 			}
 
-			localStorage.setItem("downloadTabOpen", this.isExpanded);
+			localStorage.setItem("downloadTabOpen", this.isExpanded.toString());
 		},
 		cleanQueue() {
 			socket.emit("removeFinishedDownloads");
