@@ -1,28 +1,28 @@
 FROM node:20-alpine AS base
 
+ENV HUSKY=0
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
-
+COPY . /app
 WORKDIR /app
+
+FROM base AS prod-deps
+
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile --ignore-scripts
 
 FROM base AS builder
 
-COPY pnpm-lock.yaml ./
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install -r --frozen-lockfile
 
-RUN pnpm fetch
-
-COPY . .
-
-RUN pnpm install -r --offline && pnpm build
+RUN pnpm build
 
 FROM base AS runner
 
-COPY --from=builder /app/package.json ./
+COPY --from=prod-deps /app/webui/node_modules ./webui/node_modules
+COPY --from=prod-deps /app/node_modules ./node_modules
 
 COPY --from=builder /app/webui/ ./webui/
-# COPY --from=builder --exclude=client/ /app/webui/ ./webui/
-# COPY --from=builder /app/webui/src/client/dist/ ./webui/src/client/dist/
 
 ENV DEEMIX_DATA_DIR=/config/
 ENV DEEMIX_MUSIC_DIR=/downloads/

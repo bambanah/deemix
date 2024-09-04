@@ -1,12 +1,12 @@
+import cookieParser from "cookie-parser";
+import { Deezer } from "deezer-js";
 import type { Application } from "express";
 import express from "express";
-import logger from "morgan";
-import cookieParser from "cookie-parser";
 import session from "express-session";
+import memorystore from "memorystore";
+import logger from "morgan";
 
-import { Deezer } from "deezer-js";
-
-const MemoryStore = require("memorystore")(session);
+const MemoryStore = memorystore(session);
 
 declare module "express-session" {
 	export interface SessionData {
