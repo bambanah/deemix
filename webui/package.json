@@ -1,6 +1,6 @@
 {
 	"name": "deemix-webui",
-	"version": "4.0.0",
+	"version": "4.0.1",
 	"private": true,
 	"scripts": {
 		"dev": "nodemon -w src/server -x tsx --tsconfig ./src/server/tsconfig.json src/server/main.ts",
