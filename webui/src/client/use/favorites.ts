@@ -1,6 +1,6 @@
 import { ref, computed } from "vue";
 
-import { fetchData } from "@/utils/api";
+import { fetchData } from "@/utils/api-utils";
 import { toast } from "@/utils/toasts";
 import i18n from "@/plugins/i18n";
 import { useLoginStore } from "@/stores/login";

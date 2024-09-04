@@ -1,5 +1,5 @@
 import { ApiHandler } from "../../../types";
-import { getAccessToken, getArlFromAccessToken } from "../../../app";
+import { getAccessToken, getArlFromAccessToken } from "../../../deemixApp";
 import { saveLoginCredentials } from "../../../helpers/loginStorage";
 
 const path = "/loginEmail";

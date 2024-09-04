@@ -1,6 +1,6 @@
 import { useAppInfoStore } from "@/stores/appInfo";
 import { useLoginStore } from "@/stores/login";
-import { fetchData, postToServer } from "@/utils/api";
+import { fetchData, postToServer } from "@/utils/api-utils";
 import { sendAddToQueue } from "@/utils/downloads";
 import { socket } from "@/utils/socket";
 import { toast } from "@/utils/toasts";
@@ -16,7 +16,6 @@ import "@/styles/css/global.css";
 
 import "@/styles/vendor/material-icons.css";
 import "@/styles/vendor/OpenSans.css";
-import { useI18n } from "vue-i18n";
 
 /* ===== Random utils ===== */
 

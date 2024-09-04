@@ -33,7 +33,7 @@
 import { defineComponent, ref } from "vue";
 import { isValidURL } from "@/utils/utils";
 import { sendAddToQueue } from "@/utils/downloads";
-import { fetchData } from "@/utils/api";
+import { fetchData } from "@/utils/api-utils";
 import { emitter } from "@/utils/emitter";
 import { useAppInfoStore } from "@/stores/appInfo";
 import { pinia } from "@/stores";

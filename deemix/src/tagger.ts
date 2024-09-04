@@ -1,4 +1,4 @@
-import ID3Writer from "./utils/id3-writer";
+import { ID3Writer } from "browser-id3-writer";
 import Metaflac from "metaflac-js2";
 import fs from "fs";
 import Track from "./types/Track";

@@ -1,4 +1,4 @@
-import { fetchData } from "@/utils/api";
+import { fetchData } from "@/utils/api-utils";
 
 let homeData = {};
 let cached = false;

@@ -2,6 +2,7 @@
 	"name": "deemix",
 	"version": "3.9.0",
 	"private": true,
+	"type": "module",
 	"description": "A barebones deezer downloader library",
 	"main": "src/index.ts",
 	"scripts": {
@@ -12,6 +13,8 @@
 	"dependencies": {
 		"@spotify/web-api-ts-sdk": "^1.2.0",
 		"async": "^3.2.0",
+		"blowfish-node": "^1.1.4",
+		"browser-id3-writer": "^6.1.0",
 		"deezer-js": "workspace:*",
 		"got": "^11.8.2",
 		"html-entities": "^2.3.3",

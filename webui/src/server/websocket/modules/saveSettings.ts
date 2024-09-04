@@ -1,6 +1,6 @@
 import { Server as WsServer } from "ws";
 import { logger } from "../../helpers/logger";
-import { DeemixApp } from "../../app";
+import { DeemixApp } from "../../deemixApp";
 import { Settings, SpotifySettings } from "../../types";
 
 const eventName = "saveSettings";

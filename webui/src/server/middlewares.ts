@@ -4,7 +4,6 @@ import logger from "morgan";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 
-import { WEBUI_DIR } from "./helpers/paths";
 import { Deezer } from "deezer-js";
 
 const MemoryStore = require("memorystore")(session);
@@ -29,7 +28,6 @@ export function registerMiddlewares(app: Application) {
 			saveUninitialized: true,
 		})
 	);
-	app.use(express.static(WEBUI_DIR));
 
 	if (process.env.NODE_ENV === "development") {
 		app.use(logger("dev"));

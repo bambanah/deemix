@@ -34,6 +34,7 @@ class CustomSocket extends WebSocket {
 	}
 }
 
+console.log("Creating socket");
 export const socket = new CustomSocket(
 	(location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/"
 );

@@ -39,7 +39,7 @@ export function registerApis(app: Application) {
 	});
 
 	// Fallback, for SPA mode
-	app.get("*/api*", (_, res) => {
+	app.get("/api*", (_, res) => {
 		res.send({ error: "API endpoint doesn't exist" });
 	});
 }

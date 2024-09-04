@@ -1,6 +1,6 @@
 import { Deezer } from "deezer-js";
 import type { RequestHandler } from "express";
-import { sessionDZ } from "../../../app";
+import { sessionDZ } from "../../../deemixApp";
 import type { ApiHandler } from "../../../types";
 
 export interface RawAlbumQuery {

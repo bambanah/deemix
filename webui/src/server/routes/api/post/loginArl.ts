@@ -1,6 +1,6 @@
 import { Deezer } from "deezer-js";
 import { RequestHandler } from "express";
-import { DeemixApp, sessionDZ } from "../../../app";
+import { DeemixApp, sessionDZ } from "../../../deemixApp";
 import { logger } from "../../../helpers/logger";
 import {
 	resetLoginCredentials,

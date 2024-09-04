@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { fetchData } from "@/utils/api";
+import { fetchData } from "@/utils/api-utils";
 
 const searchResult = ref({});
 

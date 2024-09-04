@@ -1,4 +1,4 @@
-import { postToServer } from "@/utils/api";
+import { postToServer } from "@/utils/api-utils";
 
 export function sendAddToQueue(url: string, bitrate?: number) {
 	if (!url) throw new Error("No URL given to sendAddToQueue function!");
