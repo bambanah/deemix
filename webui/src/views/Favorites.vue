@@ -54,7 +54,12 @@
 						class="cursor-pointer"
 						custom
 					>
-						<div role="link" @click="navigate" @keypress.enter="navigate">
+						<div
+							role="link"
+							class="cursor-pointer"
+							@click="navigate"
+							@keypress.enter="() => navigate()"
+						>
 							<CoverContainer
 								:cover="release.picture_medium"
 								:link="release.link"
@@ -83,10 +88,14 @@
 					<router-link
 						v-slot="{ navigate }"
 						:to="{ name: 'Spotify Playlist', params: { id: release.id } }"
-						class="cursor-pointer"
 						custom
 					>
-						<div role="link" @click="navigate" @keypress.enter="navigate">
+						<div
+							role="link"
+							class="cursor-pointer"
+							@click="navigate"
+							@keypress.enter="() => navigate()"
+						>
 							<CoverContainer
 								:cover="release.picture_medium"
 								:link="release.link"
@@ -122,7 +131,7 @@
 					class="release clickable"
 					custom
 				>
-					<div role="link" @click="navigate" @keypress.enter="navigate">
+					<div role="link" @click="navigate" @keypress.enter="() => navigate()">
 						<CoverContainer
 							:cover="release.cover_medium"
 							:link="release.link"
@@ -151,7 +160,7 @@
 					class="release clickable"
 					custom
 				>
-					<div role="link" @click="navigate" @keypress.enter="navigate">
+					<div role="link" @click="navigate" @keypress.enter="() => navigate()">
 						<CoverContainer
 							:cover="release.picture_medium"
 							:link="release.link"
@@ -201,7 +210,11 @@
 						class="table__cell table__cell--medium table__cell--center clickable"
 						custom
 					>
-						<td role="link" @click="navigate" @keypress.enter="navigate">
+						<td
+							role="link"
+							@click="navigate"
+							@keypress.enter="() => navigate()"
+						>
 							{{ track.artist.name }}
 						</td>
 					</router-link>
@@ -211,7 +224,11 @@
 						class="table__cell--medium table__cell--center clickable"
 						custom
 					>
-						<td role="link" @click="navigate" @keypress.enter="navigate">
+						<td
+							role="link"
+							@click="navigate"
+							@keypress.enter="() => navigate()"
+						>
 							{{ track.album.title }}
 						</td>
 					</router-link>
@@ -341,7 +358,6 @@ export default defineComponent({
 			}
 		},
 		addToQueue(e) {
-			e.stopPropagation();
 			sendAddToQueue(e.currentTarget.dataset.link);
 		},
 		getActiveRelease(tab = this.activeTab) {
