@@ -1,5 +1,11 @@
 # deemix-webui
 
+## 4.0.1
+
+### Patch Changes
+
+- 7615e47: Reduce size of built docker image
+
 ## 4.0.0
 
 ### Major Changes
