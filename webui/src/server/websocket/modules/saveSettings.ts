@@ -1,4 +1,4 @@
-import { Server as WsServer } from "ws";
+import { WebSocketServer } from "ws";
 import { logger } from "../../helpers/logger";
 import { DeemixApp } from "../../deemixApp";
 import { Settings, SpotifySettings } from "../../types";
@@ -13,7 +13,7 @@ export interface SaveSettingsData {
 const cb = (
 	data: SaveSettingsData,
 	_: any,
-	__: WsServer,
+	__: WebSocketServer,
 	deemix: DeemixApp
 ) => {
 	const { settings, spotifySettings } = data;

@@ -1,4 +1,4 @@
-import { Deezer } from "deezer-js";
+import { type Deezer } from "deezer-js";
 import got from "got";
 import { Downloader } from "./downloader";
 import { LinkNotRecognized, LinkNotSupported } from "./errors";
@@ -105,7 +105,7 @@ const itemgen = {
 };
 
 export * as decryption from "./decryption";
-export * as plugins from "./plugins";
+export * from "./plugins";
 export * as settings from "./settings";
 export * as tagger from "./tagger";
 export * from "./types";

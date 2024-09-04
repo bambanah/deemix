@@ -2,11 +2,12 @@
 	"name": "deemix",
 	"version": "3.9.0",
 	"private": true,
-	"type": "module",
 	"description": "A barebones deezer downloader library",
-	"main": "src/index.ts",
+	"main": "dist/index.js",
+	"type": "module",
 	"scripts": {
-		"build": "tsup src/index.ts --format esm,cjs --clean"
+		"build": "tsup src/index.ts --format esm,cjs --dts --clean",
+		"prepare": "pnpm build"
 	},
 	"author": "RemixDev",
 	"license": "GPL-3.0-or-later",

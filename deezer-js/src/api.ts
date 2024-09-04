@@ -31,8 +31,8 @@ export const SearchOrder = {
 export interface APIArtist {
 	id: number;
 	name: string;
-	link: string;
-	share: string;
+	link?: string;
+	share?: string;
 	picture?: string;
 	picture_small?: string;
 	picture_medium?: string;
@@ -40,9 +40,10 @@ export interface APIArtist {
 	picture_xl?: string;
 	nb_album?: number;
 	nb_fan?: number;
-	radio: boolean;
-	tracklist: string;
+	radio?: boolean;
+	tracklist?: string;
 	role?: string;
+	md5_image?: string;
 }
 
 export interface APIAlbum {
@@ -55,6 +56,21 @@ export interface APIAlbum {
 	cover_big: string;
 	cover_xl: string;
 	release_date: string; // Assuming the date is in string format (e.g., "YYYY-MM-DD")
+	root_artist?: APIArtist;
+	nb_tracks?: number;
+	nb_disk?: number;
+	tracks?: { data?: APITrack[] };
+	md5_image?: string;
+	md5_origin?: string;
+	artist?: APIArtist;
+	explicit_lyrics?: boolean;
+	contributors?: APIContributor[];
+	record_type?: string;
+	upc?: string;
+	label?: string;
+	copyright?: string;
+	original_release_date?: string;
+	genres?: { data?: { name?: string }[] };
 }
 
 export interface APITrack {
@@ -88,6 +104,13 @@ export interface APITrack {
 	track_token: string;
 	artist: APIArtist;
 	album: APIAlbum;
+	size?: number;
+	lyrics_id?: string;
+	lyrics?: string;
+	position?: number;
+	copyright?: string;
+	physical_release_date?: string;
+	genres?: string[];
 }
 
 export interface APIContributor {
@@ -103,7 +126,31 @@ export interface APIContributor {
 	role: string;
 }
 
-export interface APIPlaylist {}
+export interface APIPlaylist {
+	id?: string;
+	title?: any;
+	description?: string;
+	duration?: number;
+	public?: any;
+	is_loved_track?: boolean;
+	collaborative?: boolean;
+	nb_tracks?: any;
+	fans?: any;
+	link?: string;
+	share?: any;
+	picture?: any;
+	picture_small?: any;
+	picture_medium?: any;
+	picture_big?: any;
+	picture_xl?: any;
+	checksum?: any;
+	tracklist?: string;
+	creation_date?: string;
+	creator?: any;
+	type?: string;
+	various_artist?: any;
+	explicit?: any;
+}
 
 // Contains additional information from GW
 export interface EnrichedAPITrack
@@ -112,7 +159,7 @@ export interface EnrichedAPITrack
 	md5_origin?: string;
 	filesizes?: Record<string, any>;
 	media_version?: number;
-	track_token_expire?: string;
+	track_token_expire?: number;
 	token: string;
 	user_id: string;
 	lyrics_id?: string;
@@ -606,7 +653,7 @@ export class API {
 	// Extra calls
 
 	async get_countries_charts() {
-		const temp = await this.get_user_playlists("637006841", {
+		const temp: any = await this.get_user_playlists("637006841", {
 			index: 0,
 			limit: -1,
 		});
@@ -620,7 +667,7 @@ export class API {
 		track = track.replace("–", "-").replace("’", "'");
 		album = album.replace("–", "-").replace("’", "'");
 
-		let resp = await this.advanced_search({ artist, track, album });
+		let resp: any = await this.advanced_search({ artist, track, album });
 		if (resp.data.length) return resp.data[0].id;
 
 		resp = await this.advanced_search({ artist, track });

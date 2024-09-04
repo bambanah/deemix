@@ -260,7 +260,7 @@ class Deezer {
 
 export { TrackFormats, Deezer };
 
-export * as api from "./api";
-export * as gw from "./gw";
+export * from "./api";
+export * from "./gw";
 export * as utils from "./utils";
 export * as errors from "./errors";

@@ -104,7 +104,7 @@ const shouldCreateCDFolder = (
 ) => {
 	return (
 		track.album &&
-		parseInt(track.album?.discTotal) > 1 &&
+		track.album?.discTotal > 1 &&
 		settings.createAlbumFolder &&
 		settings.createCDFolder &&
 		(!singleTrack || (singleTrack && settings.createSingleFolder)) &&
@@ -232,7 +232,10 @@ export function generateTrackName(
 			"%tracknumber%",
 			pad(track.trackNumber, track.album.trackTotal, settings)
 		);
-		filename = filename.replaceAll("%tracktotal%", track.album.trackTotal);
+		filename = filename.replaceAll(
+			"%tracktotal%",
+			track.album.trackTotal.toString()
+		);
 
 		if (track.album.genre.length) {
 			filename = filename.replaceAll(
@@ -243,7 +246,10 @@ export function generateTrackName(
 			filename = filename.replaceAll("%genre%", "Unknown");
 		}
 
-		filename = filename.replaceAll("%disctotal%", track.album.discTotal);
+		filename = filename.replaceAll(
+			"%disctotal%",
+			track.album.discTotal.toString()
+		);
 		filename = filename.replaceAll("%label%", fixName(track.album.label, c));
 		filename = filename.replaceAll("%upc%", track.album.barcode);
 		filename = filename.replaceAll("%album_id%", track.album.id);
@@ -262,7 +268,7 @@ export function generateTrackName(
 			.replaceAll("%explicit%", "");
 	}
 
-	filename = filename.replaceAll("%track_id%", track.id);
+	filename = filename.replaceAll("%track_id%", track.id.toString());
 	filename = filename.replaceAll("%artist_id%", String(track.mainArtist.id));
 	if (track.playlist) {
 		filename = filename.replaceAll("%playlist_id%", track.playlist.playlistID);

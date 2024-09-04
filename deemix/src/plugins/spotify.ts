@@ -12,7 +12,7 @@ import { Deezer } from "deezer-js";
 import { Settings } from "@/types";
 import Track from "@/types/Track";
 
-export default class Spotify extends BasePlugin {
+export default class SpotifyPlugin extends BasePlugin {
 	credentials: { clientId: string; clientSecret: string };
 	settings: { fallbackSearch: boolean };
 	enabled: boolean;
@@ -145,7 +145,7 @@ export default class Spotify extends BasePlugin {
 
 		let spotifyPlaylist = await this.sp.playlists.getPlaylist(link_id);
 
-		const playlistAPI = this._convertPlaylistStructure(spotifyPlaylist);
+		const playlistAPI: any = this._convertPlaylistStructure(spotifyPlaylist);
 		playlistAPI.various_artist = await dz.api.get_artist(5080); // Useful for save as compilation
 
 		let tracklistTemp = spotifyPlaylist.tracks.items;
@@ -416,7 +416,9 @@ export default class Spotify extends BasePlugin {
 		}
 		let settings;
 		try {
-			settings = JSON.parse(fs.readFileSync(this.configFolder + "config.json"));
+			settings = JSON.parse(
+				fs.readFileSync(this.configFolder + "config.json").toString()
+			);
 		} catch (e) {
 			if (e.name === "SyntaxError") {
 				fs.writeFileSync(
@@ -442,7 +444,7 @@ export default class Spotify extends BasePlugin {
 		this.checkCredentials();
 	}
 
-	saveSettings(newSettings) {
+	saveSettings(newSettings?: any) {
 		if (newSettings) this.setSettings(newSettings);
 		this.checkCredentials();
 		fs.writeFileSync(
@@ -479,7 +481,9 @@ export default class Spotify extends BasePlugin {
 	loadCache() {
 		let cache;
 		try {
-			cache = JSON.parse(fs.readFileSync(this.configFolder + "cache.json"));
+			cache = JSON.parse(
+				fs.readFileSync(this.configFolder + "cache.json").toString()
+			);
 		} catch (e) {
 			if (e.name === "SyntaxError") {
 				fs.writeFileSync(
