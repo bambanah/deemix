@@ -1,6 +1,6 @@
 import { Deezer } from "deezer-js";
 import { RequestHandler } from "express";
-import { sessionDZ } from "../../../app";
+import { sessionDZ } from "../../../deemixApp";
 import { BadRequestError } from "../../../helpers/errors";
 import { logger } from "../../../helpers/logger";
 import { isObjectEmpy } from "../../../helpers/primitive-checks";

@@ -14,7 +14,7 @@ import { sep } from "path";
 import { v4 as uuidv4 } from "uuid";
 import { CantStream, NotLoggedIn } from "./helpers/errors";
 import { logger } from "./helpers/logger";
-import { GUI_PACKAGE } from "./helpers/paths";
+import { WEBUI_PACKAGE } from "./helpers/paths";
 import { Listener } from "./types";
 import { Spotify } from "deemix/src/plugins";
 
@@ -29,9 +29,9 @@ export const getArlFromAccessToken = utils.getDeezerArlFromAccessToken;
 export const configFolder: string = utils.getConfigFolder();
 export const defaultSettings: Settings = settings.DEFAULTS;
 export const deemixVersion =
-	require("../node_modules/deemix/package.json").version;
+	require("../../node_modules/deemix/package.json").version;
 const currentVersionTemp = JSON.parse(
-	String(fs.readFileSync(GUI_PACKAGE))
+	String(fs.readFileSync(WEBUI_PACKAGE))
 ).version;
 export const currentVersion =
 	currentVersionTemp === "0.0.0" ? "continuous" : currentVersionTemp;

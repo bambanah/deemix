@@ -1,6 +1,6 @@
 import { Deezer } from "deezer-js";
 import { ApiHandler } from "../../../types";
-import { sessionDZ } from "../../../app";
+import { sessionDZ } from "../../../deemixApp";
 import { logger } from "../../../helpers/logger";
 
 const path: ApiHandler["path"] = "/addToQueue";

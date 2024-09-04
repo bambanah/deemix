@@ -1,4 +1,4 @@
-import { fetchData } from "@/utils/api";
+import { fetchData } from "@/utils/api-utils";
 
 export function getChartsData() {
 	return fetchData("getCharts");

@@ -1,6 +1,6 @@
 import { Deezer } from "deezer-js";
 import { RequestHandler } from "express";
-import { sessionDZ } from "../../../app";
+import { sessionDZ } from "../../../deemixApp";
 import { ApiHandler } from "../../../types";
 
 const path: ApiHandler["path"] = "/changeAccount";

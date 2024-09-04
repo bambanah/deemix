@@ -1,5 +1,5 @@
 import { Deezer } from "deezer-js";
-import { currentVersion, deemixVersion, sessionDZ } from "../../../app";
+import { currentVersion, deemixVersion, sessionDZ } from "../../../deemixApp";
 import { logger } from "../../../helpers/logger";
 import { getLoginCredentials } from "../../../helpers/loginStorage";
 import { ApiHandler } from "../../../types";

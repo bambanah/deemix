@@ -1,5 +1,5 @@
 import { Deezer } from "deezer-js";
-import { sessionDZ } from "../../../app";
+import { sessionDZ } from "../../../deemixApp";
 import { ApiHandler } from "../../../types";
 
 const path: ApiHandler["path"] = "/getUserTracks";

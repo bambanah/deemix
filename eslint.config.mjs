@@ -20,9 +20,6 @@ export default tslint.config(
 		rules: {
 			"vue/multi-word-component-names": "off",
 			"vue/no-v-html": "off",
-			"vue/no-deprecated-events-api": "off",
-			"vue/no-deprecated-functional-template": "off",
-			"vue/no-deprecated-dollar-listeners-api": "off",
 			"vue/require-explicit-emits": "off",
 			"@typescript-eslint/no-explicit-any": "off",
 		},

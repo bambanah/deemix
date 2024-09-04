@@ -1090,7 +1090,7 @@ import { flags } from "@/utils/flags";
 import { copyToClipboard } from "@/utils/utils";
 
 import BaseAccordion from "@/components/globals/BaseAccordion.vue";
-import { fetchData, postToServer } from "@/utils/api";
+import { fetchData, postToServer } from "@/utils/api-utils";
 import { getFormItem } from "@/utils/forms";
 import { useLoginStore } from "@/stores/login";
 import { useAppInfoStore } from "@/stores/appInfo";

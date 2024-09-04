@@ -1,5 +1,5 @@
 import { getPropertyWithFallback } from "@/utils/utils";
-import { fetchData } from "@/utils/api";
+import { fetchData } from "@/utils/api-utils";
 
 export function formatArtistData(artistData: {
 	name?: string;

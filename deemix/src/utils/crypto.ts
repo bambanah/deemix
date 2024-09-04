@@ -1,18 +1,13 @@
-const crypto = require("crypto");
-let Blowfish;
-try {
-	Blowfish = require("./blowfish.js");
-} catch (e) {
-	/* empty */
-}
+import crypto from "crypto";
+import Blowfish from "blowfish-node";
 
-function _md5(data, type = "binary") {
+export function _md5(data, type: BufferEncoding = "binary") {
 	const md5sum = crypto.createHash("md5");
 	md5sum.update(Buffer.from(data, type));
 	return md5sum.digest("hex");
 }
 
-function _ecbCrypt(key, data) {
+export function _ecbCrypt(key, data) {
 	const cipher = crypto.createCipheriv(
 		"aes-128-ecb",
 		Buffer.from(key),
@@ -24,7 +19,7 @@ function _ecbCrypt(key, data) {
 		.toLowerCase();
 }
 
-function _ecbDecrypt(key, data) {
+export function _ecbDecrypt(key, data) {
 	const cipher = crypto.createDecipheriv(
 		"aes-128-ecb",
 		Buffer.from(key),
@@ -36,7 +31,7 @@ function _ecbDecrypt(key, data) {
 		.toLowerCase();
 }
 
-function generateBlowfishKey(trackId) {
+export function generateBlowfishKey(trackId) {
 	const SECRET = "g4el58wc0zvf9na1";
 	const idMd5 = _md5(trackId.toString(), "ascii");
 	let bfKey = "";
@@ -48,7 +43,7 @@ function generateBlowfishKey(trackId) {
 	return String(bfKey);
 }
 
-function decryptChunk(chunk, blowFishKey) {
+export function decryptChunk(chunk, blowFishKey) {
 	const ciphers = crypto.getCiphers();
 	if (ciphers.includes("bf-cbc")) {
 		const cipher = crypto.createDecipheriv(
@@ -70,11 +65,3 @@ function decryptChunk(chunk, blowFishKey) {
 	}
 	throw new Error("Can't find a way to decrypt chunks");
 }
-
-module.exports = {
-	_md5,
-	_ecbCrypt,
-	_ecbDecrypt,
-	generateBlowfishKey,
-	decryptChunk,
-};

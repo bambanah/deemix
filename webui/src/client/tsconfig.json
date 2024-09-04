@@ -1,5 +1,5 @@
 {
-	"extends": ["@vue/tsconfig/tsconfig.dom.json", "../../tsconfig.config.json"],
+	"extends": "../../tsconfig.config.json",
 	"compilerOptions": {
 		"composite": true,
 		"allowJs": true,
@@ -11,5 +11,5 @@
 			"@/*": ["./src/client/*"]
 		}
 	},
-	"include": ["./**/*.ts"]
+	"include": ["./**/*.ts", "./**/*.vue", "./**/*.js"]
 }

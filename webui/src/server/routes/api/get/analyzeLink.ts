@@ -1,7 +1,7 @@
 import * as deemix from "deemix";
 import { Deezer } from "deezer-js";
 import type { RequestHandler } from "express";
-import { sessionDZ } from "../../../app";
+import { sessionDZ } from "../../../deemixApp";
 import type {
 	ApiHandler,
 	GetAlbumResponse,

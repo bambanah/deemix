@@ -83,7 +83,7 @@ import QueueItem from "@/components/downloads/QueueItem.vue";
 
 import { socket } from "@/utils/socket";
 import { toast } from "@/utils/toasts";
-import { fetchData, postToServer } from "@/utils/api";
+import { fetchData, postToServer } from "@/utils/api-utils";
 import { useLoginStore } from "@/stores/login";
 import { useAppInfoStore } from "@/stores/appInfo";
 import { useErrorStore } from "@/stores/errors";
