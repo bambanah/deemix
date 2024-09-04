@@ -88,6 +88,9 @@ importers:
       tsup:
         specifier: ^8.2.4
         version: 8.2.4(jiti@1.21.6)(postcss@8.4.44)(tsx@4.19.0)(typescript@5.5.4)(yaml@2.5.0)
+      typescript:
+        specifier: ^5.5.4
+        version: 5.5.4
 
   deezer-js:
     dependencies:
@@ -104,6 +107,9 @@ importers:
       tsup:
         specifier: ^8.2.4
         version: 8.2.4(jiti@1.21.6)(postcss@8.4.44)(tsx@4.19.0)(typescript@5.5.4)(yaml@2.5.0)
+      typescript:
+        specifier: ^5.5.4
+        version: 5.5.4
 
   gui:
     dependencies:

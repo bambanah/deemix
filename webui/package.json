@@ -11,7 +11,7 @@
 		"test": "jest",
 		"test-watch": "jest --watch",
 		"testlang": "node ./tests/testlang.js",
-		"lint:ts": "vue-tsc --noEmit"
+		"lint:ts": "tsc --noEmit"
 	},
 	"dependencies": {
 		"cookie-parser": "1.4.6",
