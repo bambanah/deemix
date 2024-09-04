@@ -27,13 +27,12 @@ export const getArlFromAccessToken = utils.getDeezerArlFromAccessToken;
 // Constants
 export const configFolder: string = utils.getConfigFolder();
 export const defaultSettings: Settings = settings.DEFAULTS;
-export const deemixVersion =
-	require("../../node_modules/deemix/package.json").version;
-const currentVersionTemp = JSON.parse(
+export const deemixVersion = JSON.parse(
+	String(fs.readFileSync("./node_modules/deemix/package.json"))
+).version;
+const currentVersion = JSON.parse(
 	String(fs.readFileSync(WEBUI_PACKAGE))
 ).version;
-export const currentVersion =
-	currentVersionTemp === "0.0.0" ? "continuous" : currentVersionTemp;
 
 export const sessionDZ: any = {};
 
