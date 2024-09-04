@@ -10,7 +10,7 @@
 			<span
 				v-for="(templateVariable, i) in templateVariables"
 				:key="i"
-				class="rounded bg-panels-bg mt-2 inline-block cursor-pointer p-2 tracking-wider first:ml-2 hover:shadow-outline"
+				class="bg-panels-bg hover:shadow-outline mt-2 inline-block cursor-pointer rounded p-2 tracking-wider first:ml-2"
 				@click="$emit('variable-click', templateVariable)"
 			>
 				{{ templateVariable }}

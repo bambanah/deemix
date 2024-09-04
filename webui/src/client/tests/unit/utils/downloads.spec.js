@@ -1,4 +1,4 @@
-import { aggregateDownloadLinks } from "../../../src/utils/downloads";
+import { aggregateDownloadLinks } from "../../../utils/downloads";
 
 describe("download utils", () => {
 	describe("aggregateDownloadLinks", () => {

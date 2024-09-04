@@ -1,4 +1,4 @@
-import { appSendPost } from "../../../../tests/utils";
+import { appSendPost } from "../../../tests/utils";
 
 describe("loginArl requests", () => {
 	it("should respond 200 to calls with arl", async () => {
