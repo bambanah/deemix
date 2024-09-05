@@ -16,13 +16,13 @@
 					class="h-32 w-32 rounded-full"
 				/>
 				<div class="user_info">
-					<i18n path="settings.login.loggedIn" tag="p">
+					<i18n-t keypath="settings.login.loggedIn" tag="p">
 						<template #username>
 							<strong id="settings_username" ref="username">{{
 								user.name || "not logged"
 							}}</strong>
 						</template>
-					</i18n>
+					</i18n-t>
 					<p>{{ userLicense }} | {{ user.country }}</p>
 
 					<button class="btn btn-primary mt-3" @click="logout">

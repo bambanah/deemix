@@ -21,27 +21,27 @@
 				<span>{{ current || t("about.updates.versionNotAvailable") }}</span>
 			</li>
 			<li>{{ t("about.updates.deemixVersion") }}: {{ deemixVersion }}</li>
-			<i18n
+			<i18n-t
 				v-if="updateAvailable && latest"
-				path="about.updates.updateAvailable"
+				keypath="about.updates.updateAvailable"
 				tag="li"
 			>
 				<template #version>
 					<a href="https://deemix.app/gui" target="_blank">{{ latest }}</a>
 				</template>
-			</i18n>
+			</i18n-t>
 		</ul>
 
 		<ul>
 			<li v-html="t('about.usesLibrary')"></li>
 			<li v-html="t('about.thanks')"></li>
-			<i18n path="about.upToDate.text" tag="li">
+			<i18n-t keypath="about.upToDate.text" tag="li">
 				<template #newsChannel>
 					<a href="https://tg.deemix.app" target="_blank">{{
 						t("about.upToDate.newsChannel")
 					}}</a>
 				</template>
-			</i18n>
+			</i18n-t>
 		</ul>
 
 		<h2>{{ t("about.titles.usefulLinks") }}</h2>
@@ -85,13 +85,13 @@
 			</span>
 		</h2>
 		<ul>
-			<i18n path="about.questions.text" tag="li">
+			<i18n-t keypath="about.questions.text" tag="li">
 				<template #subreddit>
 					<a href="https://www.reddit.com/r/deemix" target="_blank">{{
 						t("about.questions.subreddit")
 					}}</a>
 				</template>
-			</i18n>
+			</i18n-t>
 			<li>
 				{{ t("about.beforeReporting") }}
 			</li>
@@ -109,19 +109,19 @@
 			</span>
 		</h2>
 		<ul>
-			<i18n path="about.newUI.text" tag="li">
+			<i18n-t keypath="about.newUI.text" tag="li">
 				<template #repo>
 					<span>{{ t("about.newUI.repo") }}</span>
 				</template>
-			</i18n>
+			</i18n-t>
 			<li>
 				{{ t("about.acceptFeatures") }}
 			</li>
-			<i18n path="about.contributeWebUI.text" tag="li">
+			<i18n-t keypath="about.contributeWebUI.text" tag="li">
 				<template #webui>
 					<span>{{ t("about.contributeWebUI.webui") }}</span>
 				</template>
-			</i18n>
+			</i18n-t>
 			<li>
 				{{ t("about.otherLanguages") }}
 			</li>
@@ -166,7 +166,7 @@
 				/>
 			</a>
 		</p>
-		<i18n path="about.lincensedUnder.text" tag="p">
+		<i18n-t keypath="about.lincensedUnder.text" tag="p">
 			<template #gpl3>
 				<a
 					rel="license"
@@ -175,7 +175,7 @@
 					>{{ t("about.lincensedUnder.gpl3") }}</a
 				>
 			</template>
-		</i18n>
+		</i18n-t>
 	</div>
 </template>
 
