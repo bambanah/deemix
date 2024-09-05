@@ -18,7 +18,11 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
-      - run: pnpm install
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm -r --filter=deezer-js --filter=deemix build
 
       - run: pnpm lint
+
       # - run: pnpm test
