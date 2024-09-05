@@ -1,10 +1,14 @@
 {
-	"extends": "../../../tsconfig.base.json",
+	"extends": "@vue/tsconfig/tsconfig.dom.json",
+	"include": ["env.d.ts", "**/*.ts", "**/*.vue"],
 	"compilerOptions": {
-		"rootDir": ".",
+		"outDir": "./dist",
+
+		"strict": false,
+		"noImplicitAny": false,
+
 		"paths": {
 			"@/*": ["./*"]
 		}
-	},
-	"include": ["./**/*.ts", "./**/*.vue"]
+	}
 }

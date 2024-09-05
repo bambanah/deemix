@@ -2,17 +2,16 @@
 	"name": "deemix-webui",
 	"version": "4.0.1",
 	"private": true,
-	"type": "module",
 	"scripts": {
-		"dev": "nodemon src/server/main.ts",
+		"dev": "nodemon",
 		"build": "vite build",
 		"start": "cross-env NODE_ENV=production tsx --tsconfig ./src/server/tsconfig.json src/server/main.ts",
 		"test": "jest",
 		"test-watch": "jest --watch",
 		"testlang": "node ./tests/testlang.js",
-		"lint:ts": "run-p lint:client lint:server",
-		"lint:client": "tsc --noEmit -p src/client/tsconfig.json",
-		"lint:server": "tsc -p src/server/tsconfig.json"
+		"lint:ts": "run-p lint:server",
+		"lint:client": "vue-tsc --noEmit -p src/client/tsconfig.json",
+		"lint:server": "tsc --noEmit -p src/server/tsconfig.json"
 	},
 	"nodemonConfig": {
 		"watch": [
@@ -31,8 +30,8 @@
 		"debug": "2.6.9",
 		"deemix": "workspace:*",
 		"deezer-js": "workspace:*",
-		"dotenv": "8.2.0",
-		"express": "4.19.2",
+		"dotenv": "~16.4.5",
+		"express": "^4.19.2",
 		"express-session": "^1.17.3",
 		"flag-icon-css": "3.5.0",
 		"got": "^11.8.2",
@@ -51,7 +50,7 @@
 		"utf-8-validate": "5.0.5",
 		"uuid": "^10.0.0",
 		"vite-express": "^0.19.0",
-		"vue": "^3.1.0",
+		"vue": "~3.5.1",
 		"vue-i18n": "^9.14.0",
 		"vue-router": "^4.4.3",
 		"winston": "3.13.1",
@@ -74,8 +73,7 @@
 		"@types/ws": "^8.5.12",
 		"@types/yargs": "17.0.32",
 		"@vitejs/plugin-vue": "^5.1.3",
-		"@vue/compiler-sfc": "^3.1.0",
-		"@vue/tsconfig": "^0.3.2",
+		"@vue/tsconfig": "^0.5.1",
 		"autoprefixer": "^9.8.8",
 		"babel-jest": "^29.7.0",
 		"esbuild": "^0.23.1",
@@ -87,6 +85,6 @@
 		"ts-jest": "^29.2.5",
 		"vite": "^5.4.2",
 		"vite-svg-loader": "^5.1.0",
-		"vue-tsc": "^0.38.8"
+		"vue-tsc": "^2.1.6"
 	}
 }
