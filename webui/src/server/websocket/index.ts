@@ -6,7 +6,6 @@ import wsModules from "./modules";
 
 export const registerWebsocket = (wss: WebSocketServer, deemix: DeemixApp) => {
 	wss.on("connection", (ws) => {
-		console.log("Connected");
 		ws.on("message", (message) => {
 			const data = JSON.parse(message.toString());
 

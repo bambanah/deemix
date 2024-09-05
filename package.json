@@ -8,11 +8,9 @@
 	"author": "Bambanah",
 	"license": "GPL-3.0-only",
 	"scripts": {
-		"dev": "pnpm -C webui dev",
-		"dev:webui": "pnpm -C webui dev",
+		"dev": "pnpm -r --parallel --filter=!deemix-gui dev",
 		"dev:gui": "pnpm -C gui dev",
 		"build": "pnpm -C webui build",
-		"build:webui": "pnpm -C webui build",
 		"build:gui": "pnpm build && pnpm -C gui build",
 		"start": "pnpm -C webui start",
 		"test": "pnpm -C webui test",
