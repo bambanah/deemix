@@ -172,11 +172,11 @@ export default defineComponent({
 		});
 
 		const artistID = computed(
-			() => currInstance?.proxy.$root.$router.currentRoute.params.id
+			() => currInstance?.proxy.$root.$router.currentRoute.value.params.id
 		);
 		const hasDataLoaded = ref(false);
 
-		getArtistData(unref(artistID))
+		getArtistData(unref(artistID.value.toString()))
 			.then((artistData) => {
 				hasDataLoaded.value = true;
 

@@ -1,7 +1,7 @@
 import { CantStream, NotLoggedIn } from "@/helpers/errors.js";
 import { logger } from "@/helpers/logger.js";
 import { WEBUI_PACKAGE_VERSION } from "@/helpers/versions.js";
-import { Listener } from "@/types.js";
+import type { Listener } from "@/types.js";
 import {
 	Downloader,
 	downloadObjects,

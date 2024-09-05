@@ -2,7 +2,7 @@ import { Deezer } from "deezer-js";
 import { sessionDZ } from "@/deemixApp";
 import { logger } from "@/helpers/logger";
 import { getLoginCredentials } from "@/helpers/loginStorage";
-import { ApiHandler } from "@/types";
+import { type ApiHandler } from "@/types";
 import {
 	DEEMIX_PACKAGE_VERSION,
 	WEBUI_PACKAGE_VERSION,

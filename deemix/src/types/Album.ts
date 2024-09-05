@@ -1,4 +1,4 @@
-import { type APIAlbum } from "deezer-js/src/api";
+import { type APIAlbum } from "deezer-js";
 import { removeDuplicateArtists, removeFeatures } from "../utils";
 import { Artist } from "./Artist";
 import { CustomDate } from "./CustomDate";

@@ -1,7 +1,12 @@
 import { each, queue } from "async";
 import { exec } from "child_process";
-import { Deezer, TrackFormats, utils } from "deezer-js";
-import { type APIAlbum, type APITrack } from "deezer-js/src/api";
+import {
+	Deezer,
+	TrackFormats,
+	utils,
+	type APIAlbum,
+	type APITrack,
+} from "deezer-js";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { HTTPError } from "got";
 import { tmpdir } from "os";
