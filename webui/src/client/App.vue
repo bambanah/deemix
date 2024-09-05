@@ -62,11 +62,10 @@ export default {
 	mounted() {
 		this.isSocketConnected = socket.readyState === WebSocket.OPEN;
 		socket.addEventListener("open", () => {
-			console.log("Connected to WebSocket");
 			this.isSocketConnected = true;
 		});
 		socket.addEventListener("error", (event) => {
-			console.log(event);
+			console.error(event);
 			this.loadingText = "Couldn't connect to local server.";
 		});
 	},
