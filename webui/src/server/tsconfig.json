@@ -1,7 +1,12 @@
 {
-	"extends": "../../../tsconfig.base.json",
+	"extends": "@total-typescript/tsconfig/bundler/no-dom/app",
 	"compilerOptions": {
 		"rootDir": ".",
+		"outDir": "./dist",
+
+		"strict": false,
+		"noImplicitAny": false,
+
 		"paths": {
 			"@/*": ["./*"]
 		}
