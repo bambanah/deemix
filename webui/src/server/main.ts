@@ -1,21 +1,26 @@
-import { DeemixApp } from "@/deemixApp";
-import { logger, removeOldLogs } from "@/helpers/logger";
-import { loadLoginCredentials } from "@/helpers/loginStorage";
+import { DeemixApp } from "@/deemixApp.js";
+import { logger, removeOldLogs } from "@/helpers/logger.js";
+import { loadLoginCredentials } from "@/helpers/loginStorage.js";
+import cookieParser from "cookie-parser";
 import initDebug from "debug";
 import { utils } from "deemix";
 import express from "express";
+import session from "express-session";
+import memorystore from "memorystore";
+import morgan from "morgan";
 import ViteExpress from "vite-express";
 import { WebSocket, WebSocketServer } from "ws";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import { normalizePort } from "./helpers/port";
-import { getErrorCb, getListeningCb } from "./helpers/server-callbacks";
-import { registerMiddlewares } from "./middlewares";
-import indexRouter from "./routes";
-import { registerApis } from "./routes/api/register";
-import type { Arguments } from "./types";
-import { Listener } from "./types";
-import { registerWebsocket } from "./websocket";
+import { normalizePort } from "./helpers/port.js";
+import { getErrorCb, getListeningCb } from "./helpers/server-callbacks.js";
+import { registerApis } from "./routes/api/register.js";
+import indexRouter from "./routes/index.js";
+import type { Arguments } from "./types.js";
+import { Listener } from "./types.js";
+import { registerWebsocket } from "./websocket/index.js";
+
+const MemoryStore = memorystore(session);
 
 // TODO: Remove type assertion while keeping correct types
 const argv = yargs(hideBin(process.argv)).options({
@@ -55,7 +60,23 @@ const listener: Listener = {
 const deemixApp = new DeemixApp(listener);
 
 /* === Middlewares === */
-registerMiddlewares(app);
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(
+	session({
+		store: new MemoryStore({
+			checkPeriod: 86400000, // prune expired entries every 24h
+		}),
+		secret: "U2hoLCBpdHMgYSBzZWNyZXQh",
+		resave: true,
+		saveUninitialized: true,
+	})
+);
+
+if (process.env.NODE_ENV === "development") {
+	app.use(morgan("dev"));
+}
 
 /* === Routes === */
 app.use("/", indexRouter);
