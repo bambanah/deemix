@@ -2,6 +2,7 @@
 	"name": "deemix-webui",
 	"version": "4.0.1",
 	"private": true,
+	"type": "module",
 	"scripts": {
 		"dev": "nodemon src/server/main.ts",
 		"build": "vite build",
