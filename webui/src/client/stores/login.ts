@@ -50,9 +50,10 @@ export const useLoginStore = defineStore("login", {
 	},
 	actions: {
 		login({ status, user, arl }: Pick<LoginState, "status" | "user" | "arl">) {
-			this.arl = arl;
 			this.user = user;
 			this.status = status;
+
+			this.setARL(arl);
 		},
 		logout() {
 			localStorage.removeItem("arl");

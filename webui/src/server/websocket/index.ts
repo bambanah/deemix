@@ -15,8 +15,6 @@ export const registerWebsocket = (wss: WebSocketServer, deemix: DeemixApp) => {
 				}
 			});
 		});
-
-		ws.send("Hello");
 	});
 
 	wss.on("error", () => {
