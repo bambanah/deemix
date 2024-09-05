@@ -69,7 +69,7 @@ export class DeemixApp {
 		if (this.deezerAvailable === null) {
 			let response;
 			try {
-				response = await got.default.get("https://www.deezer.com/", {
+				response = await got.get("https://www.deezer.com/", {
 					headers: {
 						Cookie:
 							"dz_lang=en; Domain=deezer.com; Path=/; Secure; hostOnly=false;",
@@ -104,7 +104,7 @@ export class DeemixApp {
 		) {
 			let response;
 			try {
-				response = await got.default.get(
+				response = await got.get(
 					"https://gitlab.com/bambanah/deemix/-/raw/main/latest.txt",
 					{
 						https: {

@@ -27,6 +27,9 @@
 		"exec": "tsx --tsconfig ./src/server/tsconfig.json src/server/main.ts",
 		"tsconfig": "./src/server/tsconfig.json"
 	},
+	"exports": {
+		".": "./src/server/dist/main.js"
+	},
 	"dependencies": {
 		"cookie-parser": "1.4.6",
 		"cross-env": "^7.0.3",

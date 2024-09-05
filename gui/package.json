@@ -1,6 +1,6 @@
 {
 	"name": "deemix-gui",
-	"version": "0.1.0",
+	"version": "0.0.0",
 	"private": true,
 	"description": "A standalone electron app that wraps deemix-webui",
 	"main": "index.js",
@@ -18,10 +18,11 @@
 		"reset-version": "node scripts/reset-version.mjs"
 	},
 	"devDependencies": {
-		"electron": "^22.0.0",
+		"electron": "22.0.0",
 		"electron-builder": "^23.6.0"
 	},
 	"dependencies": {
+		"deemix-webui": "workspace:*",
 		"electron-context-menu": "^3.6.1",
 		"electron-window-state-manager": "^0.3.2",
 		"yargs": "^17.6.2"
@@ -32,8 +33,6 @@
 		"files": [
 			"index.js",
 			"preload.js",
-			"../server/dist/**/*",
-			"../webui/public/**/*",
 			"build/**/*",
 			"package.json"
 		],

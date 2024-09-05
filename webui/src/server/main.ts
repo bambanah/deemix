@@ -106,4 +106,4 @@ registerWebsocket(wss, deemixApp);
 /* === Remove Old logs files === */
 removeOldLogs(5);
 
-export { app, server };
+export { app, server, deemixApp };
