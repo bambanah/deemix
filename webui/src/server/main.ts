@@ -1,13 +1,13 @@
+import { DeemixApp } from "@/deemixApp";
+import { logger, removeOldLogs } from "@/helpers/logger";
+import { loadLoginCredentials } from "@/helpers/loginStorage";
 import initDebug from "debug";
-import * as deemix from "deemix";
-import express, { type Express } from "express";
+import { utils } from "deemix";
+import express from "express";
 import ViteExpress from "vite-express";
-import { WebSocketServer, WebSocket } from "ws";
+import { WebSocket, WebSocketServer } from "ws";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import { DeemixApp } from "./deemixApp";
-import { logger, removeOldLogs } from "./helpers/logger";
-import { loadLoginCredentials } from "./helpers/loginStorage";
 import { normalizePort } from "./helpers/port";
 import { getErrorCb, getListeningCb } from "./helpers/server-callbacks";
 import { registerMiddlewares } from "./middlewares";
@@ -32,7 +32,7 @@ const isSingleUser =
 		? !!argv.singleuser
 		: process.env.DEEMIX_SINGLE_USER === "true";
 
-const app: Express = express();
+const app = express();
 
 if (isSingleUser) loadLoginCredentials();
 
@@ -42,7 +42,7 @@ app.set("isSingleUser", isSingleUser);
 /* === Deemix App === */
 const listener: Listener = {
 	send: (key: string, data?: any) => {
-		const logLine = deemix.utils.formatListener(key, data);
+		const logLine = utils.formatListener(key, data);
 		if (logLine) logger.info(logLine);
 		if (["downloadInfo", "downloadWarn"].includes(key)) return;
 		wss.clients.forEach((client) => {
