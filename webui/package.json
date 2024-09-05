@@ -3,7 +3,7 @@
 	"version": "4.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "nodemon -w src/server -x tsx --tsconfig ./src/server/tsconfig.json src/server/main.ts",
+		"dev": "nodemon src/server/main.ts",
 		"build": "vite build",
 		"start": "cross-env NODE_ENV=production tsx --tsconfig ./src/server/tsconfig.json src/server/main.ts",
 		"test": "jest",
@@ -12,6 +12,16 @@
 		"lint:ts": "run-p lint:client lint:server",
 		"lint:client": "tsc --noEmit -p src/client/tsconfig.json",
 		"lint:server": "tsc -p src/server/tsconfig.json"
+	},
+	"nodemonConfig": {
+		"watch": [
+			"src/server",
+			"../deemix/dist",
+			"../deezer-js/dist"
+		],
+		"ext": "ts,json,js",
+		"exec": "tsx --tsconfig ./src/server/tsconfig.json src/server/main.ts",
+		"tsconfig": "./src/server/tsconfig.json"
 	},
 	"dependencies": {
 		"cookie-parser": "1.4.6",
