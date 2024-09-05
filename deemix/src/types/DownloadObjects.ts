@@ -118,7 +118,7 @@ export class Single extends IDownloadObject {
 		this.__type__ = "Single";
 	}
 
-	toDict() {
+	override toDict() {
 		const item = super.toDict();
 
 		return { ...item, single: this.single };
@@ -144,7 +144,7 @@ export class Collection extends IDownloadObject {
 		this.__type__ = "Collection";
 	}
 
-	toDict() {
+	override toDict() {
 		const item = super.toDict();
 
 		return { ...item, collection: this.collection };
@@ -171,7 +171,7 @@ export class Convertable extends Collection {
 		this.__type__ = "Convertable";
 	}
 
-	toDict() {
+	override toDict() {
 		const item = super.toDict();
 
 		return {

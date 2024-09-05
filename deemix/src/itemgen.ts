@@ -7,13 +7,13 @@ import {
 } from "./errors";
 import {
 	utils,
-	APIAlbum,
-	APIArtist,
-	APIPlaylist,
-	APITrack,
-	EnrichedAPITrack,
-	EnrichedAPIAlbum,
-	GWTrack,
+	type APIAlbum,
+	type APIArtist,
+	type APIPlaylist,
+	type APITrack,
+	type EnrichedAPITrack,
+	type EnrichedAPIAlbum,
+	type GWTrack,
 } from "deezer-js";
 import { each } from "async";
 import { Deezer } from "deezer-js";

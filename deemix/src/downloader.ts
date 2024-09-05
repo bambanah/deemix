@@ -1,7 +1,7 @@
 import { each, queue } from "async";
 import { exec } from "child_process";
 import { Deezer, TrackFormats, utils } from "deezer-js";
-import { APIAlbum, APITrack } from "deezer-js/src/api";
+import { type APIAlbum, type APITrack } from "deezer-js/src/api";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { HTTPError } from "got";
 import { tmpdir } from "os";
@@ -9,7 +9,7 @@ import { streamTrack } from "./decryption";
 import { DownloadCanceled, DownloadFailed, ErrorMessages } from "./errors";
 import { DEFAULTS, OverwriteOption } from "./settings";
 import { Collection, IDownloadObject, Single } from "./types/DownloadObjects";
-import { StaticPicture, Settings } from "./types";
+import { StaticPicture, type Settings } from "./types";
 import Track, { formatsName } from "./types/Track";
 import { downloadImage, getPreferredBitrate, shellEscape } from "./utils";
 import { checkShouldDownload, tagTrack } from "./utils/downloadUtils";
