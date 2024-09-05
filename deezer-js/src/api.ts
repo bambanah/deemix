@@ -10,7 +10,7 @@ import {
 	DataException,
 	IndividualAccountChangedNotAllowedException,
 } from "./errors.js";
-import { APIOptions } from "./index.js";
+import { type APIOptions } from "./index.js";
 import { CookieJar } from "tough-cookie";
 
 // Possible values for order parameter in search

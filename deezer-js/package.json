@@ -3,12 +3,12 @@
 	"version": "1.6.0",
 	"private": true,
 	"description": "A wrapper for all Deezer's APIs",
-	"type": "module",
 	"main": "dist/index.js",
+	"module": "dist/index.mjs",
 	"types": "dist/index.d.ts",
 	"scripts": {
-		"dev": "tsup src/index.ts --format esm,cjs --watch",
-		"build": "tsup src/index.ts --format esm,cjs",
+		"dev": "tsup src/index.ts --format esm,cjs --dts --watch",
+		"build": "tsup src/index.ts --format esm,cjs --dts",
 		"lint:ts": "tsc --noEmit"
 	},
 	"repository": {
