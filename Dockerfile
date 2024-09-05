@@ -33,10 +33,14 @@ FROM base AS runner
 
 COPY --from=installer /app .
 
+ENV NODE_ENV=production
+
 ENV DEEMIX_DATA_DIR=/config/
 ENV DEEMIX_MUSIC_DIR=/downloads/
 ENV DEEMIX_HOST=0.0.0.0
 
 EXPOSE 6595
 
-ENTRYPOINT ["node", "webui/src/server/dist/main.js"]
+WORKDIR /app/webui
+
+ENTRYPOINT ["node", "src/server/dist/main.js"]
