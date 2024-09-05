@@ -1,5 +1,18 @@
 # deemix
 
+## 3.11.0
+
+### Minor Changes
+
+- d6c0175: Ship package as compiled js
+
+### Patch Changes
+
+- ca61198: Include type definitions with bundle
+- Updated dependencies [15e03de]
+- Updated dependencies [1453cc7]
+  - deezer-js@1.7.0
+
 ## 3.10.0
 
 ### Minor Changes

@@ -1,5 +1,16 @@
 # deemix-webui
 
+## 4.0.2
+
+### Patch Changes
+
+- Updated dependencies [ca61198]
+- Updated dependencies [15e03de]
+- Updated dependencies [d6c0175]
+- Updated dependencies [1453cc7]
+  - deemix@3.11.0
+  - deezer-js@1.7.0
+
 ## 4.0.1
 
 ### Patch Changes

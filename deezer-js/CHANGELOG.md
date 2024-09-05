@@ -1,5 +1,15 @@
 # deezer-js
 
+## 1.7.0
+
+### Minor Changes
+
+- 1453cc7: Ship package as compiled js
+
+### Patch Changes
+
+- 15e03de: Include type definitions with bundle
+
 ## 1.6.0
 
 ### Minor Changes
