@@ -5,9 +5,9 @@ import {
 	map_user_artist,
 	map_user_album,
 	map_user_playlist,
-} from "./utils";
-import { GWAPIError } from "./errors";
-import { APIOptions } from ".";
+} from "./utils.js";
+import { GWAPIError } from "./errors.js";
+import { APIOptions } from "./index.js";
 
 export const PlaylistStatus = {
 	PUBLIC: 0,
@@ -110,7 +110,6 @@ export class GW {
 					https: {
 						rejectUnauthorized: false,
 					},
-					timeout: 30000,
 				})
 				.json();
 		} catch (e) {

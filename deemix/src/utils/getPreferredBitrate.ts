@@ -41,7 +41,6 @@ export async function getPreferredBitrate(
 				.get(url, {
 					headers: { "User-Agent": USER_AGENT_HEADER },
 					https: { rejectUnauthorized: false },
-					timeout: 7000,
 				})
 				.on("response", (response) => {
 					track.filesizes[`${formatName.toLowerCase()}`] =
