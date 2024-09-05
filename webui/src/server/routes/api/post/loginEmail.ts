@@ -1,6 +1,6 @@
-import { type ApiHandler } from "../../../types";
-import { getAccessToken, getArlFromAccessToken } from "../../../deemixApp";
-import { saveLoginCredentials } from "../../../helpers/loginStorage";
+import { type ApiHandler } from "@/types.js";
+import { getAccessToken, getArlFromAccessToken } from "@/deemixApp.js";
+import { saveLoginCredentials } from "@/helpers/loginStorage.js";
 
 const path = "/loginEmail";
 

@@ -1,4 +1,4 @@
-import { type Port } from "../types";
+import { type Port } from "../types.js";
 
 /**
  * Normalize a port into a number, string, or false.

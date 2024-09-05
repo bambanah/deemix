@@ -1,7 +1,7 @@
 import { Deezer } from "deezer-js";
-import { sessionDZ } from "../../../deemixApp";
-import { resetLoginCredentials } from "../../../helpers/loginStorage";
-import type { ApiHandler } from "../../../types";
+import { sessionDZ } from "../../../deemixApp.js";
+import { resetLoginCredentials } from "../../../helpers/loginStorage.js";
+import type { ApiHandler } from "../../../types.js";
 
 const path: ApiHandler["path"] = "/logout";
 

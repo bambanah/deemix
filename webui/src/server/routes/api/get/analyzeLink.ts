@@ -1,12 +1,12 @@
 import * as deemix from "deemix";
 import { Deezer } from "deezer-js";
 import type { RequestHandler } from "express";
-import { sessionDZ } from "../../../deemixApp";
+import { sessionDZ } from "../../../deemixApp.js";
 import type {
 	ApiHandler,
 	GetAlbumResponse,
 	GetTrackResponse,
-} from "../../../types";
+} from "../../../types.js";
 
 export interface AnalyzeQuery {
 	term?: string;

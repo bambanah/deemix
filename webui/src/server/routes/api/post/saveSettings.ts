@@ -1,4 +1,4 @@
-import type { ApiHandler, Settings, SpotifySettings } from "../../../types";
+import type { ApiHandler, Settings, SpotifySettings } from "../../../types.js";
 
 const path = "/saveSettings";
 

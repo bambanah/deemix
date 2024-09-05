@@ -1,23 +1,23 @@
-import connect from "./connect";
-import analyzeLink from "./analyzeLink";
-import getHome from "./getHome";
-import getCharts from "./getCharts";
-import mainSearch from "./mainSearch";
-import search from "./search";
-import newReleases from "./newReleases";
-import getTracklist from "./getTracklist";
-import { apiHandler as albumSearch } from "./albumSearch";
-import getChartTracks from "./getChartTracks";
-import getSettings from "./getSettings";
-import getUserTracks from "./getUserTracks";
-import getUserAlbums from "./getUserAlbums";
-import getUserArtists from "./getUserArtists";
-import getUserPlaylists from "./getUserPlaylists";
-import getUserSpotifyPlaylists from "./getUserSpotifyPlaylists";
-import getUserFavorites from "./getUserFavorites";
-import getQueue from "./getQueue";
-import spotifyStatus from "./spotifyStatus";
-import checkForUpdates from "./checkForUpdates";
+import connect from "./connect.js";
+import analyzeLink from "./analyzeLink.js";
+import getHome from "./getHome.js";
+import getCharts from "./getCharts.js";
+import mainSearch from "./mainSearch.js";
+import search from "./search.js";
+import newReleases from "./newReleases.js";
+import getTracklist from "./getTracklist.js";
+import { apiHandler as albumSearch } from "./albumSearch.js";
+import getChartTracks from "./getChartTracks.js";
+import getSettings from "./getSettings.js";
+import getUserTracks from "./getUserTracks.js";
+import getUserAlbums from "./getUserAlbums.js";
+import getUserArtists from "./getUserArtists.js";
+import getUserPlaylists from "./getUserPlaylists.js";
+import getUserSpotifyPlaylists from "./getUserSpotifyPlaylists.js";
+import getUserFavorites from "./getUserFavorites.js";
+import getQueue from "./getQueue.js";
+import spotifyStatus from "./spotifyStatus.js";
+import checkForUpdates from "./checkForUpdates.js";
 
 export default [
 	connect,

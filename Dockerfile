@@ -30,6 +30,8 @@ FROM base AS runner
 COPY . ./
 
 COPY --from=builder /app/webui/dist ./webui/dist
+COPY --from=builder /app/deemix/dist ./deemix/dist
+COPY --from=builder /app/deezer-js/dist ./deezer-js/dist
 
 COPY --from=prod-deps /app/webui/node_modules ./webui/node_modules/
 COPY --from=prod-deps /app/node_modules ./node_modules

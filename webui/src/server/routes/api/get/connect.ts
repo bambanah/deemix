@@ -1,12 +1,12 @@
 import { Deezer } from "deezer-js";
-import { sessionDZ } from "@/deemixApp";
-import { logger } from "@/helpers/logger";
-import { getLoginCredentials } from "@/helpers/loginStorage";
-import { type ApiHandler } from "@/types";
+import { sessionDZ } from "@/deemixApp.js";
+import { logger } from "@/helpers/logger.js";
+import { getLoginCredentials } from "@/helpers/loginStorage.js";
+import { type ApiHandler } from "@/types.js";
 import {
 	DEEMIX_PACKAGE_VERSION,
 	WEBUI_PACKAGE_VERSION,
-} from "@/helpers/versions";
+} from "@/helpers/versions.js";
 
 const path: ApiHandler["path"] = "/connect";
 let update: any = null;

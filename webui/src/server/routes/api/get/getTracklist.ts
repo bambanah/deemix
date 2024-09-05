@@ -1,6 +1,6 @@
 import { Deezer, utils as dzUtils } from "deezer-js";
-import { type ApiHandler } from "../../../types";
-import { sessionDZ } from "../../../deemixApp";
+import { type ApiHandler } from "../../../types.js";
+import { sessionDZ } from "../../../deemixApp.js";
 
 const path: ApiHandler["path"] = "/getTracklist";
 

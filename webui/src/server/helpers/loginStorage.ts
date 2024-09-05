@@ -1,6 +1,6 @@
 import * as deemix from "deemix";
 import fs from "fs";
-import type { LoginFile } from "../types";
+import type { LoginFile } from "../types.js";
 
 const configFolder = deemix.utils.getConfigFolder();
 
