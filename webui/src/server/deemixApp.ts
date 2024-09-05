@@ -1,7 +1,7 @@
-import { CantStream, NotLoggedIn } from "@/helpers/errors";
-import { logger } from "@/helpers/logger";
-import { WEBUI_PACKAGE_VERSION } from "@/helpers/versions";
-import { Listener } from "@/types";
+import { CantStream, NotLoggedIn } from "@/helpers/errors.js";
+import { logger } from "@/helpers/logger.js";
+import { WEBUI_PACKAGE_VERSION } from "@/helpers/versions.js";
+import { Listener } from "@/types.js";
 import {
 	Downloader,
 	downloadObjects,
@@ -77,7 +77,9 @@ export class DeemixApp {
 					https: {
 						rejectUnauthorized: false,
 					},
-					retry: 5,
+					retry: {
+						limit: 5,
+					},
 				});
 			} catch (e) {
 				logger.error(e);

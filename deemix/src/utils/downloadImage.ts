@@ -8,8 +8,8 @@ import {
 } from "fs";
 import { HTTPError, ReadError, TimeoutError, default as got } from "got";
 import { tmpdir } from "os";
-import { OverwriteOption } from "../settings";
-import { USER_AGENT_HEADER, pipeline } from "../utils";
+import { OverwriteOption } from "../settings.js";
+import { USER_AGENT_HEADER, pipeline } from "../utils/index.js";
 
 const TEMPDIR = tmpdir() + "/deemix-imgs";
 mkdirSync(TEMPDIR, { recursive: true });

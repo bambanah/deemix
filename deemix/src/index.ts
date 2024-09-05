@@ -1,15 +1,15 @@
 import { type Deezer } from "deezer-js";
 import got from "got";
-import { Downloader } from "./downloader";
-import { LinkNotRecognized, LinkNotSupported } from "./errors";
+import { Downloader } from "./downloader.js";
+import { LinkNotRecognized, LinkNotSupported } from "./errors.js";
 import {
 	generateAlbumItem,
 	generateArtistItem,
 	generateArtistTopItem,
 	generatePlaylistItem,
 	generateTrackItem,
-} from "./itemgen";
-import BasePlugin from "@/plugins/base";
+} from "./itemgen.js";
+import BasePlugin from "@/plugins/base.js";
 
 async function parseLink(link: string) {
 	if (link.includes("deezer.page.link")) {
@@ -104,12 +104,12 @@ const itemgen = {
 	generateArtistTopItem,
 };
 
-export * as decryption from "./decryption";
-export * from "./plugins";
-export * as settings from "./settings";
-export * as tagger from "./tagger";
-export * from "./types";
-export * as utils from "./utils";
+export * as decryption from "./decryption.js";
+export * from "./plugins/index.js";
+export * as settings from "./settings.js";
+export * as tagger from "./tagger.js";
+export * from "./types/index.js";
+export * as utils from "./utils/index.js";
 
 // Exporting the organized objects
 export { Downloader, generateDownloadObject, itemgen, parseLink };
