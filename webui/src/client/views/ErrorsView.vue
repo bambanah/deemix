@@ -3,58 +3,62 @@
 		<h1 class="mb-8 text-5xl">{{ t("errors.title", { name: title }) }}</h1>
 
 		<table v-if="errors.length >= 1" class="table--tracklist table">
-			<tr>
-				<th>ID</th>
-				<th class="uppercase-first-letter">
-					{{ t("globals.listTabs.artist", 1) }}
-				</th>
-				<th class="uppercase-first-letter">
-					{{ t("globals.listTabs.title", 1) }}
-				</th>
-				<th class="uppercase-first-letter">
-					{{ t("globals.listTabs.error", 1) }}
-				</th>
-			</tr>
-			<tr v-for="error in errors" :key="error.data.id">
-				<td>{{ error.data.id }}</td>
-				<td>{{ error.data.artist }}</td>
-				<td>{{ error.data.title }}</td>
-				<td>
-					<span :title="error.stack">
-						{{
-							error.errid
-								? t(`errors.ids.${error.errid}`, { bitrate: downloadBitrate })
-								: error.message
-						}}
-					</span>
-				</td>
-			</tr>
-		</table>
-		<div v-if="postErrors.length >= 1">
-			<h2>{{ t("errors.postTitle") }}</h2>
-			<table class="table--tracklist table">
+			<tbody>
 				<tr>
 					<th>ID</th>
 					<th class="uppercase-first-letter">
-						{{ t("globals.listTabs.empty") }}
+						{{ t("globals.listTabs.artist", 1) }}
+					</th>
+					<th class="uppercase-first-letter">
+						{{ t("globals.listTabs.title", 1) }}
 					</th>
 					<th class="uppercase-first-letter">
 						{{ t("globals.listTabs.error", 1) }}
 					</th>
 				</tr>
-				<tr v-for="error in postErrors" :key="error.data.id">
-					<td>{{ error.data.position }}</td>
+				<tr v-for="error in errors" :key="error.data.id">
+					<td>{{ error.data.id }}</td>
+					<td>{{ error.data.artist }}</td>
+					<td>{{ error.data.title }}</td>
 					<td>
-						<span v-if="error.data.id"
-							>{{ error.data.artist }} - {{ error.data.title }}</span
-						>
-					</td>
-					<td>
-						<span :title="error.stack">{{
-							error.errid ? t(`errors.ids.${error.errid}`) : error.message
-						}}</span>
+						<span :title="error.stack">
+							{{
+								error.errid
+									? t(`errors.ids.${error.errid}`, { bitrate: downloadBitrate })
+									: error.message
+							}}
+						</span>
 					</td>
 				</tr>
+			</tbody>
+		</table>
+		<div v-if="postErrors.length >= 1">
+			<h2>{{ t("errors.postTitle") }}</h2>
+			<table class="table--tracklist table">
+				<tbody>
+					<tr>
+						<th>ID</th>
+						<th class="uppercase-first-letter">
+							{{ t("globals.listTabs.empty") }}
+						</th>
+						<th class="uppercase-first-letter">
+							{{ t("globals.listTabs.error", 1) }}
+						</th>
+					</tr>
+					<tr v-for="error in postErrors" :key="error.data.id">
+						<td>{{ error.data.position }}</td>
+						<td>
+							<span v-if="error.data.id"
+								>{{ error.data.artist }} - {{ error.data.title }}</span
+							>
+						</td>
+						<td>
+							<span :title="error.stack">{{
+								error.errid ? t(`errors.ids.${error.errid}`) : error.message
+							}}</span>
+						</td>
+					</tr>
+				</tbody>
 			</table>
 		</div>
 	</div>
