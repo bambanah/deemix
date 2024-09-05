@@ -9,7 +9,7 @@ import { SpotifyApi } from "@spotify/web-api-ts-sdk";
 import got from "got";
 import { queue } from "async";
 import { Deezer } from "deezer-js";
-import { Settings } from "@/types";
+import { type Settings } from "@/types";
 import Track from "@/types/Track";
 
 export default class SpotifyPlugin extends BasePlugin {
@@ -32,14 +32,14 @@ export default class SpotifyPlugin extends BasePlugin {
 		return this;
 	}
 
-	setup() {
+	overridesetup() {
 		fs.mkdirSync(this.configFolder, { recursive: true });
 
 		this.loadSettings();
 		return this;
 	}
 
-	async parseLink(link) {
+	override async parseLink(link) {
 		if (link.includes("link.tospotify.com")) {
 			link = await got.get(link, { https: { rejectUnauthorized: false } }); // Resolve URL shortner
 			link = link.url;
@@ -67,7 +67,7 @@ export default class SpotifyPlugin extends BasePlugin {
 		return [link, link_type, link_id];
 	}
 
-	async generateDownloadObject(dz, link, bitrate) {
+	override async generateDownloadObject(dz, link, bitrate) {
 		let link_type, link_id;
 		[link, link_type, link_id] = await this.parseLink(link);
 

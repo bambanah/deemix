@@ -2,10 +2,10 @@ import {
 	Deezer,
 	TrackFormats,
 	utils,
-	EnrichedAPITrack,
-	APIAlbum,
-	APIPlaylist,
-	APITrack,
+	type APIAlbum,
+	type APIPlaylist,
+	type APITrack,
+	type EnrichedAPITrack,
 } from "deezer-js";
 import { AlbumDoesntExists, NoDataToParse } from "../errors";
 import { FeaturesOption } from "../settings";
@@ -23,7 +23,7 @@ import { VARIOUS_ARTISTS } from "./index";
 import { Lyrics } from "./Lyrics";
 import { Picture } from "./Picture";
 import { Playlist } from "./Playlist";
-import { Settings } from "./Settings";
+import type { Settings } from "./Settings";
 
 const { map_track, map_album } = utils;
 
