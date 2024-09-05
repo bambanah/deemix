@@ -7,7 +7,7 @@ import {
 	map_user_playlist,
 } from "./utils.js";
 import { GWAPIError } from "./errors.js";
-import { APIOptions } from "./index.js";
+import { type APIOptions } from "./index.js";
 
 export const PlaylistStatus = {
 	PUBLIC: 0,
