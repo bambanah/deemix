@@ -1,7 +1,8 @@
-import { canWrite } from "../utils";
+import { execSync } from "child_process";
 import fs from "fs";
 import { homedir } from "os";
 import { sep } from "path";
+import { canWrite } from "../utils";
 
 const homedata = homedir();
 let userdata = "";
@@ -60,7 +61,8 @@ export function getMusicFolder() {
 	}
 	if (process.platform === "win32" && musicdata === "") {
 		try {
-			const { execSync } = require("child_process");
+			// const { execSync } = require("child_process");
+
 			const musicKeys = ["My Music", "{4BD8D571-6D19-48D3-BE97-422220080E43}"];
 			const regData = execSync(
 				'reg.exe query "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders"'
@@ -71,9 +73,9 @@ export function getMusicFolder() {
 				let line = regData[i];
 				if (line === "") continue;
 				if (i === 1) continue;
-				line = line.split("    ");
-				if (musicKeys.includes(line[1])) {
-					musicdata = line[3] + sep;
+				const lines = line.split("    ");
+				if (musicKeys.includes(lines[1])) {
+					musicdata = lines[3] + sep;
 					break;
 				}
 			}

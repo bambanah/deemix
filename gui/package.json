@@ -7,6 +7,7 @@
 	"homepage": "https://github.com/bambanah/deemix",
 	"author": "Bambanah <hello@lachie.xyz>",
 	"license": "GPL-3.0-only",
+	"type": "module",
 	"scripts": {
 		"dev": "electron . --dev",
 		"build-gui": "pnpm set-version && electron-builder && pnpm reset-version",
@@ -19,7 +20,7 @@
 	},
 	"devDependencies": {
 		"electron": "22.0.0",
-		"electron-builder": "^23.6.0"
+		"electron-builder": "^25.0.5"
 	},
 	"dependencies": {
 		"deemix-webui": "workspace:*",

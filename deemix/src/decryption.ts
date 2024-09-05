@@ -176,9 +176,7 @@ export async function streamTrack(writepath, track, downloadObject, listener) {
 	} catch (e) {
 		if (fs.existsSync(writepath)) fs.unlinkSync(writepath);
 		if (
-			// @ts-expect-error
 			e instanceof got.ReadError ||
-			// @ts-expect-error
 			e instanceof got.TimeoutError ||
 			[
 				"ESOCKETTIMEDOUT",

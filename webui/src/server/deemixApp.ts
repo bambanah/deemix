@@ -69,6 +69,7 @@ export class DeemixApp {
 		if (this.deezerAvailable === null) {
 			let response;
 			try {
+				// @ts-ignore
 				response = await got.get("https://www.deezer.com/", {
 					headers: {
 						Cookie:
@@ -104,6 +105,7 @@ export class DeemixApp {
 		) {
 			let response;
 			try {
+				// @ts-ignore
 				response = await got.get(
 					"https://gitlab.com/bambanah/deemix/-/raw/main/latest.txt",
 					{
