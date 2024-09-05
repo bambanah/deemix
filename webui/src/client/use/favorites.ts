@@ -1,10 +1,9 @@
-import { ref, computed } from "vue";
-
+import i18n from "@/plugins/i18n";
+import { pinia } from "@/stores";
+import { useLoginStore } from "@/stores/login";
 import { fetchData } from "@/utils/api-utils";
 import { toast } from "@/utils/toasts";
-import i18n from "@/plugins/i18n";
-import { useLoginStore } from "@/stores/login";
-import { pinia } from "@/stores";
+import { computed, ref } from "vue";
 
 const loginStore = useLoginStore(pinia);
 
@@ -39,7 +38,7 @@ const setSpotifyPlaylists = (response) => {
 				break;
 			case "wrongSpotifyUsername":
 				toast(
-					i18n.t("toasts.wrongSpotifyUsername", {
+					i18n.global.t("toasts.wrongSpotifyUsername", {
 						username: response.username,
 					}),
 					"person_off"
