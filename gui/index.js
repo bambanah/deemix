@@ -18,14 +18,12 @@ const argv = yargs(hideBin(process.argv)).options({
 	host: { type: "string", default: "0.0.0.0" },
 	dev: { type: "boolean", default: false },
 }).argv;
-const { DeemixServer } = require("../server/dist/app");
+
+const { deemixApp } = require("deemix-webui");
 
 const PORT = process.env.DEEMIX_SERVER_PORT || argv.port;
 process.env.DEEMIX_SERVER_PORT = PORT;
 process.env.DEEMIX_HOST = argv.host;
-
-const server = new DeemixServer(argv.host, PORT, "/", false);
-server.init();
 
 let win;
 const windowState = new WindowStateManager("mainWindow", {
@@ -92,8 +90,8 @@ function createWindow() {
 
 	win.on("close", (event) => {
 		windowState.saveState(win);
-		if (server.deemixApp.getSettings().settings.clearQueueOnExit) {
-			server.deemixApp.cancelAllDownloads();
+		if (deemixApp.getSettings().settings.clearQueueOnExit) {
+			deemixApp.cancelAllDownloads();
 		}
 	});
 }
