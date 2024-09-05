@@ -1,7 +1,7 @@
 import { Deezer } from "deezer-js";
-import { sessionDZ } from "../../../deemixApp";
-import { type ApiHandler } from "../../../types";
-import { getAlbumDetails } from "./albumSearch";
+import { sessionDZ } from "../../../deemixApp.js";
+import { type ApiHandler } from "../../../types.js";
+import { getAlbumDetails } from "./albumSearch.js";
 
 const path: ApiHandler["path"] = "/newReleases";
 

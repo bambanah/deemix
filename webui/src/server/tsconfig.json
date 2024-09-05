@@ -1,15 +1,36 @@
 {
-	"extends": "@total-typescript/tsconfig/bundler/no-dom/app",
+	"extends": "@total-typescript/tsconfig/tsc/no-dom/app",
 	"compilerOptions": {
 		"rootDir": ".",
 		"outDir": "./dist",
 
 		"strict": false,
 		"noImplicitAny": false,
+		// "verbatimModuleSyntax": false,
 
 		"paths": {
 			"@/*": ["./*"]
 		}
+
+		// /* Base Options: */
+		// "esModuleInterop": true,
+		// "skipLibCheck": true,
+		// "target": "es2022",
+		// "allowJs": true,
+		// "resolveJsonModule": true,
+		// "moduleDetection": "force",
+		// "isolatedModules": true,
+		// "verbatimModuleSyntax": true,
+		// /* Strictness */
+		// // "strict": true,
+		// "noUncheckedIndexedAccess": true,
+		// "noImplicitOverride": true,
+		// /* If transpiling with TypeScript: */
+		// "module": "ESNext",
+		// "moduleResolution": "Bundler",
+		// "sourceMap": true,
+		// /* If your code doesn't run in the DOM: */
+		// "lib": ["es2022"]
 	},
 	"include": ["./**/*.ts"]
 }

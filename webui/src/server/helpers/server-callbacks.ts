@@ -1,6 +1,6 @@
 import http from "http";
 import type { Debugger } from "debug";
-import { logger } from "./logger";
+import { logger } from "./logger.js";
 
 /**
  * Event listener for HTTP server "error" event.

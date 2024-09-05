@@ -1,13 +1,13 @@
-import changeAccount from "./changeAccount";
-import loginArl from "./loginArl";
-import addToQueue from "./addToQueue";
-import loginEmail from "./loginEmail";
-import cancelAllDownloads from "./cancelAllDownloads";
-import removeFinishedDownloads from "./removeFinishedDownloads";
-import removeFromQueue from "./removeFromQueue";
-import logout from "./logout";
-import saveSettings from "./saveSettings";
-import retryDownload from "./retryDownload";
+import changeAccount from "./changeAccount.js";
+import loginArl from "./loginArl.js";
+import addToQueue from "./addToQueue.js";
+import loginEmail from "./loginEmail.js";
+import cancelAllDownloads from "./cancelAllDownloads.js";
+import removeFinishedDownloads from "./removeFinishedDownloads.js";
+import removeFromQueue from "./removeFromQueue.js";
+import logout from "./logout.js";
+import saveSettings from "./saveSettings.js";
+import retryDownload from "./retryDownload.js";
 
 export default [
 	changeAccount,

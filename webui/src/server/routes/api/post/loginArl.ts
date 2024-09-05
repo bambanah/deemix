@@ -1,12 +1,12 @@
 import { Deezer } from "deezer-js";
 import type { RequestHandler } from "express";
-import { DeemixApp, sessionDZ } from "../../../deemixApp";
-import { logger } from "../../../helpers/logger";
+import { DeemixApp, sessionDZ } from "@/deemixApp.js";
+import { logger } from "@/helpers/logger.js";
 import {
 	resetLoginCredentials,
 	saveLoginCredentials,
-} from "../../../helpers/loginStorage";
-import { type ApiHandler } from "../../../types";
+} from "@/helpers/loginStorage.js";
+import { type ApiHandler } from "@/types.js";
 
 export interface RawLoginArlBody {
 	arl: string;

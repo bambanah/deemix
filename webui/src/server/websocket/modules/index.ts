@@ -1,7 +1,7 @@
-import saveSettings from "./saveSettings";
-import removeFinishedDownloads from "./removeFinishedDownloads";
-import removeFromQueue from "./removeFromQueue";
-import cancelAllDownloads from "./cancelAllDownloads";
+import saveSettings from "./saveSettings.js";
+import removeFinishedDownloads from "./removeFinishedDownloads.js";
+import removeFromQueue from "./removeFromQueue.js";
+import cancelAllDownloads from "./cancelAllDownloads.js";
 
 export default [
 	saveSettings,

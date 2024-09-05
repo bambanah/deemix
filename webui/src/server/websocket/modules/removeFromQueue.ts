@@ -1,6 +1,6 @@
 import { WebSocketServer } from "ws";
-import { logger } from "../../helpers/logger";
-import { DeemixApp } from "../../deemixApp";
+import { logger } from "@/helpers/logger.js";
+import { DeemixApp } from "@/deemixApp.js";
 
 const eventName = "removeFromQueue";
 

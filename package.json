@@ -10,7 +10,7 @@
 	"scripts": {
 		"dev": "pnpm -r --parallel --filter=!deemix-gui dev",
 		"dev:gui": "pnpm -C gui dev",
-		"build": "pnpm -C webui build",
+		"build": "pnpm -r --parallel --filter=!deemix-gui build",
 		"build:gui": "pnpm build && pnpm -C gui build",
 		"start": "pnpm -C webui start",
 		"test": "pnpm -C webui test",
@@ -26,6 +26,7 @@
 		"@total-typescript/tsconfig": "^1.0.4",
 		"@types/node": "^20.16.3",
 		"@typescript-eslint/parser": "^8.3.0",
+		"esbuild": "^0.23.1",
 		"eslint": "^9.9.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-vue": "^9.27.0",
@@ -33,6 +34,7 @@
 		"npm-run-all2": "^6.2.0",
 		"prettier": "^3.2.5",
 		"prettier-plugin-tailwindcss": "^0.6.6",
+		"tsx": "^4.19.0",
 		"typescript": "^5.5.4",
 		"typescript-eslint": "^8.3.0"
 	},

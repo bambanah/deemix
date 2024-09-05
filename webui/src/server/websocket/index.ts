@@ -1,8 +1,8 @@
 import { WebSocketServer } from "ws";
 
-import { logger } from "../helpers/logger";
-import { DeemixApp } from "../deemixApp";
-import wsModules from "./modules";
+import { logger } from "../helpers/logger.js";
+import { DeemixApp } from "../deemixApp.js";
+import wsModules from "./modules/index.js";
 
 export const registerWebsocket = (wss: WebSocketServer, deemix: DeemixApp) => {
 	wss.on("connection", (ws) => {

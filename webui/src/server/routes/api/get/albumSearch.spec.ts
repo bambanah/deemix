@@ -1,4 +1,4 @@
-import { appSendGet } from "@/tests/utils";
+import { appSendGet } from "@/tests/utils.js";
 
 describe("albumSearch requests", () => {
 	it("should respond 200 to calls with term", async () => {

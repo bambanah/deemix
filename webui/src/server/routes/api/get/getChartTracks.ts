@@ -1,10 +1,10 @@
+import { sessionDZ } from "@/deemixApp.js";
+import { BadRequestError } from "@/helpers/errors.js";
+import { logger } from "@/helpers/logger.js";
+import { isObjectEmpy } from "@/helpers/primitive-checks.js";
+import type { ApiHandler } from "@/types.js";
 import { Deezer } from "deezer-js";
 import type { RequestHandler } from "express";
-import { sessionDZ } from "../../../deemixApp";
-import { BadRequestError } from "../../../helpers/errors";
-import { logger } from "../../../helpers/logger";
-import { isObjectEmpy } from "../../../helpers/primitive-checks";
-import type { ApiHandler } from "../../../types";
 
 export interface RawChartTracksQuery {
 	id: string;
