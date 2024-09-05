@@ -1,4 +1,4 @@
-const {
+import {
 	app,
 	BrowserWindow,
 	ipcMain,
@@ -6,20 +6,21 @@ const {
 	dialog,
 	Menu,
 	MenuItem,
-} = require("electron");
-const contextMenu = require("electron-context-menu");
-const WindowStateManager = require("electron-window-state-manager");
-const path = require("path");
-const os = require("os");
-const yargs = require("yargs/yargs");
-const { hideBin } = require("yargs/helpers");
+} from "electron";
+import contextMenu from "electron-context-menu";
+import WindowStateManager from "electron-window-state-manager";
+import { join } from "path";
+import { platform } from "os";
+import yargs from "yargs/yargs";
+import { hideBin } from "yargs/helpers";
+
 const argv = yargs(hideBin(process.argv)).options({
 	port: { type: "string", default: "6595" },
 	host: { type: "string", default: "0.0.0.0" },
 	dev: { type: "boolean", default: false },
 }).argv;
 
-const { deemixApp } = require("deemix-webui");
+import { deemixApp } from "deemix-webui";
 
 const PORT = process.env.DEEMIX_SERVER_PORT || argv.port;
 process.env.DEEMIX_SERVER_PORT = PORT;
@@ -39,12 +40,12 @@ function createWindow() {
 		y: windowState.y,
 		useContentSize: true,
 		autoHideMenuBar: true,
-		icon: path.join(
+		icon: join(
 			__dirname,
-			os.platform() === "win32" ? "build/icon.ico" : "build/64x64.png"
+			platform() === "win32" ? "build/icon.ico" : "build/64x64.png"
 		),
 		webPreferences: {
-			preload: path.join(__dirname, "preload.js"),
+			preload: join(__dirname, "preload.js"),
 		},
 	});
 
