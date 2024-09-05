@@ -25,3 +25,5 @@ dist/
 
 .DS_Store
 webui/public/js/*
+
+.turbo

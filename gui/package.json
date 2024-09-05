@@ -9,7 +9,7 @@
 	"license": "GPL-3.0-only",
 	"scripts": {
 		"dev": "electron . --dev",
-		"build": "pnpm set-version && electron-builder && pnpm reset-version",
+		"build-gui": "pnpm set-version && electron-builder && pnpm reset-version",
 		"build:server": "pnpm -C server build",
 		"build:webui": "pnpm -C webui build",
 		"dist": "pnpm set-version && electron-builder && pnpm reset-version",

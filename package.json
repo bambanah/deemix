@@ -10,7 +10,7 @@
 	"scripts": {
 		"dev": "pnpm -r --parallel --filter=!deemix-gui dev",
 		"dev:gui": "pnpm -C gui dev",
-		"build": "pnpm -r --parallel --filter=!deemix-gui build",
+		"build": "turbo run build",
 		"build:gui": "pnpm build && pnpm -C gui build",
 		"start": "pnpm -C webui start",
 		"test": "pnpm -C webui test",
@@ -35,6 +35,7 @@
 		"prettier": "^3.2.5",
 		"prettier-plugin-tailwindcss": "^0.6.6",
 		"tsx": "^4.19.0",
+		"turbo": "^2.1.1",
 		"typescript": "^5.5.4",
 		"typescript-eslint": "^8.3.0"
 	},
