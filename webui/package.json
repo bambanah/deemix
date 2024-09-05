@@ -5,7 +5,10 @@
 	"type": "module",
 	"scripts": {
 		"dev": "nodemon",
-		"build": "tsc --build src/server/tsconfig.json && tsc-alias -p src/server/tsconfig.json",
+		"build": "run-s build:*",
+		"build:1-client": "vite build",
+		"build:2-server": "tsc --build src/server/tsconfig.json",
+		"build:3-aliases": "tsc-alias -p src/server/tsconfig.json",
 		"start": "cross-env NODE_ENV=production tsx --tsconfig ./src/server/tsconfig.json src/server/main.ts",
 		"test": "jest",
 		"test-watch": "jest --watch",

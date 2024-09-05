@@ -7,34 +7,31 @@ WORKDIR /app
 
 COPY pnpm-lock.yaml .
 
-FROM base AS prod-deps
-
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm fetch --prod
-
-COPY . .
-
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install -r --offline --frozen-lockfile --prod --ignore-scripts
-
 FROM base AS builder
 
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm fetch
+RUN pnpm install -g turbo
 
 COPY . .
 
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install -r --offline --frozen-lockfile
+RUN turbo prune deemix-webui --docker
 
-RUN pnpm build
+FROM base AS installer
+
+COPY --from=builder /app/out/json/ .
+
+RUN pnpm install
+
+COPY --from=builder /app/out/full/ .
+
+RUN pnpm turbo build --filter=deemix-webui...
 
 FROM base AS runner
 
-COPY . ./
+# RUN addgroup --system --gid 1001 expressjs
+# RUN adduser --system --uid 1001 expressjs
+# USER expressjs
 
-COPY --from=builder /app/webui/dist ./webui/dist
-COPY --from=builder /app/deemix/dist ./deemix/dist
-COPY --from=builder /app/deezer-js/dist ./deezer-js/dist
-
-COPY --from=prod-deps /app/webui/node_modules ./webui/node_modules/
-COPY --from=prod-deps /app/node_modules ./node_modules
+COPY --from=installer /app .
 
 ENV DEEMIX_DATA_DIR=/config/
 ENV DEEMIX_MUSIC_DIR=/downloads/
@@ -42,4 +39,4 @@ ENV DEEMIX_HOST=0.0.0.0
 
 EXPOSE 6595
 
-ENTRYPOINT ["pnpm", "start"]
+ENTRYPOINT ["node", "webui/src/server/dist/main.js"]
