@@ -4,6 +4,16 @@
 		"incremental": true,
 		"composite": true,
 
+		/* Emit */
+		// "noEmit": true,
+		// "declaration": true,
+		// "declarationMap": true,
+		// "sourceMap": true,
+		// "outDir": "./dist",
+
+		/* pnpm Linking */
+		"preserveSymlinks": true,
+
 		/* Language and Environment */
 		"target": "ESNext",
 		"lib": ["DOM", "ESNext"],

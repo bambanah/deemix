@@ -4,8 +4,9 @@
 	"private": true,
 	"description": "A wrapper for all Deezer's APIs",
 	"main": "src/index.ts",
+	"type": "module",
 	"scripts": {
-		"build": "tsup src/index.ts --format esm,cjs --dts --clean",
+		"build": "tsup src/index.ts --format esm,cjs",
 		"lint:ts": "tsc --noEmit"
 	},
 	"repository": {
@@ -15,7 +16,7 @@
 	"author": "RemixDev",
 	"license": "GPL-3.0-or-later",
 	"dependencies": {
-		"got": "11.8.2",
+		"got": "14.4.2",
 		"tough-cookie": "^4.0.0"
 	},
 	"devDependencies": {

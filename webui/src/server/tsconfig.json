@@ -1,8 +1,10 @@
 {
-	"extends": "../../tsconfig.config.json",
+	"extends": "../../../tsconfig.base.json",
 	"compilerOptions": {
+		"rootDir": ".",
 		"paths": {
-			"@/*": ["./src/server/*"]
+			"@/*": ["./*"]
 		}
-	}
+	},
+	"include": ["./**/*.ts"]
 }

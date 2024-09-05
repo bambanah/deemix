@@ -1,8 +1,8 @@
 import got from "got";
 import { CookieJar, Cookie } from "tough-cookie";
-import { API } from "./api";
-import { GW } from "./gw";
-import { DeezerError, WrongLicense, WrongGeolocation } from "./errors";
+import { API } from "./api.js";
+import { GW } from "./gw.js";
+import { DeezerError, WrongLicense, WrongGeolocation } from "./errors.js";
 
 // Number associtation for formats
 const TrackFormats = {
@@ -260,7 +260,7 @@ class Deezer {
 
 export { TrackFormats, Deezer };
 
-export * from "./api";
-export * from "./gw";
-export * as utils from "./utils";
-export * as errors from "./errors";
+export * from "./api.js";
+export * from "./gw.js";
+export * as utils from "./utils.js";
+export * as errors from "./errors.js";

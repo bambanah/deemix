@@ -1,10 +1,65 @@
 {
-	"extends": "../tsconfig.shared.json",
 	"compilerOptions": {
-		"rootDir": "./src",
-		"baseUrl": ".",
-
 		/* Emit */
-		"noEmit": true
-	}
+		// "noEmit": true,
+		// "declaration": true,
+		// "declarationMap": true,
+		// "sourceMap": true,
+		"outDir": "./dist",
+
+		/* Projects */
+		"incremental": true,
+		// "composite": true,
+
+		/* Language and Environment */
+		"target": "ESNext",
+		"lib": ["DOM", "ESNext"],
+		"useDefineForClassFields": true,
+		"moduleDetection": "force",
+
+		"rootDir": "./src",
+
+		// "types": [],
+		"typeRoots": ["./node_modules/@types"],
+		"preserveSymlinks": true,
+
+		/* Modules */
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"resolvePackageJsonExports": true,
+		"resolvePackageJsonImports": true,
+		"resolveJsonModule": true,
+
+		/* Interop Constraints */
+		"isolatedModules": true,
+		// "verbatimModuleSyntax": true,
+		// "isolatedDeclarations": true,
+		"forceConsistentCasingInFileNames": true,
+		/* Type Checking */
+		"strict": false,
+		"noImplicitAny": false,
+		// "strictNullChecks": true,
+		// "strictFunctionTypes": true,
+		// "strictBindCallApply": true,
+		// "strictPropertyInitialization": true,
+		// "noImplicitThis": true,
+		// "useUnknownInCatchVariables": true,
+		// "alwaysStrict": true,
+		// "noUnusedLocals": true,
+		// "noUnusedParameters": true,
+		// "exactOptionalPropertyTypes": true,
+		// "noImplicitReturns": true,
+		// "noFallthroughCasesInSwitch": true,
+		// "noUncheckedIndexedAccess": true,
+		// "noImplicitOverride": true,
+		// "noPropertyAccessFromIndexSignature": true,
+		// "allowUnusedLabels": false,
+		// "allowUnreachableCode": false,
+
+		/* Completeness */
+		"skipDefaultLibCheck": true,
+		"skipLibCheck": true
+	},
+	"include": ["src"],
+	"exclude": ["**/node_modules"]
 }

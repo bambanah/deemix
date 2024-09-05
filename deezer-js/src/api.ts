@@ -9,8 +9,8 @@ import {
 	InvalidQueryException,
 	DataException,
 	IndividualAccountChangedNotAllowedException,
-} from "./errors";
-import { APIOptions } from ".";
+} from "./errors.js";
+import { APIOptions } from "./index.js";
 import { CookieJar } from "tough-cookie";
 
 // Possible values for order parameter in search
@@ -221,7 +221,7 @@ export class API {
 					https: {
 						rejectUnauthorized: false,
 					},
-					timeout: 30000,
+					timeout: { response: 30000 },
 				})
 				.json();
 		} catch (e) {
