@@ -1,6 +1,6 @@
 {
 	"name": "deemix",
-	"version": "3.10.0",
+	"version": "3.11.0",
 	"private": true,
 	"description": "A barebones deezer downloader library",
 	"type": "module",
