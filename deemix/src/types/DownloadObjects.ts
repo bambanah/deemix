@@ -162,7 +162,7 @@ export class Collection extends IDownloadObject {
 }
 
 export class Convertable extends Collection {
-	plugin: SpotifyPlugin;
+	plugin: string;
 	conversion_data: any;
 	constructor(obj) {
 		super(obj);

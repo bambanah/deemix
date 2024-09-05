@@ -1,4 +1,4 @@
-import { Port } from "../types";
+import { type Port } from "../types";
 
 /**
  * Normalize a port into a number, string, or false.

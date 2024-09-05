@@ -1,5 +1,5 @@
 import { Deezer } from "deezer-js";
-import { ApiHandler } from "../../../types";
+import { type ApiHandler } from "../../../types";
 import { sessionDZ } from "../../../deemixApp";
 
 const path: ApiHandler["path"] = "/mainSearch";

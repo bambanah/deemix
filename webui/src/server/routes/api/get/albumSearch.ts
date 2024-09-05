@@ -52,7 +52,7 @@ const handler: RequestHandler<{}, {}, {}, RawAlbumQuery> = async (req, res) => {
 	return res.send(output);
 };
 
-const apiHandler = { path, handler };
+export const apiHandler = { path, handler };
 
 function parseQuery(query: RawAlbumQuery): AlbumSearchParams {
 	let startingPoint = 0;
@@ -74,7 +74,10 @@ function parseQuery(query: RawAlbumQuery): AlbumSearchParams {
 	};
 }
 
-async function getAlbumDetails(dz: Deezer, albumId: string): Promise<any> {
+export async function getAlbumDetails(
+	dz: Deezer,
+	albumId: string
+): Promise<any> {
 	const result = await dz.gw.get_album_page(albumId);
 	const output = result.DATA;
 
@@ -91,5 +94,3 @@ async function getAlbumDetails(dz: Deezer, albumId: string): Promise<any> {
 
 	return output;
 }
-
-export { apiHandler, getAlbumDetails };

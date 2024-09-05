@@ -1,7 +1,7 @@
 import { WebSocketServer } from "ws";
 import { logger } from "../../helpers/logger";
 import { DeemixApp } from "../../deemixApp";
-import { Settings, SpotifySettings } from "../../types";
+import type { Settings, SpotifySettings } from "../../types";
 
 const eventName = "saveSettings";
 

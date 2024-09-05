@@ -17,7 +17,7 @@ import { getErrorCb, getListeningCb } from "./helpers/server-callbacks.js";
 import { registerApis } from "./routes/api/register.js";
 import indexRouter from "./routes/index.js";
 import type { Arguments } from "./types.js";
-import { Listener } from "./types.js";
+import type { Listener } from "./types.js";
 import { registerWebsocket } from "./websocket/index.js";
 
 const MemoryStore = memorystore(session);
@@ -64,6 +64,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(
+	// @ts-expect-error
 	session({
 		store: new MemoryStore({
 			checkPeriod: 86400000, // prune expired entries every 24h

@@ -1,4 +1,4 @@
-import { RequestHandler } from "express";
+import type { RequestHandler } from "express";
 
 /* === Utilities === */
 // https://github.com/Microsoft/TypeScript/issues/25760#issuecomment-614417742

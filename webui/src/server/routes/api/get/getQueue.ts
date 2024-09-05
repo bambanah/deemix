@@ -1,5 +1,5 @@
 // import { Deezer } from 'deezer-js'
-import { ApiHandler } from "../../../types";
+import { type ApiHandler } from "../../../types";
 
 const path: ApiHandler["path"] = "/getQueue";
 

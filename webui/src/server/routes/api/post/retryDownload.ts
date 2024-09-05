@@ -1,7 +1,7 @@
 import { Deezer } from "deezer-js";
 import { sessionDZ } from "../../../deemixApp";
 import { logger } from "../../../helpers/logger";
-import { ApiHandler } from "../../../types";
+import { type ApiHandler } from "../../../types";
 
 const path: ApiHandler["path"] = "/retryDownload";
 
