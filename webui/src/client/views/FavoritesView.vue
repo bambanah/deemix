@@ -128,10 +128,14 @@
 					:key="release.id"
 					v-slot="{ navigate }"
 					:to="{ name: 'Album', params: { id: release.id } }"
-					class="release clickable"
 					custom
 				>
-					<div role="link" @click="navigate" @keypress.enter="() => navigate()">
+					<div
+						role="link"
+						class="release clickable"
+						@click="navigate"
+						@keypress.enter="() => navigate()"
+					>
 						<CoverContainer
 							:cover="release.cover_medium"
 							:link="release.link"
@@ -157,10 +161,14 @@
 					:key="release.id"
 					v-slot="{ navigate }"
 					:to="{ name: 'Artist', params: { id: release.id } }"
-					class="release clickable"
 					custom
 				>
-					<div role="link" @click="navigate" @keypress.enter="() => navigate()">
+					<div
+						role="link"
+						class="release clickable"
+						@click="navigate"
+						@keypress.enter="() => navigate()"
+					>
 						<CoverContainer
 							:cover="release.picture_medium"
 							:link="release.link"
@@ -207,11 +215,11 @@
 					<router-link
 						v-slot="{ navigate }"
 						:to="{ name: 'Artist', params: { id: track.artist.id } }"
-						class="table__cell table__cell--medium table__cell--center clickable"
 						custom
 					>
 						<td
 							role="link"
+							class="table__cell table__cell--medium table__cell--center clickable"
 							@click="navigate"
 							@keypress.enter="() => navigate()"
 						>
@@ -221,11 +229,11 @@
 					<router-link
 						v-slot="{ navigate }"
 						:to="{ name: 'Album', params: { id: track.album.id } }"
-						class="table__cell--medium table__cell--center clickable"
 						custom
 					>
 						<td
 							role="link"
+							class="table__cell--medium table__cell--center clickable"
 							@click="navigate"
 							@keypress.enter="() => navigate()"
 						>

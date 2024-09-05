@@ -40,7 +40,7 @@
 										place="artist"
 										role="link"
 										@click="navigate"
-										@keypress.enter="navigate"
+										@keypress.enter="() => navigate()"
 										>{{ data.artist.name }}</span
 									>
 								</router-link>
@@ -58,7 +58,7 @@
 									<span
 										role="link"
 										@click="navigate"
-										@keypress.enter="navigate"
+										@keypress.enter="() => navigate()"
 										>{{ data.album.title }}</span
 									>
 								</router-link>
@@ -77,7 +77,7 @@
 									<span
 										role="link"
 										@click="navigate"
-										@keypress.enter="navigate"
+										@keypress.enter="() => navigate()"
 										>{{ data.artist.name }}</span
 									>
 								</router-link>
@@ -91,9 +91,9 @@
 					aria-label="download"
 					:data-link="link"
 					class="bg-primary text-grayscale-870 ml-auto grid h-16 w-16 cursor-pointer place-items-center rounded-full"
-					@contextmenu.prevent="openQualityModal"
 					@click.stop="addToQueue"
 				>
+					<!-- @contextmenu.prevent="openQualityModal" -->
 					<i class="material-icons text-4xl" :title="t('globals.download_hint')"
 						>get_app</i
 					>
@@ -155,7 +155,7 @@
 					<td>
 						{{
 							t(
-								available_countries.includes(user.country.toLowerCase())
+								availableCountries.includes(user.country.toLowerCase())
 									? "globals.yes"
 									: "globals.no"
 							).capitalize()
@@ -182,7 +182,11 @@
 					name="button"
 					:to="{ name: 'Album', params: { id } }"
 				>
-					<button role="link" @click="navigate" @keypress.enter="navigate">
+					<button
+						role="link"
+						@click="navigate"
+						@keypress.enter="() => navigate()"
+					>
 						{{ t("linkAnalyzer.table.tracklist") }}
 					</button>
 				</router-link>
@@ -191,106 +195,140 @@
 	</div>
 </template>
 
-<script>
+<script setup lang="ts">
 import { pinia } from "@/stores";
 import { useLoginStore } from "@/stores/login";
 import { COUNTRIES } from "@/utils/countries";
 import { sendAddToQueue } from "@/utils/downloads";
 import { emitter } from "@/utils/emitter";
 import { convertDuration } from "@/utils/utils";
+import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 const loginStore = useLoginStore(pinia);
 
-export default {
-	setup() {
-		const { t } = useI18n();
+const { t } = useI18n();
 
-		return { t };
-	},
-	data() {
-		return {
-			link: "",
-			title: "",
-			subtitle: "",
-			image: "",
-			data: {},
-			type: "",
-			id: "0",
-			countries: [],
-			available_countries: [],
-		};
-	},
-	computed: {
-		user: () => loginStore.user,
-	},
-	mounted() {
-		emitter.on("analyze_track", this.showTrack);
-		emitter.on("analyze_album", this.showAlbum);
-		emitter.on("analyze_notSupported", this.notSupported);
-	},
-	methods: {
-		convertDuration,
-		reset() {
-			this.title = "Loading...";
-			this.subtitle = "";
-			this.image = "";
-			this.data = {};
-			this.type = "";
-			this.link = "";
-			this.countries = [];
-			this.available_countries = [];
-		},
-		showTrack(data) {
-			this.reset();
-			const {
-				title,
-				title_version,
-				album: { cover_xl },
-				link,
-				available_countries,
-				id,
-			} = data;
+const user = computed(() => loginStore.user);
 
-			this.title =
-				title +
-				(title_version && !title.includes(title_version)
-					? " " + title_version
-					: "");
-			this.image = cover_xl;
-			this.type = "track";
-			this.link = link;
-			this.id = id;
+const link = ref("");
+const title = ref("");
+const subtitle = ref("");
+const image = ref("");
+const type = ref("");
+const id = ref("0");
+const countries = ref([]);
+const availableCountries = ref([]);
 
-			available_countries.forEach((cc) => {
-				const temp = [];
-				const chars = [...cc].map((c) => c.charCodeAt() + 127397);
-				temp.push(String.fromCodePoint(...chars));
-				temp.push(COUNTRIES[cc]);
-				temp.push(cc.toUpperCase());
-				this.countries.push(temp);
-				this.available_countries.push(cc.toLowerCase());
-			});
+interface Data {
+	title: string;
+	subtitle: string;
+	image: string;
+	type: string;
+	id: string;
+	countries: string[][];
+	available_countries: string[];
+	label: string;
+	isrc: string;
+	link: string;
+	data: any;
+	nb_tracks: number;
+	upc: string;
+	duration: number;
+	disk_number: number;
+	track_number: number;
+	release_date: string;
+	bpm: number;
+	track_position: number;
+	record_type: string;
+	readable: boolean;
+	genres: {
+		data: {
+			name: string;
+		}[];
+	};
+	artist: {
+		name: string;
+		id: string;
+	};
+	album: {
+		id: string;
+		title: string;
+	};
+}
 
-			this.data = data;
-		},
-		showAlbum(data) {
-			this.reset();
-			const { title, cover_xl, link, id } = data;
+const data = ref<Partial<Data>>({});
 
-			this.title = title;
-			this.image = cover_xl;
-			this.type = "album";
-			this.link = link;
-			this.data = data;
-			this.id = id;
-		},
-		notSupported() {
-			this.link = "error";
-		},
-		addToQueue(e) {
-			sendAddToQueue(e.currentTarget.dataset.link);
-		},
-	},
-};
+function reset() {
+	title.value = "Loading...";
+	subtitle.value = "";
+	image.value = "";
+	data.value = {};
+	type.value = "";
+	link.value = "";
+	countries.value = [];
+	availableCountries.value = [];
+}
+
+function showTrack(data) {
+	reset();
+
+	const {
+		title,
+		title_version,
+		album: { cover_xl },
+		link,
+		available_countries,
+		id,
+	} = data;
+
+	title.value =
+		title +
+		(title_version && !title.includes(title_version)
+			? " " + title_version
+			: "");
+	image.value = cover_xl;
+	type.value = "track";
+	link.value = link;
+	id.value = id;
+
+	availableCountries.value.forEach((cc) => {
+		const temp = [];
+		const chars = [...cc].map((c) => c.charCodeAt() + 127397);
+		temp.push(String.fromCodePoint(...chars));
+		temp.push(COUNTRIES[cc]);
+		temp.push(cc.toUpperCase());
+		countries.value.push(temp);
+		available_countries.value.push(cc.toLowerCase());
+	});
+
+	data.value = data;
+}
+
+function showAlbum(data) {
+	reset();
+
+	const { title, cover_xl, link, id } = data;
+
+	title.value = title;
+	image.value = cover_xl;
+	type.value = "album";
+	link.value = link;
+	data.value = data;
+	id.value = id;
+}
+
+function notSupported() {
+	link.value = "error";
+}
+
+function addToQueue(e) {
+	sendAddToQueue(e.currentTarget.dataset.link);
+}
+
+onMounted(() => {
+	emitter.on("analyze_track", showTrack);
+	emitter.on("analyze_album", showAlbum);
+	emitter.on("analyze_notSupported", notSupported);
+});
 </script>
