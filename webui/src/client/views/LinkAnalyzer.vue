@@ -28,7 +28,7 @@
 				<div>
 					<h1 class="m-0">{{ title }}</h1>
 					<h2 v-if="type === 'track'" class="m-0 mb-3 text-lg">
-						<i18n path="globals.by" tag="span">
+						<i18n-t keypath="globals.by" tag="span">
 							<template #artist>
 								<router-link
 									v-slot="{ navigate }"
@@ -45,9 +45,9 @@
 									>
 								</router-link>
 							</template>
-						</i18n>
+						</i18n-t>
 						•
-						<i18n path="globals.in" tag="span">
+						<i18n-t keypath="globals.in" tag="span">
 							<template #album>
 								<router-link
 									v-slot="{ navigate }"
@@ -63,10 +63,10 @@
 									>
 								</router-link>
 							</template>
-						</i18n>
+						</i18n-t>
 					</h2>
 					<h2 v-else-if="type === 'album'" class="m-0 mb-3 text-lg">
-						<i18n path="globals.by" tag="span">
+						<i18n-t keypath="globals.by" tag="span">
 							<template #artist>
 								<router-link
 									v-slot="{ navigate }"
@@ -82,7 +82,7 @@
 									>
 								</router-link>
 							</template>
-						</i18n>
+						</i18n-t>
 						{{ ` • ${t("globals.listTabs.trackN", data.nb_tracks)}` }}
 					</h2>
 				</div>
