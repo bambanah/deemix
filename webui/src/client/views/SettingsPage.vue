@@ -1077,7 +1077,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import { debounce } from "lodash-es";
 
 import TemplateVariablesList from "@/components/settings/TemplateVariablesList.vue";
@@ -1339,7 +1339,6 @@ export default {
 		},
 		loginButton() {
 			const newArl = this.$refs.loginInput.value.trim();
-
 			if (newArl && newArl !== this.arl) {
 				this.login(newArl, true);
 			}
