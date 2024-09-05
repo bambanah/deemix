@@ -61,7 +61,6 @@ async function startApp() {
 	}
 
 	if (connectResponse.autologin) {
-		console.info("Autologin");
 		const accountNum = localStorage.getItem("accountNum");
 
 		async function login(arl: string, accountNum: number) {
