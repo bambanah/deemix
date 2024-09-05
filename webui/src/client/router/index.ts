@@ -14,7 +14,7 @@ import Favorites from "@/views/FavoritesView.vue";
 import Home from "@/views/HomeView.vue";
 import InfoArl from "@/views/InfoArl.vue";
 import InfoSpotifyFeatures from "@/views/InfoSpotifyFeatures.vue";
-import Tracklist from "@/views/TrackList.vue";
+import Tracklist from "@/views/TracklistView.vue";
 
 const Search = () => import("@/views/SearchBar.vue");
 const Settings = () => import("@/views/SettingsPage.vue");
