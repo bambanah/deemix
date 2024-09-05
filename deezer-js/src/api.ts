@@ -221,7 +221,6 @@ export class API {
 					https: {
 						rejectUnauthorized: false,
 					},
-					timeout: { response: 30000 },
 				})
 				.json();
 		} catch (e) {
