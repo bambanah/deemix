@@ -88,9 +88,6 @@ importers:
       tsup:
         specifier: ^8.2.4
         version: 8.2.4(jiti@1.21.6)(postcss@8.4.44)(tsx@4.19.0)(typescript@5.5.4)(yaml@2.5.0)
-      typescript:
-        specifier: ^5.5.4
-        version: 5.5.4
 
   deezer-js:
     dependencies:
@@ -107,9 +104,6 @@ importers:
       tsup:
         specifier: ^8.2.4
         version: 8.2.4(jiti@1.21.6)(postcss@8.4.44)(tsx@4.19.0)(typescript@5.5.4)(yaml@2.5.0)
-      typescript:
-        specifier: ^5.5.4
-        version: 5.5.4
 
   gui:
     dependencies:
@@ -310,9 +304,6 @@ importers:
       ts-jest:
         specifier: ^29.2.5
         version: 29.2.5(@babel/core@7.25.2)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.25.2))(esbuild@0.23.1)(jest@29.7.0(@types/node@20.16.3)(node-notifier@10.0.1)(ts-node@9.1.1(typescript@5.5.4)))(typescript@5.5.4)
-      typescript:
-        specifier: ^5.5.4
-        version: 5.5.4
       vite:
         specifier: ^5.4.2
         version: 5.4.2(@types/node@20.16.3)(lightningcss@1.26.0)(terser@5.31.6)

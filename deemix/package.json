@@ -23,7 +23,6 @@
 	},
 	"devDependencies": {
 		"@types/async": "^3.2.24",
-		"tsup": "^8.2.4",
-		"typescript": "^5.5.4"
+		"tsup": "^8.2.4"
 	}
 }
