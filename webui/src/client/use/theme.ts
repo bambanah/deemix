@@ -1,9 +1,5 @@
 import { ref, watch } from "vue";
 
-/**
- * @typedef	{string}	Theme
- */
-
 const THEMES = {
 	dark: "dark",
 	light: "light",
