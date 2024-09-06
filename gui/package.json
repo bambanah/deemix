@@ -1,20 +1,19 @@
 {
 	"name": "deemix-gui",
-	"version": "0.0.0",
+	"version": "2024.9.6-r354.5d1b9c1385",
 	"private": true,
 	"description": "A standalone electron app that wraps deemix-webui",
-	"main": "index.js",
+	"main": "index.cjs",
 	"homepage": "https://github.com/bambanah/deemix",
 	"author": "Bambanah <hello@lachie.xyz>",
 	"license": "GPL-3.0-only",
 	"type": "module",
 	"scripts": {
-		"dev": "electron . --dev",
+		"dev": "cross-env NODE_ENV=production electron . --dev",
 		"build-gui": "pnpm set-version && electron-builder && pnpm reset-version",
 		"build:server": "pnpm -C server build",
 		"build:webui": "pnpm -C webui build",
 		"dist": "pnpm set-version && electron-builder && pnpm reset-version",
-		"dist:dir": "pnpm set-version && pnpm predist && electron-builder --dir && pnpm reset-version",
 		"set-version": "node scripts/set-version.mjs",
 		"reset-version": "node scripts/reset-version.mjs"
 	},

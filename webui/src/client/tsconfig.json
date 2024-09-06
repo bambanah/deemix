@@ -1,7 +1,7 @@
 {
 	"extends": "@vue/tsconfig/tsconfig.dom.json",
 	"compilerOptions": {
-		"outDir": "./dist",
+		"outDir": "../../dist/public",
 
 		"strict": false,
 		"noImplicitAny": false,
@@ -10,5 +10,5 @@
 			"@/*": ["./*"]
 		}
 	},
-	"include": ["env.d.ts", "**/*.ts", "**/*.vue"]
+	"include": ["env.d.ts", "./**/*.ts", "./**/*.vue"]
 }

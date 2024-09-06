@@ -1,8 +1,8 @@
-const { createDefaultPreset } = require("ts-jest");
+import { createDefaultPreset } from "ts-jest";
 
 const defaultPreset = createDefaultPreset();
 
-module.exports = {
+export default {
 	clearMocks: true,
 	roots: ["<rootDir>/src", "<rootDir>/tests"],
 	testEnvironment: "node",

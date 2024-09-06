@@ -61,8 +61,6 @@ export function getMusicFolder() {
 	}
 	if (process.platform === "win32" && musicdata === "") {
 		try {
-			// const { execSync } = require("child_process");
-
 			const musicKeys = ["My Music", "{4BD8D571-6D19-48D3-BE97-422220080E43}"];
 			const regData = execSync(
 				'reg.exe query "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders"'
