@@ -4,6 +4,11 @@ on:
   push:
     tags:
       - "deemix-gui@*"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - gui/**
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -29,16 +34,18 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
+
       - run: pnpm install
-      - run: pnpm build:gui
+      - run: pnpm build
+      - run: pnpm dist
 
       - name: Upload Artifacts
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            gui/dist/deemix-gui_*.dmg
-            gui/dist/deemix-gui.exe
-            gui/dist/deemix-gui_setup.exe
-            gui/dist/deemix-gui.AppImage
-            gui/dist/deemix-gui.deb
+            gui/release/deemix-gui_*.dmg
+            gui/release/deemix-gui.exe
+            gui/release/deemix-gui_setup.exe
+            gui/release/deemix-gui.AppImage
+            gui/release/deemix-gui.deb
