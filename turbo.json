@@ -5,8 +5,11 @@
 			"dependsOn": ["^build"],
 			"outputs": ["dist/**"]
 		},
-		"dist": {
-			"dependsOn": ["^build"]
+		"package": {
+			"dependsOn": ["build", "^package"]
+		},
+		"make": {
+			"dependsOn": ["build", "^make"]
 		}
 	}
 }

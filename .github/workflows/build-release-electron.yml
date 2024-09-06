@@ -36,16 +36,16 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
-      - run: pnpm build
-      - run: pnpm dist
+
+      - run: pnpm make
 
       - name: Upload Artifacts
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            gui/release/deemix-gui_*.dmg
-            gui/release/deemix-gui.exe
-            gui/release/deemix-gui_setup.exe
-            gui/release/deemix-gui.AppImage
-            gui/release/deemix-gui.deb
+            gui/out/Deemix-*-arm64.dmg
+            gui/out/Deemix.exe
+            gui/out/Deemix_setup.exe
+            gui/out/Deemix.AppImage
+            gui/out/Deemix.deb
