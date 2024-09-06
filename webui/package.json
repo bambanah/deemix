@@ -28,7 +28,7 @@
 		"tsconfig": "./src/server/tsconfig.json"
 	},
 	"exports": {
-		".": "./src/server/dist/main.js"
+		".": "./dist/main.js"
 	},
 	"dependencies": {
 		"cookie-parser": "1.4.6",

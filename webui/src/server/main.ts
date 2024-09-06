@@ -19,6 +19,8 @@ import indexRouter from "./routes/index.js";
 import type { Arguments } from "./types.js";
 import type { Listener } from "./types.js";
 import { registerWebsocket } from "./websocket/index.js";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 
 const MemoryStore = memorystore(session);
 
@@ -96,7 +98,13 @@ const server = app.listen({
 });
 const wss = new WebSocketServer({ server });
 
-ViteExpress.bind(app, server);
+if (process.env.NODE_ENV === "production") {
+	app.use(
+		express.static(join(dirname(fileURLToPath(import.meta.url)), "public"))
+	);
+} else {
+	ViteExpress.bind(app, server);
+}
 
 /* === Server callbacks === */
 server.on("error", getErrorCb(serverPort));

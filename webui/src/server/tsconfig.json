@@ -2,7 +2,7 @@
 	"extends": "@total-typescript/tsconfig/tsc/no-dom/app",
 	"compilerOptions": {
 		"rootDir": ".",
-		"outDir": "./dist",
+		"outDir": "../../dist",
 
 		"strict": false,
 		"noImplicitAny": false,

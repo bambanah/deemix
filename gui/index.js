@@ -1,18 +1,19 @@
 import {
 	app,
 	BrowserWindow,
-	ipcMain,
-	shell,
 	dialog,
+	ipcMain,
 	Menu,
 	MenuItem,
+	shell,
 } from "electron";
 import contextMenu from "electron-context-menu";
 import WindowStateManager from "electron-window-state-manager";
-import { join } from "path";
+import { fileURLToPath, URL } from "node:url";
 import { platform } from "os";
-import yargs from "yargs/yargs";
+import { join } from "path";
 import { hideBin } from "yargs/helpers";
+import yargs from "yargs/yargs";
 
 const argv = yargs(hideBin(process.argv)).options({
 	port: { type: "string", default: "6595" },
@@ -21,6 +22,7 @@ const argv = yargs(hideBin(process.argv)).options({
 }).argv;
 
 import { deemixApp } from "deemix-webui";
+import path from "node:path";
 
 const PORT = process.env.DEEMIX_SERVER_PORT || argv.port;
 process.env.DEEMIX_SERVER_PORT = PORT;
@@ -41,11 +43,11 @@ function createWindow() {
 		useContentSize: true,
 		autoHideMenuBar: true,
 		icon: join(
-			__dirname,
+			path.dirname(fileURLToPath(import.meta.url)),
 			platform() === "win32" ? "build/icon.ico" : "build/64x64.png"
 		),
 		webPreferences: {
-			preload: join(__dirname, "preload.js"),
+			preload: join(path.dirname(fileURLToPath(import.meta.url)), "preload.js"),
 		},
 	});
 
