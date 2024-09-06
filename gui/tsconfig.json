@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"outDir": "./dist",
+		"target": "ESNext",
+		"useDefineForClassFields": true,
+		"module": "Node16",
+		"moduleResolution": "Node16",
+		"strict": false,
+		"allowJs": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"esModuleInterop": true,
+		"lib": ["ESNext", "DOM"],
+		"skipLibCheck": true
+	},
+	"include": ["./src"]
+}

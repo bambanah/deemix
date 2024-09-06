@@ -8,38 +8,29 @@ import {
 	shell,
 } from "electron";
 import contextMenu from "electron-context-menu";
-import WindowStateManager from "electron-window-state-manager";
-import { fileURLToPath, URL } from "node:url";
+import { fileURLToPath } from "node:url";
 import { platform } from "os";
 import { join } from "path";
-import { hideBin } from "yargs/helpers";
-import yargs from "yargs/yargs";
-
-const argv = yargs(hideBin(process.argv)).options({
-	port: { type: "string", default: "6595" },
-	host: { type: "string", default: "0.0.0.0" },
-	dev: { type: "boolean", default: false },
-}).argv;
-
+// import { hideBin } from "yargs/helpers";
+// import yargs from "yargs/yargs";
 import { deemixApp } from "deemix-webui";
+
+// const argv = yargs(hideBin(process.argv)).options({
+// 	port: { type: "string", default: "6595" },
+// 	host: { type: "string", default: "0.0.0.0" },
+// 	dev: { type: "boolean", default: false },
+// }).argv;
+
 import path from "node:path";
 
-const PORT = process.env.DEEMIX_SERVER_PORT || argv.port;
+const PORT = process.env.DEEMIX_SERVER_PORT || "6595"; //|| argv.port;
 process.env.DEEMIX_SERVER_PORT = PORT;
-process.env.DEEMIX_HOST = argv.host;
+process.env.DEEMIX_HOST = "0.0.0.0"; //|| argv.host;
 
-let win;
-const windowState = new WindowStateManager("mainWindow", {
-	defaultWidth: 800,
-	defaultHeight: 600,
-});
+let win: BrowserWindow | null = null;
 
 function createWindow() {
 	win = new BrowserWindow({
-		width: windowState.width,
-		height: windowState.height,
-		x: windowState.x,
-		y: windowState.y,
 		useContentSize: true,
 		autoHideMenuBar: true,
 		icon: join(
@@ -53,7 +44,7 @@ function createWindow() {
 
 	win.setMenu(null);
 
-	if (argv.dev) {
+	if (true) {
 		const menu = new Menu();
 		menu.append(
 			new MenuItem({
@@ -67,7 +58,7 @@ function createWindow() {
 						},
 					},
 					{
-						role: "devtools",
+						role: "toggleDevTools",
 						accelerator: "f12",
 						click: () => {
 							win.webContents.toggleDevTools();
@@ -80,19 +71,14 @@ function createWindow() {
 	}
 
 	// Open links in external browser
-	win.webContents.on("new-window", function (e, url) {
-		e.preventDefault();
+	win.webContents.setWindowOpenHandler(({ url }) => {
 		shell.openExternal(url);
+		return { action: "deny" };
 	});
 
-	win.loadURL(`http://${argv.host}:${PORT}`);
-
-	if (windowState.maximized) {
-		win.maximize();
-	}
+	win.loadURL(`http://${process.env.DEEMIX_HOST}:${PORT}`);
 
 	win.on("close", (event) => {
-		windowState.saveState(win);
 		if (deemixApp.getSettings().settings.clearQueueOnExit) {
 			deemixApp.cancelAllDownloads();
 		}
@@ -122,7 +108,7 @@ app.on("window-all-closed", () => {
 });
 
 ipcMain.on("openDownloadsFolder", (event) => {
-	const { downloadLocation } = server.deemixApp.getSettings().settings;
+	const { downloadLocation } = deemixApp.getSettings().settings;
 	shell.openPath(downloadLocation);
 });
 
