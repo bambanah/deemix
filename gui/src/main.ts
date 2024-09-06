@@ -45,7 +45,6 @@ async function main() {
 	});
 
 	win.setMenu(null);
-	win.webContents.toggleDevTools();
 
 	if (true) {
 		const menu = new Menu();

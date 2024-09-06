@@ -11,10 +11,8 @@
 	"scripts": {
 		"dev": "cross-env NODE_ENV=production electron .",
 		"build": "node ./scripts/build.mjs --mode production",
-		"watch:dev": "node ./scripts/build.mjs --mode development --watch",
-		"dist": "cross-env NODE_ENV=production electron-builder",
-		"package": "npm run build && electron-forge package",
-		"make": "npm run build && electron-forge make"
+		"package": "turbo run build && electron-forge package",
+		"make": "turbo run build && electron-forge make"
 	},
 	"devDependencies": {
 		"@electron-forge/cli": "^7.3.1",
@@ -24,9 +22,7 @@
 		"@electron-forge/maker-zip": "^7.3.1",
 		"@electron-forge/plugin-auto-unpack-natives": "^7.3.1",
 		"electron": "32.0.2",
-		"electron-squirrel-startup": "^1.0.0",
-		"esbuild": "^0.20.2",
-		"electron-builder": "^25.0.5",
+		"esbuild": "0.23.1",
 		"node-gyp": "^10.2.0",
 		"tsup": "^8.2.4"
 	},
@@ -35,66 +31,5 @@
 		"electron-context-menu": "^4.0.4",
 		"electron-window-state-manager": "^0.3.2",
 		"yargs": "^17.7.2"
-	},
-	"build": {
-		"appId": "app.deemix.gui",
-		"asar": false,
-		"productName": "deemix-gui",
-		"npmRebuild": false,
-		"directories": {
-			"output": "release"
-		},
-		"files": [
-			"dist/**/*",
-			"build/**/*",
-			"package.json"
-		],
-		"mac": {
-			"target": [
-				{
-					"target": "dmg",
-					"arch": "x64"
-				},
-				{
-					"target": "dmg",
-					"arch": "arm64"
-				}
-			],
-			"artifactName": "deemix-gui_${arch}.${ext}",
-			"category": "public.app-category.music"
-		},
-		"win": {
-			"target": [
-				{
-					"target": "nsis",
-					"arch": "x64"
-				},
-				{
-					"target": "portable",
-					"arch": "x64"
-				}
-			]
-		},
-		"linux": {
-			"target": [
-				"appimage",
-				"deb"
-			],
-			"artifactName": "deemix-gui.${ext}",
-			"category": "AudioVideo,Audio",
-			"icon": "build/icon.icns"
-		},
-		"nsis": {
-			"artifactName": "${productName}_setup.${ext}",
-			"oneClick": false,
-			"license": "../LICENSE.txt",
-			"allowToChangeInstallationDirectory": true,
-			"uninstallDisplayName": "${productName}",
-			"deleteAppDataOnUninstall": true
-		},
-		"portable": {
-			"artifactName": "${productName}.${ext}",
-			"requestExecutionLevel": "user"
-		}
 	}
 }

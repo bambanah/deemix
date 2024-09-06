@@ -51,10 +51,8 @@ async function main(argv) {
 				format: "esm",
 				external: ["electron"],
 				define: {
-					"process.env.BUILD_MODE": JSON.stringify(BUILD_MODE),
 					"process.env.CSS_TRANSFORMER_WASM": "false",
 				},
-				sourcemap: true,
 				loader: {
 					".node": "copy",
 					".png": "file",
