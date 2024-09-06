@@ -29,8 +29,10 @@ process.env.DEEMIX_HOST = "0.0.0.0"; //|| argv.host;
 
 let win: BrowserWindow | null = null;
 
-function createWindow() {
+async function main() {
 	win = new BrowserWindow({
+		width: 800,
+		height: 600,
 		useContentSize: true,
 		autoHideMenuBar: true,
 		icon: join(
@@ -43,6 +45,7 @@ function createWindow() {
 	});
 
 	win.setMenu(null);
+	win.webContents.toggleDevTools();
 
 	if (true) {
 		const menu = new Menu();
@@ -85,8 +88,9 @@ function createWindow() {
 	});
 }
 
-app.whenReady().then(() => {
-	createWindow();
+app.on("ready", async () => {
+	main();
+
 	contextMenu({
 		showLookUpSelection: false,
 		showSearchWithGoogle: false,
@@ -96,7 +100,7 @@ app.whenReady().then(() => {
 	// Only one istance per time
 	app.on("activate", () => {
 		if (BrowserWindow.getAllWindows().length === 0) {
-			createWindow();
+			main();
 		}
 	});
 });

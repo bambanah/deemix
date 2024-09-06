@@ -23,6 +23,7 @@ dev.sh
 # distribution
 dist/
 release/
+out/
 
 .DS_Store
 webui/public/js/*

@@ -11,7 +11,7 @@
 		"dev": "pnpm -r --parallel --filter=!deemix-gui dev",
 		"dev:gui": "pnpm -C gui dev",
 		"build": "turbo run build",
-		"dist": "pnpm -C gui dist",
+		"dist": "turbo run dist",
 		"build:gui": "pnpm build && pnpm -C gui build",
 		"start": "pnpm -C webui start",
 		"test": "pnpm -C webui test",
