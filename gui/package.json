@@ -3,22 +3,23 @@
 	"version": "0.1.0",
 	"private": true,
 	"description": "A standalone electron app that wraps deemix-webui",
-	"main": "index.cjs",
+	"main": "dist/index.js",
 	"homepage": "https://github.com/bambanah/deemix",
 	"author": "Bambanah <hello@lachie.xyz>",
 	"license": "GPL-3.0-only",
 	"type": "module",
 	"scripts": {
-		"dev": "cross-env NODE_ENV=production electron . --dev",
+		"dev": "cross-env NODE_ENV=production electron .",
+		"build": "tsup src/index.ts src/preload.ts --external electron --format esm --dts",
 		"dist": "electron-builder",
 		"pack": "electron-builder --dir",
 		"set-version": "node scripts/set-version.mjs",
-		"reset-version": "node scripts/reset-version.mjs",
-		"postinstall": "electron-builder install-app-deps"
+		"reset-version": "node scripts/reset-version.mjs"
 	},
 	"devDependencies": {
 		"electron": "32.0.2",
-		"electron-builder": "^25.0.5"
+		"electron-builder": "^25.0.5",
+		"tsup": "^8.2.4"
 	},
 	"dependencies": {
 		"deemix-webui": "workspace:*",
@@ -28,11 +29,13 @@
 	},
 	"build": {
 		"appId": "app.deemix.gui",
+		"asar": true,
 		"productName": "deemix-gui",
+		"directories": {
+			"output": "release"
+		},
 		"files": [
-			"index.js",
-			"index.cjs",
-			"preload.js",
+			"dist/**/*",
 			"build/**/*",
 			"package.json"
 		],
