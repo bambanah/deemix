@@ -38,8 +38,9 @@ const isSingleUser =
 	process.env.DEEMIX_SINGLE_USER === undefined
 		? !!argv.singleuser
 		: process.env.DEEMIX_SINGLE_USER === "true";
+process.env.NODE_ENV = "production";
 
-const app = express();
+const app: express.Express = express();
 
 if (isSingleUser) loadLoginCredentials();
 
