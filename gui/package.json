@@ -3,21 +3,29 @@
 	"version": "0.1.0",
 	"private": true,
 	"description": "A standalone electron app that wraps deemix-webui",
-	"main": "dist/index.js",
+	"main": "dist/main.mjs",
 	"homepage": "https://github.com/bambanah/deemix",
 	"author": "Bambanah <hello@lachie.xyz>",
 	"license": "GPL-3.0-only",
 	"type": "module",
 	"scripts": {
 		"dev": "cross-env NODE_ENV=production electron .",
-		"build": "tsup src/index.ts src/preload.ts --external electron --format esm --dts",
-		"dist": "electron-builder",
-		"pack": "electron-builder --dir",
-		"set-version": "node scripts/set-version.mjs",
-		"reset-version": "node scripts/reset-version.mjs"
+		"build": "node ./scripts/build.mjs --mode production",
+		"watch:dev": "node ./scripts/build.mjs --mode development --watch",
+		"dist": "cross-env NODE_ENV=production electron-builder",
+		"package": "npm run build && electron-forge package",
+		"make": "npm run build && electron-forge make"
 	},
 	"devDependencies": {
+		"@electron-forge/cli": "^7.3.1",
+		"@electron-forge/maker-deb": "^7.3.1",
+		"@electron-forge/maker-rpm": "^7.3.1",
+		"@electron-forge/maker-squirrel": "^7.3.1",
+		"@electron-forge/maker-zip": "^7.3.1",
+		"@electron-forge/plugin-auto-unpack-natives": "^7.3.1",
 		"electron": "32.0.2",
+		"electron-squirrel-startup": "^1.0.0",
+		"esbuild": "^0.20.2",
 		"electron-builder": "^25.0.5",
 		"node-gyp": "^10.2.0",
 		"tsup": "^8.2.4"
@@ -30,7 +38,7 @@
 	},
 	"build": {
 		"appId": "app.deemix.gui",
-		"asar": true,
+		"asar": false,
 		"productName": "deemix-gui",
 		"npmRebuild": false,
 		"directories": {
