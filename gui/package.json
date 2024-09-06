@@ -32,6 +32,7 @@
 		"appId": "app.deemix.gui",
 		"asar": true,
 		"productName": "deemix-gui",
+		"npmRebuild": false,
 		"directories": {
 			"output": "release"
 		},
