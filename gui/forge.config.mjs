@@ -1,7 +1,6 @@
 export default {
 	packagerConfig: {
 		name: "Deemix",
-		executableName: "deemix-gui",
 		asar: true,
 		prune: false,
 		ignore: [
@@ -30,11 +29,15 @@ export default {
 		},
 		{
 			name: "@electron-forge/maker-deb",
-			config: {},
+			config: {
+				bin: "Deemix",
+			},
 		},
 		{
 			name: "@electron-forge/maker-rpm",
-			config: {},
+			config: {
+				bin: "Deemix",
+			},
 		},
 	],
 	plugins: [],

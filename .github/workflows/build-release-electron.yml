@@ -46,6 +46,6 @@ jobs:
           files: |
             gui/out/**/Deemix-*-arm64.dmg
             gui/out/**/Deemix.exe
-            gui/out/**/Deemix-*Setup.exe
-            gui/out/**/Deemix.AppImage
-            gui/out/**/Deemix.deb
+            gui/out/**/Deemix*Setup.exe
+            gui/out/**/deemix-gui*.deb
+            gui/out/**/deemix-gui*.rpm
