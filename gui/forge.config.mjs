@@ -1,6 +1,7 @@
 export default {
 	packagerConfig: {
 		name: "Deemix",
+		executableName: "deemix-gui",
 		asar: true,
 		prune: false,
 		ignore: [
