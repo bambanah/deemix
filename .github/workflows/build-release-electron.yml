@@ -44,8 +44,8 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            gui/out/Deemix-*-arm64.dmg
-            gui/out/Deemix.exe
-            gui/out/Deemix_setup.exe
-            gui/out/Deemix.AppImage
-            gui/out/Deemix.deb
+            gui/out/**/Deemix-*-arm64.dmg
+            gui/out/**/Deemix.exe
+            gui/out/**/Deemix-*Setup.exe
+            gui/out/**/Deemix.AppImage
+            gui/out/**/Deemix.deb

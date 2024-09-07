@@ -1,5 +1,6 @@
 export default {
 	packagerConfig: {
+		name: "Deemix",
 		asar: true,
 		prune: false,
 		ignore: [
