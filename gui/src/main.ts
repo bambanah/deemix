@@ -1,3 +1,4 @@
+import { deemixApp } from "deemix-webui";
 import {
 	app,
 	BrowserWindow,
@@ -11,21 +12,21 @@ import contextMenu from "electron-context-menu";
 import { fileURLToPath } from "node:url";
 import { platform } from "os";
 import { join } from "path";
-// import { hideBin } from "yargs/helpers";
-// import yargs from "yargs/yargs";
-import { deemixApp } from "deemix-webui";
+import { hideBin } from "yargs/helpers";
+import yargs from "yargs/yargs";
 
-// const argv = yargs(hideBin(process.argv)).options({
-// 	port: { type: "string", default: "6595" },
-// 	host: { type: "string", default: "0.0.0.0" },
-// 	dev: { type: "boolean", default: false },
-// }).argv;
+const argv = await yargs(hideBin(process.argv)).options({
+	port: { type: "string", default: "6595" },
+	host: { type: "string", default: "0.0.0.0" },
+	dev: { type: "boolean", default: false },
+}).argv;
 
 import path from "node:path";
 
-const PORT = process.env.DEEMIX_SERVER_PORT || "6595"; //|| argv.port;
+process.env.NODE_ENV = "production";
+const PORT = process.env.DEEMIX_SERVER_PORT || argv.port;
 process.env.DEEMIX_SERVER_PORT = PORT;
-process.env.DEEMIX_HOST = "0.0.0.0"; //|| argv.host;
+process.env.DEEMIX_HOST = argv.host;
 
 let win: BrowserWindow | null = null;
 
@@ -78,7 +79,7 @@ async function main() {
 		return { action: "deny" };
 	});
 
-	win.loadURL(`http://${process.env.DEEMIX_HOST}:${PORT}`);
+	win.loadURL(`http://localhost:${PORT}`);
 
 	win.on("close", (event) => {
 		if (deemixApp.getSettings().settings.clearQueueOnExit) {

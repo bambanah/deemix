@@ -9,7 +9,7 @@
 	"license": "GPL-3.0-only",
 	"type": "module",
 	"scripts": {
-		"dev": "cross-env NODE_ENV=production electron .",
+		"dev": "electron .",
 		"build": "node ./scripts/build.mjs --mode production",
 		"package": "electron-forge package",
 		"make": "electron-forge make"
@@ -22,6 +22,7 @@
 		"@electron-forge/maker-squirrel": "^7.3.1",
 		"@electron-forge/maker-zip": "^7.3.1",
 		"@electron-forge/plugin-auto-unpack-natives": "^7.3.1",
+		"@types/yargs": "17.0.32",
 		"electron": "32.0.2",
 		"esbuild": "0.23.1",
 		"node-gyp": "^10.2.0",

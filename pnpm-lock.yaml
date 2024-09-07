@@ -156,6 +156,9 @@ importers:
       '@electron-forge/plugin-auto-unpack-natives':
         specifier: ^7.3.1
         version: 7.4.0
+      '@types/yargs':
+        specifier: 17.0.32
+        version: 17.0.32
       electron:
         specifier: 32.0.2
         version: 32.0.2
@@ -174,9 +177,6 @@ importers:
       cookie-parser:
         specifier: 1.4.6
         version: 1.4.6
-      cross-env:
-        specifier: ^7.0.3
-        version: 7.0.3
       date-fns:
         specifier: ^3.6.0
         version: 3.6.0
@@ -313,6 +313,9 @@ importers:
       babel-jest:
         specifier: ^29.7.0
         version: 29.7.0(@babel/core@7.25.2)
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
       esbuild:
         specifier: ^0.23.1
         version: 0.23.1
