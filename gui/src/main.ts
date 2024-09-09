@@ -23,7 +23,6 @@ const argv = await yargs(hideBin(process.argv)).options({
 
 import path from "node:path";
 
-process.env.NODE_ENV = "production";
 const PORT = process.env.DEEMIX_SERVER_PORT || argv.port;
 process.env.DEEMIX_SERVER_PORT = PORT;
 process.env.DEEMIX_HOST = argv.host;

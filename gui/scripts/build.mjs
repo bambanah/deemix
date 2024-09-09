@@ -52,6 +52,7 @@ async function main(argv) {
 				external: ["electron"],
 				define: {
 					"process.env.CSS_TRANSFORMER_WASM": "false",
+					"process.env.NODE_ENV": JSON.stringify(BUILD_MODE),
 				},
 				loader: {
 					".node": "copy",
@@ -77,9 +78,6 @@ async function main(argv) {
 				target: "es2017",
 				format: "iife",
 				external: ["electron"],
-				define: {
-					"process.env.BUILD_MODE": JSON.stringify(BUILD_MODE),
-				},
 				sourcemap: true,
 				plugins: [log],
 			};
