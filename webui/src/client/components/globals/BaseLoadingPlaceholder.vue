@@ -1,5 +1,9 @@
 <script setup lang="ts">
-defineProps<{ hidden?: boolean; additionalClasses?: string; text?: string }>();
+const { hidden, additionalClasses, text } = defineProps<{
+	hidden?: boolean;
+	additionalClasses?: string;
+	text?: string;
+}>();
 </script>
 
 <template>

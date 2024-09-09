@@ -66,6 +66,7 @@ import { standardizeData } from "@/data/standardize";
 import { useMainSearch } from "@/use/main-search";
 import { useSearch } from "@/use/search";
 import { useI18n } from "vue-i18n";
+import { useRoute } from "vue-router";
 
 const resetObj = { data: [], next: 0, total: 0, hasLoaded: false };
 
@@ -83,9 +84,25 @@ export default defineComponent({
 			required: false,
 		},
 	},
-	setup(_, ctx) {
+	setup() {
 		const { t } = useI18n();
-		const state = reactive({
+		const route = useRoute();
+
+		interface Tab {
+			name: string;
+			searchType: string;
+			component: any;
+			viewInfo: string;
+			formatFunc?: (o: any) => any;
+		}
+
+		interface State {
+			currentTab: Tab;
+			results: Record<string, any>;
+			tabs: Tab[];
+		}
+
+		const state = reactive<State>({
 			currentTab: {
 				name: "",
 				searchType: "",
@@ -118,34 +135,34 @@ export default defineComponent({
 			},
 			tabs: [
 				{
-					name: ctx.root.$i18n.t("globals.listTabs.all"),
+					name: t("globals.listTabs.all"),
 					searchType: "all",
 					component: ResultsAll,
 					viewInfo: "allTab",
 				},
 				{
-					name: ctx.root.$i18n.tc("globals.listTabs.track", 2),
+					name: t("globals.listTabs.track", 2),
 					searchType: "track",
 					component: ResultsTracks,
 					viewInfo: "trackTab",
 					formatFunc: formatSingleTrack,
 				},
 				{
-					name: ctx.root.$i18n.tc("globals.listTabs.album", 2),
+					name: t("globals.listTabs.album", 2),
 					searchType: "album",
 					component: ResultsAlbums,
 					viewInfo: "albumTab",
 					formatFunc: formatAlbums,
 				},
 				{
-					name: ctx.root.$i18n.tc("globals.listTabs.artist", 2),
+					name: t("globals.listTabs.artist", 2),
 					searchType: "artist",
 					component: ResultsArtists,
 					viewInfo: "artistTab",
 					formatFunc: formatArtist,
 				},
 				{
-					name: ctx.root.$i18n.tc("globals.listTabs.playlist", 2),
+					name: t("globals.listTabs.playlist", 2),
 					searchType: "playlist",
 					component: ResultsPlaylists,
 					viewInfo: "playlistTab",
@@ -157,7 +174,7 @@ export default defineComponent({
 		const { result, performSearch } = useSearch();
 		const cachedSearchedTerm = computed(() => searchResult.value.QUERY);
 		const searchedTerm = computed(
-			() => ctx.root.$route.query.term || cachedSearchedTerm.value
+			() => route.query.term || cachedSearchedTerm.value
 		);
 		const isQueryEmpty = computed(() => state.results.query === "");
 		const isSearching = ref(false);
@@ -230,7 +247,7 @@ export default defineComponent({
 
 				// Preventing duplicate entries by filtering them by ID
 				const rawData = state.results[currentTabKey].data.concat(newData);
-				const filteredData = uniqWith(rawData, (obj1, obj2) => {
+				const filteredData = uniqWith(rawData, (obj1: any, obj2: any) => {
 					return obj1.id === obj2.id;
 				});
 
@@ -273,7 +290,7 @@ export default defineComponent({
 		performScrolledSearch(needToSearch) {
 			if (!needToSearch) return;
 
-			this.scrolledSearch(needToSearch);
+			this.scrolledSearch();
 		},
 		currentTab(newTab) {
 			if (this.isTabLoaded(newTab)) return;

@@ -1,7 +1,14 @@
 import { fetchData } from "@/utils/api-utils.js";
 import { ref } from "vue";
 
-const searchResult = ref({});
+interface SearchResult {
+	QUERY?: string;
+	AUTOCORRECT?: boolean;
+	ORDER?: string[];
+	TOP_RESULT?: any[];
+}
+
+const searchResult = ref<SearchResult>({});
 
 function performMainSearch(searchTerm) {
 	fetchData("mainSearch", { term: searchTerm }).then((data) => {

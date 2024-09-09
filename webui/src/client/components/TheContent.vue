@@ -12,14 +12,12 @@
 				style="top: 1rem"
 			/>
 
-			<keep-alive>
-				<router-view
-					v-if="!$route.meta.notKeepAlive"
-					:key="$route.fullPath"
-					:class="{ '-mt-16': showBackButton }"
-					:perform-scrolled-search="performScrolledSearch"
-				></router-view>
-			</keep-alive>
+			<router-view
+				v-if="!$route.meta.notKeepAlive"
+				:key="$route.fullPath"
+				:class="{ '-mt-16': showBackButton }"
+				:perform-scrolled-search="performScrolledSearch"
+			></router-view>
 
 			<router-view
 				v-if="$route.meta.notKeepAlive"

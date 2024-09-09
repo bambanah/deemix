@@ -291,7 +291,12 @@ export default defineComponent({
 	setup(_, ctx) {
 		const { t } = useI18n();
 
-		const state = reactive({
+		const tabs = ["playlist", "album", "artist", "track"] as const;
+
+		const state = reactive<{
+			activeTab: (typeof tabs)[number];
+			tabs: typeof tabs;
+		}>({
 			activeTab: "playlist",
 			tabs: ["playlist", "album", "artist", "track"],
 		});
@@ -368,8 +373,10 @@ export default defineComponent({
 		addToQueue(e) {
 			sendAddToQueue(e.currentTarget.dataset.link);
 		},
-		getActiveRelease(tab = this.activeTab) {
-			let toDownload;
+		getActiveRelease(tab?: (typeof this.tabs)[number]) {
+			if (!tab) tab = this.activeTab;
+
+			let toDownload: any[];
 
 			switch (tab) {
 				case "playlist":
@@ -392,7 +399,9 @@ export default defineComponent({
 
 			return toDownload;
 		},
-		getTabLength(tab = this.activeTab) {
+		getTabLength(tab?: (typeof this.tabs)[number]) {
+			if (!tab) tab = this.activeTab;
+
 			let total = this[`${tab}s`]?.length;
 
 			if (tab === "playlist") {

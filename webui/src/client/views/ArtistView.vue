@@ -161,11 +161,22 @@ export default defineComponent({
 		BaseTabs,
 		BaseTab,
 	},
-	setup(_, ctx) {
+	setup() {
 		const { t } = useI18n();
 
 		const currInstance = getCurrentInstance();
-		const state = reactive({
+
+		interface State {
+			currentTab: string;
+			sortKey: string | ((o: any) => number);
+			sortOrder: "asc" | "desc";
+			artistReleases: Record<string, any[]>;
+			artistName: string;
+			artistPicture: string;
+			currentRelease: any;
+		}
+
+		const state: State = reactive<State>({
 			currentTab: "",
 			sortKey: "releaseDate",
 			sortOrder: "desc",

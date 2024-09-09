@@ -59,7 +59,7 @@
 	</section>
 </template>
 
-<script>
+<script lang="ts">
 import { convertDuration } from "@/utils/utils";
 import { upperCaseFirstLowerCaseRest } from "@/utils/texts";
 import TopResult from "@/components/search/TopResult.vue";
@@ -93,8 +93,10 @@ export default {
 			required: true,
 		},
 	},
-	setup() {
+	setup(props, ctx) {
 		const { t } = useI18n();
+
+		console.log(props.viewInfo);
 
 		return { t };
 	},

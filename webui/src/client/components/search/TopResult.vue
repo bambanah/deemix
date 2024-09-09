@@ -58,10 +58,12 @@ export default {
 		fansNumber() {
 			let number;
 
-			try {
-				number = this.$n(this.$attrs.info.nb_fan);
-			} catch (error) {
-				number = this.$n(this.$attrs.info.nb_fan, { locale: "en" });
+			if (this.$attrs.info.nb_fan) {
+				try {
+					number = this.$n(this.$attrs.info.nb_fan);
+				} catch (error) {
+					number = this.$n(this.$attrs.info.nb_fan, { locale: "en" });
+				}
 			}
 
 			return this.$attrs.info.type === "artist"
