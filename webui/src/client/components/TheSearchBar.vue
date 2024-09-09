@@ -6,7 +6,7 @@
 
 		<input
 			id="searchbar"
-			:ref="searchbar"
+			ref="searchbar"
 			class="w-full"
 			autocomplete="off"
 			type="search"
@@ -16,8 +16,7 @@
 			autofocus
 			@keyup="keyPerformSearch($event)"
 		/>
-		<!-- @keyup.enter.exact="onEnter"
-			@keyup.ctrl.enter="onCTRLEnter" -->
+
 		<a
 			v-show="showSearchButton"
 			href="#"
@@ -29,8 +28,8 @@
 	</header>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from "vue";
+<script setup lang="ts">
+import { computed, defineComponent, onMounted, onUnmounted, ref } from "vue";
 import { isValidURL } from "@/utils/utils";
 import { sendAddToQueue } from "@/utils/downloads";
 import { fetchData } from "@/utils/api-utils";
@@ -38,116 +37,104 @@ import { emitter } from "@/utils/emitter";
 import { useAppInfoStore } from "@/stores/appInfo";
 import { pinia } from "@/stores";
 import { useI18n } from "vue-i18n";
+import { useRoute, useRouter } from "vue-router";
 
 const appInfoStore = useAppInfoStore(pinia);
+const route = useRoute();
+const router = useRouter();
 
-export default defineComponent({
-	setup() {
-		const { t } = useI18n();
+const { t } = useI18n();
 
-		return {
-			lastTextSearch: ref(""),
-			t,
-		};
-	},
-	computed: {
-		showSearchButton: () => appInfoStore.showSearchButton,
-	},
-	mounted() {
-		document.addEventListener("keydown", this.focusSearchBar);
-		document.addEventListener("keyup", this.deleteSearchBarContent);
-	},
-	unmounted() {
-		document.removeEventListener("keydown", this.focusSearchBar);
-		document.removeEventListener("keyup", this.deleteSearchBarContent);
-	},
-	methods: {
-		focusSearchBar: (keyEvent) => {
-			if (keyEvent.keyCode === 70 && keyEvent.ctrlKey) {
-				keyEvent.preventDefault();
-				$refs.searchbar.focus();
-			}
-		},
-		deleteSearchBarContent: (keyEvent) => {
-			if (
-				!(keyEvent.key === "Backspace" && keyEvent.ctrlKey && keyEvent.shiftKey)
-			)
-				return;
+const searchbar = ref<HTMLInputElement | null>(null);
+const lastTextSearch = ref("");
 
-			$refs.searchbar.value = "";
-			$refs.searchbar.focus();
-		},
-		async clickPerformSearch(ev) {
-			ev.preventDefault();
-			const term = this.$refs.searchbar.value;
-			const isEmptySearch = term === "";
-			if (isEmptySearch) return;
+const showSearchButton = computed(() => appInfoStore.showSearchButton);
 
-			await this.performSearch(term, false);
-		},
-		async rightClickPerformSearch(ev) {
-			ev.preventDefault();
-			ev.stopPropagation();
-			const term = this.$refs.searchbar.value;
-			const isEmptySearch = term === "";
-			if (isEmptySearch) return;
+function focusSearchBar(keyEvent: KeyboardEvent) {
+	if (keyEvent.keyCode === 70 && keyEvent.ctrlKey) {
+		keyEvent.preventDefault();
+		searchbar.value.focus();
+	}
+}
+function deleteSearchBarContent(keyEvent: KeyboardEvent) {
+	if (!(keyEvent.key === "Backspace" && keyEvent.ctrlKey && keyEvent.shiftKey))
+		return;
 
-			await this.performSearch(term, true);
-		},
-		async keyPerformSearch(keyEvent) {
-			const isEnterPressed = keyEvent.keyCode === 13;
-			if (!isEnterPressed) return;
+	searchbar.value.value = "";
+	searchbar.value.focus();
+}
 
-			const term = this.$refs.searchbar.value;
-			const isEmptySearch = term === "";
-			if (isEmptySearch) return;
+async function clickPerformSearch(ev: MouseEvent) {
+	ev.preventDefault();
+	const term = searchbar.value.value;
+	const isEmptySearch = term === "";
+	if (isEmptySearch) return;
 
-			const isCtrlPressed = keyEvent.ctrlKey;
-			await this.performSearch(term, isCtrlPressed);
-		},
-		async performSearch(term, modifierKey) {
-			const isSearchingURL = isValidURL(term);
-			const isShowingAnalyzer = this.$route.name === "Link Analyzer";
-			const isShowingSearch = this.$route.name === "Search";
-			const isSameAsLastSearch = term === this.lastTextSearch;
+	await performSearch(term, false);
+}
 
-			if (isSearchingURL) {
-				if (modifierKey) {
-					emitter.emit("ContextMenu:searchbar", term);
+async function rightClickPerformSearch(ev: MouseEvent) {
+	ev.preventDefault();
+	ev.stopPropagation();
+	const term = searchbar.value.value;
+	if (!term) return;
+
+	await performSearch(term, true);
+}
+
+async function keyPerformSearch(keyEvent: KeyboardEvent) {
+	const isEnterPressed = keyEvent.keyCode === 13;
+	if (!isEnterPressed) return;
+
+	const term = searchbar.value.value;
+	if (!term) return;
+
+	const isCtrlPressed = keyEvent.ctrlKey;
+	await performSearch(term, isCtrlPressed);
+}
+
+async function performSearch(term: string, modifierKey: boolean) {
+	const isSearchingURL = isValidURL(term);
+	const isShowingAnalyzer = route.name === "Link Analyzer";
+	const isShowingSearch = route.name === "Search";
+	const isSameAsLastSearch = term === lastTextSearch.value;
+
+	if (isSearchingURL) {
+		if (modifierKey) {
+			emitter.emit("ContextMenu:searchbar", term);
+			return;
+		}
+
+		if (isShowingAnalyzer) {
+			try {
+				const analyzedData = await fetchData("analyzeLink", { term });
+				const isError = !!analyzedData.errorCode;
+
+				if (isError) {
+					emitter.emit("analyze_notSupported", analyzedData);
 					return;
 				}
 
-				if (isShowingAnalyzer) {
-					try {
-						const analyzedData = await fetchData("analyzeLink", { term });
-						const isError = !!analyzedData.errorCode;
-
-						if (isError) {
-							emitter.emit("analyze_notSupported", analyzedData);
-							return;
-						}
-
-						if (analyzedData.type === "track") {
-							emitter.emit("analyze_track", analyzedData);
-						}
-
-						if (analyzedData.type === "album") {
-							emitter.emit("analyze_album", analyzedData);
-						}
-						return;
-					} catch (error) {
-						console.error(error);
-						return;
-					}
+				if (analyzedData.type === "track") {
+					emitter.emit("analyze_track", analyzedData);
 				}
 
-				// ? Open downloads tab maybe?
-				sendAddToQueue(term);
-			} else {
-				// The user is searching a normal string
-				if (isShowingSearch && isSameAsLastSearch) return;
+				if (analyzedData.type === "album") {
+					emitter.emit("analyze_album", analyzedData);
+				}
+				return;
+			} catch (error) {
+				console.error(error);
+				return;
+			}
+		}
 
-				/*
+		sendAddToQueue(term);
+	} else {
+		// The user is searching a normal string
+		if (isShowingSearch && isSameAsLastSearch) return;
+
+		/*
 				isShowing 		isSame
 				false 				false			Loading
 				false 				true			Loading (because component Search is not loaded)
@@ -155,16 +142,24 @@ export default defineComponent({
 				true 					true			Never
 				*/
 
-				this.lastTextSearch = term;
-				await this.$router.push({
-					name: "Search",
-					query: {
-						term,
-					},
-				});
-			}
-		},
-	},
+		lastTextSearch.value = term;
+		await router.push({
+			name: "Search",
+			query: {
+				term,
+			},
+		});
+	}
+}
+
+onMounted(() => {
+	document.addEventListener("keydown", focusSearchBar);
+	document.addEventListener("keyup", deleteSearchBarContent);
+});
+
+onUnmounted(() => {
+	document.removeEventListener("keydown", focusSearchBar);
+	document.removeEventListener("keyup", deleteSearchBarContent);
 });
 </script>
 
