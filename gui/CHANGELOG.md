@@ -1,5 +1,11 @@
 # deemix-gui
 
+## 0.2.2
+
+### Patch Changes
+
+- 0a43476: Fix unable to CMD+Q to quit on Mac
+
 ## 0.2.1
 
 ### Patch Changes
