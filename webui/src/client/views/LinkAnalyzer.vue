@@ -33,12 +33,12 @@
 								<router-link
 									v-slot="{ navigate }"
 									custom
-									class="clickable"
 									:to="{ name: 'Artist', params: { id: data.artist.id } }"
 								>
 									<span
 										place="artist"
 										role="link"
+										class="cursor-pointer"
 										@click="navigate"
 										@keypress.enter="() => navigate()"
 										>{{ data.artist.name }}</span
@@ -52,11 +52,11 @@
 								<router-link
 									v-slot="{ navigate }"
 									custom
-									class="clickable"
 									:to="{ name: 'Album', params: { id: data.album.id } }"
 								>
 									<span
 										role="link"
+										class="cursor-pointer"
 										@click="navigate"
 										@keypress.enter="() => navigate()"
 										>{{ data.album.title }}</span
@@ -71,11 +71,11 @@
 								<router-link
 									v-slot="{ navigate }"
 									custom
-									class="clickable"
 									:to="{ name: 'Artist', params: { id: data.artist.id } }"
 								>
 									<span
 										role="link"
+										class="cursor-pointer"
 										@click="navigate"
 										@keypress.enter="() => navigate()"
 										>{{ data.artist.name }}</span
@@ -178,12 +178,12 @@
 				<router-link
 					v-slot="{ navigate }"
 					custom
-					class="btn btn-primary"
 					name="button"
 					:to="{ name: 'Album', params: { id } }"
 				>
 					<button
 						role="link"
+						class="btn btn-primary"
 						@click="navigate"
 						@keypress.enter="() => navigate()"
 					>

@@ -12,7 +12,7 @@
 					:aria-label="release.title"
 					:data-id="release.id"
 					:data-title="release.title"
-					class="release clickable h-40 w-40"
+					class="release h-40 w-40 cursor-pointer"
 					role="button"
 					tabindex="0"
 					@click="getTrackList"
@@ -69,20 +69,28 @@
 						<router-link
 							v-slot="{ navigate }"
 							:to="{ name: 'Artist', params: { id: track.artist.id } }"
-							class="table__cell table__cell--medium table__cell--center clickable"
 							custom
 						>
-							<td role="link" @click="navigate" @keypress.enter="navigate">
+							<td
+								role="link"
+								class="table__cell table__cell--medium table__cell--center cursor-pointer"
+								@click="navigate"
+								@keypress.enter="navigate"
+							>
 								{{ track.artist.name }}
 							</td>
 						</router-link>
 						<router-link
 							v-slot="{ navigate }"
 							:to="{ name: 'Album', params: { id: track.album.id } }"
-							class="table__cell--medium table__cell--center clickable"
 							custom
 						>
-							<td role="link" @click="navigate" @keypress.enter="navigate">
+							<td
+								role="link"
+								class="table__cell--medium table__cell--center cursor-pointer"
+								@click="navigate"
+								@keypress.enter="navigate"
+							>
 								{{ track.album.title }}
 							</td>
 						</router-link>

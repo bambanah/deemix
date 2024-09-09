@@ -8,10 +8,6 @@
 	display: none;
 }
 
-.clickable {
-	cursor: pointer !important;
-}
-
 .coverart {
 	/* ? Why? */
 	background-color: var(--secondary-background);
