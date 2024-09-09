@@ -97,7 +97,7 @@ const server = app.listen({
 	host: deemixHost,
 });
 const wss = new WebSocketServer({ server });
-console.log(process.env.NODE_ENV);
+
 if (process.env.NODE_ENV === "production") {
 	const publicPath = join(dirname(fileURLToPath(import.meta.url)), "public");
 	console.log("Service static files from", publicPath);
