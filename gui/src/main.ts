@@ -15,6 +15,8 @@ import { join } from "path";
 import { hideBin } from "yargs/helpers";
 import yargs from "yargs/yargs";
 
+if (require("electron-squirrel-startup") === true) app.quit();
+
 const argv = await yargs(hideBin(process.argv)).options({
 	port: { type: "string", default: "6595" },
 	host: { type: "string", default: "0.0.0.0" },
@@ -44,9 +46,9 @@ async function main() {
 		},
 	});
 
-	win.setMenu(null);
+	if (process.env.NODE_ENV === "development") {
+		win.setMenu(null);
 
-	if (true) {
 		const menu = new Menu();
 		menu.append(
 			new MenuItem({

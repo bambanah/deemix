@@ -128,6 +128,9 @@ importers:
       electron-context-menu:
         specifier: ^4.0.4
         version: 4.0.4
+      electron-squirrel-startup:
+        specifier: ^1.0.1
+        version: 1.0.1
       electron-window-state-manager:
         specifier: ^0.3.2
         version: 0.3.2
@@ -154,7 +157,7 @@ importers:
         specifier: ^7.3.1
         version: 7.4.0
       '@electron-forge/plugin-auto-unpack-natives':
-        specifier: ^7.3.1
+        specifier: ^7.4.0
         version: 7.4.0
       '@types/yargs':
         specifier: 17.0.32
@@ -2456,6 +2459,9 @@ packages:
   electron-is-dev@3.0.1:
     resolution: {integrity: sha512-8TjjAh8Ec51hUi3o4TaU0mD3GMTOESi866oRNavj9A3IQJ7pmv+MJVmdZBFGw4GFT36X7bkqnuDNYvkQgvyI8Q==}
     engines: {node: '>=18'}
+
+  electron-squirrel-startup@1.0.1:
+    resolution: {integrity: sha512-sTfFIHGku+7PsHLJ7v0dRcZNkALrV+YEozINTW8X1nM//e5O3L+rfYuvSW00lmGHnYmUjARZulD8F2V8ISI9RA==}
 
   electron-to-chromium@1.5.18:
     resolution: {integrity: sha512-1OfuVACu+zKlmjsNdcJuVQuVE61sZOLbNM4JAQ1Rvh6EOj0/EUKhMJjRH73InPlXSh8HIJk1cVZ8pyOV/FMdUQ==}
@@ -8188,6 +8194,12 @@ snapshots:
     optional: true
 
   electron-is-dev@3.0.1: {}
+
+  electron-squirrel-startup@1.0.1:
+    dependencies:
+      debug: 2.6.9
+    transitivePeerDependencies:
+      - supports-color
 
   electron-to-chromium@1.5.18: {}
 

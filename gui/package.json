@@ -21,7 +21,7 @@
 		"@electron-forge/maker-rpm": "^7.3.1",
 		"@electron-forge/maker-squirrel": "^7.3.1",
 		"@electron-forge/maker-zip": "^7.3.1",
-		"@electron-forge/plugin-auto-unpack-natives": "^7.3.1",
+		"@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
 		"@types/yargs": "17.0.32",
 		"electron": "32.0.2",
 		"esbuild": "0.23.1",
@@ -31,6 +31,7 @@
 	"dependencies": {
 		"deemix-webui": "workspace:*",
 		"electron-context-menu": "^4.0.4",
+		"electron-squirrel-startup": "^1.0.1",
 		"electron-window-state-manager": "^0.3.2",
 		"yargs": "^17.7.2"
 	}

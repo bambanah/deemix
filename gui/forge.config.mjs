@@ -24,7 +24,7 @@ export default {
 		{
 			name: "@electron-forge/maker-dmg",
 			config: {
-				format: "ULFO",
+				bin: "Deemix",
 			},
 		},
 		{
@@ -40,5 +40,10 @@ export default {
 			},
 		},
 	],
-	plugins: [],
+	plugins: [
+		{
+			name: "@electron-forge/plugin-auto-unpack-natives",
+			config: {},
+		},
+	],
 };
