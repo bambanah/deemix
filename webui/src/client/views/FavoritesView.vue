@@ -5,7 +5,7 @@
 			<div
 				ref="reloadButton"
 				aria-label="reload"
-				class="clickable inline-block"
+				class="inline-block cursor-pointer"
 				role="button"
 				@click="onRefreshFavorites"
 			>
@@ -132,7 +132,7 @@
 				>
 					<div
 						role="link"
-						class="release clickable"
+						class="release cursor-pointer"
 						@click="navigate"
 						@keypress.enter="() => navigate()"
 					>
@@ -165,7 +165,7 @@
 				>
 					<div
 						role="link"
-						class="release clickable"
+						class="release cursor-pointer"
 						@click="navigate"
 						@keypress.enter="() => navigate()"
 					>
@@ -219,7 +219,7 @@
 					>
 						<td
 							role="link"
-							class="table__cell table__cell--medium table__cell--center clickable"
+							class="table__cell table__cell--medium table__cell--center cursor-pointer"
 							@click="navigate"
 							@keypress.enter="() => navigate()"
 						>
@@ -233,7 +233,7 @@
 					>
 						<td
 							role="link"
-							class="table__cell--medium table__cell--center clickable"
+							class="table__cell--medium table__cell--center cursor-pointer"
 							@click="navigate"
 							@keypress.enter="() => navigate()"
 						>

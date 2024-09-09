@@ -39,7 +39,7 @@
 							'sort-asc': data.sortKey === sortKey && sortOrder == 'asc',
 							'sort-desc': data.sortKey === sortKey && sortOrder == 'desc',
 							sortable: data.sortKey,
-							clickable: data.sortKey,
+							'cursor-pointer': data.sortKey,
 						}"
 						@click="data.sortKey ? sortBy(data.sortKey) : null"
 					>
@@ -53,11 +53,15 @@
 					<router-link
 						v-slot="{ navigate }"
 						custom
-						class="clickable flex items-center"
 						:data-cm-link="release.releaseLink"
 						:to="{ name: 'Album', params: { id: release.releaseID } }"
 					>
-						<td role="link" @click="navigate" @keypress.enter="navigate">
+						<td
+							role="link"
+							class="flex cursor-pointer items-center"
+							@click="navigate"
+							@keypress.enter="() => navigate()"
+						>
 							<img
 								class="coverart mr-4 rounded"
 								:src="release.releaseCover"

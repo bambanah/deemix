@@ -136,7 +136,7 @@
 	height: 56px;
 }
 
-.table--tracklist .clickable:hover,
-.table--charts .clickable:hover {
+.table--tracklist .cursor-pointer:hover,
+.table--charts .cursor-pointer:hover {
 	text-decoration: underline;
 }

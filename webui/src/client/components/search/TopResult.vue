@@ -3,13 +3,17 @@
 		<router-link
 			v-slot="{ navigate }"
 			custom
-			class="cursor-pointer"
 			:to="{
 				name: upperCaseFirstLowerCaseRest($attrs.info.type),
 				params: { id: $attrs.info.id },
 			}"
 		>
-			<div role="link" @click="navigate" @keypress.enter="navigate">
+			<div
+				role="link"
+				class="cursor-pointer"
+				@click="navigate"
+				@keypress.enter="navigate"
+			>
 				<CoverContainer
 					class="h-40 w-40"
 					:is-rounded="$attrs.info.type !== 'artist'"

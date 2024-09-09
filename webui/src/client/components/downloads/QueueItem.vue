@@ -29,7 +29,7 @@
 				<span
 					v-if="hasFails"
 					class="flex items-center"
-					:class="{ clickable: hasFails }"
+					:class="{ 'cursor-pointer': hasFails }"
 					style="justify-content: center"
 					@click="hasFails ? $emit('show-errors', queueItem) : null"
 				>
@@ -47,7 +47,8 @@
 				v-if="!isLoading"
 				class="material-icons queue_icon"
 				:class="{
-					clickable: finishedWithFails || resultIconText === 'delete_forever',
+					'cursor-pointer':
+						finishedWithFails || resultIconText === 'delete_forever',
 				}"
 				@click="onResultIconClick"
 			>

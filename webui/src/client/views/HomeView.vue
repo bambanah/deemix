@@ -11,11 +11,15 @@
 			<router-link
 				v-slot="{ navigate }"
 				custom
-				class="btn btn-primary"
 				name="button"
 				:to="{ name: 'Settings' }"
 			>
-				<button role="link" @click="navigate" @keypress.enter="navigate">
+				<button
+					role="link"
+					class="btn btn-primary"
+					@click="navigate"
+					@keypress.enter="() => navigate()"
+				>
 					{{ t("home.openSettings") }}
 				</button>
 			</router-link>
@@ -32,14 +36,18 @@
 					:key="release.id"
 					v-slot="{ navigate }"
 					custom
-					class="release clickable"
 					:to="{ name: 'Playlist', params: { id: release.id } }"
 					tabindex="0"
 					@keyup.enter="
 						$router.push({ name: 'Playlist', params: { id: release.id } })
 					"
 				>
-					<div role="link" @click="navigate" @keypress.enter="navigate">
+					<div
+						role="link"
+						class="release cursor-pointer"
+						@click="navigate"
+						@keypress.enter="() => navigate()"
+					>
 						<CoverContainer
 							is-rounded
 							:cover="release.picture_medium"
@@ -71,7 +79,6 @@
 					:key="release.id"
 					v-slot="{ navigate }"
 					custom
-					class="release clickable"
 					:to="{ name: 'Album', params: { id: release.id } }"
 					:data-id="release.id"
 					tabindex="0"
@@ -79,7 +86,12 @@
 						$router.push({ name: 'Album', params: { id: release.id } })
 					"
 				>
-					<div role="link" @click="navigate" @keypress.enter="navigate">
+					<div
+						role="link"
+						class="release cursor-pointer"
+						@click="navigate"
+						@keypress.enter="() => navigate()"
+					>
 						<CoverContainer
 							is-rounded
 							:cover="release.cover_medium"

@@ -20,10 +20,14 @@
 					<router-link
 						v-slot="{ navigate }"
 						custom
-						class="cursor-pointer"
 						:to="{ name: 'Album', params: { id: release.albumID } }"
 					>
-						<div role="link" @click="navigate" @keypress.enter="navigate">
+						<div
+							role="link"
+							class="cursor-pointer"
+							@click="navigate"
+							@keypress.enter="navigate"
+						>
 							<CoverContainer
 								is-rounded
 								:cover="release.albumCoverMedium"

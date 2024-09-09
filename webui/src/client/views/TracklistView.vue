@@ -36,7 +36,7 @@
 					<th>
 						<i class="material-icons">timer</i>
 					</th>
-					<th class="table__icon table__cell--center clickable">
+					<th class="table__icon table__cell--center cursor-pointer">
 						<input class="selectAll" type="checkbox" @click="toggleAll" />
 					</th>
 				</tr>
@@ -98,10 +98,14 @@
 							<router-link
 								v-slot="{ navigate }"
 								:to="{ name: 'Artist', params: { id: track.artist.id } }"
-								class="table__cell--medium table__cell--center clickable"
 								custom
 							>
-								<td role="link" @click="navigate" @keypress.enter="navigate">
+								<td
+									role="link"
+									class="table__cell--medium table__cell--center cursor-pointer"
+									@click="navigate"
+									@keypress.enter="navigate"
+								>
 									{{ track.artist.name }}
 								</td>
 							</router-link>
@@ -109,10 +113,14 @@
 								v-if="type === 'playlist'"
 								v-slot="{ navigate }"
 								:to="{ name: 'Album', params: { id: track.album.id } }"
-								class="table__cell--medium table__cell--center clickable"
 								custom
 							>
-								<td role="link" @click="navigate" @keypress.enter="navigate">
+								<td
+									role="link"
+									class="table__cell--medium table__cell--center cursor-pointer"
+									@click="navigate"
+									@keypress.enter="navigate"
+								>
 									{{ track.album.title }}
 								</td>
 							</router-link>
@@ -128,7 +136,7 @@
 							<td class="table__icon table__cell--center">
 								<input
 									v-model="track.selected"
-									class="clickable"
+									class="cursor-pointer"
 									type="checkbox"
 								/>
 							</td>
@@ -185,7 +193,7 @@
 						<td>
 							<input
 								v-model="track.selected"
-								class="clickable"
+								class="cursor-pointer"
 								type="checkbox"
 							/>
 						</td>

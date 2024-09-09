@@ -19,10 +19,14 @@
 					<router-link
 						v-slot="{ navigate }"
 						custom
-						class="cursor-pointer"
 						:to="{ name: 'Playlist', params: { id: playlist.playlistID } }"
 					>
-						<div role="link" @click="navigate" @keypress.enter="navigate">
+						<div
+							role="link"
+							class="cursor-pointer"
+							@click="navigate"
+							@keypress.enter="navigate"
+						>
 							<CoverContainer
 								is-rounded
 								:cover="playlist.playlistPictureMedium"

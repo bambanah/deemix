@@ -59,10 +59,14 @@
 						<router-link
 							v-slot="{ navigate }"
 							custom
-							class="table__cell table__cell--medium table__cell--center break-words"
 							:to="{ name: 'Artist', params: { id: track.artistID } }"
 						>
-							<td role="link" @click="navigate" @keypress.enter="navigate">
+							<td
+								role="link"
+								class="table__cell table__cell--medium table__cell--center break-words"
+								@click="navigate"
+								@keypress.enter="navigate"
+							>
 								<span class="cursor-pointer hover:underline">
 									{{ track.artistName }}
 								</span>
@@ -72,10 +76,14 @@
 						<router-link
 							v-slot="{ navigate }"
 							custom
-							class="table__cell table__cell--medium table__cell--center break-words"
 							:to="{ name: 'Album', params: { id: track.albumID } }"
 						>
-							<td role="link" @click="navigate" @keypress.enter="navigate">
+							<td
+								role="link"
+								class="table__cell table__cell--medium table__cell--center break-words"
+								@click="navigate"
+								@keypress.enter="navigate"
+							>
 								<span class="cursor-pointer hover:underline">
 									{{ track.albumTitle }}
 								</span>
