@@ -8,10 +8,10 @@ import {
 import { defineStore } from "pinia";
 
 interface AppInfoState {
-	currentCommit: string | null;
-	latestCommit: string | null;
-	updateAvailable: boolean;
+	webuiVersion: string | null;
 	deemixVersion: string | null;
+	latestVersion: string | null;
+	updateAvailable: boolean;
 	previewVolume: number;
 	hasSlimDownloads: boolean;
 	hasSlimSidebar: boolean;
@@ -21,10 +21,10 @@ interface AppInfoState {
 
 export const useAppInfoStore = defineStore("appInfo", {
 	state: (): AppInfoState => ({
-		currentCommit: null,
-		latestCommit: null,
-		updateAvailable: false,
+		webuiVersion: null,
 		deemixVersion: null,
+		latestVersion: null,
+		updateAvailable: false,
 		previewVolume: getInitialPreviewVolume(),
 		hasSlimDownloads: checkInitialSlimDownloads(),
 		hasSlimSidebar: checkInitialSlimSidebar(),
@@ -36,11 +36,12 @@ export const useAppInfoStore = defineStore("appInfo", {
 	},
 	actions: {
 		setAppInfo(payload: AppInfoState) {
-			this.currentCommit = payload.currentCommit;
+			this.webuiVersion = payload.webuiVersion;
 			this.deemixVersion = payload.deemixVersion;
 		},
 		setUpdateInfo(payload: AppInfoState) {
-			this.latestCommit = payload.latestCommit;
+			console.log(payload);
+			this.latestVersion = payload.latestVersion;
 			this.updateAvailable = payload.updateAvailable;
 		},
 		setPreviewVolume(previewVolume: number) {

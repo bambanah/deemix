@@ -13,7 +13,7 @@ import {
 } from "deemix";
 import { Deezer } from "deezer-js";
 import fs from "fs";
-import { default as got } from "got";
+import got from "got";
 import { sep } from "path";
 import { v4 as uuidv4 } from "uuid";
 
@@ -103,23 +103,20 @@ export class DeemixApp {
 			(this.latestVersion === null || force) &&
 			!this.settings.disableUpdateCheck
 		) {
-			let response;
+			let responseJson;
 			try {
-				// @ts-ignore
-				response = await got.get(
-					"https://gitlab.com/bambanah/deemix/-/raw/main/latest.txt",
-					{
-						https: {
-							rejectUnauthorized: false,
-						},
-					}
-				);
+				responseJson = await got
+					// @ts-ignore
+					.get(
+						"https://raw.githubusercontent.com/bambanah/deemix/main/webui/package.json"
+					)
+					.json();
+				this.latestVersion = JSON.parse(JSON.stringify(responseJson)).version;
 			} catch (e) {
 				logger.error(e);
 				this.latestVersion = "NotFound";
 				return this.latestVersion;
 			}
-			this.latestVersion = response.body.trim();
 		}
 		return this.latestVersion;
 	}
@@ -144,24 +141,11 @@ export class DeemixApp {
 	}
 
 	isUpdateAvailable(): boolean {
-		const currentVersionObj: any = this.parseVersion(WEBUI_PACKAGE_VERSION);
-		const latestVersionObj: any = this.parseVersion(this.latestVersion);
-		if (currentVersionObj === null || latestVersionObj === null) return false;
-		if (latestVersionObj.year > currentVersionObj.year) return true;
-		let sameDate = latestVersionObj.year === currentVersionObj.year;
-		if (sameDate && latestVersionObj.month > currentVersionObj.month)
-			return true;
-		sameDate = sameDate && latestVersionObj.month === currentVersionObj.month;
-		if (sameDate && latestVersionObj.day > currentVersionObj.day) return true;
-		sameDate = sameDate && latestVersionObj.day === currentVersionObj.day;
-		if (sameDate && latestVersionObj.revision > currentVersionObj.revision)
-			return true;
-		if (
-			latestVersionObj.revision === currentVersionObj.revision &&
-			latestVersionObj.commit !== currentVersionObj.commit
-		)
-			return true;
-		return false;
+		return (
+			this.latestVersion.localeCompare(WEBUI_PACKAGE_VERSION, undefined, {
+				numeric: true,
+			}) === 1
+		);
 	}
 
 	getSettings(): any {

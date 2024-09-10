@@ -20,26 +20,10 @@ const appInfoStore = useAppInfoStore(pinia);
 const { isOnline } = useOnline();
 const { t } = useI18n();
 
-const appInfo = computed(() => appInfoStore.appInfo);
-
-const current = ref("");
-const latest = ref("");
-const updateAvailableRef = ref(false);
-const deemixVersionRef = ref("");
-
-function initUpdate(appInfo: typeof appInfoStore.appInfo) {
-	const { currentCommit, latestCommit, updateAvailable, deemixVersion } =
-		appInfo;
-
-	current.value = currentCommit;
-	latest.value = latestCommit;
-	updateAvailableRef.value = updateAvailable;
-	deemixVersionRef.value = deemixVersion;
-}
-
-onMounted(() => {
-	initUpdate(appInfo.value);
-});
+const deemixVersion = computed(() => appInfoStore.deemixVersion);
+const webuiVersion = computed(() => appInfoStore.webuiVersion);
+const updateAvailable = computed(() => appInfoStore.updateAvailable);
+const latestVersion = computed(() => appInfoStore.latestVersion);
 </script>
 
 <template>
@@ -58,20 +42,22 @@ onMounted(() => {
 		<ul>
 			<li>
 				{{ t("about.updates.currentWebuiVersion") }}:
-				<span>{{ t("about.updates.versionNotAvailable") }}</span>
+				<span>{{
+					webuiVersion || t("about.updates.versionNotAvailable")
+				}}</span>
 			</li>
-			<li>
-				{{ t("about.updates.currentVersion") }}:
-				<span>{{ current || t("about.updates.versionNotAvailable") }}</span>
-			</li>
-			<li>{{ t("about.updates.deemixVersion") }}: {{ deemixVersionRef }}</li>
+			<li>{{ t("about.updates.deemixVersion") }}: {{ deemixVersion }}</li>
 			<i18n-t
-				v-if="updateAvailableRef && latest"
+				v-if="updateAvailable && latestVersion"
 				keypath="about.updates.updateAvailable"
 				tag="li"
 			>
 				<template #version>
-					<a href="https://deemix.app/gui" target="_blank">{{ latest }}</a>
+					<a
+						:href="`https://github.com/users/bambanah/packages/container/deemix/270989776?tag=v${latestVersion}`"
+						target="_blank"
+						>{{ latestVersion }}</a
+					>
 				</template>
 			</i18n-t>
 		</ul>

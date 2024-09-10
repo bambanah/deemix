@@ -1,12 +1,13 @@
-import { type ApiHandler } from "../../../types.js";
+import { type ApiHandler } from "@/types.js";
 
 const path: ApiHandler["path"] = "/checkForUpdates";
 
 const handler: ApiHandler["handler"] = async (req, res) => {
 	const deemix = req.app.get("deemix");
-	const latestCommit = await deemix.getLatestVersion();
+	const latestVersion = await deemix.getLatestVersion();
+
 	res.send({
-		latestCommit,
+		latestVersion,
 		updateAvailable: deemix.isUpdateAvailable(),
 	});
 };

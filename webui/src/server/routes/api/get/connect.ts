@@ -9,7 +9,7 @@ import {
 } from "@/helpers/versions.js";
 
 const path: ApiHandler["path"] = "/connect";
-let update: any = null;
+let update: { webuiVersion: string; deemixVersion: string } | null = null;
 
 const handler: ApiHandler["handler"] = async (req, res) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer();
@@ -18,17 +18,15 @@ const handler: ApiHandler["handler"] = async (req, res) => {
 	const isSingleUser = req.app.get("isSingleUser");
 
 	if (!update) {
-		logger.info(
-			`Currently running deemix-webui version ${WEBUI_PACKAGE_VERSION}`
-		);
-		logger.info(`deemix-lib version ${DEEMIX_PACKAGE_VERSION}`);
+		logger.info(`webui version ${WEBUI_PACKAGE_VERSION}`);
+		logger.info(`deemix version ${DEEMIX_PACKAGE_VERSION}`);
 		update = {
-			currentCommit: WEBUI_PACKAGE_VERSION,
+			webuiVersion: WEBUI_PACKAGE_VERSION,
 			deemixVersion: DEEMIX_PACKAGE_VERSION,
 		};
 	}
 
-	const result: any = {
+	const result = <any>{
 		update,
 		autologin: !dz.logged_in,
 		currentUser: dz.current_user,

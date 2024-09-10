@@ -56,7 +56,7 @@ const en = {
 			currentVersion: "Current Version",
 			currentWebuiVersion: "Current WebUI Version",
 			versionNotAvailable: "N/A",
-			updateAvailable: `You're not running the latest version available: {version}`,
+			updateAvailable: `An update is available: {version}`,
 			deemixVersion: "deemix lib version",
 		},
 		titles: {
