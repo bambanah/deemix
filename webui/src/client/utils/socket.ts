@@ -6,7 +6,7 @@ class CustomSocket extends WebSocket {
 		this.listeners = {};
 	}
 
-	emit(key: string, data: any) {
+	emit(key: string, data?: any) {
 		if (this.readyState !== WebSocket.OPEN) return false;
 
 		this.send(JSON.stringify({ key, data }));

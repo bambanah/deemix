@@ -1,3 +1,95 @@
+<script setup lang="ts">
+import PreviewControls from "@/components/globals/PreviewControls.vue";
+import { getChartsData, getChartTracks } from "@/data/charts";
+import { sendAddToQueue } from "@/utils/downloads";
+import { emitter } from "@/utils/emitter";
+import { convertDuration } from "@/utils/utils";
+import { computed, onMounted, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
+
+const country = ref("");
+const id = ref(0);
+const countries = ref([]);
+const chart = ref([]);
+
+const worldwideRelease = computed(() => {
+	const worldwideRelease = countries.value.filter((country) => {
+		return country.title === "Worldwide";
+	});
+
+	return worldwideRelease[0];
+});
+
+function playPausePreview(e) {
+	emitter.emit("trackPreview:playPausePreview", e);
+}
+
+function addToQueue(e) {
+	e.stopPropagation();
+	sendAddToQueue(e.currentTarget.dataset.link);
+}
+
+function getTrackList(event) {
+	document.getElementById("content").scrollTo(0, 0);
+
+	const {
+		currentTarget: {
+			dataset: { title, id },
+		},
+	} = event;
+
+	country.value = title;
+	localStorage.setItem("chart", country.value);
+	id.value = id;
+}
+
+function setTracklist(data) {
+	chart.value = data;
+}
+
+function onChangeCountry() {
+	country.value = "";
+	id.value = 0;
+}
+
+function initCharts(chartsData) {
+	countries.value = chartsData;
+	country.value = localStorage.getItem("chart") || "";
+
+	if (!country.value) return;
+
+	let i = 0;
+	for (; i < countries.value.length; i++) {
+		if (countries.value[i].title === country.value) break;
+	}
+
+	if (i !== countries.value.length) {
+		id.value = countries.value[i].id;
+	} else {
+		country.value = "";
+		localStorage.setItem("chart", country.value);
+	}
+}
+
+onMounted(async () => {
+	const { data: chartsData } = await getChartsData();
+	initCharts(chartsData);
+});
+
+watch(id, (newId) => {
+	const isActualChart = newId !== 0;
+
+	if (isActualChart) {
+		setTracklist([]);
+		getChartTracks(newId.toString()).then((response) =>
+			setTracklist(response.data)
+		);
+	}
+});
+</script>
+
 <template>
 	<div>
 		<h1 class="mb-8 text-5xl">
@@ -75,7 +167,6 @@
 								role="link"
 								class="table__cell table__cell--medium table__cell--center cursor-pointer"
 								@click="navigate"
-								@keypress.enter="navigate"
 							>
 								{{ track.artist.name }}
 							</td>
@@ -89,7 +180,6 @@
 								role="link"
 								class="table__cell--medium table__cell--center cursor-pointer"
 								@click="navigate"
-								@keypress.enter="navigate"
 							>
 								{{ track.album.title }}
 							</td>
@@ -117,104 +207,3 @@
 		</div>
 	</div>
 </template>
-
-<script>
-import PreviewControls from "@/components/globals/PreviewControls.vue";
-import { getChartsData, getChartTracks } from "@/data/charts";
-import { sendAddToQueue } from "@/utils/downloads";
-import { emitter } from "@/utils/emitter";
-import { convertDuration } from "@/utils/utils";
-import { useI18n } from "vue-i18n";
-
-export default {
-	components: {
-		PreviewControls,
-	},
-	setup() {
-		const { t } = useI18n();
-
-		return { t };
-	},
-	data() {
-		return {
-			country: "",
-			id: 0,
-			countries: [],
-			chart: [],
-		};
-	},
-	computed: {
-		worldwideRelease() {
-			const worldwideRelease = this.countries.filter((country) => {
-				return country.title === "Worldwide";
-			});
-
-			return worldwideRelease[0];
-		},
-	},
-	watch: {
-		id(newId) {
-			const isActualChart = newId !== 0;
-
-			if (isActualChart) {
-				this.setTracklist([]);
-				getChartTracks(newId).then((response) =>
-					this.setTracklist(response.data)
-				);
-			}
-		},
-	},
-	async created() {
-		const { data: chartsData } = await getChartsData();
-		this.initCharts(chartsData);
-	},
-	methods: {
-		convertDuration,
-		playPausePreview: (e) => {
-			emitter.emit("trackPreview:playPausePreview", e);
-		},
-		addToQueue(e) {
-			e.stopPropagation();
-			sendAddToQueue(e.currentTarget.dataset.link);
-		},
-		getTrackList(event) {
-			document.getElementById("content").scrollTo(0, 0);
-
-			const {
-				currentTarget: {
-					dataset: { title, id },
-				},
-			} = event;
-
-			this.country = title;
-			localStorage.setItem("chart", this.country);
-			this.id = id;
-		},
-		setTracklist(data) {
-			this.chart = data;
-		},
-		onChangeCountry() {
-			this.country = "";
-			this.id = 0;
-		},
-		initCharts(chartsData) {
-			this.countries = chartsData;
-			this.country = localStorage.getItem("chart") || "";
-
-			if (!this.country) return;
-
-			let i = 0;
-			for (; i < this.countries.length; i++) {
-				if (this.countries[i].title === this.country) break;
-			}
-
-			if (i !== this.countries.length) {
-				this.id = this.countries[i].id;
-			} else {
-				this.country = "";
-				localStorage.setItem("chart", this.country);
-			}
-		},
-	},
-};
-</script>

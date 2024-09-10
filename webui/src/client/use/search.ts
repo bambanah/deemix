@@ -2,11 +2,11 @@ import { fetchData } from "@/utils/api-utils";
 import { ref } from "vue";
 
 interface Result {
-	next: string;
-	total: number;
-	type: string;
-	data: any[];
-	error: string;
+	next?: string;
+	total?: number;
+	type?: string;
+	data?: any[];
+	error?: string;
 }
 
 const result = ref<Result>({});

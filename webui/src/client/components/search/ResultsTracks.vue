@@ -1,12 +1,37 @@
+<script setup lang="ts">
+import BaseLoadingPlaceholder from "@/components/globals/BaseLoadingPlaceholder.vue";
+import PreviewControls from "@/components/globals/PreviewControls.vue";
+import ResultsError from "@/components/search/ResultsError.vue";
+import { formatTitle } from "@/data/search";
+import { emitter } from "@/utils/emitter";
+import { convertDuration } from "@/utils/utils";
+import { useI18n } from "vue-i18n";
+
+interface Props {
+	viewInfo?: {
+		error: string;
+		data: any[];
+		hasLoaded: boolean;
+	};
+	itemsToShow?: number;
+	wantHeaders?: boolean;
+}
+
+const { viewInfo, itemsToShow = 6, wantHeaders = false } = defineProps<Props>();
+
+const { t } = useI18n();
+
+const playPausePreview = (e: MouseEvent) => {
+	emitter.emit("trackPreview:playPausePreview", e);
+};
+</script>
+
 <template>
 	<section>
-		<BaseLoadingPlaceholder v-if="isLoading" />
+		<BaseLoadingPlaceholder v-if="!viewInfo?.hasLoaded" />
 
 		<template v-else>
-			<ResultsError
-				v-if="viewInfo.error"
-				:error="viewInfo.error"
-			></ResultsError>
+			<ResultsError v-if="viewInfo.error" :error="viewInfo.error" />
 			<div v-else-if="viewInfo.data.length === 0">
 				<h1 class="text-center">{{ t("search.noResultsTrack") }}</h1>
 			</div>
@@ -65,7 +90,6 @@
 								role="link"
 								class="table__cell table__cell--medium table__cell--center break-words"
 								@click="navigate"
-								@keypress.enter="navigate"
 							>
 								<span class="cursor-pointer hover:underline">
 									{{ track.artistName }}
@@ -82,7 +106,6 @@
 								role="link"
 								class="table__cell table__cell--medium table__cell--center break-words"
 								@click="navigate"
-								@keypress.enter="navigate"
 							>
 								<span class="cursor-pointer hover:underline">
 									{{ track.albumTitle }}
@@ -113,58 +136,3 @@
 		</template>
 	</section>
 </template>
-
-<script>
-import BaseLoadingPlaceholder from "@/components/globals/BaseLoadingPlaceholder.vue";
-import PreviewControls from "@/components/globals/PreviewControls.vue";
-import ResultsError from "@/components/search/ResultsError.vue";
-import { formatTitle } from "@/data/search";
-import { convertDuration } from "@/utils/utils";
-import { useI18n } from "vue-i18n";
-
-export default {
-	components: {
-		BaseLoadingPlaceholder,
-		PreviewControls,
-		ResultsError,
-	},
-	props: {
-		viewInfo: {
-			validator(value) {
-				const isNull = Object.is(value, null);
-				const isObject =
-					Object.prototype.toString.call(value) === "[object Object]";
-
-				return isNull || isObject;
-			},
-			required: true,
-		},
-		itemsToShow: {
-			type: Number,
-			default: 6,
-		},
-		wantHeaders: {
-			type: Boolean,
-			required: false,
-			default: false,
-		},
-	},
-	setup() {
-		const { t } = useI18n();
-
-		return { t };
-	},
-	computed: {
-		isLoading() {
-			return !this.viewInfo || !this.viewInfo.hasLoaded;
-		},
-	},
-	methods: {
-		convertDuration,
-		formatTitle,
-		playPausePreview: (e) => {
-			emitter.emit("trackPreview:playPausePreview", e);
-		},
-	},
-};
-</script>

@@ -3,7 +3,7 @@
 		id="content"
 		ref="content"
 		aria-label="main content"
-		@scroll="$route.name === 'Search' ? handleContentScroll($event) : null"
+		@scroll="$route.name === 'Search' ? handleContentScroll() : null"
 	>
 		<div id="container">
 			<BackButton
@@ -29,49 +29,48 @@
 	</main>
 </template>
 
-<script>
+<script setup lang="ts">
 import { debounce } from "@/utils/utils";
 import BackButton from "@/components/globals/BackButton.vue";
+import { computed, nextTick, onMounted, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
-export default {
-	components: {
-		BackButton,
-	},
-	data: () => ({
-		performScrolledSearch: false,
-	}),
-	computed: {
-		showBackButton() {
-			return [
-				"Tracklist",
-				"Artist",
-				"Album",
-				"Playlist",
-				"Spotify Playlist",
-			].includes(this.$route.name);
-		},
-	},
-	mounted() {
-		this.$router.beforeEach((_, __, next) => {
-			this.$refs.content.scrollTo(0, 0);
-			next();
-		});
-	},
-	methods: {
-		handleContentScroll: debounce(async function () {
-			if (
-				this.$refs.content.scrollTop + this.$refs.content.clientHeight <
-				this.$refs.content.scrollHeight
-			)
-				return;
-			this.performScrolledSearch = true;
+const router = useRouter();
+const route = useRoute();
 
-			await this.$nextTick();
+const performScrolledSearch = ref(false);
+const content = ref<HTMLElement | null>(null);
 
-			this.performScrolledSearch = false;
-		}, 100),
-	},
-};
+const showBackButton = computed(() => {
+	return [
+		"Tracklist",
+		"Artist",
+		"Album",
+		"Playlist",
+		"Spotify Playlist",
+	].includes(String(route.name));
+});
+
+const handleContentScroll = debounce(async function () {
+	if (
+		content.value.scrollTop + content.value.clientHeight <
+		content.value.scrollHeight
+	)
+		return;
+
+	performScrolledSearch.value = true;
+
+	await nextTick();
+
+	performScrolledSearch.value = false;
+}, 100);
+
+onMounted(() => {
+	router.beforeEach((_, __, next) => {
+		content.value?.scrollTo(0, 0);
+		next();
+	});
+});
 </script>
 
 <style>

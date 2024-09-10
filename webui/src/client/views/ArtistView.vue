@@ -1,7 +1,108 @@
+<script setup lang="ts">
+import BaseTab from "@/components/globals/BaseTab.vue";
+import BaseTabs from "@/components/globals/BaseTabs.vue";
+import { formatArtistData, getArtistData } from "@/data/artist";
+import { checkNewRelease } from "@/utils/dates";
+import { sendAddToQueue } from "@/utils/downloads";
+import { orderBy } from "lodash-es";
+import { computed, reactive, ref, unref } from "vue";
+import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const { t } = useI18n();
+
+const head = ref([
+	{
+		title: t("globals.listTabs.title", 1),
+		sortKey: "releaseTitle",
+	},
+	{
+		title: t("globals.listTabs.releaseDate"),
+		sortKey: "releaseDate",
+	},
+	{
+		title: t("globals.listTabs.track", 2),
+		sortKey: "releaseTracksNumber",
+	},
+	// { title: '', width: '32px' }
+	{ title: "", width: null },
+]);
+
+interface State {
+	currentTab: string;
+	sortKey: string | ((o: any) => number);
+	sortOrder: "asc" | "desc";
+	artistReleases: Record<string, any[]>;
+	artistName: string;
+	artistPicture: string;
+	currentRelease: any;
+}
+
+const state: State = reactive<State>({
+	currentTab: "",
+	sortKey: "releaseDate",
+	sortOrder: "desc",
+	artistReleases: {},
+	artistName: "",
+	artistPicture: "",
+	currentRelease: computed(() => state.artistReleases[state.currentTab]),
+});
+
+const downloadLink = computed(
+	() => `https://www.deezer.com/artist/${unref(artistID)}`
+);
+const headerStyle = computed(() => ({
+	backgroundImage: `linear-gradient(to bottom, transparent 0%, var(--main-background) 100%), url(${state.artistPicture})`,
+}));
+
+const artistID = computed(() => router.currentRoute.value.params.id);
+const hasDataLoaded = ref(false);
+
+function sortBy(key?: string) {
+	if (key === state.sortKey) {
+		state.sortOrder = state.sortOrder === "asc" ? "desc" : "asc";
+	} else {
+		state.sortKey = key;
+		state.sortOrder = "asc";
+	}
+}
+
+getArtistData(unref(artistID.value.toString()))
+	.then((artistData) => {
+		hasDataLoaded.value = true;
+
+		const { artistName, artistPictureXL, artistReleases } =
+			formatArtistData(artistData);
+
+		Object.assign(state, {
+			artistName,
+			artistPicture: artistPictureXL,
+			artistReleases,
+			currentTab: artistReleases ? Object.keys(artistReleases)[0] : 0,
+		});
+	})
+	.catch((err) => console.error(err));
+
+const sortedData = computed(() => {
+	if (!unref(hasDataLoaded)) {
+		return [];
+	}
+
+	let sortKey = state.sortKey;
+
+	if (sortKey === "releaseTracksNumber") {
+		sortKey = (o) => Number(o.releaseTracksNumber);
+	}
+
+	return orderBy(state.currentRelease, sortKey, state.sortOrder);
+});
+</script>
+
 <template>
 	<div class="fixed-footer image-header relative">
 		<header class="flex items-center" :style="headerStyle">
-			<h1 class="m-0">{{ artistName }}</h1>
+			<h1 class="m-0">{{ state.artistName }}</h1>
 
 			<div
 				class="bg-primary text-grayscale-870 ml-auto grid h-16 w-16 cursor-pointer place-items-center rounded-full"
@@ -18,10 +119,10 @@
 
 		<BaseTabs>
 			<BaseTab
-				v-for="(item, name) in artistReleases"
+				v-for="(item, name) in state.artistReleases"
 				:key="name"
-				:class="{ active: currentTab === name }"
-				@click="currentTab = name"
+				:class="{ active: state.currentTab === name }"
+				@click="state.currentTab = name"
 			>
 				{{ t(`globals.listTabs.${name}`, 2) }}
 			</BaseTab>
@@ -36,12 +137,16 @@
 						:style="{ width: data.width ? data.width : 'auto' }"
 						class="uppercase-first-letter"
 						:class="{
-							'sort-asc': data.sortKey === sortKey && sortOrder == 'asc',
-							'sort-desc': data.sortKey === sortKey && sortOrder == 'desc',
+							'sort-asc':
+								data.sortKey === state.sortKey && state.sortOrder == 'asc',
+							'sort-desc':
+								data.sortKey === state.sortKey && state.sortOrder == 'desc',
 							sortable: data.sortKey,
 							'cursor-pointer': data.sortKey,
 						}"
-						@click="data.sortKey ? sortBy(data.sortKey) : null"
+						@click="
+							typeof data.sortKey === 'string' ? sortBy(data.sortKey) : null
+						"
 					>
 						<!-- Need to change this behaviour for translations -->
 						{{ data.title }}
@@ -83,7 +188,7 @@
 									</i>
 								</span>
 								<span
-									v-show="currentTab === 'all'"
+									v-show="state.currentTab === 'all'"
 									class="uppercase-first-letter block text-xs opacity-50"
 								>
 									{{ t(`globals.listTabs.${release.releaseType}`) }}
@@ -124,149 +229,16 @@
 				</button>
 			</div>
 			<button
-				:data-link="downloadLink + '/' + currentTab"
+				:data-link="downloadLink + '/' + state.currentTab"
 				class="btn btn-primary flex items-center"
-				@click.stop="sendAddToQueue(downloadLink + '/' + currentTab)"
+				@click.stop="sendAddToQueue(downloadLink + '/' + state.currentTab)"
 			>
 				{{
 					`${t("globals.download", {
-						thing: t(`globals.listTabs.${currentTab}`, 2),
+						thing: t(`globals.listTabs.${state.currentTab}`, 2),
 					})}`
 				}}<i class="material-icons ml-2">file_download</i>
 			</button>
 		</footer>
 	</div>
 </template>
-
-<script lang="ts">
-import BaseTab from "@/components/globals/BaseTab.vue";
-import BaseTabs from "@/components/globals/BaseTabs.vue";
-import { formatArtistData, getArtistData } from "@/data/artist";
-import { checkNewRelease } from "@/utils/dates";
-import { sendAddToQueue } from "@/utils/downloads";
-import { orderBy } from "lodash-es";
-import {
-	computed,
-	defineComponent,
-	getCurrentInstance,
-	reactive,
-	ref,
-	toRefs,
-	unref,
-} from "vue";
-import { useI18n } from "vue-i18n";
-
-export default defineComponent({
-	components: {
-		BaseTabs,
-		BaseTab,
-	},
-	setup() {
-		const { t } = useI18n();
-
-		const currInstance = getCurrentInstance();
-
-		interface State {
-			currentTab: string;
-			sortKey: string | ((o: any) => number);
-			sortOrder: "asc" | "desc";
-			artistReleases: Record<string, any[]>;
-			artistName: string;
-			artistPicture: string;
-			currentRelease: any;
-		}
-
-		const state: State = reactive<State>({
-			currentTab: "",
-			sortKey: "releaseDate",
-			sortOrder: "desc",
-			artistReleases: {},
-			artistName: "",
-			artistPicture: "",
-			currentRelease: computed(() => state.artistReleases[state.currentTab]),
-		});
-
-		const artistID = computed(
-			() => currInstance?.proxy.$root.$router.currentRoute.value.params.id
-		);
-		const hasDataLoaded = ref(false);
-
-		getArtistData(unref(artistID.value.toString()))
-			.then((artistData) => {
-				hasDataLoaded.value = true;
-
-				const { artistName, artistPictureXL, artistReleases } =
-					formatArtistData(artistData);
-
-				Object.assign(state, {
-					artistName,
-					artistPicture: artistPictureXL,
-					artistReleases,
-					currentTab: artistReleases ? Object.keys(artistReleases)[0] : 0,
-				});
-			})
-			.catch((err) => console.error(err));
-
-		const sortedData = computed(() => {
-			if (!unref(hasDataLoaded)) {
-				return [];
-			}
-
-			let sortKey = state.sortKey;
-
-			if (sortKey === "releaseTracksNumber") {
-				sortKey = (o) => Number(o.releaseTracksNumber);
-			}
-
-			return orderBy(state.currentRelease, sortKey, state.sortOrder);
-		});
-
-		return {
-			...toRefs(state),
-			downloadLink: computed(
-				() => `https://www.deezer.com/artist/${unref(artistID)}`
-			),
-			headerStyle: computed(() => ({
-				backgroundImage: `linear-gradient(to bottom, transparent 0%, var(--main-background) 100%), url(${state.artistPicture})`,
-			})),
-			sortedData,
-			sendAddToQueue,
-			checkNewRelease,
-			t,
-		};
-	},
-	data() {
-		return {
-			head: [],
-		};
-	},
-	mounted() {
-		this.head = [
-			{
-				title: this.t("globals.listTabs.title", 1),
-				sortKey: "releaseTitle",
-			},
-			{
-				title: this.t("globals.listTabs.releaseDate"),
-				sortKey: "releaseDate",
-			},
-			{
-				title: this.t("globals.listTabs.track", 2),
-				sortKey: "releaseTracksNumber",
-			},
-			// { title: '', width: '32px' }
-			{ title: "", width: null },
-		];
-	},
-	methods: {
-		sortBy(key) {
-			if (key === this.sortKey) {
-				this.sortOrder = this.sortOrder === "asc" ? "desc" : "asc";
-			} else {
-				this.sortKey = key;
-				this.sortOrder = "asc";
-			}
-		},
-	},
-});
-</script>

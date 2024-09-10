@@ -1,3 +1,48 @@
+<script setup lang="ts">
+import { sendAddToQueue } from "@/utils/downloads";
+import { emitter } from "@/utils/emitter";
+import { onMounted, ref } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
+
+const modal = ref<HTMLElement | null>(null);
+const open = ref(false);
+const url = ref("");
+
+function tryToDownloadTrack(event) {
+	const { target } = event;
+
+	modal.value.classList.add("animated", "fadeOut");
+
+	// If true, the click did not happen on a button but outside
+	if (!target.matches(".quality-button")) return;
+
+	sendAddToQueue(url.value, target.dataset.qualityValue);
+}
+
+function openModal(link: string) {
+	url.value = link;
+	open.value = true;
+	modal.value.classList.add("animated", "fadeIn");
+}
+
+function handleAnimationEnd(event: AnimationEvent) {
+	const { animationName } = event;
+
+	modal.value.classList.remove("animated", animationName);
+
+	if (animationName === "fadeIn") return;
+
+	open.value = false;
+}
+
+onMounted(() => {
+	emitter.on("QualityModal:open", openModal);
+	modal.value.addEventListener("webkitAnimationEnd", handleAnimationEnd);
+});
+</script>
+
 <template>
 	<div
 		v-show="open"
@@ -28,57 +73,6 @@
 		</div>
 	</div>
 </template>
-
-<script>
-import { sendAddToQueue } from "@/utils/downloads";
-import { emitter } from "@/utils/emitter";
-import { useI18n } from "vue-i18n";
-
-export default {
-	setup() {
-		const { t } = useI18n();
-
-		return { t };
-	},
-	data: () => ({
-		open: false,
-		url: "",
-	}),
-	mounted() {
-		emitter.on("QualityModal:open", this.openModal);
-		this.$refs.modal.addEventListener(
-			"webkitAnimationEnd",
-			this.handleAnimationEnd
-		);
-	},
-	methods: {
-		tryToDownloadTrack(event) {
-			const { target } = event;
-
-			this.$refs.modal.classList.add("animated", "fadeOut");
-
-			// If true, the click did not happen on a button but outside
-			if (!target.matches(".quality-button")) return;
-
-			sendAddToQueue(this.url, target.dataset.qualityValue);
-		},
-		openModal(link) {
-			this.url = link;
-			this.open = true;
-			this.$refs.modal.classList.add("animated", "fadeIn");
-		},
-		handleAnimationEnd(event) {
-			const { animationName } = event;
-
-			this.$refs.modal.classList.remove("animated", animationName);
-
-			if (animationName === "fadeIn") return;
-
-			this.open = false;
-		},
-	},
-};
-</script>
 
 <style>
 .smallmodal {

@@ -1,3 +1,43 @@
+<script setup lang="ts">
+import { pinia } from "@/stores";
+import { useErrorStore } from "@/stores/errors";
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
+
+const BITRATE_LABELS = {
+	15: "360 HQ",
+	14: "360 MQ",
+	13: "360 LQ",
+	9: "FLAC",
+	3: "320kbps",
+	1: "128kbps",
+	8: "128kbps",
+	0: "MP3",
+};
+
+const errorStore = useErrorStore(pinia);
+const { t } = useI18n();
+
+const title = computed(() => `${errorStore.artist} - ${errorStore.title}`);
+const errors = computed(() => {
+	let errors = [];
+	errorStore.errors.forEach((error) => {
+		if (!error.type || error.type === "track") errors.push(error);
+	});
+	return errors;
+});
+const postErrors = computed(() => {
+	let errors = [];
+	errorStore.errors.forEach((error) => {
+		if (error.type === "post") errors.push(error);
+	});
+	return errors;
+});
+const downloadBitrate = computed(() => {
+	return BITRATE_LABELS[errorStore.bitrate];
+});
+</script>
+
 <template>
 	<div>
 		<h1 class="mb-8 text-5xl">{{ t("errors.title", { name: title }) }}</h1>
@@ -63,57 +103,3 @@
 		</div>
 	</div>
 </template>
-
-<script lang="ts">
-import { pinia } from "@/stores";
-import { useErrorStore } from "@/stores/errors";
-import { useI18n } from "vue-i18n";
-
-const errorStore = useErrorStore(pinia);
-
-export default {
-	setup() {
-		const { t } = useI18n();
-
-		return { t };
-	},
-	data() {
-		return {
-			BITRATE_LABELS: {
-				15: "360 HQ",
-				14: "360 MQ",
-				13: "360 LQ",
-				9: "FLAC",
-				3: "320kbps",
-				1: "128kbps",
-				8: "128kbps",
-				0: "MP3",
-			},
-		};
-	},
-	computed: {
-		title() {
-			return `${errorStore.artist} - ${errorStore.title}`;
-		},
-		errors() {
-			let errors = [];
-			errorStore.errors.forEach((error) => {
-				if (!error.type || error.type === "track") errors.push(error);
-			});
-			return errors;
-		},
-		postErrors() {
-			let errors = [];
-			errorStore.errors.forEach((error) => {
-				if (error.type === "post") errors.push(error);
-			});
-			return errors;
-		},
-		downloadBitrate() {
-			return this.BITRATE_LABELS[errorStore.bitrate];
-		},
-	},
-};
-</script>
-
-<style></style>

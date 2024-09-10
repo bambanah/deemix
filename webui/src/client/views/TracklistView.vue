@@ -1,3 +1,158 @@
+<script setup lang="ts">
+import { isEmpty } from "lodash-es";
+import { sendAddToQueue } from "@/utils/downloads";
+import { convertDuration } from "@/utils/utils";
+import { emitter } from "@/utils/emitter";
+import { useI18n } from "vue-i18n";
+import { onMounted, ref } from "vue";
+
+const { t } = useI18n();
+
+const title = ref("");
+const metadata = ref("");
+const release_date = ref("");
+const label = ref("");
+const explicit = ref(false);
+const image = ref("");
+const type = ref("empty");
+const link = ref("");
+const body = ref([]);
+
+function playPausePreview(e) {
+	emitter.emit("trackPreview:playPausePreview", e);
+}
+function reset() {
+	title.value = "Loading...";
+	image.value = "";
+	metadata.value = "";
+	label.value = "";
+	release_date.value = "";
+	explicit.value = false;
+	type.value = "empty";
+	body.value = [];
+}
+function addToQueue(e) {
+	sendAddToQueue(e.currentTarget.dataset.link);
+}
+function toggleAll(e) {
+	body.value.forEach((item) => {
+		if (item.type === "track") {
+			item.selected = e.currentTarget.checked;
+		}
+	});
+}
+function selectedLinks() {
+	const selected = [];
+	if (body.value) {
+		body.value.forEach((item) => {
+			if (item.type === "track" && item.selected)
+				selected.push(type.value === "spotifyPlaylist" ? item.uri : item.link);
+		});
+	}
+	return selected.join(";");
+}
+function showAlbum(data) {
+	reset();
+
+	const {
+		id: albumID,
+		title: albumTitle,
+		explicit_lyrics,
+		label: albumLabel,
+		artist: { name: artistName },
+		tracks: albumTracks,
+		nb_tracks: numberOfTracks,
+		release_date,
+		cover_xl,
+	} = data;
+
+	type.value = "album";
+	link.value = `https://www.deezer.com/album/${albumID}`;
+	title.value = albumTitle;
+	explicit.value = explicit_lyrics;
+	label.value = albumLabel;
+	metadata.value = `${artistName} • ${t(
+		"globals.listTabs.trackN",
+		numberOfTracks
+	)}`;
+	release_date.value = release_date.substring(0, 10);
+	image.value = cover_xl;
+
+	if (isEmpty(albumTracks)) {
+		body.value = null;
+	} else {
+		body.value = albumTracks;
+	}
+}
+function showPlaylist(data) {
+	reset();
+
+	const {
+		id: playlistID,
+		title: playlistTitle,
+		picture_xl: playlistCover,
+		creation_date,
+		creator: { name: creatorName },
+		tracks: playlistTracks,
+		tracks: { length: numberOfTracks },
+	} = data;
+
+	type.value = "playlist";
+	link.value = `https://www.deezer.com/playlist/${playlistID}`;
+	title.value = playlistTitle;
+	image.value = playlistCover;
+	release_date.value = creation_date.substring(0, 10);
+	metadata.value = `${t("globals.by", {
+		artist: creatorName,
+	})} • ${t("globals.listTabs.trackN", numberOfTracks)}`;
+
+	if (isEmpty(playlistTracks)) {
+		body.value = null;
+	} else {
+		body.value = playlistTracks;
+	}
+}
+function showSpotifyPlaylist(data) {
+	reset();
+
+	const {
+		uri: playlistURI,
+		name: playlistName,
+		images,
+		images: { length: numberOfImages },
+		owner: { display_name: ownerName },
+		tracks: playlistTracks,
+		tracks: { length: numberOfTracks },
+	} = data;
+
+	type.value = "spotifyPlaylist";
+	link.value = playlistURI;
+	title.value = playlistName;
+	image.value = numberOfImages
+		? images[0].url
+		: "https://e-cdns-images.dzcdn.net/images/cover/d41d8cd98f00b204e9800998ecf8427e/1000x1000-000000-80-0-0.jpg";
+	release_date.value = "";
+	metadata.value = `${t("globals.by", {
+		artist: ownerName,
+	})} • ${t("globals.listTabs.trackN", numberOfTracks)}`;
+
+	if (isEmpty(playlistTracks)) {
+		body.value = null;
+	} else {
+		body.value = playlistTracks;
+	}
+}
+function selectRow(_, track) {
+	track.selected = !track.selected;
+}
+
+onMounted(() => {
+	emitter.on("showAlbum", showAlbum);
+	emitter.on("showPlaylist", showPlaylist);
+	emitter.on("showSpotifyPlaylist", showSpotifyPlaylist);
+});
+</script>
+
 <template>
 	<div ref="root" class="fixed-footer bg-background-main image-header relative">
 		<header
@@ -104,7 +259,6 @@
 									role="link"
 									class="table__cell--medium table__cell--center cursor-pointer"
 									@click="navigate"
-									@keypress.enter="navigate"
 								>
 									{{ track.artist.name }}
 								</td>
@@ -119,7 +273,6 @@
 									role="link"
 									class="table__cell--medium table__cell--center cursor-pointer"
 									@click="navigate"
-									@keypress.enter="navigate"
 								>
 									{{ track.album.title }}
 								</td>
@@ -234,169 +387,3 @@
 		</footer>
 	</div>
 </template>
-
-<script>
-import { isEmpty } from "lodash-es";
-import { sendAddToQueue } from "@/utils/downloads";
-import Utils from "@/utils/utils";
-import { emitter } from "@/utils/emitter";
-import { useI18n } from "vue-i18n";
-
-export default {
-	setup() {
-		const { t } = useI18n();
-
-		return { t };
-	},
-	data() {
-		return {
-			title: "",
-			metadata: "",
-			release_date: "",
-			label: "",
-			explicit: false,
-			image: "",
-			type: "empty",
-			link: "",
-			body: [],
-		};
-	},
-	mounted() {
-		emitter.on("showAlbum", this.showAlbum);
-		emitter.on("showPlaylist", this.showPlaylist);
-		emitter.on("showSpotifyPlaylist", this.showSpotifyPlaylist);
-	},
-	methods: {
-		playPausePreview: (e) => {
-			emitter.emit("trackPreview:playPausePreview", e);
-		},
-		reset() {
-			this.title = "Loading...";
-			this.image = "";
-			this.metadata = "";
-			this.label = "";
-			this.release_date = "";
-			this.explicit = false;
-			this.type = "empty";
-			this.body = [];
-		},
-		addToQueue(e) {
-			sendAddToQueue(e.currentTarget.dataset.link);
-		},
-		toggleAll(e) {
-			this.body.forEach((item) => {
-				if (item.type === "track") {
-					item.selected = e.currentTarget.checked;
-				}
-			});
-		},
-		selectedLinks() {
-			const selected = [];
-			if (this.body) {
-				this.body.forEach((item) => {
-					if (item.type === "track" && item.selected)
-						selected.push(
-							this.type === "spotifyPlaylist" ? item.uri : item.link
-						);
-				});
-			}
-			return selected.join(";");
-		},
-		convertDuration: Utils.convertDuration,
-		showAlbum(data) {
-			this.reset();
-
-			const {
-				id: albumID,
-				title: albumTitle,
-				explicit_lyrics,
-				label: albumLabel,
-				artist: { name: artistName },
-				tracks: albumTracks,
-				nb_tracks: numberOfTracks,
-				release_date,
-				cover_xl,
-			} = data;
-
-			this.type = "album";
-			this.link = `https://www.deezer.com/album/${albumID}`;
-			this.title = albumTitle;
-			this.explicit = explicit_lyrics;
-			this.label = albumLabel;
-			this.metadata = `${artistName} • ${this.t(
-				"globals.listTabs.trackN",
-				numberOfTracks
-			)}`;
-			this.release_date = release_date.substring(0, 10);
-			this.image = cover_xl;
-
-			if (isEmpty(albumTracks)) {
-				this.body = null;
-			} else {
-				this.body = albumTracks;
-			}
-		},
-		showPlaylist(data) {
-			this.reset();
-
-			const {
-				id: playlistID,
-				title: playlistTitle,
-				picture_xl: playlistCover,
-				creation_date,
-				creator: { name: creatorName },
-				tracks: playlistTracks,
-				tracks: { length: numberOfTracks },
-			} = data;
-
-			this.type = "playlist";
-			this.link = `https://www.deezer.com/playlist/${playlistID}`;
-			this.title = playlistTitle;
-			this.image = playlistCover;
-			this.release_date = creation_date.substring(0, 10);
-			this.metadata = `${this.t("globals.by", {
-				artist: creatorName,
-			})} • ${this.t("globals.listTabs.trackN", numberOfTracks)}`;
-
-			if (isEmpty(playlistTracks)) {
-				this.body = null;
-			} else {
-				this.body = playlistTracks;
-			}
-		},
-		showSpotifyPlaylist(data) {
-			this.reset();
-
-			const {
-				uri: playlistURI,
-				name: playlistName,
-				images,
-				images: { length: numberOfImages },
-				owner: { display_name: ownerName },
-				tracks: playlistTracks,
-				tracks: { length: numberOfTracks },
-			} = data;
-
-			this.type = "spotifyPlaylist";
-			this.link = playlistURI;
-			this.title = playlistName;
-			this.image = numberOfImages
-				? images[0].url
-				: "https://e-cdns-images.dzcdn.net/images/cover/d41d8cd98f00b204e9800998ecf8427e/1000x1000-000000-80-0-0.jpg";
-			this.release_date = "";
-			this.metadata = `${this.t("globals.by", {
-				artist: ownerName,
-			})} • ${this.t("globals.listTabs.trackN", numberOfTracks)}`;
-
-			if (isEmpty(playlistTracks)) {
-				this.body = null;
-			} else {
-				this.body = playlistTracks;
-			}
-		},
-		selectRow(_, track) {
-			track.selected = !track.selected;
-		},
-	},
-};
-</script>

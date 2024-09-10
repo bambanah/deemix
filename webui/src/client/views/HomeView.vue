@@ -1,3 +1,41 @@
+<script setup lang="ts">
+import CoverContainer from "@/components/globals/CoverContainer.vue";
+import { getHomeData } from "@/data/home";
+import { pinia } from "@/stores";
+import { useLoginStore } from "@/stores/login";
+import { sendAddToQueue } from "@/utils/downloads";
+import { computed, onMounted, ref } from "vue";
+import { useI18n } from "vue-i18n";
+
+const loginStore = useLoginStore(pinia);
+
+const { t } = useI18n();
+
+const playlists = ref([]);
+const albums = ref([]);
+
+const isLoggedIn = computed(() => loginStore.isLoggedIn);
+
+function addToQueue(e) {
+	sendAddToQueue(e.currentTarget.dataset.link);
+}
+function initHome(data) {
+	const {
+		playlists: { data: playlistData },
+		albums: { data: albumData },
+	} = data;
+
+	playlists.value = playlistData;
+	albums.value = albumData;
+}
+
+onMounted(async () => {
+	const homeData = await getHomeData();
+
+	initHome(homeData);
+});
+</script>
+
 <template>
 	<div id="home_tab">
 		<h1 class="mb-8 text-5xl">{{ t("globals.welcome") }}</h1>
@@ -108,55 +146,3 @@
 		</section>
 	</div>
 </template>
-
-<script lang="ts">
-import CoverContainer from "@/components/globals/CoverContainer.vue";
-import { getHomeData } from "@/data/home";
-import { pinia } from "@/stores";
-import { useLoginStore } from "@/stores/login";
-import { sendAddToQueue } from "@/utils/downloads";
-import { useI18n } from "vue-i18n";
-
-const loginStore = useLoginStore(pinia);
-
-export default {
-	components: {
-		CoverContainer,
-	},
-	setup() {
-		const { t } = useI18n();
-
-		return { t };
-	},
-	data() {
-		return {
-			playlists: [],
-			albums: [],
-		};
-	},
-	computed: {
-		isLoggedIn: () => loginStore.isLoggedIn,
-	},
-	async created() {
-		const homeData = await getHomeData();
-
-		this.initHome(homeData);
-	},
-	methods: {
-		addToQueue(e) {
-			sendAddToQueue(e.currentTarget.dataset.link);
-		},
-		initHome(data) {
-			const {
-				playlists: { data: playlistData },
-				albums: { data: albumData },
-			} = data;
-
-			this.playlists = playlistData;
-			this.albums = albumData;
-		},
-	},
-};
-</script>
-
-<style></style>

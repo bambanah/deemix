@@ -1,3 +1,35 @@
+<script setup lang="ts">
+import { links } from "@/data/sidebar";
+import { pinia } from "@/stores";
+import { useAppInfoStore } from "@/stores/appInfo";
+import { useTheme } from "@/use/theme";
+import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
+import { useRoute, useRouter } from "vue-router";
+
+const { t } = useI18n();
+const router = useRouter();
+const route = useRoute();
+const appInfoStore = useAppInfoStore(pinia);
+const { THEMES, currentTheme } = useTheme();
+
+const activeTab = links.find((link) => link.routerName === route.name);
+
+const isSlim = ref(false);
+const activeTablink = ref(activeTab ? activeTab.name : "home");
+
+/* === Add update notification near info === */
+const updateAvailable = computed(() => appInfoStore.updateAvailable);
+
+router.afterEach((to) => {
+	const linkInSidebar = links.find((link) => link.routerName === to.name);
+
+	if (!linkInSidebar) return;
+
+	activeTablink.value = linkInSidebar.name;
+});
+</script>
+
 <template>
 	<aside
 		id="sidebar"
@@ -71,62 +103,6 @@
 		</span>
 	</aside>
 </template>
-
-<script lang="ts">
-import { links } from "@/data/sidebar";
-import { pinia } from "@/stores";
-import { useAppInfoStore } from "@/stores/appInfo";
-import { useTheme } from "@/use/theme";
-import {
-	computed,
-	defineComponent,
-	getCurrentInstance,
-	reactive,
-	toRefs,
-} from "vue";
-import { useI18n } from "vue-i18n";
-
-export default defineComponent({
-	setup(_, ctx) {
-		const { t } = useI18n();
-
-		const currInstance = getCurrentInstance();
-
-		const activeTab = links.find(
-			(link) => link.routerName === currInstance?.proxy.$root.$route.name
-		);
-
-		const state = reactive({
-			activeTablink: activeTab ? activeTab.name : "home",
-			links,
-		});
-		const { THEMES, currentTheme } = useTheme();
-
-		/* === Add update notification near info === */
-		const appInfoStore = useAppInfoStore(pinia);
-		const updateAvailable = computed(() => appInfoStore.updateAvailable);
-
-		currInstance?.proxy.$root.$router.afterEach((to) => {
-			const linkInSidebar = state.links.find(
-				(link) => link.routerName === to.name
-			);
-
-			if (!linkInSidebar) return;
-
-			state.activeTablink = linkInSidebar.name;
-		});
-
-		return {
-			...toRefs(state),
-			updateAvailable,
-			THEMES,
-			currentTheme,
-			isSlim: false,
-			t,
-		};
-	},
-});
-</script>
 
 <style scoped>
 .deemix-icon-container {

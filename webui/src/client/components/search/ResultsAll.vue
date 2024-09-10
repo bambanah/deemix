@@ -1,3 +1,54 @@
+<script setup lang="ts">
+import TopResult from "@/components/search/TopResult.vue";
+import ResultsTracks from "@/components/search/ResultsTracks.vue";
+import ResultsAlbums from "@/components/search/ResultsAlbums.vue";
+import ResultsArtists from "@/components/search/ResultsArtists.vue";
+import ResultsPlaylists from "@/components/search/ResultsPlaylists.vue";
+import ResultsError from "@/components/search/ResultsError.vue";
+
+import {
+	formatSingleTrack,
+	formatAlbums,
+	formatArtist,
+	formatPlaylist,
+} from "@/data/search";
+import { standardizeData } from "@/data/standardize";
+import { useI18n } from "vue-i18n";
+import { computed } from "vue";
+
+const { t } = useI18n();
+
+interface Props {
+	viewInfo: any;
+}
+
+const { viewInfo } = defineProps<Props>();
+
+const thereAreResults = computed(() => {
+	const areInfosLoaded = !!viewInfo;
+
+	if (!areInfosLoaded) {
+		return false;
+	}
+
+	const noResultsPresent = viewInfo.ORDER.every((section) =>
+		section === "TOP_RESULT"
+			? viewInfo[section].length === 0
+			: viewInfo[section].data.length === 0
+	);
+
+	return !noResultsPresent;
+});
+
+function checkSectionResults(section) {
+	if (section === "TOP_RESULT") {
+		return !!viewInfo.TOP_RESULT[0];
+	} else {
+		return !!viewInfo[section].data[0];
+	}
+}
+</script>
+
 <template>
 	<section>
 		<ResultsError v-if="viewInfo.ERROR" :error="viewInfo.ERROR"></ResultsError>
@@ -58,80 +109,3 @@
 		</template>
 	</section>
 </template>
-
-<script lang="ts">
-import { convertDuration } from "@/utils/utils";
-import { upperCaseFirstLowerCaseRest } from "@/utils/texts";
-import TopResult from "@/components/search/TopResult.vue";
-import ResultsTracks from "@/components/search/ResultsTracks.vue";
-import ResultsAlbums from "@/components/search/ResultsAlbums.vue";
-import ResultsArtists from "@/components/search/ResultsArtists.vue";
-import ResultsPlaylists from "@/components/search/ResultsPlaylists.vue";
-import ResultsError from "@/components/search/ResultsError.vue";
-
-import {
-	formatSingleTrack,
-	formatAlbums,
-	formatArtist,
-	formatPlaylist,
-} from "@/data/search";
-import { standardizeData } from "@/data/standardize";
-import { useI18n } from "vue-i18n";
-
-export default {
-	components: {
-		TopResult,
-		ResultsTracks,
-		ResultsAlbums,
-		ResultsArtists,
-		ResultsPlaylists,
-		ResultsError,
-	},
-	props: {
-		viewInfo: {
-			type: Object,
-			required: true,
-		},
-	},
-	setup(props, ctx) {
-		const { t } = useI18n();
-
-		console.log(props.viewInfo);
-
-		return { t };
-	},
-	computed: {
-		thereAreResults() {
-			const areInfosLoaded = !!this.viewInfo;
-
-			if (!areInfosLoaded) {
-				return false;
-			}
-
-			const noResultsPresent = this.viewInfo.ORDER.every((section) =>
-				section === "TOP_RESULT"
-					? this.viewInfo[section].length === 0
-					: this.viewInfo[section].data.length === 0
-			);
-
-			return !noResultsPresent;
-		},
-	},
-	methods: {
-		convertDuration,
-		upperCaseFirstLowerCaseRest,
-		standardizeData,
-		formatSingleTrack,
-		formatAlbums,
-		formatArtist,
-		formatPlaylist,
-		checkSectionResults(section) {
-			if (section === "TOP_RESULT") {
-				return !!this.viewInfo.TOP_RESULT[0];
-			} else {
-				return !!this.viewInfo[section].data[0];
-			}
-		},
-	},
-};
-</script>
