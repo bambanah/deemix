@@ -14,7 +14,7 @@ const handler: ApiHandler["handler"] = async (req, res) => {
 	const data = uuid.split("_");
 	let url = "";
 	let bitrate = 0;
-	if (data.lenght === 4) {
+	if (data.length === 4) {
 		if (data[0] === "spotify") {
 			url = `https://open.spotify.com/${data[1]}/${data[2]}`;
 			bitrate = Number(data[3]);
