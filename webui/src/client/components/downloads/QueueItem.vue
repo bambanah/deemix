@@ -1,3 +1,176 @@
+<script setup lang="ts">
+import { computed, ref } from "vue";
+
+const possibleStates = [
+	"converting",
+	"downloading",
+	"download finished",
+	"completed",
+];
+
+interface Props {
+	queueItem: {
+		id: string;
+		type: string;
+		downloaded: number;
+		failed: number;
+		errors: any[];
+		status: string;
+		size: number;
+		uuid: string;
+		progress: number;
+		conversion: number;
+		bitrate: string;
+		artist: string;
+		title: string;
+		cover: string;
+		album: {
+			id: string;
+			title: string;
+		};
+		artists: string[];
+		explicit: boolean;
+	};
+	showTags: boolean;
+}
+const { queueItem } = defineProps<Props>();
+const emit = defineEmits(["retry-download", "remove-item", "show-errors"]);
+
+const isLoading = ref(false);
+
+const hasFails = computed(() => queueItem.failed >= 1);
+const hasErrors = computed(() => queueItem.errors?.length >= 1);
+const allFailed = computed(() => {
+	let allFailed = false;
+
+	if (queueItem.status === "download finished") {
+		allFailed = queueItem.size !== 0 && queueItem.failed === queueItem.size;
+	}
+
+	return allFailed;
+});
+const finishedWithFails = computed(() => {
+	return (
+		queueItem.status === "download finished" &&
+		(hasFails.value || hasErrors.value)
+	);
+});
+const isDeterminateStatus = computed(() =>
+	possibleStates.includes(queueItem.status)
+);
+const barClass = computed(() => ({
+	converting: queueItem.status === "converting",
+	indeterminate: !isDeterminateStatus.value,
+	determinate: isDeterminateStatus.value,
+}));
+const barStyle = computed(() => {
+	let width = 0;
+	let backgroundColor = "var(--primary-color)";
+
+	if (hasFails.value || hasErrors.value) {
+		// Orange
+		backgroundColor = "hsl(33, 100%, 47%)";
+	} else {
+		// Green
+		backgroundColor = "hsl(150, 76%, 34%)";
+	}
+
+	if (allFailed.value) {
+		// Red
+		backgroundColor = "hsl(360, 100%, 35%)";
+	}
+
+	if (queueItem.status === "download finished") {
+		width = 100;
+	}
+
+	if (queueItem.status === "downloading") {
+		width = queueItem.progress;
+	}
+
+	if (queueItem.status === "converting") {
+		width = 100 - queueItem.conversion;
+		backgroundColor = "hsl(46, 100%, 50%)";
+	}
+
+	return {
+		width: `${width}%`,
+		backgroundColor,
+	};
+});
+
+const resultIconText = computed(() => {
+	let text = "delete_forever";
+
+	if (queueItem.status === "download finished") {
+		if (!(hasFails.value || hasErrors.value)) {
+			text = "done";
+		} else if (queueItem.failed >= queueItem.size) {
+			text = "error";
+		} else {
+			text = "warning";
+		}
+	}
+
+	return text;
+});
+
+const generateLink = computed(() => {
+	switch (queueItem.type) {
+		case "track":
+			return `https://deezer.com/track/${queueItem.id}`;
+		case "album":
+			return `https://deezer.com/album/${queueItem.id}`;
+		case "playlist":
+			if (queueItem.id.endsWith("_top_track"))
+				return `https://www.deezer.com/artist/${queueItem.id.slice(
+					0,
+					-10
+				)}/top_track`;
+			return `https://deezer.com/playlist/${queueItem.id}`;
+		case "spotify_playlist":
+			return `https://open.spotify.com/playlist/${queueItem.id}`;
+		default:
+			return "";
+	}
+});
+
+const bitrateText = computed(() => {
+	switch (parseInt(queueItem.bitrate)) {
+		case 9:
+			return "FLAC";
+		case 3:
+			return "320";
+		case 1:
+			return "128";
+		case 15:
+			return "360HQ";
+		case 14:
+			return "360MQ";
+		case 13:
+			return "360LQ";
+		default:
+			return "MISC";
+	}
+});
+
+function onResultIconClick() {
+	if (isDeterminateStatus.value) {
+		if (finishedWithFails.value) {
+			emit("retry-download", queueItem.uuid);
+		}
+
+		if (queueItem.status === "downloading") {
+			isLoading.value = true;
+			emit("remove-item", queueItem.uuid);
+		}
+	} else {
+		isLoading.value = true;
+		emit("remove-item", queueItem.uuid);
+	}
+}
+</script>
+
 <template>
 	<div class="download-object" :data-link-only="generateLink">
 		<div class="download-info">
@@ -31,7 +204,7 @@
 					class="flex items-center"
 					:class="{ 'cursor-pointer': hasFails }"
 					style="justify-content: center"
-					@click="hasFails ? $emit('show-errors', queueItem) : null"
+					@click="hasFails ? emit('show-errors', queueItem) : null"
 				>
 					{{ queueItem.failed }}
 					<i class="material-icons">error_outline</i>
@@ -58,171 +231,6 @@
 		</div>
 	</div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from "vue";
-
-const possibleStates = [
-	"converting",
-	"downloading",
-	"download finished",
-	"completed",
-];
-
-export default defineComponent({
-	props: {
-		queueItem: {
-			type: Object,
-			default: () => ({}),
-		},
-		showTags: Boolean,
-	},
-	data: () => {
-		return {
-			isLoading: false,
-		};
-	},
-	computed: {
-		hasFails() {
-			return this.queueItem.failed >= 1;
-		},
-		hasErrors() {
-			return this.queueItem.errors?.length >= 1;
-		},
-		allFailed() {
-			let allFailed = false;
-
-			if (this.queueItem.status === "download finished") {
-				allFailed =
-					this.queueItem.size !== 0 &&
-					this.queueItem.failed === this.queueItem.size;
-			}
-
-			return allFailed;
-		},
-		finishedWithFails() {
-			return (
-				this.queueItem.status === "download finished" &&
-				(this.hasFails || this.hasErrors)
-			);
-		},
-		isDeterminateStatus() {
-			return possibleStates.includes(this.queueItem.status);
-		},
-		barClass() {
-			return {
-				converting: this.queueItem.status === "converting",
-				indeterminate: !this.isDeterminateStatus,
-				determinate: this.isDeterminateStatus,
-			};
-		},
-		barStyle() {
-			let width = 0;
-			let backgroundColor = "var(--primary-color)";
-
-			if (this.hasFails || this.hasErrors) {
-				// Orange
-				backgroundColor = "hsl(33, 100%, 47%)";
-			} else {
-				// Green
-				backgroundColor = "hsl(150, 76%, 34%)";
-			}
-
-			if (this.allFailed) {
-				// Red
-				backgroundColor = "hsl(360, 100%, 35%)";
-			}
-
-			if (this.queueItem.status === "download finished") {
-				width = 100;
-			}
-
-			if (this.queueItem.status === "downloading") {
-				width = this.queueItem.progress;
-			}
-
-			if (this.queueItem.status === "converting") {
-				width = 100 - this.queueItem.conversion;
-				backgroundColor = "hsl(46, 100%, 50%)";
-			}
-
-			return {
-				width: `${width}%`,
-				backgroundColor,
-			};
-		},
-		resultIconText() {
-			let text = "delete_forever";
-
-			if (this.queueItem.status === "download finished") {
-				if (!(this.hasFails || this.hasErrors)) {
-					text = "done";
-				} else if (this.queueItem.failed >= this.queueItem.size) {
-					text = "error";
-				} else {
-					text = "warning";
-				}
-			}
-
-			return text;
-		},
-		generateLink() {
-			switch (this.queueItem.type) {
-				case "track":
-					return `https://deezer.com/track/${this.queueItem.id}`;
-				case "album":
-					return `https://deezer.com/album/${this.queueItem.id}`;
-				case "playlist":
-					if (this.queueItem.id.endsWith("_top_track"))
-						return `https://www.deezer.com/artist/${this.queueItem.id.slice(
-							0,
-							-10
-						)}/top_track`;
-					return `https://deezer.com/playlist/${this.queueItem.id}`;
-				case "spotify_playlist":
-					return `https://open.spotify.com/playlist/${this.queueItem.id}`;
-				default:
-					return "";
-			}
-		},
-		bitrateText() {
-			switch (parseInt(this.queueItem.bitrate)) {
-				case 9:
-					return "FLAC";
-				case 3:
-					return "320";
-				case 1:
-					return "128";
-				case 15:
-					return "360HQ";
-				case 14:
-					return "360MQ";
-				case 13:
-					return "360LQ";
-				default:
-					return "MISC";
-			}
-		},
-	},
-	methods: {
-		onResultIconClick() {
-			if (this.isDeterminateStatus) {
-				if (this.finishedWithFails) {
-					this.$emit("retry-download", this.queueItem.uuid);
-				}
-
-				if (this.queueItem.status === "downloading") {
-					this.isLoading = true;
-					this.$emit("remove-item", this.queueItem.uuid);
-				}
-			} else {
-				this.isLoading = true;
-				this.$emit("remove-item", this.queueItem.uuid);
-			}
-		},
-	},
-});
-</script>
 
 <style>
 .download-object {

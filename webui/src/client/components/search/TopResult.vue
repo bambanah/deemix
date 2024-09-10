@@ -1,32 +1,69 @@
+<script setup lang="ts">
+import { upperCaseFirstLowerCaseRest } from "@/utils/texts";
+import CoverContainer from "@/components/globals/CoverContainer.vue";
+import { useI18n } from "vue-i18n";
+import { computed } from "vue";
+
+const { t, n } = useI18n();
+
+interface Props {
+	info: {
+		type: string;
+		id: string;
+		title: string;
+		picture: string;
+		link: string;
+		artist: string;
+		nb_fan: number;
+		nb_song: string;
+	};
+}
+
+const { info } = defineProps<Props>();
+
+const fansNumber = computed(() => {
+	let number: string;
+
+	if (info.nb_fan) {
+		try {
+			number = n(info.nb_fan);
+		} catch (error) {
+			number = n(info.nb_fan, { locale: "en" });
+		}
+	}
+
+	return info.type === "artist"
+		? t("search.fans", { n: number })
+		: t("globals.by", { artist: info.artist }) +
+				" - " +
+				t("globals.listTabs.trackN", info.nb_song);
+});
+</script>
+
 <template>
 	<div class="flex flex-col items-center justify-center">
 		<router-link
 			v-slot="{ navigate }"
 			custom
 			:to="{
-				name: upperCaseFirstLowerCaseRest($attrs.info.type),
-				params: { id: $attrs.info.id },
+				name: upperCaseFirstLowerCaseRest(info.type),
+				params: { id: info.id },
 			}"
 		>
-			<div
-				role="link"
-				class="cursor-pointer"
-				@click="navigate"
-				@keypress.enter="navigate"
-			>
+			<div role="link" class="cursor-pointer" @click="navigate">
 				<CoverContainer
 					class="h-40 w-40"
-					:is-rounded="$attrs.info.type !== 'artist'"
-					:is-circle="$attrs.info.type === 'artist'"
-					:cover="$attrs.info.picture"
-					:link="$attrs.info.link"
+					:is-rounded="info.type !== 'artist'"
+					:is-circle="info.type === 'artist'"
+					:cover="info.picture"
+					:link="info.link"
 					@click.stop="$emit('add-to-queue', $event)"
 				/>
 
 				<p
 					class="hover:text-primary mb-1 mt-4 text-center text-xl transition-colors duration-200 ease-in-out"
 				>
-					{{ $attrs.info.title }}
+					{{ info.title }}
 				</p>
 			</div>
 		</router-link>
@@ -35,46 +72,7 @@
 			{{ fansNumber }}
 		</p>
 		<span class="bg-primary rounded-xl p-1 px-2 text-center text-xs capitalize">
-			{{ t(`globals.listTabs.${$attrs.info.type}`, 1) }}
+			{{ t(`globals.listTabs.${info.type}`, 1) }}
 		</span>
 	</div>
 </template>
-
-<script>
-import { upperCaseFirstLowerCaseRest } from "@/utils/texts";
-import CoverContainer from "@/components/globals/CoverContainer.vue";
-import { useI18n } from "vue-i18n";
-
-export default {
-	components: {
-		CoverContainer,
-	},
-	setup() {
-		const { t } = useI18n();
-
-		return { t };
-	},
-	computed: {
-		fansNumber() {
-			let number;
-
-			if (this.$attrs.info.nb_fan) {
-				try {
-					number = this.$n(this.$attrs.info.nb_fan);
-				} catch (error) {
-					number = this.$n(this.$attrs.info.nb_fan, { locale: "en" });
-				}
-			}
-
-			return this.$attrs.info.type === "artist"
-				? this.t("search.fans", { n: number })
-				: this.t("globals.by", { artist: this.$attrs.info.artist }) +
-						" - " +
-						this.t("globals.listTabs.trackN", this.$attrs.info.nb_song);
-		},
-	},
-	methods: {
-		upperCaseFirstLowerCaseRest,
-	},
-};
-</script>

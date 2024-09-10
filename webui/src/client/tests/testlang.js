@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 async function loadLang(lang_id) {
 	let language_module;
 	const result = [];

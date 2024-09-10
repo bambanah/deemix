@@ -1,3 +1,18 @@
+<script setup lang="ts">
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
+
+interface Props {
+	cover: string;
+	isRounded?: boolean;
+	isCircle?: boolean;
+	link: string;
+}
+
+defineProps<Props>();
+</script>
+
 <template>
 	<div class="cover-container group relative">
 		<img
@@ -23,37 +38,6 @@
 		</button>
 	</div>
 </template>
-
-<script lang="ts">
-import { useI18n } from "vue-i18n";
-
-export default {
-	inheritAttrs: false,
-	props: {
-		cover: {
-			type: String,
-			required: true,
-		},
-		isRounded: {
-			type: Boolean,
-			required: false,
-		},
-		isCircle: {
-			type: Boolean,
-			required: false,
-		},
-		link: {
-			type: String,
-			required: true,
-		},
-	},
-	setup() {
-		const { t } = useI18n();
-
-		return { t };
-	},
-};
-</script>
 
 <style scoped>
 .cover-container {

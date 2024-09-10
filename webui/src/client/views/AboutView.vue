@@ -1,3 +1,47 @@
+<script setup lang="ts">
+import {
+	computed,
+	defineComponent,
+	onMounted,
+	reactive,
+	ref,
+	toRefs,
+} from "vue";
+import { useAppInfoStore } from "@/stores/appInfo";
+
+import { useOnline } from "@/use/online";
+import { pinia } from "@/stores";
+import { useI18n } from "vue-i18n";
+
+import paypal from "@/assets/paypal.svg?url";
+
+const appInfoStore = useAppInfoStore(pinia);
+
+const { isOnline } = useOnline();
+const { t } = useI18n();
+
+const appInfo = computed(() => appInfoStore.appInfo);
+
+const current = ref("");
+const latest = ref("");
+const updateAvailableRef = ref(false);
+const deemixVersionRef = ref("");
+
+function initUpdate(appInfo: typeof appInfoStore.appInfo) {
+	const { currentCommit, latestCommit, updateAvailable, deemixVersion } =
+		appInfo;
+
+	current.value = currentCommit;
+	latest.value = latestCommit;
+	updateAvailableRef.value = updateAvailable;
+	deemixVersionRef.value = deemixVersion;
+}
+
+onMounted(() => {
+	initUpdate(appInfo.value);
+});
+</script>
+
 <template>
 	<div id="about_tab">
 		<h1 class="mb-8 text-5xl capitalize">{{ t("sidebar.about") }}</h1>
@@ -20,9 +64,9 @@
 				{{ t("about.updates.currentVersion") }}:
 				<span>{{ current || t("about.updates.versionNotAvailable") }}</span>
 			</li>
-			<li>{{ t("about.updates.deemixVersion") }}: {{ deemixVersion }}</li>
+			<li>{{ t("about.updates.deemixVersion") }}: {{ deemixVersionRef }}</li>
 			<i18n-t
-				v-if="updateAvailable && latest"
+				v-if="updateAvailableRef && latest"
 				keypath="about.updates.updateAvailable"
 				tag="li"
 			>
@@ -178,55 +222,6 @@
 		</i18n-t>
 	</div>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent, onMounted, reactive, toRefs } from "vue";
-import { useAppInfoStore } from "@/stores/appInfo";
-
-import { useOnline } from "@/use/online";
-import { pinia } from "@/stores";
-import { useI18n } from "vue-i18n";
-
-import paypal from "@/assets/paypal.svg?url";
-
-export default defineComponent({
-	setup() {
-		const state = reactive({
-			current: null,
-			latest: null,
-			updateAvailable: false,
-			deemixVersion: null,
-		});
-		const { isOnline } = useOnline();
-		const { t } = useI18n();
-
-		function initUpdate(appInfo: typeof appInfoStore.appInfo) {
-			const { currentCommit, latestCommit, updateAvailable, deemixVersion } =
-				appInfo;
-
-			state.current = currentCommit;
-			state.latest = latestCommit;
-			state.updateAvailable = updateAvailable;
-			state.deemixVersion = deemixVersion;
-		}
-
-		const appInfoStore = useAppInfoStore(pinia);
-
-		const appInfo = computed(() => appInfoStore.appInfo);
-
-		onMounted(() => {
-			initUpdate(appInfo.value);
-		});
-
-		return {
-			...toRefs(state),
-			paypal,
-			isOnline,
-			t,
-		};
-	},
-});
-</script>
 
 <style scoped>
 li,

@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
+</script>
+
 <template>
 	<div>
 		<h1 class="mb-8 text-5xl">{{ t("settings.spotify.question") }}</h1>
@@ -69,11 +75,3 @@
 		</i18n>
 	</div>
 </template>
-
-<script setup lang="ts">
-import { useI18n } from "vue-i18n";
-
-const { t } = useI18n();
-</script>
-
-<style></style>

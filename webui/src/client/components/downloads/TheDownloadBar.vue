@@ -1,3 +1,390 @@
+<script setup lang="ts">
+import QueueItem from "@/components/downloads/QueueItem.vue";
+import { pinia } from "@/stores";
+import { useAppInfoStore } from "@/stores/appInfo";
+import { useErrorStore } from "@/stores/errors";
+import { useLoginStore } from "@/stores/login";
+import { fetchData, postToServer } from "@/utils/api-utils";
+import { socket } from "@/utils/socket";
+import { toast } from "@/utils/toasts";
+import { computed, onMounted, onUnmounted, ref } from "vue";
+import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
+
+const { t } = useI18n();
+const router = useRouter();
+
+const tabMinWidth = 250;
+const tabMaxWidth = 500;
+
+const loginStore = useLoginStore(pinia);
+const appInfoStore = useAppInfoStore(pinia);
+const errorStore = useErrorStore(pinia);
+
+const container = ref<HTMLElement | null>(null);
+const toggler = ref<HTMLElement | null>(null);
+const list = ref<HTMLElement | null>(null);
+
+const cachedTabWidth = ref(
+	parseInt(localStorage.getItem("downloadTabWidth")) || 300
+);
+const queue = ref([]);
+const queueList = ref<any>({});
+const queueComplete = ref([]);
+const isExpanded = ref(localStorage.getItem("downloadTabOpen") === "true");
+
+const clientMode = computed(() => loginStore.clientMode);
+const isSlim = computed(() => appInfoStore.hasSlimDownloads);
+const showTags = computed(() => appInfoStore.showBitrateTags);
+const finishedWithoutErrors = computed(() => {
+	const isCompletedWithoutErrors = (el) =>
+		(el.status || "") === "download finished" && el.errors.length === 0;
+
+	return Object.values(queueList.value).filter(isCompletedWithoutErrors);
+});
+
+function checkIfToggleBar(keyEvent) {
+	if (!(keyEvent.ctrlKey && keyEvent.key === "b")) return;
+
+	toggleDownloadTab();
+}
+
+const setErrors = (errors) => errorStore.setErrors(errors);
+
+function onRemoveItem(uuid: string) {
+	socket.emit("removeFromQueue", uuid);
+}
+
+function onRetryDownload(uuid: string) {
+	postToServer("retryDownload", { uuid });
+}
+
+function setTabWidth(newWidth?: number) {
+	if (newWidth === undefined) {
+		container.value.style.width = "";
+		list.value.style.width = "";
+	} else {
+		container.value.style.width = newWidth + "px";
+		list.value.style.width = newWidth + "px";
+	}
+}
+
+function initQueue(data) {
+	const {
+		queueOrder: initQueue,
+		//		queueComplete: initQueueComplete,
+		current: currentItem,
+		queue: initQueueList,
+		restored,
+	} = data;
+
+	const initQueueComplete = Object.values(initQueueList)
+		.filter((el: any) =>
+			["completed", "withErrors", "failed"].includes(el.status)
+		)
+		.map((el: any) => el.uuid);
+
+	if (initQueueComplete && initQueueComplete.length) {
+		initQueueComplete.forEach((item) => {
+			initQueueList[item].silent = true;
+			addToQueue(initQueueList[item]);
+		});
+	}
+
+	if (currentItem) {
+		currentItem.silent = true;
+		addToQueue(currentItem, true);
+	}
+
+	initQueue.forEach((item) => {
+		if (!initQueueList[item]) return;
+		initQueueList[item].silent = true;
+		addToQueue(initQueueList[item]);
+	});
+
+	if (restored) {
+		toast(t("toasts.queueRestored"), "done", true, "restoring_queue");
+		socket.emit("queueRestored");
+	}
+}
+
+function addToQueue(queueItem, current = false) {
+	if (Array.isArray(queueItem)) {
+		if (queueItem.length > 1) {
+			queueItem.forEach((item) => {
+				item.silent = true;
+				addToQueue(item);
+			});
+			toast(
+				t("toasts.addedMoreToQueue", { n: queueItem.length }),
+				"playlist_add_check"
+			);
+			return;
+		} else {
+			queueItem = queueItem[0];
+		}
+	}
+
+	// Add implicit values back
+	queueItem.downloaded = queueItem.downloaded || 0;
+	queueItem.failed = queueItem.failed || 0;
+	queueItem.progress = queueItem.progress || 0;
+	queueItem.conversion = queueItem.conversion || 0;
+	queueItem.errors = queueItem.errors || [];
+
+	// * Here we have only queueItem objects
+	queueItem.current = current;
+	queueList.value[queueItem.uuid] = queueItem;
+
+	// * Used when opening the app in another tab
+	const itemIsAlreadyDownloaded =
+		queueItem.downloaded + queueItem.failed == queueItem.size;
+
+	if (itemIsAlreadyDownloaded) {
+		const itemIsNotInCompletedQueue = !queueComplete.value.includes(
+			queueItem.uuid
+		);
+
+		queueList.value[queueItem.uuid].status = "download finished";
+
+		if (itemIsNotInCompletedQueue) {
+			// * Add it
+			queueComplete.value.push(queueItem.uuid);
+		}
+	} else {
+		const itemIsNotInQueue = !queue.value.includes(queueItem.uuid);
+
+		if (itemIsNotInQueue) {
+			queue.value.push(queueItem.uuid);
+		}
+	}
+
+	const needToStartDownload =
+		!itemIsAlreadyDownloaded &&
+		((queueItem.progress > 0 && queueItem.progress < 100) || current);
+
+	if (needToStartDownload) {
+		startDownload(queueItem.uuid);
+	}
+
+	if (!queueItem.silent) {
+		toast(
+			t("toasts.addedToQueue", { item: queueItem.title }),
+			"playlist_add_check"
+		);
+	}
+}
+
+function updateQueue(update) {
+	// downloaded and failed default to false?
+	const {
+		uuid,
+		downloaded,
+		alreadyDownloaded,
+		failed,
+		progress,
+		conversion,
+		error,
+		data,
+		errid,
+		stack,
+		postFailed,
+	} = update;
+
+	if (uuid && queue.value.includes(uuid)) {
+		if (downloaded || alreadyDownloaded) {
+			queueList.value[uuid].downloaded++;
+		}
+
+		if (failed) {
+			queueList.value[uuid].failed++;
+			queueList.value[uuid].errors.push({
+				message: error,
+				data,
+				errid,
+				stack,
+			});
+		}
+
+		if (progress) {
+			queueList.value[uuid].progress = progress;
+		}
+
+		if (conversion) {
+			queueList.value[uuid].conversion = conversion;
+		}
+
+		if (postFailed) {
+			queueList.value[uuid].errors.push({ message: error, data, stack });
+		}
+	}
+}
+
+function removeFromQueue(uuid) {
+	const index = queue.value.indexOf(uuid);
+
+	if (index > -1) {
+		delete queue.value[index];
+		delete queueList.value[uuid];
+	}
+}
+
+function removeAllDownloads(currentItem) {
+	queueComplete.value = [];
+
+	if (!currentItem) {
+		queue.value = [];
+		queueList.value = {};
+	} else {
+		queue.value = [currentItem];
+
+		const tempQueueItem = queueList.value[currentItem];
+
+		queueList.value = {};
+		queueList.value[currentItem] = tempQueueItem;
+	}
+}
+
+function removedFinishedDownloads() {
+	// TODO: Make this a computed property
+	queueComplete.value = finishedWithoutErrors.value.map((el: any) => el.uuid);
+
+	queueComplete.value.forEach((uuid) => {
+		delete queueList.value[uuid];
+	});
+
+	queueComplete.value = [];
+}
+
+function toggleDownloadTab() {
+	setTabWidth();
+
+	container.value.style.transition = "all 250ms ease-in-out";
+
+	// Toggle returns a Boolean based on the action it performed
+	isExpanded.value = !isExpanded.value;
+
+	if (isExpanded.value) {
+		setTabWidth(cachedTabWidth.value);
+	}
+
+	localStorage.setItem("downloadTabOpen", isExpanded.value.toString());
+}
+
+function cleanQueue() {
+	socket.emit("removeFinishedDownloads");
+}
+
+function cancelQueue() {
+	socket.emit("cancelAllDownloads");
+}
+
+function openDownloadsFolder() {
+	// if (this.clientMode) {
+	// @ts-expect-error
+	window.api.send("openDownloadsFolder");
+	// }
+}
+
+function handleDrag(event) {
+	let newWidth = window.innerWidth - event.pageX + 2;
+
+	if (newWidth < tabMinWidth) {
+		newWidth = tabMinWidth;
+	} else if (newWidth > tabMaxWidth) {
+		newWidth = tabMaxWidth;
+	}
+
+	cachedTabWidth.value = newWidth;
+	setTabWidth(newWidth);
+}
+
+function startDrag() {
+	document.addEventListener("mousemove", handleDrag);
+}
+
+function startDownload(uuid) {
+	queueList.value[uuid].status = "downloading";
+}
+
+function finishDownload(uuid) {
+	const isInQueue =
+		queue.value.includes(uuid) || queueComplete.value.includes(uuid);
+
+	if (!isInQueue) return;
+
+	queueList.value[uuid].status = "download finished";
+	toast(
+		t("toasts.finishDownload", { item: queueList.value[uuid].title }),
+		"done"
+	);
+
+	const index = queue.value.indexOf(uuid);
+
+	if (index > -1) {
+		queue.value.splice(index, 1);
+		queueComplete.value.push(uuid);
+	}
+
+	if (queue.value.length <= 0) {
+		toast(t("toasts.allDownloaded"), "done_all");
+	}
+}
+function startConversion(uuid) {
+	queueList.value[uuid].status = "converting";
+	queueList.value[uuid].conversion = 0;
+}
+function finishConversion(downloadObject) {
+	queueList.value[downloadObject.uuid].size = downloadObject.size;
+}
+async function showErrorsTab(item) {
+	setErrors(item);
+
+	router.push({ name: "Errors" });
+}
+
+onMounted(() => {
+	socket.on("startDownload", startDownload);
+	socket.on("startConversion", startConversion);
+	socket.on("finishConversion", finishConversion);
+	// socket.on('init_downloadQueue', initQueue)
+	socket.on("addedToQueue", addToQueue);
+	socket.on("updateQueue", updateQueue);
+	socket.on("removeFromQueue", removeFromQueue);
+	socket.on("finishDownload", finishDownload);
+	socket.on("removedAllDownloads", removeAllDownloads);
+	socket.on("removedFinishedDownloads", removedFinishedDownloads);
+
+	fetchData("getQueue")
+		.then((res) => {
+			initQueue(res);
+		})
+		.catch(console.error);
+
+	// Check if download tab has slim entries
+	if (localStorage.getItem("slimDownloads") === "true") {
+		list.value.classList.add("slim");
+	}
+
+	if (isExpanded.value) {
+		setTabWidth(cachedTabWidth.value);
+	}
+
+	document.addEventListener("mouseup", () => {
+		document.removeEventListener("mousemove", handleDrag);
+	});
+	document.addEventListener("keyup", checkIfToggleBar);
+
+	window.addEventListener("beforeunload", () => {
+		localStorage.setItem("downloadTabWidth", cachedTabWidth.value.toString());
+	});
+});
+
+onUnmounted(() => {
+	document.removeEventListener("keyup", checkIfToggleBar);
+});
+</script>
+
 <template>
 	<section
 		id="download_tab_container"
@@ -77,380 +464,6 @@
 		</div>
 	</section>
 </template>
-
-<script>
-import QueueItem from "@/components/downloads/QueueItem.vue";
-
-import { socket } from "@/utils/socket";
-import { toast } from "@/utils/toasts";
-import { fetchData, postToServer } from "@/utils/api-utils";
-import { useLoginStore } from "@/stores/login";
-import { useAppInfoStore } from "@/stores/appInfo";
-import { useErrorStore } from "@/stores/errors";
-import { pinia } from "@/stores";
-import { useI18n } from "vue-i18n";
-import { reactive } from "vue";
-
-const tabMinWidth = 250;
-const tabMaxWidth = 500;
-
-const loginStore = useLoginStore(pinia);
-const appInfoStore = useAppInfoStore(pinia);
-const errorStore = useErrorStore(pinia);
-
-export default {
-	components: {
-		QueueItem,
-	},
-	setup() {
-		const { t } = useI18n();
-
-		return { t };
-	},
-	data: () => {
-		return {
-			cachedTabWidth: parseInt(localStorage.getItem("downloadTabWidth")) || 300,
-			queue: [],
-			queueList: reactive({}),
-			queueComplete: [],
-			isExpanded: localStorage.getItem("downloadTabOpen") === "true",
-		};
-	},
-	computed: {
-		clientMode: () => loginStore.clientMode,
-		isSlim: () => appInfoStore.hasSlimDownloads,
-		showTags: () => appInfoStore.showBitrateTags,
-		finishedWithoutErrors() {
-			const isCompletedWithoutErrors = (el) =>
-				(el.status || "") === "download finished" && el.errors.length === 0;
-
-			return Object.values(this.queueList).filter(isCompletedWithoutErrors);
-		},
-	},
-	created() {},
-	mounted() {
-		socket.on("startDownload", this.startDownload);
-		socket.on("startConversion", this.startConversion);
-		socket.on("finishConversion", this.finishConversion);
-		// socket.on('init_downloadQueue', this.initQueue)
-		socket.on("addedToQueue", this.addToQueue);
-		socket.on("updateQueue", this.updateQueue);
-		socket.on("removedFromQueue", this.removeFromQueue);
-		socket.on("finishDownload", this.finishDownload);
-		socket.on("removedAllDownloads", this.removeAllDownloads);
-		socket.on("removedFinishedDownloads", this.removedFinishedDownloads);
-
-		fetchData("getQueue")
-			.then((res) => {
-				this.initQueue(res);
-			})
-			.catch(console.error);
-
-		// Check if download tab has slim entries
-		if (localStorage.getItem("slimDownloads") === "true") {
-			this.$refs.list.classList.add("slim");
-		}
-
-		if (this.isExpanded) {
-			this.setTabWidth(this.cachedTabWidth);
-		}
-
-		document.addEventListener("mouseup", () => {
-			document.removeEventListener("mousemove", this.handleDrag);
-		});
-		document.addEventListener("keyup", this.checkIfToggleBar);
-
-		window.addEventListener("beforeunload", () => {
-			localStorage.setItem("downloadTabWidth", this.cachedTabWidth.toString());
-		});
-	},
-	unmounted() {
-		document.removeEventListener("keyup", this.checkIfToggleBar);
-	},
-	methods: {
-		checkIfToggleBar: (keyEvent) => {
-			if (!(keyEvent.ctrlKey && keyEvent.key === "b")) return;
-
-			this.toggleDownloadTab();
-		},
-		setErrors: (errors) => errorStore.setErrors(errors),
-		onRemoveItem(uuid) {
-			socket.emit("removeFromQueue", uuid);
-		},
-		onRetryDownload(uuid) {
-			postToServer("retryDownload", { uuid });
-		},
-		setTabWidth(newWidth) {
-			if (undefined === newWidth) {
-				this.$refs.container.style.width = "";
-				this.$refs.list.style.width = "";
-			} else {
-				this.$refs.container.style.width = newWidth + "px";
-				this.$refs.list.style.width = newWidth + "px";
-			}
-		},
-		initQueue(data) {
-			const {
-				queueOrder: initQueue,
-				//		queueComplete: initQueueComplete,
-				current: currentItem,
-				queue: initQueueList,
-				restored,
-			} = data;
-
-			const initQueueComplete = Object.values(initQueueList)
-				.filter((el) =>
-					["completed", "withErrors", "failed"].includes(el.status)
-				)
-				.map((el) => el.uuid);
-
-			if (initQueueComplete && initQueueComplete.length) {
-				initQueueComplete.forEach((item) => {
-					initQueueList[item].silent = true;
-					this.addToQueue(initQueueList[item]);
-				});
-			}
-
-			if (currentItem) {
-				currentItem.silent = true;
-				this.addToQueue(currentItem, true);
-			}
-
-			initQueue.forEach((item) => {
-				if (!initQueueList[item]) return;
-				initQueueList[item].silent = true;
-				this.addToQueue(initQueueList[item]);
-			});
-
-			if (restored) {
-				toast(this.t("toasts.queueRestored"), "done", true, "restoring_queue");
-				socket.emit("queueRestored");
-			}
-		},
-		addToQueue(queueItem, current = false) {
-			if (Array.isArray(queueItem)) {
-				if (queueItem.length > 1) {
-					queueItem.forEach((item) => {
-						item.silent = true;
-						this.addToQueue(item);
-					});
-					toast(
-						this.t("toasts.addedMoreToQueue", { n: queueItem.length }),
-						"playlist_add_check"
-					);
-					return;
-				} else {
-					queueItem = queueItem[0];
-				}
-			}
-
-			// Add implicit values back
-			queueItem.downloaded = queueItem.downloaded || 0;
-			queueItem.failed = queueItem.failed || 0;
-			queueItem.progress = queueItem.progress || 0;
-			queueItem.conversion = queueItem.conversion || 0;
-			queueItem.errors = queueItem.errors || [];
-
-			// * Here we have only queueItem objects
-			queueItem.current = current;
-			this.queueList[queueItem.uuid] = queueItem;
-
-			// * Used when opening the app in another tab
-			const itemIsAlreadyDownloaded =
-				queueItem.downloaded + queueItem.failed == queueItem.size;
-
-			if (itemIsAlreadyDownloaded) {
-				const itemIsNotInCompletedQueue = !this.queueComplete.includes(
-					queueItem.uuid
-				);
-
-				this.queueList[queueItem.uuid].status = "download finished";
-
-				if (itemIsNotInCompletedQueue) {
-					// * Add it
-					this.queueComplete.push(queueItem.uuid);
-				}
-			} else {
-				const itemIsNotInQueue = !this.queue.includes(queueItem.uuid);
-
-				if (itemIsNotInQueue) {
-					this.queue.push(queueItem.uuid);
-				}
-			}
-
-			const needToStartDownload =
-				!itemIsAlreadyDownloaded &&
-				((queueItem.progress > 0 && queueItem.progress < 100) || current);
-
-			if (needToStartDownload) {
-				this.startDownload(queueItem.uuid);
-			}
-
-			if (!queueItem.silent) {
-				toast(
-					this.t("toasts.addedToQueue", { item: queueItem.title }),
-					"playlist_add_check"
-				);
-			}
-		},
-		updateQueue(update) {
-			// downloaded and failed default to false?
-			const {
-				uuid,
-				downloaded,
-				alreadyDownloaded,
-				failed,
-				progress,
-				conversion,
-				error,
-				data,
-				errid,
-				stack,
-				postFailed,
-			} = update;
-
-			if (uuid && this.queue.includes(uuid)) {
-				if (downloaded || alreadyDownloaded) {
-					this.queueList[uuid].downloaded++;
-				}
-
-				if (failed) {
-					this.queueList[uuid].failed++;
-					this.queueList[uuid].errors.push({
-						message: error,
-						data,
-						errid,
-						stack,
-					});
-				}
-
-				if (progress) {
-					this.queueList[uuid].progress = progress;
-				}
-
-				if (conversion) {
-					this.queueList[uuid].conversion = conversion;
-				}
-
-				if (postFailed) {
-					this.queueList[uuid].errors.push({ message: error, data, stack });
-				}
-			}
-		},
-		removeFromQueue(uuid) {
-			const index = this.queue.indexOf(uuid);
-
-			if (index > -1) {
-				delete this.queue[index];
-				delete this.queueList[uuid];
-			}
-		},
-		removeAllDownloads(currentItem) {
-			this.queueComplete = [];
-
-			if (!currentItem) {
-				this.queue = [];
-				this.queueList = {};
-			} else {
-				this.queue = [currentItem];
-
-				const tempQueueItem = this.queueList[currentItem];
-
-				this.queueList = {};
-				this.queueList[currentItem] = tempQueueItem;
-			}
-		},
-		removedFinishedDownloads() {
-			// TODO: Make this a computed property
-			this.queueComplete = this.finishedWithoutErrors.map((el) => el.uuid);
-
-			this.queueComplete.forEach((uuid) => {
-				delete this.queueList[uuid];
-			});
-
-			this.queueComplete = [];
-		},
-		toggleDownloadTab() {
-			this.setTabWidth();
-
-			this.$refs.container.style.transition = "all 250ms ease-in-out";
-
-			// Toggle returns a Boolean based on the action it performed
-			this.isExpanded = !this.isExpanded;
-
-			if (this.isExpanded) {
-				this.setTabWidth(this.cachedTabWidth);
-			}
-
-			localStorage.setItem("downloadTabOpen", this.isExpanded.toString());
-		},
-		cleanQueue() {
-			socket.emit("removeFinishedDownloads");
-		},
-		cancelQueue() {
-			socket.emit("cancelAllDownloads");
-		},
-		openDownloadsFolder() {
-			// if (this.clientMode) {
-			window.api.send("openDownloadsFolder");
-			// }
-		},
-		handleDrag(event) {
-			let newWidth = window.innerWidth - event.pageX + 2;
-
-			if (newWidth < tabMinWidth) {
-				newWidth = tabMinWidth;
-			} else if (newWidth > tabMaxWidth) {
-				newWidth = tabMaxWidth;
-			}
-
-			this.cachedTabWidth = newWidth;
-			this.setTabWidth(newWidth);
-		},
-		startDrag() {
-			document.addEventListener("mousemove", this.handleDrag);
-		},
-		startDownload(uuid) {
-			this.queueList[uuid].status = "downloading";
-		},
-		finishDownload(uuid) {
-			const isInQueue =
-				this.queue.includes(uuid) || this.queueComplete.includes(uuid);
-
-			if (!isInQueue) return;
-
-			this.queueList[uuid].status = "download finished";
-			toast(
-				this.t("toasts.finishDownload", { item: this.queueList[uuid].title }),
-				"done"
-			);
-
-			const index = this.queue.indexOf(uuid);
-
-			if (index > -1) {
-				this.queue.splice(index, 1);
-				this.queueComplete.push(uuid);
-			}
-
-			if (this.queue.length <= 0) {
-				toast(this.t("toasts.allDownloaded"), "done_all");
-			}
-		},
-		startConversion(uuid) {
-			this.queueList[uuid].status = "converting";
-			this.queueList[uuid].conversion = 0;
-		},
-		finishConversion(downloadObject) {
-			this.queueList[downloadObject.uuid].size = downloadObject.size;
-		},
-		async showErrorsTab(item) {
-			await this.setErrors(item);
-
-			this.$router.push({ name: "Errors" });
-		},
-	},
-};
-</script>
 
 <style scoped>
 #toggle_download_tab {

@@ -1,3 +1,13 @@
+<script setup lang="ts">
+import BaseAccordion from "@/components/globals/BaseAccordion.vue";
+
+interface Props {
+	templateVariables: string[];
+}
+
+const { templateVariables } = defineProps<Props>();
+</script>
+
 <template>
 	<BaseAccordion style="--arrow-v-align: baseline; margin-bottom: 3rem">
 		<template #title>
@@ -18,17 +28,3 @@
 		</div>
 	</BaseAccordion>
 </template>
-
-<script>
-import BaseAccordion from "@/components/globals/BaseAccordion.vue";
-
-export default {
-	components: { BaseAccordion },
-	props: {
-		templateVariables: {
-			type: Array,
-			required: true,
-		},
-	},
-};
-</script>
