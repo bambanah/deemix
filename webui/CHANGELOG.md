@@ -1,5 +1,12 @@
 # deemix-webui
 
+## 4.0.3
+
+### Patch Changes
+
+- b55245e: Fix some links being unstyled
+- cb28739: Fix Spotify playlist retry not working
+
 ## 4.0.2
 
 ### Patch Changes
