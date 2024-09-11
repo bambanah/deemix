@@ -1,1 +1,1 @@
-export { default as SpotifyPlugin } from "./spotify";
+export { default as SpotifyPlugin } from "./spotify.js";

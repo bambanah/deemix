@@ -1,10 +1,10 @@
-import { Single, Collection } from "./types/DownloadObjects";
+import { Single, Collection } from "./types/DownloadObjects.js";
 import {
 	GenerationError,
 	ISRCnotOnDeezer,
 	InvalidID,
 	NotYourPrivatePlaylist,
-} from "./errors";
+} from "./errors.js";
 import {
 	utils,
 	type APIAlbum,
@@ -17,7 +17,7 @@ import {
 } from "deezer-sdk";
 import { each } from "async";
 import { Deezer } from "deezer-sdk";
-import { Album } from "./types/Album";
+import { Album } from "./types/Album.js";
 
 const { map_user_playlist, map_track, map_album } = utils;
 
@@ -301,8 +301,8 @@ export async function generateArtistItem(
 	const albumList = [];
 	if (tab === "discography") {
 		delete artistDiscographyAPI.all;
-		await each(artistDiscographyAPI, async (type) => {
-			await each(type, async (album) => {
+		await each(artistDiscographyAPI, async (type: any) => {
+			await each(type, async (album: any) => {
 				try {
 					const albumData = await generateAlbumItem(
 						dz,
