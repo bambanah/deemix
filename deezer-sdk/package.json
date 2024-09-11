@@ -21,7 +21,8 @@
 	"license": "GPL-3.0-or-later",
 	"dependencies": {
 		"got": "14.4.2",
-		"tough-cookie": "^4.0.0"
+		"tough-cookie": "^4.0.0",
+		"zod": "^3.23.8"
 	},
 	"devDependencies": {
 		"@types/tough-cookie": "^4.0.5",
