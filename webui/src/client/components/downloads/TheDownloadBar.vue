@@ -280,10 +280,7 @@ function cancelQueue() {
 }
 
 function openDownloadsFolder() {
-	// if (this.clientMode) {
-	// @ts-expect-error
 	window.api.send("openDownloadsFolder");
-	// }
 }
 
 function handleDrag(event) {
