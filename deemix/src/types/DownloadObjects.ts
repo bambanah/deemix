@@ -1,6 +1,3 @@
-import { SpotifyPlugin } from "@/plugins";
-import BasePlugin from "@/plugins/base";
-
 export class IDownloadObject {
 	type: any;
 	id: any;
@@ -10,8 +7,8 @@ export class IDownloadObject {
 	cover: any;
 	explicit: any;
 	size: any;
-	downloaded: any;
-	failed: any;
+	downloaded: number;
+	failed: number;
 	progress: any;
 	errors: any;
 	files: any;
@@ -111,6 +108,7 @@ export class IDownloadObject {
 
 export class Single extends IDownloadObject {
 	single: any;
+
 	constructor(obj) {
 		super(obj);
 		this.size = 1;
@@ -164,6 +162,7 @@ export class Collection extends IDownloadObject {
 export class Convertable extends Collection {
 	plugin: string;
 	conversion_data: any;
+
 	constructor(obj) {
 		super(obj);
 		this.plugin = obj.plugin;

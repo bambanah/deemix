@@ -113,7 +113,7 @@ export class GW {
 				})
 				.json();
 		} catch (e) {
-			console.debug("[ERROR] deezer.gw", method, args, e.name, e.message);
+			console.error("[ERROR] deezer.gw", method, args, e.name, e.message);
 			if (
 				[
 					"ECONNABORTED",
@@ -192,7 +192,7 @@ export class GW {
 	}
 
 	async get_tracks(sng_ids) {
-		const tracks_array = [];
+		const tracks_array: any[] = [];
 		const body = await this.api_call("song.getListData", { SNG_IDS: sng_ids });
 		let errors = 0;
 		for (let i = 0; i < sng_ids.length; i++) {
@@ -220,7 +220,7 @@ export class GW {
 	}
 
 	async get_album_tracks(alb_id) {
-		const tracks_array = [];
+		const tracks_array: any[] = [];
 		const body = await this.api_call("song.getListByAlbum", {
 			ALB_ID: alb_id,
 			nb: -1,
@@ -248,7 +248,7 @@ export class GW {
 
 	async get_artist_top_tracks(art_id, options: APIOptions = {}) {
 		const limit = options.limit || 100;
-		const tracks_array = [];
+		const tracks_array: any[] = [];
 		const body = await this.api_call("artist.getTopTrack", {
 			ART_ID: art_id,
 			nb: limit,
@@ -286,7 +286,7 @@ export class GW {
 	}
 
 	async get_playlist_tracks(playlist_id) {
-		const tracks_array = [];
+		const tracks_array: any[] = [];
 		const body = await this.api_call("playlist.getSongs", {
 			PLAYLIST_ID: playlist_id,
 			nb: -1,
@@ -304,7 +304,7 @@ export class GW {
 		description,
 		songs = []
 	) {
-		const newSongs = [];
+		const newSongs: any[] = [];
 		songs.forEach((song) => {
 			newSongs.push([song, 0]);
 		});
@@ -317,7 +317,7 @@ export class GW {
 	}
 
 	edit_playlist(playlist_id, title, status, description, songs = []) {
-		const newSongs = [];
+		const newSongs: any[] = [];
 		songs.forEach((song) => {
 			newSongs.push([song, 0]);
 		});
@@ -331,7 +331,7 @@ export class GW {
 	}
 
 	add_songs_to_playlist(playlist_id, songs, offset = -1) {
-		const newSongs = [];
+		const newSongs: any[] = [];
 		songs.forEach((song) => {
 			newSongs.push([song, 0]);
 		});
@@ -347,7 +347,7 @@ export class GW {
 	}
 
 	remove_songs_from_playlist(playlist_id, songs) {
-		const newSongs = [];
+		const newSongs: any[] = [];
 		songs.forEach((song) => {
 			newSongs.push([song, 0]);
 		});
@@ -455,8 +455,8 @@ export class GW {
 		const limit = options.limit || 100;
 		let index = 0;
 		let releases = [];
-		const result = { all: [], featured: [], more: [] };
-		const ids = [];
+		const result: any = { all: [], featured: [], more: [] };
+		const ids: any[] = [];
 
 		// Get all releases
 		let response;
@@ -466,7 +466,7 @@ export class GW {
 			index += limit;
 		} while (index < response.total);
 
-		releases.forEach((release) => {
+		releases.forEach((release: any) => {
 			if (ids.indexOf(release.ALB_ID) === -1) {
 				ids.push(release.ALB_ID);
 				const obj = map_artist_album(release);
@@ -523,7 +523,7 @@ export class GW {
 		);
 		const blog_name = user_profile_page.DATA.USER.BLOG_NAME || "Unknown";
 		const data = user_profile_page.TAB.playlists.data;
-		const result = [];
+		const result: any[] = [];
 		data.forEach((playlist) => {
 			result.push(map_user_playlist(playlist, blog_name));
 		});
@@ -534,7 +534,7 @@ export class GW {
 		const limit = options.limit || 25;
 		let data = await this.get_user_profile_page(user_id, "albums", { limit });
 		data = data.TAB.albums.data;
-		const result = [];
+		const result: any[] = [];
 		data.forEach((album) => {
 			result.push(map_user_album(album));
 		});
@@ -545,7 +545,7 @@ export class GW {
 		const limit = options.limit || 25;
 		let data = await this.get_user_profile_page(user_id, "artists", { limit });
 		data = data.TAB.artists.data;
-		const result = [];
+		const result: any[] = [];
 		data.forEach((artist) => {
 			result.push(map_user_artist(artist));
 		});
@@ -559,7 +559,7 @@ export class GW {
 		const limit = options.limit || 25;
 		let data = await this.get_user_profile_page(user_id, "loved", { limit });
 		data = data.TAB.loved.data;
-		const result = [];
+		const result: any[] = [];
 		data.forEach((track) => {
 			result.push(map_user_track(track));
 		});
@@ -573,7 +573,7 @@ export class GW {
 		const ids = ids_raw.data.map((x) => x.SNG_ID);
 		if (!ids.length) return [];
 		const data = await this.get_tracks(ids);
-		const result = [];
+		const result: any[] = [];
 		let i = 0;
 		data.forEach((track) => {
 			if (!track) return;
