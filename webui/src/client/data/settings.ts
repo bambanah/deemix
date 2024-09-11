@@ -2,7 +2,7 @@ import { fetchData } from "@/utils/api-utils";
 
 let settingsData = {};
 let defaultSettingsData = {};
-let spotifyCredentials = {};
+let spotifyCredentials: any = {};
 
 export async function getSettingsData() {
 	const data = await fetchData("getSettings");

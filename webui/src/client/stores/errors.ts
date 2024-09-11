@@ -32,9 +32,6 @@ export const useErrorStore = defineStore("error", {
 		type: "",
 		uuid: "",
 	}),
-	getters: {
-		errors: (state) => state,
-	},
 	actions: {
 		setErrors(payload: ErrorState) {
 			Object.assign(this, payload);

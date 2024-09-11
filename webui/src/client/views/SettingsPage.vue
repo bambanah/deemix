@@ -1,112 +1,21 @@
 <script setup lang="ts">
-import { debounce } from "lodash-es";
-
-import TemplateVariablesList from "@/components/settings/TemplateVariablesList.vue";
-import { getSettingsData } from "@/data/settings";
-import { trackTemplateVariables } from "@/data/file-templates";
-
-import { toast } from "@/utils/toasts";
-import { socket } from "@/utils/socket";
-import { flags } from "@/utils/flags";
-import { copyToClipboard } from "@/utils/utils";
-
 import BaseAccordion from "@/components/globals/BaseAccordion.vue";
-import { fetchData, postToServer } from "@/utils/api-utils";
-import { getFormItem } from "@/utils/forms";
-import { useLoginStore } from "@/stores/login";
-import { useAppInfoStore } from "@/stores/appInfo";
+import TemplateVariablesList from "@/components/settings/TemplateVariablesList.vue";
+import { trackTemplateVariables } from "@/data/file-templates";
+import { getSettingsData } from "@/data/settings";
 import { pinia } from "@/stores";
-import { useI18n } from "vue-i18n";
+import { useAppInfoStore } from "@/stores/appInfo";
+import { useLoginStore } from "@/stores/login";
+import { fetchData, postToServer } from "@/utils/api-utils";
+import { flags } from "@/utils/flags";
+import { getFormItem } from "@/utils/forms";
+import { socket } from "@/utils/socket";
+import { toast } from "@/utils/toasts";
+import { copyToClipboard } from "@/utils/utils";
+// import { type Settings } from "deemix";
+import { debounce } from "lodash-es";
 import { computed, onMounted, onUnmounted, ref } from "vue";
-
-export interface Tags {
-	title?: boolean;
-	artist?: boolean;
-	artists?: boolean;
-	album?: boolean;
-	cover?: boolean;
-	trackNumber?: boolean;
-	trackTotal?: boolean;
-	discNumber?: boolean;
-	discTotal?: boolean;
-	albumArtist?: boolean;
-	genre?: boolean;
-	year?: boolean;
-	date?: boolean;
-	explicit?: boolean;
-	isrc?: boolean;
-	length?: boolean;
-	barcode?: boolean;
-	bpm?: boolean;
-	replayGain?: boolean;
-	label?: boolean;
-	lyrics?: boolean;
-	syncedLyrics?: boolean;
-	copyright?: boolean;
-	composer?: boolean;
-	involvedPeople?: boolean;
-	source?: boolean;
-	savePlaylistAsCompilation?: boolean;
-	useNullSeparator?: boolean;
-	saveID3v1?: boolean;
-	multiArtistSeparator?: string;
-	singleAlbumArtist?: boolean;
-	coverDescriptionUTF8?: boolean;
-}
-
-export interface Settings {
-	tags: Tags;
-	executeCommand: string;
-	downloadLocation: string;
-
-	fallbackISRC?: boolean;
-	clearQueueOnExit?: boolean;
-	autoCheckForUpdates?: boolean;
-	feelingLucky?: boolean;
-	tracknameTemplate?: string;
-	albumTracknameTemplate?: string;
-	playlistTracknameTemplate?: string;
-	createPlaylistFolder?: boolean;
-	playlistNameTemplate?: string;
-	createArtistFolder?: boolean;
-	artistNameTemplate?: string;
-	createAlbumFolder?: boolean;
-	albumNameTemplate?: string;
-	createCDFolder?: boolean;
-	createStructurePlaylist?: boolean;
-	createSingleFolder?: boolean;
-	padTracks?: boolean;
-	paddingSize?: string;
-	illegalCharacterReplacer?: string;
-	queueConcurrency?: number;
-	maxBitrate?: string;
-	fallbackBitrate?: boolean;
-	fallbackSearch?: boolean;
-	logErrors?: boolean;
-	logSearched?: boolean;
-	saveDownloadQueue?: boolean;
-	overwriteFile?: string;
-	createM3U8File?: boolean;
-	playlistFilenameTemplate?: string;
-	syncedLyrics?: boolean;
-	embeddedArtworkSize?: number;
-	embeddedArtworkPNG?: boolean;
-	localArtworkSize?: number;
-	localArtworkFormat?: string;
-	saveArtwork?: boolean;
-	coverImageTemplate?: string;
-	saveArtworkArtist?: boolean;
-	artistImageTemplate?: string;
-	jpegImageQuality?: number;
-	dateFormat?: string;
-	albumVariousArtists?: boolean;
-	removeAlbumVersion?: boolean;
-	removeDuplicateArtists?: boolean;
-	tagsLanguage?: string;
-	featuredToTitle?: string;
-	titleCasing?: string;
-	artistCasing?: string;
-}
+import { useI18n } from "vue-i18n";
 
 const loginStore = useLoginStore(pinia);
 const appInfoStore = useAppInfoStore(pinia);
@@ -124,16 +33,19 @@ const initialSettings = {
 	downloadLocation: "",
 };
 
-const settings = ref<Settings>(initialSettings);
-const lastSettings = ref<Settings>(initialSettings);
+const settings = ref<any>(initialSettings);
+const lastSettings = ref<any>(initialSettings);
 const defaultSettings = ref({});
 const spotifyFeatures = ref({
 	clientId: "",
 	clientSecret: "",
 	fallbackSearch: false,
 });
-const spotifyCredentials = ref({});
-const lastCredentials = ref({});
+const lastCredentials = ref({
+	clientId: "",
+	clientSecret: "",
+	fallbackSearch: false,
+});
 const lastUser = ref("");
 const spotifyUser = ref(localStorage.getItem("spotifyUser") || "");
 const storedAccountNum = localStorage.getItem("accountNum");
@@ -152,16 +64,6 @@ const previewVolume = computed({
 		appInfoStore.setPreviewVolume(value);
 	}, 20),
 });
-const hasSlimDownloads = computed({
-	get: () => appInfoStore.hasSlimDownloads,
-	set: (value) => appInfoStore.setSlimDownloads(value),
-});
-// const hasSlimSidebar = computed(() => appInfoStore.hasSlimSidebar);
-// const showBitrateTags = computed(() => appInfoStore.showBitrateTags);
-// const showSearchButton = computed(() => appInfoStore.showSearchButton);
-const needToWait = computed(() => {
-	return Object.keys(lastSettings).length === 0;
-});
 const pictureHref = computed(() => {
 	// Default image: https://e-cdns-images.dzcdn.net/images/user/125x125-000000-80-0-0.jpg
 	return `https://e-cdns-images.dzcdn.net/images/user/${user.value.picture}/125x125-000000-80-0-0.jpg`;
@@ -173,14 +75,11 @@ const userLicense = computed(() => {
 });
 
 onMounted(async () => {
-	const {
-		settingsData,
-		defaultSettingsData,
-		spotifyCredentials: spotifyCredentialsData,
-	} = await getSettingsData();
+	const { settingsData, defaultSettingsData, spotifyCredentials } =
+		await getSettingsData();
 
 	defaultSettings.value = defaultSettingsData;
-	spotifyCredentials.value = spotifyCredentialsData;
+	spotifyFeatures.value = spotifyCredentials;
 	initSettings(settingsData, spotifyCredentials);
 
 	if (spotifyUser.value) {
@@ -208,14 +107,6 @@ function onTemplateVariableClick(templateName) {
 	copyToClipboard(templateName);
 	toast(`Copied ${templateName} to clipboard!`);
 }
-function revertSettings() {
-	settings.value = lastSettings.value;
-}
-
-function revertCredentials() {
-	spotifyCredentials.value = lastCredentials.value;
-	spotifyUser.value = (" " + lastUser.value).slice(1);
-}
 
 function copyARLtoClipboard() {
 	const copyText = loginInput.value;
@@ -231,7 +122,7 @@ function copyARLtoClipboard() {
 
 function saveSettings() {
 	lastSettings.value = settings.value;
-	lastCredentials.value = spotifyFeatures;
+	lastCredentials.value = spotifyFeatures.value;
 
 	let changed = false;
 
@@ -244,8 +135,12 @@ function saveSettings() {
 	}
 
 	socket.emit("saveSettings", {
-		settings: lastSettings.value,
-		spotifySettings: lastCredentials.value,
+		settings: settings.value,
+		spotifySettings: {
+			clientId: spotifyFeatures.value.clientId,
+			clientSecret: spotifyFeatures.value.clientSecret,
+			fallbackSearch: spotifyFeatures.value.fallbackSearch,
+		},
 		spotifyUser: changed ? lastUser.value : false,
 	});
 
