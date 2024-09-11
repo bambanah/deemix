@@ -1,7 +1,7 @@
 import { accessSync, constants } from "fs";
 import stream from "stream";
 import { promisify } from "util";
-import { ErrorMessages } from "../errors";
+import { ErrorMessages } from "@/errors.js";
 
 export const pipeline = promisify(stream.pipeline);
 

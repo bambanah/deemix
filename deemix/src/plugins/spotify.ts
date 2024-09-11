@@ -1,16 +1,16 @@
-import BasePlugin from "./base";
-import { getConfigFolder } from "../utils/localpaths";
-import { generateTrackItem, generateAlbumItem } from "../itemgen";
-import { TrackNotOnDeezer, AlbumNotOnDeezer, InvalidID } from "../errors";
-import { Convertable, Collection } from "../types/DownloadObjects";
-import { sep } from "path";
-import fs from "fs";
+import { type Settings } from "@/types/Settings.js";
+import Track from "@/types/Track.js";
 import { SpotifyApi } from "@spotify/web-api-ts-sdk";
-import got from "got";
 import { queue } from "async";
 import { Deezer } from "deezer-sdk";
-import { type Settings } from "@/types";
-import Track from "@/types/Track";
+import fs from "fs";
+import got from "got";
+import { sep } from "path";
+import { AlbumNotOnDeezer, InvalidID, TrackNotOnDeezer } from "../errors.js";
+import { generateAlbumItem, generateTrackItem } from "../itemgen.js";
+import { Collection, Convertable } from "../types/DownloadObjects.js";
+import { getConfigFolder } from "../utils/localpaths.js";
+import BasePlugin from "./base.js";
 
 export default class SpotifyPlugin extends BasePlugin {
 	credentials: { clientId: string; clientSecret: string };

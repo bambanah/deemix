@@ -1,8 +1,8 @@
 import { TrackFormats } from "deezer-sdk";
-import { CustomDate } from "../types/CustomDate";
-import Track from "@/types/Track";
-import { IDownloadObject } from "@/types/DownloadObjects";
-import { type Settings } from "@/types/Settings";
+import { CustomDate } from "../types/CustomDate.js";
+import Track from "@/types/Track.js";
+import { IDownloadObject } from "@/types/DownloadObjects.js";
+import { type Settings } from "@/types/Settings.js";
 
 const bitrateLabels = {
 	[TrackFormats.MP4_RA3]: "360 HQ",
