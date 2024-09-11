@@ -9,6 +9,8 @@
 	"scripts": {
 		"dev": "tsup src/index.ts --format esm --dts --watch",
 		"build": "tsup src/index.ts --format esm --dts",
+		"test": "vitest run",
+		"test:watch": "vitest",
 		"lint:ts": "tsc --noEmit"
 	},
 	"repository": {
@@ -23,6 +25,7 @@
 	},
 	"devDependencies": {
 		"@types/tough-cookie": "^4.0.5",
-		"tsup": "^8.2.4"
+		"tsup": "^8.2.4",
+		"vitest": "^2.0.5"
 	}
 }
