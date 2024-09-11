@@ -1078,6 +1078,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { debounce } from "lodash-es";
 
 import TemplateVariablesList from "@/components/settings/TemplateVariablesList.vue";

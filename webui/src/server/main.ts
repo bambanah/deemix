@@ -2,12 +2,13 @@ import { DeemixApp } from "@/deemixApp.js";
 import { logger, removeOldLogs } from "@/helpers/logger.js";
 import { loadLoginCredentials } from "@/helpers/loginStorage.js";
 import cookieParser from "cookie-parser";
-import initDebug from "debug";
 import { utils } from "deemix";
 import express from "express";
 import session from "express-session";
 import memorystore from "memorystore";
 import morgan from "morgan";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 import ViteExpress from "vite-express";
 import { WebSocket, WebSocketServer } from "ws";
 import yargs from "yargs";
@@ -16,11 +17,8 @@ import { normalizePort } from "./helpers/port.js";
 import { getErrorCb, getListeningCb } from "./helpers/server-callbacks.js";
 import { registerApis } from "./routes/api/register.js";
 import indexRouter from "./routes/index.js";
-import type { Arguments } from "./types.js";
-import type { Listener } from "./types.js";
+import type { Arguments, Listener } from "./types.js";
 import { registerWebsocket } from "./websocket/index.js";
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
 
 const MemoryStore = memorystore(session);
 
@@ -39,11 +37,10 @@ const isSingleUser =
 		? !!argv.singleuser
 		: process.env.DEEMIX_SINGLE_USER === "true";
 
-const app: express.Express = express();
+const app = express();
 
 if (isSingleUser) loadLoginCredentials();
 
-const debug = initDebug("deemix-gui:server");
 app.set("isSingleUser", isSingleUser);
 
 /* === Deemix App === */
@@ -108,10 +105,10 @@ if (process.env.NODE_ENV === "production") {
 
 /* === Server callbacks === */
 server.on("error", getErrorCb(serverPort));
-server.on("listening", getListeningCb(server, debug));
+server.on("listening", getListeningCb(server));
 registerWebsocket(wss, deemixApp);
 
 /* === Remove Old logs files === */
 removeOldLogs(5);
 
-export { app, server, deemixApp };
+export { app, deemixApp, server };

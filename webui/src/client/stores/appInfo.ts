@@ -30,7 +30,6 @@ export const useAppInfoStore = defineStore("appInfo", {
 			this.guiVersion = payload.guiVersion;
 		},
 		setUpdateInfo(payload: AppInfoState) {
-			console.log(payload);
 			this.latestVersion = payload.latestVersion;
 			this.updateAvailable = payload.updateAvailable;
 		},

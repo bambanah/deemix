@@ -94,8 +94,11 @@ export interface Settings {
 	tags: Tags;
 }
 
-// TODO
-export interface SpotifySettings {}
+export interface SpotifySettings {
+	clientId?: string;
+	clientSecret?: string;
+	fallbackSearch?: boolean;
+}
 
 interface BaseDeezerObject {
 	id: number;

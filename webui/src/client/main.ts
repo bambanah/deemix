@@ -107,7 +107,6 @@ async function startApp() {
 			"updates-toast"
 		);
 		const updates = await fetchData("checkForUpdates");
-		console.log(updates);
 		appInfoStore.setUpdateInfo(updates);
 		if (updates.updateAvailable) {
 			toast(

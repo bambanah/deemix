@@ -1,5 +1,4 @@
 import http from "http";
-import type { Debugger } from "debug";
 import { logger } from "./logger.js";
 
 /**
@@ -36,7 +35,7 @@ export function getErrorCb(port: number | string | boolean) {
  *
  * @since	0.0.0
  */
-export function getListeningCb(server: http.Server, debug: Debugger) {
+export function getListeningCb(server: http.Server) {
 	return () => {
 		const addr = server.address();
 
@@ -44,7 +43,6 @@ export function getListeningCb(server: http.Server, debug: Debugger) {
 			const ip = typeof addr === "string" ? "pipe " + addr : addr.address;
 			const port = typeof addr === "string" ? "pipe " + addr : addr.port;
 
-			debug(`Listening on ${ip}:${port}`);
 			logger.info(`Listening on ${ip}:${port}`);
 		}
 	};

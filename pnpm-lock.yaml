@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      yargs:
-        specifier: ^17.6.2
-        version: 17.7.2
     devDependencies:
       '@changesets/cli':
         specifier: ^2.27.7
@@ -183,9 +179,6 @@ importers:
       date-fns:
         specifier: ^3.6.0
         version: 3.6.0
-      debug:
-        specifier: 2.6.9
-        version: 2.6.9
       deemix:
         specifier: workspace:*
         version: link:../deemix
@@ -232,7 +225,7 @@ importers:
         specifier: ^3.4.10
         version: 3.4.10
       toastify-js:
-        specifier: 1.11.1
+        specifier: ^1.11.1
         version: 1.11.1
       utf-8-validate:
         specifier: ^6.0.4
@@ -265,12 +258,6 @@ importers:
       '@types/cookie-parser':
         specifier: 1.4.7
         version: 1.4.7
-      '@types/debug':
-        specifier: 4.1.12
-        version: 4.1.12
-      '@types/ejs':
-        specifier: 3.1.5
-        version: 3.1.5
       '@types/express':
         specifier: 4.17.21
         version: 4.17.21
@@ -286,11 +273,8 @@ importers:
       '@types/morgan':
         specifier: 1.9.9
         version: 1.9.9
-      '@types/ramda':
-        specifier: 0.27.40
-        version: 0.27.40
       '@types/supertest':
-        specifier: 6.0.2
+        specifier: ^6.0.2
         version: 6.0.2
       '@types/toastify-js':
         specifier: ^1.12.3
@@ -319,9 +303,9 @@ importers:
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
-      esbuild:
-        specifier: ^0.23.1
-        version: 0.23.1
+      genversion:
+        specifier: ^3.2.0
+        version: 3.2.0
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@20.16.5)
@@ -335,7 +319,7 @@ importers:
         specifier: 3.3.3
         version: 3.3.3
       supertest:
-        specifier: 6.1.3
+        specifier: ^6.1.3
         version: 6.1.3
       ts-jest:
         specifier: ^29.2.5
@@ -1421,12 +1405,6 @@ packages:
   '@types/cookiejar@2.1.5':
     resolution: {integrity: sha512-he+DHOWReW0nghN24E1WUqM0efK4kI9oTqDm6XmK8ZPe2djZ90BSNdGnIyCLzCPw7/pogPlGbzI2wHGGmi4O/Q==}
 
-  '@types/debug@4.1.12':
-    resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
-
-  '@types/ejs@3.1.5':
-    resolution: {integrity: sha512-nv+GSx77ZtXiJzwKdsASqi+YQ5Z7vwHsTP0JY2SiQgjGckkBRKZnk8nIM+7oUZ1VCtuTz0+By4qVR7fqzp/Dfg==}
-
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
 
@@ -1487,9 +1465,6 @@ packages:
   '@types/morgan@1.9.9':
     resolution: {integrity: sha512-iRYSDKVaC6FkGSpEVVIvrRGw0DfJMiQzIn3qr2G5B3C//AWkulhXgaBd7tS9/J79GWSYMTHGs7PfI5b3Y8m+RQ==}
 
-  '@types/ms@0.7.34':
-    resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
-
   '@types/node@12.20.55':
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
 
@@ -1498,9 +1473,6 @@ packages:
 
   '@types/qs@6.9.15':
     resolution: {integrity: sha512-uXHQKES6DQKKCLh441Xv/dwxOq1TVS3JPUMlEqoEglvlhR6Mxnlew/Xq/LRVHpLyk7iK3zODe1qYHIMltO7XGg==}
-
-  '@types/ramda@0.27.40':
-    resolution: {integrity: sha512-V99ZfTH2tqVYdLDAlgh2uT+N074HPgqnAsMjALKSBqogYd0HbuuGMqNukJ6fk9Ml/Htaus76fsc4Yh3p7q1VdQ==}
 
   '@types/range-parser@1.2.7':
     resolution: {integrity: sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==}
@@ -2762,6 +2734,9 @@ packages:
     resolution: {integrity: sha512-5uXcUVftlQMFnWC9qu/svkWv3GTd2PfUhK/3PLkYNAe7FbqJMt3515HaxE6eRL74GdsriiwujiawdaB1BpEISg==}
     engines: {node: '>= 0.8'}
 
+  find-package@1.0.0:
+    resolution: {integrity: sha512-yVn71XCCaNgxz58ERTl8nA/8YYtIQDY9mHSrgFBfiFtdNNfY0h183Vh8BRkKxD8x9TUw3ec290uJKhDVxqGZBw==}
+
   find-up@2.1.0:
     resolution: {integrity: sha512-NWzkk0jSJtTt08+FBFMvXoeZnOJD+jTtsRmBYbAIzJdX6l7dLgR7CTubCM5/eDdPUBvLCeVasP1brfVR/9/EZQ==}
     engines: {node: '>=4'}
@@ -2899,6 +2874,11 @@ packages:
   gensync@1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
     engines: {node: '>=6.9.0'}
+
+  genversion@3.2.0:
+    resolution: {integrity: sha512-OIYSX6XYA8PHecLDCTri30hadSZfAjZ8Iq1+BBDXqLWP4dRLuJNLoNjsSWtTpw97IccK2LDWzkEstxAB8GdN7g==}
+    engines: {node: '>=10.0.0'}
+    hasBin: true
 
   get-caller-file@2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
@@ -4220,6 +4200,9 @@ packages:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}
     engines: {node: '>=6'}
 
+  parents@1.0.1:
+    resolution: {integrity: sha512-mXKF3xkoUt5td2DoxpLmtOmZvko9VfFpwRwkKDHSNvgmpLAeBo18YDhcPbBzJq+QLCHMbGOfzia2cX4U+0v9Mg==}
+
   parse-author@2.0.0:
     resolution: {integrity: sha512-yx5DfvkN8JsHL2xk2Os9oTia467qnvRgey4ahSm2X8epehBLx/gWLcy5KI+Y36ful5DzGbCS6RazqZGgy1gHNw==}
     engines: {node: '>=0.10.0'}
@@ -4276,6 +4259,10 @@ packages:
 
   path-parse@1.0.7:
     resolution: {integrity: sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==}
+
+  path-platform@0.11.15:
+    resolution: {integrity: sha512-Y30dB6rab1A/nfEKsZxmr01nUotHX0c/ZiIAsCTatEe1CmS5Pm5He7fZ195bPT7RdquoaL8lLxFCMQi/bS7IJg==}
+    engines: {node: '>= 0.8.0'}
 
   path-scurry@1.11.1:
     resolution: {integrity: sha512-Xa4Nw17FS9ApQFJ9umLiJS4orGjm7ZzwUrwamcGQuHSzDyth9boKDaycYdDcZDuqYATXw4HFXgaqWTctW/v1HA==}
@@ -5176,9 +5163,6 @@ packages:
         optional: true
       esbuild:
         optional: true
-
-  ts-toolbelt@6.15.5:
-    resolution: {integrity: sha512-FZIXf1ksVyLcfr7M317jbB67XFJhOO1YqdTcuGaq9q5jLUoTikukZ+98TPjKiP2jC5CgmYdWWYs0s2nLSU0/1A==}
 
   tsc-alias@1.8.10:
     resolution: {integrity: sha512-Ibv4KAWfFkFdKJxnWfVtdOmB0Zi1RJVxcbPGiCDsFpCQSsmpWyuzHG3rQyI5YkobWwxFPEyQfu1hdo4qLG2zPw==}
@@ -7006,12 +6990,6 @@ snapshots:
 
   '@types/cookiejar@2.1.5': {}
 
-  '@types/debug@4.1.12':
-    dependencies:
-      '@types/ms': 0.7.34
-
-  '@types/ejs@3.1.5': {}
-
   '@types/estree@1.0.5': {}
 
   '@types/express-serve-static-core@4.19.5':
@@ -7087,8 +7065,6 @@ snapshots:
     dependencies:
       '@types/node': 20.16.5
 
-  '@types/ms@0.7.34': {}
-
   '@types/node@12.20.55': {}
 
   '@types/node@20.16.5':
@@ -7096,10 +7072,6 @@ snapshots:
       undici-types: 6.19.8
 
   '@types/qs@6.9.15': {}
-
-  '@types/ramda@0.27.40':
-    dependencies:
-      ts-toolbelt: 6.15.5
 
   '@types/range-parser@1.2.7': {}
 
@@ -8645,6 +8617,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  find-package@1.0.0:
+    dependencies:
+      parents: 1.0.1
+
   find-up@2.1.0:
     dependencies:
       locate-path: 2.0.0
@@ -8807,6 +8783,12 @@ snapshots:
     optional: true
 
   gensync@1.0.0-beta.2: {}
+
+  genversion@3.2.0:
+    dependencies:
+      commander: 7.2.0
+      ejs: 3.1.10
+      find-package: 1.0.0
 
   get-caller-file@2.0.5: {}
 
@@ -10304,6 +10286,10 @@ snapshots:
     dependencies:
       callsites: 3.1.0
 
+  parents@1.0.1:
+    dependencies:
+      path-platform: 0.11.15
+
   parse-author@2.0.0:
     dependencies:
       author-regex: 1.0.0
@@ -10345,6 +10331,8 @@ snapshots:
   path-key@4.0.0: {}
 
   path-parse@1.0.7: {}
+
+  path-platform@0.11.15: {}
 
   path-scurry@1.11.1:
     dependencies:
@@ -11198,8 +11186,6 @@ snapshots:
       '@jest/types': 29.6.3
       babel-jest: 29.7.0(@babel/core@7.25.2)
       esbuild: 0.23.1
-
-  ts-toolbelt@6.15.5: {}
 
   tsc-alias@1.8.10:
     dependencies:

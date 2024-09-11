@@ -37,9 +37,4 @@ export function registerApis(app: Application) {
 			app[method](prependApiPath(endpoint.path), endpoint.handler);
 		});
 	});
-
-	// Fallback, for SPA mode
-	app.get("/api*", (_, res) => {
-		res.send({ error: "API endpoint doesn't exist" });
-	});
 }
