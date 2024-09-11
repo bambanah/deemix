@@ -14,9 +14,9 @@ import {
 	type EnrichedAPITrack,
 	type EnrichedAPIAlbum,
 	type GWTrack,
-} from "deezer-js";
+} from "deezer-sdk";
 import { each } from "async";
-import { Deezer } from "deezer-js";
+import { Deezer } from "deezer-sdk";
 import { Album } from "./types/Album";
 
 const { map_user_playlist, map_track, map_album } = utils;

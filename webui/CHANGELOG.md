@@ -16,7 +16,7 @@
 - Updated dependencies [d6c0175]
 - Updated dependencies [1453cc7]
   - deemix@3.11.0
-  - deezer-js@1.7.0
+  - deezer-sdk@1.7.0
 
 ## 4.0.1
 
@@ -34,7 +34,7 @@
 
 - Updated dependencies [a2e64c5]
 - Updated dependencies [a2e64c5]
-  - deezer-js@1.6.0
+  - deezer-sdk@1.6.0
   - deemix@3.10.0
 
 ## 3.11.2

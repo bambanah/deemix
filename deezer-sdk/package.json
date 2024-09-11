@@ -1,5 +1,5 @@
 {
-	"name": "deezer-js",
+	"name": "deezer-sdk",
 	"version": "1.7.0",
 	"private": true,
 	"description": "A wrapper for all Deezer's APIs",
@@ -13,7 +13,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://gitlab.com/RemixDev/deezer-js"
+		"url": "https://gitlab.com/RemixDev/deezer-sdk"
 	},
 	"author": "RemixDev",
 	"license": "GPL-3.0-or-later",

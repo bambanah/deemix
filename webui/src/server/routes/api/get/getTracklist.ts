@@ -1,4 +1,4 @@
-import { Deezer, utils as dzUtils } from "deezer-js";
+import { Deezer, utils as dzUtils } from "deezer-sdk";
 import { type ApiHandler } from "../../../types.js";
 import { sessionDZ } from "../../../deemixApp.js";
 

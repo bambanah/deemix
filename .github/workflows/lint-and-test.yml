@@ -21,7 +21,7 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - run: pnpm -r --filter=deezer-js --filter=deemix build
+      - run: pnpm -r --filter=deezer-sdk --filter=deemix build
 
       - run: pnpm lint
 

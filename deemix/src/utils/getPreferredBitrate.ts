@@ -1,4 +1,4 @@
-import { Deezer, TrackFormats, errors as _errors, utils } from "deezer-js";
+import { Deezer, TrackFormats, errors as _errors, utils } from "deezer-sdk";
 import { HTTPError, ReadError, TimeoutError, default as got } from "got";
 import { generateCryptedStreamURL } from "../decryption";
 import { PreferredBitrateNotFound, TrackNot360 } from "../errors";

@@ -1,4 +1,4 @@
-import { TrackFormats } from "deezer-js";
+import { TrackFormats } from "deezer-sdk";
 import { CustomDate } from "../types/CustomDate";
 import Track from "@/types/Track";
 import { IDownloadObject } from "@/types/DownloadObjects";

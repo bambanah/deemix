@@ -11,7 +11,7 @@ import {
 	utils,
 	type Settings,
 } from "deemix";
-import { Deezer } from "deezer-js";
+import { Deezer } from "deezer-sdk";
 import fs from "fs";
 import got from "got";
 import { sep } from "path";

@@ -18,7 +18,7 @@
 		"async": "^3.2.0",
 		"blowfish-node": "^1.1.4",
 		"browser-id3-writer": "^6.1.0",
-		"deezer-js": "workspace:*",
+		"deezer-sdk": "workspace:*",
 		"got": "^11.8.2",
 		"html-entities": "^2.3.3",
 		"metaflac-js2": "^1.0.8",

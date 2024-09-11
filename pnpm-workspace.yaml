@@ -1,5 +1,5 @@
 packages:
   - "webui"
   - "deemix"
-  - "deezer-js"
+  - "deezer-sdk"
   - "gui"

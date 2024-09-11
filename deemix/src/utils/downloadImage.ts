@@ -1,4 +1,4 @@
-import { TrackFormats, utils } from "deezer-js";
+import { TrackFormats, utils } from "deezer-sdk";
 import {
 	createWriteStream,
 	existsSync,

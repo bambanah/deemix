@@ -3,6 +3,10 @@
 	"rules": {
 		"scope-case": [2, "always", "lower-case"],
 		"scope-empty": [2, "never"],
-		"scope-enum": [2, "always", ["deezer-js", "deemix", "webui", "gui", "repo"]]
+		"scope-enum": [
+			2,
+			"always",
+			["deezer-sdk", "deemix", "webui", "gui", "repo"]
+		]
 	}
 }

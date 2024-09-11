@@ -21,7 +21,7 @@
 		"watch": [
 			"src/server",
 			"../deemix/dist",
-			"../deezer-js/dist"
+			"../deezer-sdk/dist"
 		],
 		"ext": "ts,json,js",
 		"exec": "tsx --tsconfig ./src/server/tsconfig.json src/server/main.ts",
@@ -34,7 +34,7 @@
 		"cookie-parser": "1.4.6",
 		"date-fns": "^3.6.0",
 		"deemix": "workspace:*",
-		"deezer-js": "workspace:*",
+		"deezer-sdk": "workspace:*",
 		"dotenv": "~16.4.5",
 		"express": "^4.19.2",
 		"express-session": "^1.17.3",

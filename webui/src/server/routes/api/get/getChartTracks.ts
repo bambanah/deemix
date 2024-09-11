@@ -3,7 +3,7 @@ import { BadRequestError } from "@/helpers/errors.js";
 import { logger } from "@/helpers/logger.js";
 import { isObjectEmpy } from "@/helpers/primitive-checks.js";
 import type { ApiHandler } from "@/types.js";
-import { Deezer } from "deezer-js";
+import { Deezer } from "deezer-sdk";
 import type { RequestHandler } from "express";
 
 export interface RawChartTracksQuery {

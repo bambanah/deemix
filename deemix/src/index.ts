@@ -1,4 +1,5 @@
-import { type Deezer } from "deezer-js";
+import BasePlugin from "@/plugins/base.js";
+import { type Deezer } from "deezer-sdk";
 import got from "got";
 import { Downloader } from "./downloader.js";
 import { LinkNotRecognized, LinkNotSupported } from "./errors.js";
@@ -9,7 +10,6 @@ import {
 	generatePlaylistItem,
 	generateTrackItem,
 } from "./itemgen.js";
-import BasePlugin from "@/plugins/base.js";
 
 async function parseLink(link: string) {
 	if (link.includes("deezer.page.link")) {

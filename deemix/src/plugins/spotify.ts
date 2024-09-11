@@ -8,7 +8,7 @@ import fs from "fs";
 import { SpotifyApi } from "@spotify/web-api-ts-sdk";
 import got from "got";
 import { queue } from "async";
-import { Deezer } from "deezer-js";
+import { Deezer } from "deezer-sdk";
 import { type Settings } from "@/types";
 import Track from "@/types/Track";
 

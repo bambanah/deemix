@@ -1,4 +1,4 @@
-import { TrackFormats } from "deezer-js";
+import { TrackFormats } from "deezer-sdk";
 
 const bitrateLabels = {
 	[TrackFormats.MP4_RA3]: "360 HQ",

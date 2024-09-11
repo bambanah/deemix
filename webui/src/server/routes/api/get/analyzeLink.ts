@@ -1,5 +1,5 @@
 import * as deemix from "deemix";
-import { Deezer } from "deezer-js";
+import { Deezer } from "deezer-sdk";
 import type { RequestHandler } from "express";
 import { sessionDZ } from "../../../deemixApp.js";
 import type {

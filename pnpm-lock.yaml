@@ -89,9 +89,9 @@ importers:
       browser-id3-writer:
         specifier: ^6.1.0
         version: 6.1.0
-      deezer-js:
+      deezer-sdk:
         specifier: workspace:*
-        version: link:../deezer-js
+        version: link:../deezer-sdk
       got:
         specifier: ^11.8.2
         version: 11.8.6
@@ -112,7 +112,7 @@ importers:
         specifier: ^8.2.4
         version: 8.2.4(jiti@1.21.6)(postcss@8.4.45)(tsx@4.19.0)(typescript@5.5.4)(yaml@2.5.1)
 
-  deezer-js:
+  deezer-sdk:
     dependencies:
       got:
         specifier: 14.4.2
@@ -194,9 +194,9 @@ importers:
       deemix:
         specifier: workspace:*
         version: link:../deemix
-      deezer-js:
+      deezer-sdk:
         specifier: workspace:*
-        version: link:../deezer-js
+        version: link:../deezer-sdk
       dotenv:
         specifier: ~16.4.5
         version: 16.4.5

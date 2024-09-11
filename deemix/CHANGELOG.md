@@ -11,7 +11,7 @@
 - ca61198: Include type definitions with bundle
 - Updated dependencies [15e03de]
 - Updated dependencies [1453cc7]
-  - deezer-js@1.7.0
+  - deezer-sdk@1.7.0
 
 ## 3.10.0
 
@@ -22,7 +22,7 @@
 ### Patch Changes
 
 - Updated dependencies [a2e64c5]
-  - deezer-js@1.6.0
+  - deezer-sdk@1.6.0
 
 ## 3.9.0
 
@@ -33,7 +33,7 @@
 ### Patch Changes
 
 - Updated dependencies [ad518d0]
-  - deezer-js@1.5.0
+  - deezer-sdk@1.5.0
 
 ## 3.8.0
 

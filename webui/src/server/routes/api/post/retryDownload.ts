@@ -1,4 +1,4 @@
-import { Deezer } from "deezer-js";
+import { Deezer } from "deezer-sdk";
 import { sessionDZ } from "../../../deemixApp.js";
 import { logger } from "../../../helpers/logger.js";
 import { type ApiHandler } from "../../../types.js";

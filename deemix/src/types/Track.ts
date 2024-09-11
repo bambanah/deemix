@@ -6,7 +6,7 @@ import {
 	type APIPlaylist,
 	type APITrack,
 	type EnrichedAPITrack,
-} from "deezer-js";
+} from "deezer-sdk";
 import { AlbumDoesntExists, NoDataToParse } from "../errors";
 import { FeaturesOption } from "../settings";
 import {
