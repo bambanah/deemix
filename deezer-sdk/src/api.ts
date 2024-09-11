@@ -218,7 +218,11 @@ export class API {
 			});
 
 			this.redisClient.on("error", (err) => {
-				console.error("Redis error", err);
+				if (err.code === "ECONNREFUSED") {
+					this.redisClient?.disconnect();
+				} else {
+					console.error("Redis error", err);
+				}
 			});
 
 			this.redisClient.connect();
