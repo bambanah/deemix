@@ -3,7 +3,7 @@ import { DeezerError, WrongGeolocation, WrongLicense } from "@/errors.js";
 import { GW } from "@/gw.js";
 import got from "got";
 import { Cookie, CookieJar } from "tough-cookie";
-import type { User } from "./types";
+import type { User } from "./types.js";
 
 export class Deezer {
 	logged_in: boolean;
