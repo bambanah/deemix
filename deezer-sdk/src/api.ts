@@ -1,4 +1,5 @@
 import got from "got";
+import { createClient, type RedisClientType } from "redis";
 import { CookieJar } from "tough-cookie";
 import {
 	APIError,
@@ -11,10 +12,8 @@ import {
 	PermissionException,
 	WrongParameterException,
 } from "./errors.js";
-import { Deezer, type APIOptions } from "./index.js";
-import { albumSchema, type DeezerAlbum } from "./schema/album-schema.js";
+import { type APIOptions } from "./index.js";
 import { trackSchema, type DeezerTrack } from "./schema/track-schema.js";
-import { artistSchema } from "./schema/contributor-schema.js";
 
 // Possible values for order parameter in search
 export const SearchOrder = {
@@ -204,15 +203,38 @@ export class API {
 	http_headers: { "User-Agent": string };
 	cookie_jar: CookieJar;
 	access_token: string | null;
+	redisClient?: RedisClientType;
 
 	constructor(cookie_jar: CookieJar, headers: { "User-Agent": string }) {
 		this.http_headers = headers;
 		this.cookie_jar = cookie_jar;
 		this.access_token = null;
+
+		const url = process.env.REDIS_URL || "redis://localhost:6379";
+		if (url && process.env.REDIS_PASSWORD) {
+			this.redisClient = createClient({
+				url: url,
+				password: process.env.REDIS_PASSWORD,
+			});
+
+			this.redisClient.on("error", (err) => {
+				console.error("Redis error", err);
+			});
+
+			this.redisClient.connect();
+		}
 	}
 
 	async call(endpoint: string, args: APIArgs = {}): Promise<unknown> {
 		if (this.access_token) args["access_token"] = this.access_token;
+
+		if (this.redisClient?.isReady) {
+			const cachedResponse = await this.redisClient.get(endpoint);
+
+			if (cachedResponse) {
+				return JSON.parse(cachedResponse);
+			}
+		}
 
 		let response;
 		try {
@@ -290,6 +312,9 @@ export class API {
 			}
 			throw new APIError(response.error);
 		}
+
+		if (this.redisClient?.isReady)
+			this.redisClient.set(endpoint, JSON.stringify(response));
 
 		return response;
 	}

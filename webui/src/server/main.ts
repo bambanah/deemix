@@ -20,6 +20,9 @@ import indexRouter from "./routes/index.js";
 import type { Arguments, Listener } from "./types.js";
 import { registerWebsocket } from "./websocket/index.js";
 
+import dotenv from "dotenv";
+dotenv.config({ path: join(import.meta.dirname, ".env") });
+
 const MemoryStore = memorystore(session);
 
 // TODO: Remove type assertion while keeping correct types
