@@ -227,7 +227,7 @@ export class API {
 				})
 				.json();
 		} catch (e) {
-			console.debug("[ERROR] deezer.api", endpoint, args, e.name, e.message);
+			console.error("[ERROR] deezer.api", endpoint, args, e.name, e.message);
 			if (
 				[
 					"ECONNABORTED",
@@ -301,7 +301,7 @@ export class API {
 		return trackSchema.parse(response);
 	}
 
-	getTrackByISRC(isrc: string) {
+	getTrackByISRC(isrc: string): Promise<DeezerTrack> {
 		return this.getTrack(`isrc:${isrc}`);
 	}
 

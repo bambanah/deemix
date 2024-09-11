@@ -2,7 +2,7 @@ import { type Settings } from "@/types/Settings.js";
 import Track from "@/types/Track.js";
 import { SpotifyApi, type MaxInt } from "@spotify/web-api-ts-sdk";
 import { queue } from "async";
-import { Deezer } from "deezer-sdk";
+import { Deezer, type DeezerTrack } from "deezer-sdk";
 import fs from "fs";
 import got from "got";
 import { sep } from "path";
@@ -262,11 +262,12 @@ export default class SpotifyPlugin extends BasePlugin {
 
 		const collection = [];
 		if (listener) listener.send("startConversion", downloadObject.uuid);
+
 		const q = queue(async (data: { track: Track; pos: number }, callback) => {
 			const { track, pos } = data;
 			if (downloadObject.isCanceled) return;
 
-			let cachedTrack, trackAPI;
+			let cachedTrack;
 			if (cache.tracks[track.id]) {
 				cachedTrack = cache.tracks[track.id];
 			} else {
@@ -275,6 +276,7 @@ export default class SpotifyPlugin extends BasePlugin {
 				this.saveCache(cache);
 			}
 
+			let trackAPI: DeezerTrack;
 			if (cachedTrack.isrc) {
 				try {
 					trackAPI = await dz.api.getTrackByISRC(cachedTrack.isrc);
@@ -283,6 +285,7 @@ export default class SpotifyPlugin extends BasePlugin {
 					/* Empty */
 				}
 			}
+
 			if (this.settings.fallbackSearch && !trackAPI) {
 				if (!cachedTrack.id || cachedTrack.id === "0") {
 					const trackID = await dz.api.get_track_id_from_metadata(
@@ -299,6 +302,7 @@ export default class SpotifyPlugin extends BasePlugin {
 				if (cachedTrack.id !== "0")
 					trackAPI = await dz.api.getTrack(cachedTrack.id);
 			}
+
 			if (!trackAPI) {
 				trackAPI = {
 					id: "0",
@@ -318,6 +322,7 @@ export default class SpotifyPlugin extends BasePlugin {
 					},
 				};
 			}
+
 			trackAPI.position = pos + 1;
 			collection[pos] = trackAPI;
 
@@ -336,7 +341,7 @@ export default class SpotifyPlugin extends BasePlugin {
 			}
 
 			callback();
-		}, settings.queueConcurrency);
+		}, settings.queueConcurrency * 20);
 
 		downloadObject.conversion_data.forEach((track, pos) => {
 			q.push({ track, pos }, () => {});

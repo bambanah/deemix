@@ -9,7 +9,7 @@ export class Deezer {
 	logged_in: boolean;
 	http_headers: { "User-Agent": string };
 	cookie_jar: CookieJar;
-	current_user: User;
+	current_user?: User;
 	childs: User[];
 	selected_account: number;
 	api: API;
@@ -151,7 +151,7 @@ export class Deezer {
 		if (this.childs.length - 1 < child_n) child_n = 0;
 		this.current_user = this.childs[child_n];
 		this.selected_account = child_n;
-		let lang = this.current_user.language
+		let lang = this.current_user?.language
 			?.toString()
 			.replace(/[^0-9A-Za-z *,-.;=]/g, "");
 		if (lang?.slice(2, 1) === "-") {
@@ -175,7 +175,7 @@ export class Deezer {
 
 	async get_tracks_url(track_tokens, format) {
 		if (!Array.isArray(track_tokens)) track_tokens = [track_tokens];
-		if (!this.current_user.license_token) return [];
+		if (!this.current_user?.license_token) return [];
 		if (
 			((format === "FLAC" || format.startsWith("MP4_RA")) &&
 				!this.current_user.can_stream_lossless) ||
@@ -214,7 +214,7 @@ export class Deezer {
 			response.data.forEach((data) => {
 				if (data.errors) {
 					if (data.errors[0].code === 2002) {
-						result.push(new WrongGeolocation(this.current_user.country));
+						result.push(new WrongGeolocation(this.current_user?.country));
 					} else {
 						result.push(new DeezerError(JSON.stringify(response)));
 					}
