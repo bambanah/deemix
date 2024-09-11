@@ -32,7 +32,7 @@ export default class SpotifyPlugin extends BasePlugin {
 		return this;
 	}
 
-	overridesetup() {
+	override setup() {
 		fs.mkdirSync(this.configFolder, { recursive: true });
 
 		this.loadSettings();

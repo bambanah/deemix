@@ -10,6 +10,7 @@ import {
 	SpotifyPlugin,
 	utils,
 	type Settings,
+	type SpotifySettings,
 } from "deemix";
 import { Deezer } from "deezer-sdk";
 import fs from "fs";
@@ -159,7 +160,7 @@ export class DeemixApp {
 		};
 	}
 
-	saveSettings(newSettings: any, newSpotifySettings: any) {
+	saveSettings(newSettings: Settings, newSpotifySettings: SpotifySettings) {
 		newSettings.executeCommand = this.settings.executeCommand;
 		settings.save(newSettings, configFolder);
 		this.settings = newSettings;
