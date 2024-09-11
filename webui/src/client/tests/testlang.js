@@ -5,7 +5,7 @@ async function loadLang(lang_id) {
 	try {
 		language_module = await import(`../src/lang/${lang_id}.mjs`);
 		language_module = language_module.default;
-	} catch (e) {
+	} catch {
 		language_module = {};
 	}
 	function parseObject(obj, root = "") {

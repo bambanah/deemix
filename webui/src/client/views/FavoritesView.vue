@@ -45,7 +45,7 @@ watch(isRefreshingFavorites, (newVal, oldVal) => {
 	toast(t("toasts.refreshFavs"), "done", true);
 });
 
-const onRefreshFavorites = (e: MouseEvent) => {
+const onRefreshFavorites = () => {
 	refreshFavorites({});
 };
 

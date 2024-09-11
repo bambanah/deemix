@@ -40,7 +40,7 @@ interface Tab {
 	searchType: string;
 	component: any;
 	viewInfo: string;
-	formatFunc?: (o: any) => any;
+	formatFunc?: (o?: Record<string, any>) => any;
 }
 
 interface State {
@@ -135,7 +135,10 @@ const loadedTabs = computed(() => {
 	const tabsLoaded = [];
 
 	for (const resultKey in state.results) {
-		if (state.results.hasOwnProperty(resultKey) && resultKey !== "query") {
+		if (
+			Object.prototype.hasOwnProperty.call(state.results, resultKey) &&
+			resultKey !== "query"
+		) {
 			const currentResult = state.results[resultKey];
 
 			if (currentResult.hasLoaded) {

@@ -27,7 +27,7 @@ const fansNumber = computed(() => {
 	if (info.nb_fan) {
 		try {
 			number = n(info.nb_fan);
-		} catch (error) {
+		} catch {
 			number = n(info.nb_fan, { locale: "en" });
 		}
 	}

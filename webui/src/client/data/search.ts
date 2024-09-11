@@ -39,7 +39,7 @@ export function formatSingleTrack(track: { [key: string]: any }) {
 	};
 }
 
-export function formatAlbums(album: { [key: string]: any }) {
+export function formatAlbums(album: Record<string, any>) {
 	let isAlbumExplicit = getPropertyWithFallback(
 		album,
 		"explicit_lyrics",

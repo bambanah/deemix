@@ -1,41 +1,11 @@
-<template>
-	<header id="search" aria-label="searchbar" :class="{ showSearchButton }">
-		<div v-show="!showSearchButton" class="search__icon">
-			<i class="material-icons">search</i>
-		</div>
-
-		<input
-			id="searchbar"
-			ref="searchbar"
-			class="w-full"
-			autocomplete="off"
-			type="search"
-			name="searchbar"
-			value=""
-			:placeholder="t('searchbar')"
-			autofocus
-			@keyup="keyPerformSearch($event)"
-		/>
-
-		<a
-			v-show="showSearchButton"
-			href="#"
-			class="searchButton"
-			@contextmenu="rightClickPerformSearch"
-			@click="clickPerformSearch"
-			><i class="material-icons">search</i></a
-		>
-	</header>
-</template>
-
 <script setup lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, ref } from "vue";
-import { isValidURL } from "@/utils/utils";
-import { sendAddToQueue } from "@/utils/downloads";
-import { fetchData } from "@/utils/api-utils";
-import { emitter } from "@/utils/emitter";
-import { useAppInfoStore } from "@/stores/appInfo";
 import { pinia } from "@/stores";
+import { useAppInfoStore } from "@/stores/appInfo";
+import { fetchData } from "@/utils/api-utils";
+import { sendAddToQueue } from "@/utils/downloads";
+import { emitter } from "@/utils/emitter";
+import { isValidURL } from "@/utils/utils";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 
@@ -162,6 +132,36 @@ onUnmounted(() => {
 	document.removeEventListener("keyup", deleteSearchBarContent);
 });
 </script>
+
+<template>
+	<header id="search" aria-label="searchbar" :class="{ showSearchButton }">
+		<div v-show="!showSearchButton" class="search__icon">
+			<i class="material-icons">search</i>
+		</div>
+
+		<input
+			id="searchbar"
+			ref="searchbar"
+			class="w-full"
+			autocomplete="off"
+			type="search"
+			name="searchbar"
+			value=""
+			:placeholder="t('searchbar')"
+			autofocus
+			@keyup="keyPerformSearch($event)"
+		/>
+
+		<a
+			v-show="showSearchButton"
+			href="#"
+			class="searchButton"
+			@contextmenu="rightClickPerformSearch"
+			@click="clickPerformSearch"
+			><i class="material-icons">search</i></a
+		>
+	</header>
+</template>
 
 <style>
 input[type="search"]::-webkit-search-cancel-button {

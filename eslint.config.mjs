@@ -9,7 +9,7 @@ const jestPluginRecommended = jestPlugin.configs["flat/recommended"];
 const extraFileExtensions = [".vue"];
 
 export default tslint.config(
-	// eslint.configs.recommended,
+	eslint.configs.recommended,
 	// ...tslint.configs.recommended,
 	// @ts-expect-error
 	...pluginVue.configs["flat/recommended"],
@@ -31,13 +31,13 @@ export default tslint.config(
 			},
 		},
 	},
-	// {
-	// 	...jestPluginRecommended,
-	// 	rules: {
-	// 		...jestPluginRecommended.rules,
-	// 		"jest/expect-expect": "off",
-	// 	},
-	// },
+	{
+		...jestPluginRecommended,
+		rules: {
+			...jestPluginRecommended.rules,
+			"jest/expect-expect": "off",
+		},
+	},
 	{
 		languageOptions: {
 			globals: {
@@ -48,6 +48,7 @@ export default tslint.config(
 		rules: {
 			"vue/no-v-html": "off",
 			"vue/require-explicit-emits": "off",
+			"no-unused-vars": "off",
 			"@typescript-eslint/no-explicit-any": "off",
 			"@typescript-eslint/ban-ts-comment": "off",
 			"no-console": ["error", { allow: ["warn", "error", "trace"] }],

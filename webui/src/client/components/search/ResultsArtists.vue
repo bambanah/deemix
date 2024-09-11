@@ -2,7 +2,6 @@
 import BaseLoadingPlaceholder from "@/components/globals/BaseLoadingPlaceholder.vue";
 import CoverContainer from "@/components/globals/CoverContainer.vue";
 import ResultsError from "@/components/search/ResultsError.vue";
-import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 interface Props {
