@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import * as esbuild from "esbuild";
 import fsp from "node:fs/promises";
 import path from "node:path";
