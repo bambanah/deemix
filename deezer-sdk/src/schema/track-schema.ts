@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { artistSchema, contributorSchema } from "./contributor-schema";
-import { trackAlbumSchema } from "./album-schema";
+import { artistSchema, contributorSchema } from "./contributor-schema.js";
+import { trackAlbumSchema } from "./album-schema.js";
 
 export const baseTrackSchema = z.object({
 	id: z.number(),

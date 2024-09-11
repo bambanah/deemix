@@ -1,11 +1,13 @@
 {
-	"extends": "@total-typescript/tsconfig/bundler/no-dom/library-monorepo",
+	"extends": "@total-typescript/tsconfig/tsc/no-dom/library-monorepo",
 	"compilerOptions": {
+		"rootDir": "./src",
 		"outDir": "./dist",
 		"paths": {
 			"@/*": ["./src/*"]
 		},
 		"strict": false,
 		"types": ["vitest/globals"]
-	}
+	},
+	"include": ["./src/**/*.ts"]
 }

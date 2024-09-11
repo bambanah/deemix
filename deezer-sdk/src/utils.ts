@@ -1,5 +1,5 @@
-import { type EnrichedAPITrack } from "./api";
-import { type GWTrack } from "./gw";
+import { type EnrichedAPITrack } from "./api.js";
+import { type GWTrack } from "./gw.js";
 
 // Explicit Content Lyrics
 export const LyricsStatus = {

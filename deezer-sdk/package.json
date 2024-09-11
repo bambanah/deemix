@@ -8,7 +8,7 @@
 	"types": "dist/index.d.ts",
 	"scripts": {
 		"dev": "tsup src/index.ts --format esm --dts --watch",
-		"build": "tsup src/index.ts --format esm --dts",
+		"build": "tsc",
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"lint:ts": "tsc --noEmit"
