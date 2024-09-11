@@ -150,7 +150,7 @@ class Track {
 		// only public api has bpm
 		if (!existingTrack.bpm && !this.local) {
 			try {
-				const trackAPI_new = await dz.api.get_track(existingTrack.id);
+				const trackAPI_new = await dz.api.getTrack(existingTrack.id);
 				trackAPI_new.release_date = existingTrack.release_date;
 				existingTrack = { ...existingTrack, ...trackAPI_new };
 			} catch {
