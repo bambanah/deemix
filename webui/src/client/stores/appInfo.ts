@@ -1,16 +1,11 @@
-import {
-	getInitialPreviewVolume,
-	checkInitialSlimDownloads,
-	checkInitialSlimSidebar,
-	checkInitialShowBitrateTags,
-	checkInitialShowSearchButton,
-} from "@/data/settings";
+import { getInitialPreviewVolume } from "@/data/settings";
 import { defineStore } from "pinia";
 
 interface AppInfoState {
-	webuiVersion: string | null;
-	deemixVersion: string | null;
-	latestVersion: string | null;
+	webuiVersion?: string;
+	deemixVersion?: string;
+	guiVersion?: string;
+	latestVersion?: string;
 	updateAvailable: boolean;
 	previewVolume: number;
 	hasSlimDownloads: boolean;
@@ -21,19 +16,13 @@ interface AppInfoState {
 
 export const useAppInfoStore = defineStore("appInfo", {
 	state: (): AppInfoState => ({
-		webuiVersion: null,
-		deemixVersion: null,
-		latestVersion: null,
 		updateAvailable: false,
 		previewVolume: getInitialPreviewVolume(),
-		hasSlimDownloads: checkInitialSlimDownloads(),
-		hasSlimSidebar: checkInitialSlimSidebar(),
-		showBitrateTags: checkInitialShowBitrateTags(),
-		showSearchButton: checkInitialShowSearchButton(),
+		hasSlimDownloads: localStorage.getItem("slimDownloads") === "true",
+		hasSlimSidebar: localStorage.getItem("slimSidebar") === "true",
+		showBitrateTags: localStorage.getItem("showBitrateTags") === "true",
+		showSearchButton: localStorage.getItem("showSearchButton") === "true",
 	}),
-	getters: {
-		appInfo: (state) => state,
-	},
 	actions: {
 		setAppInfo(payload: AppInfoState) {
 			this.webuiVersion = payload.webuiVersion;

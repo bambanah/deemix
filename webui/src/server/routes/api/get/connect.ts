@@ -5,11 +5,16 @@ import { getLoginCredentials } from "@/helpers/loginStorage.js";
 import { type ApiHandler } from "@/types.js";
 import {
 	DEEMIX_PACKAGE_VERSION,
+	GUI_VERSION,
 	WEBUI_PACKAGE_VERSION,
 } from "@/helpers/versions.js";
 
 const path: ApiHandler["path"] = "/connect";
-let update: { webuiVersion: string; deemixVersion: string } | null = null;
+let update: {
+	webuiVersion: string;
+	deemixVersion: string;
+	guiVersion?: string;
+} | null = null;
 
 const handler: ApiHandler["handler"] = async (req, res) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer();
@@ -20,8 +25,11 @@ const handler: ApiHandler["handler"] = async (req, res) => {
 	if (!update) {
 		logger.info(`webui version ${WEBUI_PACKAGE_VERSION}`);
 		logger.info(`deemix version ${DEEMIX_PACKAGE_VERSION}`);
+		GUI_VERSION && logger.info(`gui version ${GUI_VERSION}`);
+
 		update = {
 			webuiVersion: WEBUI_PACKAGE_VERSION,
+			guiVersion: GUI_VERSION,
 			deemixVersion: DEEMIX_PACKAGE_VERSION,
 		};
 	}

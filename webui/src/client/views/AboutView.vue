@@ -1,29 +1,22 @@
 <script setup lang="ts">
-import {
-	computed,
-	defineComponent,
-	onMounted,
-	reactive,
-	ref,
-	toRefs,
-} from "vue";
-import { useAppInfoStore } from "@/stores/appInfo";
-
-import { useOnline } from "@/use/online";
+import paypal from "@/assets/paypal.svg?url";
 import { pinia } from "@/stores";
+import { useAppInfoStore } from "@/stores/appInfo";
+import { useOnline } from "@/use/online";
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
-import paypal from "@/assets/paypal.svg?url";
-
-const appInfoStore = useAppInfoStore(pinia);
-
+const appInfo = useAppInfoStore(pinia);
 const { isOnline } = useOnline();
 const { t } = useI18n();
 
-const deemixVersion = computed(() => appInfoStore.deemixVersion);
-const webuiVersion = computed(() => appInfoStore.webuiVersion);
-const updateAvailable = computed(() => appInfoStore.updateAvailable);
-const latestVersion = computed(() => appInfoStore.latestVersion);
+const updateUrl = computed(() => {
+	if (appInfo.guiVersion) {
+		return `https://github.com/bambanah/deemix/releases/tag/deemix-gui%40${appInfo.latestVersion}`;
+	} else {
+		return `https://github.com/bambanah/deemix/pkgs/container/deemix`;
+	}
+});
 </script>
 
 <template>
@@ -43,21 +36,25 @@ const latestVersion = computed(() => appInfoStore.latestVersion);
 			<li>
 				{{ t("about.updates.currentWebuiVersion") }}:
 				<span>{{
-					webuiVersion || t("about.updates.versionNotAvailable")
+					appInfo.webuiVersion || t("about.updates.versionNotAvailable")
 				}}</span>
 			</li>
-			<li>{{ t("about.updates.deemixVersion") }}: {{ deemixVersion }}</li>
+			<li v-if="appInfo.guiVersion">
+				{{ t("about.updates.currentWebuiVersion") }}:
+				<span>{{
+					appInfo.guiVersion || t("about.updates.versionNotAvailable")
+				}}</span>
+			</li>
+			<li>
+				{{ t("about.updates.deemixVersion") }}: {{ appInfo.deemixVersion }}
+			</li>
 			<i18n-t
-				v-if="updateAvailable && latestVersion"
+				v-if="appInfo.updateAvailable && appInfo.latestVersion"
 				keypath="about.updates.updateAvailable"
 				tag="li"
 			>
 				<template #version>
-					<a
-						:href="`https://github.com/users/bambanah/packages/container/deemix/270989776?tag=v${latestVersion}`"
-						target="_blank"
-						>{{ latestVersion }}</a
-					>
+					<a :href="updateUrl" target="_blank">{{ appInfo.latestVersion }}</a>
 				</template>
 			</i18n-t>
 		</ul>

@@ -1,6 +1,6 @@
 import { CantStream, NotLoggedIn } from "@/helpers/errors.js";
 import { logger } from "@/helpers/logger.js";
-import { WEBUI_PACKAGE_VERSION } from "@/helpers/versions.js";
+import { GUI_VERSION, WEBUI_PACKAGE_VERSION } from "@/helpers/versions.js";
 import type { Listener } from "@/types.js";
 import {
 	Downloader,
@@ -103,12 +103,11 @@ export class DeemixApp {
 			(this.latestVersion === null || force) &&
 			!this.settings.disableUpdateCheck
 		) {
-			let responseJson;
 			try {
-				responseJson = await got
+				const responseJson = await got
 					// @ts-ignore
 					.get(
-						"https://raw.githubusercontent.com/bambanah/deemix/main/webui/package.json"
+						`https://raw.githubusercontent.com/bambanah/deemix/main/${GUI_VERSION !== undefined ? "gui" : "webui"}/package.json`
 					)
 					.json();
 				this.latestVersion = JSON.parse(JSON.stringify(responseJson)).version;
@@ -142,9 +141,13 @@ export class DeemixApp {
 
 	isUpdateAvailable(): boolean {
 		return (
-			this.latestVersion.localeCompare(WEBUI_PACKAGE_VERSION, undefined, {
-				numeric: true,
-			}) === 1
+			this.latestVersion.localeCompare(
+				GUI_VERSION ?? WEBUI_PACKAGE_VERSION,
+				undefined,
+				{
+					numeric: true,
+				}
+			) === 1
 		);
 	}
 
