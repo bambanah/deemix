@@ -341,7 +341,7 @@ export default class SpotifyPlugin extends BasePlugin {
 			}
 
 			callback();
-		}, settings.queueConcurrency * 20);
+		}, settings.queueConcurrency);
 
 		downloadObject.conversion_data.forEach((track, pos) => {
 			q.push({ track, pos }, () => {});
