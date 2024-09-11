@@ -1,3 +1,405 @@
+<script setup lang="ts">
+import { debounce } from "lodash-es";
+
+import TemplateVariablesList from "@/components/settings/TemplateVariablesList.vue";
+import { getSettingsData } from "@/data/settings";
+import { trackTemplateVariables } from "@/data/file-templates";
+
+import { toast } from "@/utils/toasts";
+import { socket } from "@/utils/socket";
+import { flags } from "@/utils/flags";
+import { copyToClipboard } from "@/utils/utils";
+
+import BaseAccordion from "@/components/globals/BaseAccordion.vue";
+import { fetchData, postToServer } from "@/utils/api-utils";
+import { getFormItem } from "@/utils/forms";
+import { useLoginStore } from "@/stores/login";
+import { useAppInfoStore } from "@/stores/appInfo";
+import { pinia } from "@/stores";
+import { useI18n } from "vue-i18n";
+import { computed, onMounted, onUnmounted, ref } from "vue";
+
+export interface Tags {
+	title?: boolean;
+	artist?: boolean;
+	artists?: boolean;
+	album?: boolean;
+	cover?: boolean;
+	trackNumber?: boolean;
+	trackTotal?: boolean;
+	discNumber?: boolean;
+	discTotal?: boolean;
+	albumArtist?: boolean;
+	genre?: boolean;
+	year?: boolean;
+	date?: boolean;
+	explicit?: boolean;
+	isrc?: boolean;
+	length?: boolean;
+	barcode?: boolean;
+	bpm?: boolean;
+	replayGain?: boolean;
+	label?: boolean;
+	lyrics?: boolean;
+	syncedLyrics?: boolean;
+	copyright?: boolean;
+	composer?: boolean;
+	involvedPeople?: boolean;
+	source?: boolean;
+	savePlaylistAsCompilation?: boolean;
+	useNullSeparator?: boolean;
+	saveID3v1?: boolean;
+	multiArtistSeparator?: string;
+	singleAlbumArtist?: boolean;
+	coverDescriptionUTF8?: boolean;
+}
+
+export interface Settings {
+	tags: Tags;
+	executeCommand: string;
+	downloadLocation: string;
+
+	fallbackISRC?: boolean;
+	clearQueueOnExit?: boolean;
+	autoCheckForUpdates?: boolean;
+	feelingLucky?: boolean;
+	tracknameTemplate?: string;
+	albumTracknameTemplate?: string;
+	playlistTracknameTemplate?: string;
+	createPlaylistFolder?: boolean;
+	playlistNameTemplate?: string;
+	createArtistFolder?: boolean;
+	artistNameTemplate?: string;
+	createAlbumFolder?: boolean;
+	albumNameTemplate?: string;
+	createCDFolder?: boolean;
+	createStructurePlaylist?: boolean;
+	createSingleFolder?: boolean;
+	padTracks?: boolean;
+	paddingSize?: string;
+	illegalCharacterReplacer?: string;
+	queueConcurrency?: number;
+	maxBitrate?: string;
+	fallbackBitrate?: boolean;
+	fallbackSearch?: boolean;
+	logErrors?: boolean;
+	logSearched?: boolean;
+	saveDownloadQueue?: boolean;
+	overwriteFile?: string;
+	createM3U8File?: boolean;
+	playlistFilenameTemplate?: string;
+	syncedLyrics?: boolean;
+	embeddedArtworkSize?: number;
+	embeddedArtworkPNG?: boolean;
+	localArtworkSize?: number;
+	localArtworkFormat?: string;
+	saveArtwork?: boolean;
+	coverImageTemplate?: string;
+	saveArtworkArtist?: boolean;
+	artistImageTemplate?: string;
+	jpegImageQuality?: number;
+	dateFormat?: string;
+	albumVariousArtists?: boolean;
+	removeAlbumVersion?: boolean;
+	removeDuplicateArtists?: boolean;
+	tagsLanguage?: string;
+	featuredToTitle?: string;
+	titleCasing?: string;
+	artistCasing?: string;
+}
+
+const loginStore = useLoginStore(pinia);
+const appInfoStore = useAppInfoStore(pinia);
+
+const { t, locale, availableLocales } = useI18n();
+
+const loginInput = ref<HTMLInputElement | null>(null);
+const loginWithCredentialsForm = ref<HTMLFormElement | null>(null);
+const username = ref<HTMLElement | null>(null);
+const userpicture = ref<HTMLImageElement | null>(null);
+
+const initialSettings = {
+	tags: {},
+	executeCommand: "",
+	downloadLocation: "",
+};
+
+const settings = ref<Settings>(initialSettings);
+const lastSettings = ref<Settings>(initialSettings);
+const defaultSettings = ref({});
+const spotifyFeatures = ref({
+	clientId: "",
+	clientSecret: "",
+	fallbackSearch: false,
+});
+const spotifyCredentials = ref({});
+const lastCredentials = ref({});
+const lastUser = ref("");
+const spotifyUser = ref(localStorage.getItem("spotifyUser") || "");
+const storedAccountNum = localStorage.getItem("accountNum");
+const accountNum = ref(
+	isNaN(parseInt(storedAccountNum)) ? parseInt(storedAccountNum) : 0
+);
+const accounts = ref([]);
+
+const arl = computed(() => loginStore.arl);
+const user = computed(() => loginStore.user);
+const isLoggedIn = computed(() => loginStore.isLoggedIn);
+const clientMode = computed(() => loginStore.clientMode);
+const previewVolume = computed({
+	get: () => appInfoStore.previewVolume,
+	set: debounce(function (value) {
+		appInfoStore.setPreviewVolume(value);
+	}, 20),
+});
+const hasSlimDownloads = computed({
+	get: () => appInfoStore.hasSlimDownloads,
+	set: (value) => appInfoStore.setSlimDownloads(value),
+});
+// const hasSlimSidebar = computed(() => appInfoStore.hasSlimSidebar);
+// const showBitrateTags = computed(() => appInfoStore.showBitrateTags);
+// const showSearchButton = computed(() => appInfoStore.showSearchButton);
+const needToWait = computed(() => {
+	return Object.keys(lastSettings).length === 0;
+});
+const pictureHref = computed(() => {
+	// Default image: https://e-cdns-images.dzcdn.net/images/user/125x125-000000-80-0-0.jpg
+	return `https://e-cdns-images.dzcdn.net/images/user/${user.value.picture}/125x125-000000-80-0-0.jpg`;
+});
+const userLicense = computed(() => {
+	if (user.value.can_stream_lossless) return "Hi-Fi";
+	else if (user.value.can_stream_hq) return "Premium";
+	else return "Free";
+});
+
+onMounted(async () => {
+	const {
+		settingsData,
+		defaultSettingsData,
+		spotifyCredentials: spotifyCredentialsData,
+	} = await getSettingsData();
+
+	defaultSettings.value = defaultSettingsData;
+	spotifyCredentials.value = spotifyCredentialsData;
+	initSettings(settingsData, spotifyCredentials);
+
+	if (spotifyUser.value) {
+		lastUser.value = spotifyUser.value;
+		socket.emit("update_userSpotifyPlaylists", spotifyUser.value);
+	}
+
+	socket.on("updateSettings", updateSettings);
+	// socket.on('accountChanged', accountChanged)
+	socket.on("familyAccounts", initAccounts);
+
+	if (clientMode.value) {
+		window.api.receive("downloadFolderSelected", downloadFolderSelected);
+		window.api.receive("applogin_arl", loggedInViaDeezer);
+	}
+});
+
+onUnmounted(() => {
+	socket.off("updateSettings");
+	// socket.off('accountChanged')
+	socket.off("familyAccounts");
+});
+
+function onTemplateVariableClick(templateName) {
+	copyToClipboard(templateName);
+	toast(`Copied ${templateName} to clipboard!`);
+}
+function revertSettings() {
+	settings.value = lastSettings.value;
+}
+
+function revertCredentials() {
+	spotifyCredentials.value = lastCredentials.value;
+	spotifyUser.value = (" " + lastUser.value).slice(1);
+}
+
+function copyARLtoClipboard() {
+	const copyText = loginInput.value;
+
+	copyText.setAttribute("type", "text");
+	copyText.select();
+	copyText.setSelectionRange(0, 99999);
+	document.execCommand("copy");
+	copyText.setAttribute("type", "password");
+
+	toast(t("settings.toasts.ARLcopied"), "assignment");
+}
+
+function saveSettings() {
+	lastSettings.value = settings.value;
+	lastCredentials.value = spotifyFeatures;
+
+	let changed = false;
+
+	if (lastUser.value !== spotifyUser.value) {
+		// force cloning without linking
+		lastUser.value = (" " + spotifyUser.value).slice(1);
+		localStorage.setItem("spotifyUser", lastUser.value);
+		loginStore.setSpotifyUserId(lastUser.value);
+		changed = true;
+	}
+
+	socket.emit("saveSettings", {
+		settings: lastSettings.value,
+		spotifySettings: lastCredentials.value,
+		spotifyUser: changed ? lastUser.value : false,
+	});
+
+	// this.refreshSpotifyStatus()
+}
+function selectDownloadFolder() {
+	window.api.send("selectDownloadFolder", settings.value.downloadLocation);
+}
+function downloadFolderSelected(folder) {
+	settings.value.downloadLocation = folder;
+}
+function loadSettings(data) {
+	lastSettings.value = JSON.parse(JSON.stringify(data));
+	settings.value = JSON.parse(JSON.stringify(data));
+}
+function loadCredentials(credentials) {
+	lastCredentials.value = JSON.parse(JSON.stringify(credentials));
+	spotifyFeatures.value = JSON.parse(JSON.stringify(credentials));
+}
+
+function loggedInViaDeezer(arl: string) {
+	loginStore.setARL(arl);
+}
+
+async function login(arl: string, force = false) {
+	toast(t("toasts.loggingIn"), "loading", false, "login-toast");
+	const data = await postToServer("loginArl", {
+		arl,
+		force,
+		child: accountNum.value,
+	});
+	const { status, user, childs, currentChild } = data;
+	accounts.value = childs;
+	accountNum.value = currentChild;
+	switch (status) {
+		case 1:
+		case 3:
+			// Login ok
+			toast(t("toasts.loggedIn"), "done", true, "login-toast");
+			loginStore.login(data);
+			break;
+		case 2:
+			// Already logged in
+			toast(t("toasts.alreadyLogged"), "done", true, "login-toast");
+			loginStore.setUser(user);
+			break;
+		case 0:
+			// Login failed
+			toast(t("toasts.loginFailed"), "close", true, "login-toast");
+			loginStore.removeARL();
+			break;
+		case -1:
+			toast(t("toasts.deezerNotAvailable"), "close", true, "login-toast");
+	}
+}
+function loginButton() {
+	const newArl = loginInput.value.value.trim();
+	if (newArl && newArl !== arl.value) {
+		login(newArl, true);
+	}
+}
+
+async function loginWithCredentials() {
+	const fromLoginForm = getFormItem(loginWithCredentialsForm.value);
+
+	const { email } = fromLoginForm("email");
+	const { password } = fromLoginForm("password");
+
+	if (!email || !password) return;
+
+	toast(t("toasts.loggingIn"), "loading", false, "login-toast");
+
+	const { accessToken, arl } = await postToServer("loginEmail", {
+		email,
+		password,
+		accessToken: loginStore.accessToken,
+	});
+
+	if (accessToken !== loginStore.accessToken)
+		loginStore.setAccessToken(accessToken);
+	if (arl) loginStore.login(arl);
+	else toast(t("toasts.loginFailed"), "close", true, "login-toast");
+}
+
+function appLogin() {
+	window.api.send("applogin");
+}
+
+async function changeAccount() {
+	const [user, newAccountNum] = await fetchData(
+		"changeAccount",
+		{ child: accountNum.value },
+		"POST"
+	);
+
+	accountChanged(user, newAccountNum);
+}
+function accountChanged(user, newAccountNum) {
+	username.value.innerText = user.name;
+	userpicture.value.src = `https://e-cdns-images.dzcdn.net/images/user/${user.picture}/125x125-000000-80-0-0.jpg`;
+	accountNum.value = newAccountNum;
+	localStorage.setItem("accountNum", newAccountNum);
+}
+
+function initAccounts(initAccounts: any[]) {
+	accounts.value = initAccounts;
+}
+
+async function logout() {
+	const result = await postToServer("logout");
+
+	if (result.logged_out) {
+		toast(t("toasts.loggedOut"), "done", true, "login-toast");
+		loginStore.logout();
+	}
+}
+
+function initSettings(settings, credentials) {
+	// this.loadDefaultSettings()
+	loadSettings(settings);
+	loadCredentials(credentials);
+
+	toast(t("settings.toasts.init"), "settings");
+}
+
+function updateSettings(data) {
+	const { settings: newSettings, spotifySettings: newCredentials } = data;
+	loadSettings(newSettings);
+	loadCredentials(newCredentials);
+
+	toast(t("settings.toasts.update"), "settings");
+
+	loginStore.refreshSpotifyStatus();
+}
+
+function resetToDefault() {
+	const wantsToReset = confirm(t("settings.resetMessage"));
+
+	if (!wantsToReset) return;
+
+	settings.value = JSON.parse(JSON.stringify(defaultSettings.value));
+	toast(t("settings.toasts.reset"), "settings");
+}
+
+function canDownload(bitrate: number) {
+	if (!user.value.id) return false;
+	if (settings.value.feelingLucky) return true;
+	if (user.value.id && bitrate == 1) return true;
+	if (user.value.can_stream_hq && bitrate == 3) return true;
+	if (user.value.can_stream_lossless && bitrate == 9) return true;
+	return false;
+}
+</script>
+
 <template>
 	<div class="fixed-footer">
 		<h1 class="mb-8 text-5xl">{{ t("settings.title") }}</h1>
@@ -143,25 +545,25 @@
 			</template>
 
 			<label class="with-checkbox">
-				<input v-model="modelSlimDownloads" type="checkbox" />
+				<input v-model="appInfoStore.hasSlimDownloads" type="checkbox" />
 				<span class="checkbox-text">{{
 					t("settings.appearance.slimDownloadTab")
 				}}</span>
 			</label>
 			<label class="with-checkbox mb-4">
-				<input v-model="modelSlimSidebar" type="checkbox" />
+				<input v-model="appInfoStore.hasSlimSidebar" type="checkbox" />
 				<span class="checkbox-text">{{
 					t("settings.appearance.slimSidebar")
 				}}</span>
 			</label>
 			<label class="with-checkbox mb-4">
-				<input v-model="modelShowBitrateTags" type="checkbox" />
+				<input v-model="appInfoStore.showBitrateTags" type="checkbox" />
 				<span class="checkbox-text">{{
 					t("settings.appearance.bitrateTags")
 				}}</span>
 			</label>
 			<label class="with-checkbox mb-4">
-				<input v-model="modelShowSearchButton" type="checkbox" />
+				<input v-model="appInfoStore.showSearchButton" type="checkbox" />
 				<span class="checkbox-text">{{
 					t("settings.appearance.searchButton")
 				}}</span>
@@ -997,7 +1399,7 @@
 			<div class="input-group">
 				<p class="input-group-text">{{ t("settings.other.previewVolume") }}</p>
 				<input
-					v-model.number="modelVolume"
+					v-model.number="appInfoStore.previewVolume"
 					class="slider"
 					max="100"
 					min="0"
@@ -1076,360 +1478,6 @@
 		</footer>
 	</div>
 </template>
-
-<script lang="ts">
-// @ts-nocheck
-import { debounce } from "lodash-es";
-
-import TemplateVariablesList from "@/components/settings/TemplateVariablesList.vue";
-import { getSettingsData } from "@/data/settings";
-import { trackTemplateVariables } from "@/data/file-templates";
-
-import { toast } from "@/utils/toasts";
-import { socket } from "@/utils/socket";
-import { flags } from "@/utils/flags";
-import { copyToClipboard } from "@/utils/utils";
-
-import BaseAccordion from "@/components/globals/BaseAccordion.vue";
-import { fetchData, postToServer } from "@/utils/api-utils";
-import { getFormItem } from "@/utils/forms";
-import { useLoginStore } from "@/stores/login";
-import { useAppInfoStore } from "@/stores/appInfo";
-import { pinia } from "@/stores";
-import { useI18n } from "vue-i18n";
-import { reactive } from "vue";
-
-const loginStore = useLoginStore(pinia);
-const appInfoStore = useAppInfoStore(pinia);
-
-export default {
-	name: "SettingsView",
-	components: {
-		BaseAccordion,
-		TemplateVariablesList,
-	},
-	setup() {
-		const { t, locale, availableLocales } = useI18n();
-
-		return { t, locale, availableLocales };
-	},
-	data: () => {
-		return {
-			flags,
-			settings: reactive({
-				tags: {},
-				executeCommand: "",
-				downloadLocation: "",
-			}),
-			lastSettings: {},
-			spotifyFeatures: {},
-			lastCredentials: {},
-			defaultSettings: {},
-			lastUser: "",
-			spotifyUser: "",
-			accountNum: 0,
-			accounts: [],
-			trackTemplateVariables,
-		};
-	},
-	computed: {
-		arl: () => loginStore.arl,
-		accessToken: () => loginStore.accessToken,
-		user: () => loginStore.user,
-		isLoggedIn: () => loginStore.isLoggedIn,
-		clientMode: () => loginStore.clientMode,
-		previewVolume: () => appInfoStore.previewVolume,
-		hasSlimDownloads: () => appInfoStore.hasSlimDownloads,
-		hasSlimSidebar: () => appInfoStore.hasSlimSidebar,
-		showBitrateTags: () => appInfoStore.showBitrateTags,
-		showSearchButton: () => appInfoStore.showSearchButton,
-		needToWait() {
-			return Object.keys(this.getSettings).length === 0;
-		},
-		modelVolume: {
-			get() {
-				return appInfoStore.previewVolume;
-			},
-			set: debounce(function (value) {
-				appInfoStore.setPreviewVolume(value);
-			}, 20),
-		},
-		modelSlimDownloads: {
-			get() {
-				return appInfoStore.hasSlimDownloads;
-			},
-			set(wantSlimDownloads) {
-				appInfoStore.setSlimDownloads(wantSlimDownloads);
-			},
-		},
-		modelSlimSidebar: {
-			get() {
-				return appInfoStore.hasSlimSidebar;
-			},
-			set(wantSlimSidebar) {
-				appInfoStore.setSlimSidebar(wantSlimSidebar);
-			},
-		},
-		modelShowBitrateTags: {
-			get() {
-				return appInfoStore.showBitrateTags;
-			},
-			set(wantShowBitrateTags) {
-				appInfoStore.setShowBitrateTags(wantShowBitrateTags);
-			},
-		},
-		modelShowSearchButton: {
-			get() {
-				return appInfoStore.showSearchButton;
-			},
-			set(wantShowSearchButton) {
-				appInfoStore.setShowSearchButton(wantShowSearchButton);
-			},
-		},
-		pictureHref() {
-			// Default image: https://e-cdns-images.dzcdn.net/images/user/125x125-000000-80-0-0.jpg
-			return `https://e-cdns-images.dzcdn.net/images/user/${this.user.picture}/125x125-000000-80-0-0.jpg`;
-		},
-		userLicense() {
-			if (this.user.can_stream_lossless) return "Hi-Fi";
-			else if (this.user.can_stream_hq) return "Premium";
-			else return "Free";
-		},
-	},
-	async mounted() {
-		const { settingsData, defaultSettingsData, spotifyCredentials } =
-			await getSettingsData();
-
-		this.defaultSettings = defaultSettingsData;
-		this.initSettings(settingsData, spotifyCredentials);
-
-		// TODO Move in store
-		const storedAccountNum = localStorage.getItem("accountNum");
-
-		if (storedAccountNum) {
-			this.accountNum = storedAccountNum;
-		}
-
-		// TODO Move in store
-		const spotifyUser = localStorage.getItem("spotifyUser");
-
-		if (spotifyUser) {
-			this.lastUser = spotifyUser;
-			this.spotifyUser = spotifyUser;
-			socket.emit("update_userSpotifyPlaylists", spotifyUser);
-		}
-
-		socket.on("updateSettings", this.updateSettings);
-		// socket.on('accountChanged', this.accountChanged)
-		socket.on("familyAccounts", this.initAccounts);
-
-		if (this.clientMode) {
-			window.api.receive("downloadFolderSelected", this.downloadFolderSelected);
-			window.api.receive("applogin_arl", this.loggedInViaDeezer);
-		}
-	},
-	unmounted() {
-		socket.off("updateSettings");
-		// socket.off('accountChanged')
-		socket.off("familyAccounts");
-	},
-	methods: {
-		onTemplateVariableClick(templateName) {
-			copyToClipboard(templateName);
-			toast(`Copied ${templateName} to clipboard!`);
-		},
-		revertSettings() {
-			this.settings = JSON.parse(JSON.stringify(this.lastSettings));
-		},
-		revertCredentials() {
-			this.spotifyCredentials = JSON.parse(
-				JSON.stringify(this.lastCredentials)
-			);
-			this.spotifyUser = (" " + this.lastUser).slice(1);
-		},
-		copyARLtoClipboard() {
-			const copyText = this.$refs.loginInput;
-
-			copyText.setAttribute("type", "text");
-			copyText.select();
-			copyText.setSelectionRange(0, 99999);
-			document.execCommand("copy");
-			copyText.setAttribute("type", "password");
-
-			toast(this.t("settings.toasts.ARLcopied"), "assignment");
-		},
-		changeLocale(newLocale) {
-			this.$i18n.locale = newLocale;
-			this.currentLocale = newLocale;
-			localStorage.setItem("locale", newLocale);
-		},
-		saveSettings() {
-			this.lastSettings = JSON.parse(JSON.stringify(this.settings));
-			this.lastCredentials = JSON.parse(JSON.stringify(this.spotifyFeatures));
-
-			let changed = false;
-
-			if (this.lastUser !== this.spotifyUser) {
-				// force cloning without linking
-				this.lastUser = (" " + this.spotifyUser).slice(1);
-				localStorage.setItem("spotifyUser", this.lastUser);
-				loginStore.setSpotifyUserId(this.lastUser);
-				changed = true;
-			}
-
-			socket.emit("saveSettings", {
-				settings: this.lastSettings,
-				spotifySettings: this.lastCredentials,
-				spotifyUser: changed ? this.lastUser : false,
-			});
-
-			// this.refreshSpotifyStatus()
-		},
-		selectDownloadFolder() {
-			window.api.send("selectDownloadFolder", this.settings.downloadLocation);
-		},
-		downloadFolderSelected(folder) {
-			this.settings.downloadLocation = folder;
-		},
-		loadSettings(data) {
-			this.lastSettings = JSON.parse(JSON.stringify(data));
-			this.settings = JSON.parse(JSON.stringify(data));
-		},
-		loadCredentials(credentials) {
-			this.lastCredentials = JSON.parse(JSON.stringify(credentials));
-			this.spotifyFeatures = JSON.parse(JSON.stringify(credentials));
-		},
-		loggedInViaDeezer(arl) {
-			loginStore.setARL(arl);
-		},
-		async login(arl, force = false) {
-			toast(this.t("toasts.loggingIn"), "loading", false, "login-toast");
-			const data = await postToServer("loginArl", {
-				arl,
-				force,
-				child: this.accountNum,
-			});
-			const { status, user, childs, currentChild } = data;
-			this.accounts = childs;
-			this.accountNum = currentChild;
-			switch (status) {
-				case 1:
-				case 3:
-					// Login ok
-					toast(this.t("toasts.loggedIn"), "done", true, "login-toast");
-					loginStore.login(data);
-					break;
-				case 2:
-					// Already logged in
-					toast(this.t("toasts.alreadyLogged"), "done", true, "login-toast");
-					loginStore.setUser(user);
-					break;
-				case 0:
-					// Login failed
-					toast(this.t("toasts.loginFailed"), "close", true, "login-toast");
-					loginStore.removeARL();
-					break;
-				case -1:
-					toast(
-						this.t("toasts.deezerNotAvailable"),
-						"close",
-						true,
-						"login-toast"
-					);
-			}
-		},
-		loginButton() {
-			const newArl = this.$refs.loginInput.value.trim();
-			if (newArl && newArl !== this.arl) {
-				this.login(newArl, true);
-			}
-		},
-		async loginWithCredentials() {
-			const fromLoginForm = getFormItem(this.$refs.loginWithCredentialsForm);
-
-			const { email } = fromLoginForm("email");
-			const { password } = fromLoginForm("password");
-
-			if (!email || !password) return;
-
-			toast(this.t("toasts.loggingIn"), "loading", false, "login-toast");
-
-			const { accessToken, arl } = await postToServer("loginEmail", {
-				email,
-				password,
-				accessToken: this.accessToken,
-			});
-
-			if (accessToken !== this.accessToken)
-				loginStore.setAccessToken(accessToken);
-			if (arl) loginStore.login(arl);
-			else toast(this.t("toasts.loginFailed"), "close", true, "login-toast");
-		},
-		appLogin() {
-			window.api.send("applogin");
-		},
-		async changeAccount() {
-			const [user, accountNum] = await fetchData(
-				"changeAccount",
-				{ child: this.accountNum },
-				"POST"
-			);
-
-			this.accountChanged(user, accountNum);
-		},
-		accountChanged(user, accountNum) {
-			this.$refs.username.innerText = user.name;
-			this.$refs.userpicture.src = `https://e-cdns-images.dzcdn.net/images/user/${user.picture}/125x125-000000-80-0-0.jpg`;
-			this.accountNum = accountNum;
-
-			localStorage.setItem("accountNum", this.accountNum.toString());
-		},
-		initAccounts(accounts) {
-			this.accounts = accounts;
-		},
-		async logout() {
-			const result = await postToServer("logout");
-
-			if (result.logged_out) {
-				toast(this.t("toasts.loggedOut"), "done", true, "login-toast");
-				loginStore.logout();
-			}
-		},
-		initSettings(settings, credentials) {
-			// this.loadDefaultSettings()
-			this.loadSettings(settings);
-			this.loadCredentials(credentials);
-
-			toast(this.t("settings.toasts.init"), "settings");
-		},
-		updateSettings(data) {
-			const { settings: newSettings, spotifySettings: newCredentials } = data;
-			this.loadSettings(newSettings);
-			this.loadCredentials(newCredentials);
-
-			toast(this.t("settings.toasts.update"), "settings");
-
-			loginStore.refreshSpotifyStatus();
-		},
-		resetToDefault() {
-			const wantsToReset = confirm(this.t("settings.resetMessage"));
-
-			if (!wantsToReset) return;
-
-			this.settings = JSON.parse(JSON.stringify(this.defaultSettings));
-			toast(this.t("settings.toasts.reset"), "settings");
-		},
-		canDownload(bitrate) {
-			if (!this.user.id) return false;
-			if (this.settings.feelingLucky) return true;
-			if (this.user.id && bitrate == 1) return true;
-			if (this.user.can_stream_hq && bitrate == 3) return true;
-			if (this.user.can_stream_lossless && bitrate == 9) return true;
-			return false;
-		},
-	},
-};
-</script>
 
 <style scoped>
 #logged_in_info {

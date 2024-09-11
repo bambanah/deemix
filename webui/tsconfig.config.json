@@ -41,7 +41,7 @@
 		// "strictFunctionTypes": true,
 		// "strictBindCallApply": true,
 		// "strictPropertyInitialization": true,
-		// "noImplicitThis": true,
+		"noImplicitThis": true,
 		// "useUnknownInCatchVariables": true,
 		// "alwaysStrict": true,
 		// "noUnusedLocals": true,
