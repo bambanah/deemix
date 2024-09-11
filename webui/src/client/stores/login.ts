@@ -1,4 +1,4 @@
-import { fetchData } from "@/utils/api-utils";
+import { fetchData } from "@/utils/api-utils.js";
 import { defineStore } from "pinia";
 
 interface LoginState {

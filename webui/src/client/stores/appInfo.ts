@@ -1,4 +1,4 @@
-import { getInitialPreviewVolume } from "@/data/settings";
+import { getInitialPreviewVolume } from "@/data/settings.js";
 import { defineStore } from "pinia";
 
 interface AppInfoState {
@@ -27,6 +27,7 @@ export const useAppInfoStore = defineStore("appInfo", {
 		setAppInfo(payload: AppInfoState) {
 			this.webuiVersion = payload.webuiVersion;
 			this.deemixVersion = payload.deemixVersion;
+			this.guiVersion = payload.guiVersion;
 		},
 		setUpdateInfo(payload: AppInfoState) {
 			console.log(payload);
