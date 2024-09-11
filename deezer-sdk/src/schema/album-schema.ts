@@ -37,4 +37,4 @@ export const albumSchema = trackAlbumSchema.extend({
 	tracks: z.object({ data: z.array(z.lazy(() => albumTrackSchema)) }),
 });
 
-export type Album = z.infer<typeof albumSchema>;
+export type DeezerAlbum = z.infer<typeof albumSchema>;

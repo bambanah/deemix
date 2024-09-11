@@ -468,7 +468,8 @@ export function map_track(track: GWTrack): EnrichedAPITrack {
 	if (track.SNG_ID <= 0) {
 		result.token = track.TOKEN;
 		result.user_id = track.USER_ID;
-		result.filesizes.mp3_misc = track.FILESIZE_MP3_MISC;
+
+		if (result.filesizes) result.filesizes.mp3_misc = track.FILESIZE_MP3_MISC;
 
 		return result;
 	}

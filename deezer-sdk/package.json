@@ -7,7 +7,7 @@
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"scripts": {
-		"dev": "tsup src/index.ts --format esm --dts --watch",
+		"dev": "tsc --watch",
 		"build": "tsc",
 		"test": "vitest run",
 		"test:watch": "vitest",

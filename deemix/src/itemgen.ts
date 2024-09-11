@@ -32,7 +32,7 @@ export async function generateTrackItem(
 	if (!trackAPI) {
 		if (String(id).startsWith("isrc") || (typeof id === "number" && id > 0)) {
 			try {
-				trackAPI = await dz.api.get_track(id);
+				trackAPI = await dz.api.getTrack(id);
 			} catch (e) {
 				console.trace(e);
 				throw new GenerationError(`https://deezer.com/track/${id}`, e.message);

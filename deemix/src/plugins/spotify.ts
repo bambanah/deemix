@@ -1,6 +1,6 @@
 import { type Settings } from "@/types/Settings.js";
 import Track from "@/types/Track.js";
-import { SpotifyApi } from "@spotify/web-api-ts-sdk";
+import { SpotifyApi, type MaxInt } from "@spotify/web-api-ts-sdk";
 import { queue } from "async";
 import { Deezer } from "deezer-sdk";
 import fs from "fs";
@@ -17,7 +17,7 @@ export default class SpotifyPlugin extends BasePlugin {
 	settings: { fallbackSearch: boolean };
 	enabled: boolean;
 	configFolder: any;
-	sp: any;
+	sp: SpotifyApi;
 
 	constructor(configFolder = undefined) {
 		super();
@@ -83,7 +83,7 @@ export default class SpotifyPlugin extends BasePlugin {
 		}
 	}
 
-	async generateTrackItem(dz: Deezer, link_id: string, bitrate: number) {
+	async generateTrackItem(dz: Deezer, link_id: number, bitrate: number) {
 		const cache = this.loadCache();
 
 		let cachedTrack;
@@ -140,7 +140,7 @@ export default class SpotifyPlugin extends BasePlugin {
 		}
 	}
 
-	async generatePlaylistItem(dz, link_id, bitrate) {
+	async generatePlaylistItem(dz: Deezer, link_id: string, bitrate: number) {
 		if (!this.enabled) throw new Error("Spotify plugin not enabled");
 
 		const spotifyPlaylist = await this.sp.playlists.getPlaylist(link_id);
@@ -153,8 +153,8 @@ export default class SpotifyPlugin extends BasePlugin {
 			const regExec = /offset=(\d+)&limit=(\d+)/g.exec(
 				spotifyPlaylist.tracks.next
 			);
-			const offset = regExec[1];
-			const limit = regExec[2];
+			const offset = parseInt(regExec[1]);
+			const limit = parseInt(regExec[2]) as MaxInt<50>;
 
 			const playlistTracks = await this.sp.playlists.getPlaylistItems(
 				link_id,
@@ -195,8 +195,9 @@ export default class SpotifyPlugin extends BasePlugin {
 		});
 	}
 
-	async getTrack(track_id, spotifyTrack = null) {
+	async getTrack(track_id: number, spotifyTrack = null) {
 		if (!this.enabled) throw new Error("Spotify plugin not enabled");
+
 		const cachedTrack = {
 			isrc: null,
 			data: null,
@@ -213,15 +214,17 @@ export default class SpotifyPlugin extends BasePlugin {
 		}
 		if (spotifyTrack.external_ids && spotifyTrack.external_ids.isrc)
 			cachedTrack.isrc = spotifyTrack.external_ids.isrc;
+
 		cachedTrack.data = {
 			title: spotifyTrack.name,
 			artist: spotifyTrack.artists[0].name,
 			album: spotifyTrack.album.name,
 		};
+
 		return cachedTrack;
 	}
 
-	async getAlbum(album_id, spotifyAlbum = null) {
+	async getAlbum(album_id: string, spotifyAlbum = null) {
 		if (!this.enabled) throw new Error("Spotify plugin not enabled");
 		const cachedAlbum = {
 			upc: null,
@@ -274,7 +277,7 @@ export default class SpotifyPlugin extends BasePlugin {
 
 			if (cachedTrack.isrc) {
 				try {
-					trackAPI = await dz.api.get_track_by_ISRC(cachedTrack.isrc);
+					trackAPI = await dz.api.getTrackByISRC(cachedTrack.isrc);
 					if (!trackAPI.id || !trackAPI.title) trackAPI = null;
 				} catch {
 					/* Empty */
@@ -294,7 +297,7 @@ export default class SpotifyPlugin extends BasePlugin {
 					}
 				}
 				if (cachedTrack.id !== "0")
-					trackAPI = await dz.api.get_track(cachedTrack.id);
+					trackAPI = await dz.api.getTrack(cachedTrack.id);
 			}
 			if (!trackAPI) {
 				trackAPI = {

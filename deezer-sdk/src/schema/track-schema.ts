@@ -59,7 +59,7 @@ export const trackSchema = baseTrackSchema.extend({
 	contributors: z.array(z.lazy(() => contributorSchema)).optional(),
 	track_token: z.string(),
 	artist: artistSchema,
-	album: trackAlbumSchema,
+	album: z.lazy(() => trackAlbumSchema),
 });
 
-export type Track = z.infer<typeof trackSchema>;
+export type DeezerTrack = z.infer<typeof trackSchema>;
