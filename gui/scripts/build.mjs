@@ -4,6 +4,10 @@ import path from "node:path";
 import url from "node:url";
 import { getArg, hasArg, log } from "./utils.mjs";
 
+import { createRequire } from "node:module";
+const require = createRequire(import.meta.url);
+const packageJson = require("../package.json");
+
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -53,6 +57,7 @@ async function main(argv) {
 				define: {
 					"process.env.CSS_TRANSFORMER_WASM": "false",
 					"process.env.NODE_ENV": JSON.stringify(BUILD_MODE),
+					"process.env.GUI_VERSION": JSON.stringify(packageJson.version),
 				},
 				loader: {
 					".node": "copy",
