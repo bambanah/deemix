@@ -43,7 +43,27 @@ jobs:
           node-version: 20
           cache: pnpm
 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Install distutils
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools
+
+      - name: Set PYTHON env var
+        run: echo "PYTHON=$(which python)" >> $GITHUB_ENV
+
       - run: pnpm install --frozen-lockfile
+
+      - name: Rebuild Electron modules
+        run: |
+          cd gui
+          pnpm rebuild
+          npx electron-rebuild
+        if: matrix.os == 'macos-latest'
 
       - run: pnpm make
 

@@ -23,9 +23,9 @@
 		"@electron-forge/maker-squirrel": "^7.3.1",
 		"@electron-forge/maker-zip": "^7.3.1",
 		"@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
-		"@types/yargs": "17.0.32",
+		"@types/yargs": "^17.0.32",
 		"electron": "32.0.2",
-		"esbuild": "0.23.1",
+		"esbuild": "^0.23.1",
 		"node-gyp": "^10.2.0",
 		"tsup": "^8.2.4"
 	},
