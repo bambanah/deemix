@@ -1,5 +1,13 @@
 # deemix-webui
 
+## 4.1.2
+
+### Patch Changes
+
+- Updated dependencies [c464740]
+  - deezer-sdk@1.8.1
+  - deemix@3.11.2
+
 ## 4.1.1
 
 ### Patch Changes
