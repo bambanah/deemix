@@ -9,7 +9,7 @@
 	"scripts": {
 		"dev": "tsup src/index.ts --format esm --dts --watch",
 		"build": "tsup src/index.ts --format esm --dts",
-		"lint:ts": "tsc --noEmit"
+		"type-check": "tsc --noEmit"
 	},
 	"author": "RemixDev",
 	"license": "GPL-3.0-or-later",

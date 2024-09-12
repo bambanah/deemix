@@ -13,9 +13,9 @@
 		"test": "jest",
 		"test-watch": "jest --watch",
 		"testlang": "node ./tests/testlang.js",
-		"lint:ts": "run-p lint:client lint:server",
-		"lint:client": "vue-tsc --noEmit -p src/client/tsconfig.json",
-		"lint:server": "tsc --noEmit -p src/server/tsconfig.json"
+		"type-check": "run-p type-check:*",
+		"type-check:client": "vue-tsc --noEmit -p src/client/tsconfig.json",
+		"type-check:server": "tsc --noEmit -p src/server/tsconfig.json"
 	},
 	"nodemonConfig": {
 		"watch": [

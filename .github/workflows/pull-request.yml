@@ -9,7 +9,7 @@ env:
   HUSKY: 0
 
 jobs:
-  lint-test-build:
+  pull-request:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,6 +21,4 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - run: pnpm lint
-      # - run: pnpm test
-      - run: pnpm build
+      - run: pnpm run ci
