@@ -14,7 +14,7 @@ interface Props {
 	wantHeaders?: boolean;
 }
 
-const { viewInfo, itemsToShow = 6, wantHeaders = false } = defineProps<Props>();
+const { viewInfo, itemsToShow = 6 } = defineProps<Props>();
 
 const { t } = useI18n();
 </script>

@@ -10,18 +10,18 @@ const extraFileExtensions = [".vue"];
 
 export default tslint.config(
 	eslint.configs.recommended,
-	// ...tslint.configs.recommended,
+	...tslint.configs.recommended,
 	// @ts-expect-error
 	...pluginVue.configs["flat/recommended"],
-	// {
-	// 	files: ["**/*.ts"],
-	// 	languageOptions: {
-	// 		parserOptions: {
-	// 			parser: tslint.parser,
-	// 			extraFileExtensions,
-	// 		},
-	// 	},
-	// },
+	{
+		files: ["**/*.ts"],
+		languageOptions: {
+			parserOptions: {
+				parser: tslint.parser,
+				extraFileExtensions,
+			},
+		},
+	},
 	{
 		files: ["**/*.vue"],
 		languageOptions: {
@@ -36,6 +36,7 @@ export default tslint.config(
 		rules: {
 			...jestPluginRecommended.rules,
 			"jest/expect-expect": "off",
+			"jest/no-disabled-tests": "off",
 		},
 	},
 	{

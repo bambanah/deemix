@@ -225,10 +225,6 @@ async function loginWithCredentials() {
 	else toast(t("toasts.loginFailed"), "close", true, "login-toast");
 }
 
-function appLogin() {
-	window.api.send("applogin");
-}
-
 async function changeAccount() {
 	const [user, newAccountNum] = await fetchData(
 		"changeAccount",

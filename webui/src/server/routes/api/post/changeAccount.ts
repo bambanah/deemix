@@ -9,7 +9,10 @@ interface ChangeAccountQuery {
 	child: number;
 }
 
-const handler: RequestHandler<{}, {}, {}, ChangeAccountQuery> = (req, res) => {
+const handler: RequestHandler<any, any, any, ChangeAccountQuery> = (
+	req,
+	res
+) => {
 	if (!req.query || !req.query.child) {
 		return res
 			.status(400)

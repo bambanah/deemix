@@ -21,7 +21,10 @@ export interface AlbumResponse {
 
 const path: ApiHandler["path"] = "/album-search/";
 
-const handler: RequestHandler<{}, {}, {}, RawAlbumQuery> = async (req, res) => {
+const handler: RequestHandler<any, any, any, RawAlbumQuery> = async (
+	req,
+	res
+) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer();
 	const dz = sessionDZ[req.session.id];
 

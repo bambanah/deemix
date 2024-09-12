@@ -23,10 +23,9 @@ const LoginStatus = {
 
 const path: ApiHandler["path"] = "/loginArl";
 
-const handler: RequestHandler<{}, {}, RawLoginArlBody, {}> = async (
+const handler: RequestHandler<any, any, RawLoginArlBody, any> = async (
 	req,
-	res,
-	_
+	res
 ) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer();
 	const deemix: DeemixApp = req.app.get("deemix");

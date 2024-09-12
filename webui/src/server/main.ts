@@ -100,7 +100,6 @@ const wss = new WebSocketServer({ server });
 
 if (process.env.NODE_ENV === "production") {
 	const publicPath = join(dirname(fileURLToPath(import.meta.url)), "public");
-	console.log("Service static files from", publicPath);
 	app.use(express.static(publicPath));
 } else {
 	ViteExpress.bind(app, server);

@@ -224,9 +224,6 @@ function loggedIn(data: { status: number; user: any; arl: string | null }) {
 /* ===== Socketio listeners ===== */
 
 // Debug messages for socketio
-socket.on("message", function (msg: string) {
-	console.log(msg);
-});
 socket.on("restoringQueue", function () {
 	toast(
 		i18n.global.t("toasts.restoringQueue"),
