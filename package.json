@@ -11,14 +11,12 @@
 		"dev": "pnpm -r --parallel --filter=!deemix-gui dev",
 		"dev:gui": "pnpm -C gui dev",
 		"build": "turbo run build",
+		"lint": "turbo run lint",
+		"type-check": "turbo run type-check",
+		"test": "turbo run test",
 		"package": "turbo run package",
 		"make": "turbo run make",
-		"build:gui": "pnpm build && pnpm -C gui build",
-		"start": "pnpm -C webui start",
-		"test": "pnpm -C webui test",
-		"lint": "run-s lint:*",
-		"lint:es": "eslint .",
-		"lint:ts": "pnpm -r lint:ts",
+		"ci": "turbo run lint type-check build",
 		"prepare": "husky"
 	},
 	"devDependencies": {

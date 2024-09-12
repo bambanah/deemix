@@ -12,7 +12,8 @@
 		"dev": "electron .",
 		"build": "node ./scripts/build.mjs --mode production",
 		"package": "electron-forge package",
-		"make": "electron-forge make"
+		"make": "electron-forge make",
+		"type-check": "tsc --noEmit"
 	},
 	"devDependencies": {
 		"@electron-forge/cli": "^7.3.1",
