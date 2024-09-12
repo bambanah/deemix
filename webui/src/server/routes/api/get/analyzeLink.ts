@@ -16,7 +16,7 @@ type ResBody = GetAlbumResponse | GetTrackResponse;
 
 const path: ApiHandler["path"] = "/analyzeLink";
 
-const handler: RequestHandler<ResBody, {}, {}, AnalyzeQuery> = async (
+const handler: RequestHandler<ResBody, any, any, AnalyzeQuery> = async (
 	req,
 	res
 ) => {

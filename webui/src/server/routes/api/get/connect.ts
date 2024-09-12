@@ -25,7 +25,7 @@ const handler: ApiHandler["handler"] = async (req, res) => {
 	if (!update) {
 		logger.info(`webui version ${WEBUI_PACKAGE_VERSION}`);
 		logger.info(`deemix version ${DEEMIX_PACKAGE_VERSION}`);
-		GUI_VERSION && logger.info(`gui version ${GUI_VERSION}`);
+		if (GUI_VERSION) logger.info(`gui version ${GUI_VERSION}`);
 
 		update = {
 			webuiVersion: WEBUI_PACKAGE_VERSION,

@@ -14,7 +14,7 @@ export interface RawChartTracksQuery {
 
 const path: ApiHandler["path"] = "/getChartTracks";
 
-const handler: RequestHandler<{}, {}, {}, RawChartTracksQuery> = async (
+const handler: RequestHandler<any, any, any, RawChartTracksQuery> = async (
 	req,
 	res,
 	next

@@ -31,10 +31,6 @@ export const defaultSettings: Settings = settings.DEFAULTS;
 
 export const sessionDZ: any = {};
 
-process.on("warning", (warning) => {
-	console.log(warning.stack);
-});
-
 export class DeemixApp {
 	queueOrder: string[];
 	queue: any;
@@ -319,7 +315,7 @@ export class DeemixApp {
 				case "Collection":
 					downloadObject = new Collection(currentItem);
 					break;
-				case "Convertable":
+				case "Convertable": {
 					const convertable = new Convertable(currentItem);
 					downloadObject = await this.plugins[convertable.plugin].convert(
 						dz,
@@ -332,6 +328,7 @@ export class DeemixApp {
 						JSON.stringify({ ...downloadObject.toDict(), status: "inQueue" })
 					);
 					break;
+				}
 			}
 
 			if (typeof downloadObject === "undefined") return;
@@ -393,7 +390,7 @@ export class DeemixApp {
 						configFolder + `queue${sep}order.json`,
 						JSON.stringify(this.queueOrder)
 					);
-				// break
+					break;
 
 				default:
 					// This gets called even in the 'inQueue' case. Is this the expected behaviour? If no, de-comment the break

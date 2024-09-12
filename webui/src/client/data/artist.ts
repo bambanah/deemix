@@ -7,11 +7,16 @@ export function formatArtistData(artistData: {
 	releases?: { [key: string]: any[] };
 }) {
 	return {
-		artistName: artistData.hasOwnProperty("name") ? artistData.name : undefined,
-		artistPictureXL: artistData.hasOwnProperty("picture_xl")
+		artistName: Object.prototype.hasOwnProperty.call(artistData, "name")
+			? artistData.name
+			: undefined,
+		artistPictureXL: Object.prototype.hasOwnProperty.call(
+			artistData,
+			"picture_xl"
+		)
 			? artistData.picture_xl
 			: undefined,
-		artistReleases: artistData.hasOwnProperty("releases")
+		artistReleases: Object.prototype.hasOwnProperty.call(artistData, "releases")
 			? formatArtistReleases(artistData.releases)
 			: undefined,
 	};

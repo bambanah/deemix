@@ -17,7 +17,7 @@ const handler: ApiHandler["handler"] = async (req, res) => {
 			let playlists;
 			try {
 				playlists = await sp.playlists.getUsersPlaylists(username);
-			} catch (e) {
+			} catch {
 				res.send({ error: "wrongSpotifyUsername", username });
 				return;
 			}

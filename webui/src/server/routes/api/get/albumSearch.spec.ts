@@ -16,7 +16,6 @@ describe("albumSearch requests", () => {
 	});
 
 	it("should respond 400 to calls without term", async () => {
-		const responseStatusCollector: number[] = [];
 		const batchCalls = [
 			"/api/album-search/",
 			"/api/album-search/?start=10",

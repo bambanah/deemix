@@ -4,7 +4,7 @@ import { getChartsData, getChartTracks } from "@/data/charts";
 import { sendAddToQueue } from "@/utils/downloads";
 import { emitter } from "@/utils/emitter";
 import { convertDuration } from "@/utils/utils";
-import { computed, onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
@@ -13,14 +13,6 @@ const country = ref("");
 const id = ref(0);
 const countries = ref([]);
 const chart = ref([]);
-
-const worldwideRelease = computed(() => {
-	const worldwideRelease = countries.value.filter((country) => {
-		return country.title === "Worldwide";
-	});
-
-	return worldwideRelease[0];
-});
 
 function playPausePreview(e) {
 	emitter.emit("trackPreview:playPausePreview", e);
