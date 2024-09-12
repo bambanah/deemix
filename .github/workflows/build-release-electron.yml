@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - gui/**
+      - gui/CHANGELOG.md
       - .github/workflows/build-release-electron.yml
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
