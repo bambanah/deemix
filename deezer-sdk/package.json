@@ -23,8 +23,8 @@
 	"author": "Bambanah",
 	"license": "GPL-3.0-or-later",
 	"dependencies": {
+		"cache-manager": "^5.7.6",
 		"got": "14.4.2",
-		"redis": "^4.7.0",
 		"tough-cookie": "^4.0.0",
 		"zod": "^3.23.8"
 	},

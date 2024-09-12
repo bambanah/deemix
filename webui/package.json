@@ -36,7 +36,6 @@
 		"date-fns": "^3.6.0",
 		"deemix": "workspace:*",
 		"deezer-sdk": "workspace:*",
-		"dotenv": "~16.4.5",
 		"express": "^4.19.2",
 		"express-session": "^1.17.3",
 		"flag-icon-css": "3.5.0",
