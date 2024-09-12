@@ -10,7 +10,9 @@
 		"dev": "run-p watch:*",
 		"watch:build": "tsup src/index.ts --format esm --watch",
 		"watch:tsc": "tsc --emitDeclarationOnly -w",
-		"build": "tsup src/index.ts --format esm && tsc --emitDeclarationOnly",
+		"build": "run-s build:*",
+		"build:tsup": "tsup src/index.ts --format esm",
+		"build:tsc": "tsc --emitDeclarationOnly",
 		"lint": "eslint .",
 		"type-check": "tsc --noEmit"
 	},
