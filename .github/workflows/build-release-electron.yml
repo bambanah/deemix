@@ -3,7 +3,7 @@ name: Build and Publish Electron GUI
 on:
   push:
     tags:
-      - "deemix-gui@*"
+      - deemix-gui@*
   pull_request:
     branches:
       - main
