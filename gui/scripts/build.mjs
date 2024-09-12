@@ -54,9 +54,8 @@ async function main(argv) {
 				outfile: "./dist/main.mjs",
 				target: "esnext",
 				format: "esm",
-				external: ["electron"],
+				external: ["electron", "lightningcss"],
 				define: {
-					"process.env.CSS_TRANSFORMER_WASM": "false",
 					"process.env.NODE_ENV": JSON.stringify(BUILD_MODE),
 					"process.env.GUI_VERSION": JSON.stringify(packageJson.version),
 				},
