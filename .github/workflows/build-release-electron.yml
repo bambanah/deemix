@@ -58,13 +58,6 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Rebuild Electron modules
-        run: |
-          cd gui
-          pnpm rebuild
-          npx electron-rebuild
-        if: matrix.os == 'macos-latest'
-
       - run: pnpm make
 
       - name: Upload Artifacts
