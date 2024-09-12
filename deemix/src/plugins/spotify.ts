@@ -98,7 +98,7 @@ export default class SpotifyPlugin extends BasePlugin {
 		if (cachedTrack.isrc) {
 			try {
 				return generateTrackItem(dz, `isrc:${cachedTrack.isrc}`, bitrate);
-			} catch (e) {
+			} catch {
 				/* empty */
 			}
 		}
@@ -135,7 +135,7 @@ export default class SpotifyPlugin extends BasePlugin {
 
 		try {
 			return generateAlbumItem(dz, `upc:${cachedAlbum.upc}`, bitrate);
-		} catch (e) {
+		} catch {
 			throw new AlbumNotOnDeezer(`https://open.spotify.com/album/${link_id}`);
 		}
 	}

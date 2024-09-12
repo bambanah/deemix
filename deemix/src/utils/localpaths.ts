@@ -68,7 +68,7 @@ export function getMusicFolder() {
 				.toString()
 				.split("\r\n");
 			for (let i = 0; i < regData.length; i++) {
-				let line = regData[i];
+				const line = regData[i];
 				if (line === "") continue;
 				if (i === 1) continue;
 				const lines = line.split("    ");
