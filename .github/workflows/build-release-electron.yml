@@ -34,9 +34,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .turbo
-          key: turbo-${{ runner.os }}-${{ github.job }}-${{ github.sha }}
+          key: turbo-${{ runner.os }}-${{ github.job }}
           restore-keys: |
-            turbo-${{ runner.os }}-${{ github.job }}-
+            turbo-${{ runner.os }}-
 
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
