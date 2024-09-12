@@ -1,5 +1,12 @@
 import { Deezer, TrackFormats, errors as _errors, utils } from "deezer-sdk";
-import { HTTPError, ReadError, TimeoutError, default as got } from "got";
+import {
+	HTTPError,
+	ReadError,
+	TimeoutError,
+	default as got,
+	type CancelableRequest,
+	type Response as GotResponse,
+} from "got";
 import { generateCryptedStreamURL } from "../decryption";
 import { PreferredBitrateNotFound, TrackNot360 } from "../errors";
 import Track from "../types/Track";
@@ -35,7 +42,7 @@ export async function getPreferredBitrate(
 
 	async function testURL(track: Track, url: string, formatName: string) {
 		if (!url) return false;
-		let request;
+		let request: CancelableRequest<GotResponse<string>>;
 		try {
 			request = got
 				.get(url, {
@@ -75,8 +82,8 @@ export async function getPreferredBitrate(
 		let url;
 		wrongLicense =
 			((formatName === "FLAC" || formatName.startsWith("MP4_RA")) &&
-				!dz.current_user.can_stream_lossless) ||
-			(formatName === "MP3_320" && !dz.current_user.can_stream_hq);
+				!dz.current_user?.can_stream_lossless) ||
+			(formatName === "MP3_320" && !dz.current_user?.can_stream_hq);
 		if (
 			track.filesizes[`${formatName.toLowerCase()}`] &&
 			track.filesizes[`${formatName.toLowerCase()}`] !== "0"
