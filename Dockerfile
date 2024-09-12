@@ -29,25 +29,30 @@ RUN pnpm turbo build --filter=deemix-webui...
 
 FROM base AS runner
 
+RUN apk add --no-cache su-exec
+
 ENV NODE_ENV=production
 
 ENV DEEMIX_DATA_DIR=/config
 ENV DEEMIX_MUSIC_DIR=/downloads
 ENV DEEMIX_HOST=0.0.0.0
 
-RUN apk add --no-cache shadow
+COPY --from=installer /app .
 
-# RUN groupmod -g 1000 users
-RUN useradd -u 911 -U -d /config -s /bin/false abc
-RUN usermod -G users abc
 RUN mkdir -p \
 	$DEEMIX_DATA_DIR \
 	$DEEMIX_MUSIC_DIR
 
-COPY --from=installer /app .
+# Create an entrypoint script
+RUN echo '#!/bin/sh' > /entrypoint.sh && \
+	echo 'chown -R nobody:users $DEEMIX_DATA_DIR $DEEMIX_MUSIC_DIR' >> /entrypoint.sh && \
+	echo 'chmod -R 775 $DEEMIX_DATA_DIR $DEEMIX_MUSIC_DIR' >> /entrypoint.sh && \
+	echo 'exec su-exec nobody:users "$@"' >> /entrypoint.sh && \
+	chmod +x /entrypoint.sh
 
 EXPOSE 6595
 
 WORKDIR /app/webui
 
-ENTRYPOINT ["node", "dist/main.js"]
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["node", "dist/main.js"]
