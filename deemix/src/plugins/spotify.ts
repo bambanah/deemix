@@ -16,7 +16,7 @@ export default class SpotifyPlugin extends BasePlugin {
 	credentials: { clientId: string; clientSecret: string };
 	settings: { fallbackSearch: boolean };
 	enabled: boolean;
-	configFolder: any;
+	configFolder: string;
 	sp: SpotifyApi;
 
 	constructor(configFolder = undefined) {
