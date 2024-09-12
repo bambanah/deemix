@@ -9,6 +9,7 @@ on:
       - main
     paths:
       - webui/**
+      - .github/workflows/build-release-docker.yml
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
