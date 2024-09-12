@@ -15,6 +15,7 @@ import { join } from "path";
 import { hideBin } from "yargs/helpers";
 import yargs from "yargs/yargs";
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 if (require("electron-squirrel-startup") === true) app.quit();
 
 const argv = await yargs(hideBin(process.argv)).options({
@@ -82,7 +83,7 @@ async function main() {
 
 	win.loadURL(`http://localhost:${PORT}`);
 
-	win.on("close", (event) => {
+	win.on("close", () => {
 		if (deemixApp.getSettings().settings.clearQueueOnExit) {
 			deemixApp.cancelAllDownloads();
 		}
@@ -112,7 +113,7 @@ app.on("window-all-closed", () => {
 	}
 });
 
-ipcMain.on("openDownloadsFolder", (event) => {
+ipcMain.on("openDownloadsFolder", () => {
 	const { downloadLocation } = deemixApp.getSettings().settings;
 	shell.openPath(downloadLocation);
 });

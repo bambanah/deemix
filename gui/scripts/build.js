@@ -1,9 +1,8 @@
-/* eslint-disable no-console */
 import * as esbuild from "esbuild";
 import fsp from "node:fs/promises";
 import path from "node:path";
 import url from "node:url";
-import { getArg, hasArg, log } from "./utils.mjs";
+import { getArg, hasArg, log } from "./utils.js";
 
 import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
@@ -47,11 +46,11 @@ async function main(argv) {
 			 * @type {import('esbuild').BuildOptions}
 			 */
 			const options = {
-				inject: ["./scripts/cjs-shim.mjs"],
+				inject: ["./scripts/cjs-shim.js"],
 				entryPoints: ["./src/main.ts"],
 				bundle: true,
 				platform: "node",
-				outfile: "./dist/main.mjs",
+				outfile: "./dist/main.js",
 				target: "esnext",
 				format: "esm",
 				external: ["electron", "lightningcss"],
