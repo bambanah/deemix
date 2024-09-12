@@ -9,7 +9,7 @@ on:
       - main
     paths:
       - webui/**
-      - .github/workflows/build-release-docker.yml
+      - .github/workflows/build-publish-docker.yml
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -57,6 +57,6 @@ jobs:
           context: .
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          push: true
+          push: ${{ startsWith(github.ref, 'refs/tags/') }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
