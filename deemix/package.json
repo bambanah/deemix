@@ -8,7 +8,7 @@
 	"types": "dist/index.d.ts",
 	"scripts": {
 		"dev": "tsup src/index.ts --format esm --dts --watch",
-		"build": "tsup src/index.ts --format esm --dts",
+		"build": "tsup src/index.ts --format esm",
 		"type-check": "tsc --noEmit"
 	},
 	"author": "RemixDev",
