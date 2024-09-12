@@ -1,5 +1,11 @@
 # deezer-sdk
 
+## 1.8.1
+
+### Patch Changes
+
+- c464740: Replace redis integration with memory cache
+
 ## 1.8.0
 
 ### Minor Changes
