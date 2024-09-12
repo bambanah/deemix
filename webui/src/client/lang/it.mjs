@@ -100,7 +100,6 @@ const it = {
 		},
 		acceptFeatures: `Accetto anche funzionalità, ma non cose complesse, dato che possono essere implementate direttamente nell'app invece che nella libreria.`,
 		otherLanguages: `Se te la cavi in altri linguaggi di programmazione, puoi provare a scrivere deemix in quei linguaggi!`,
-		understandingCode: `Serve aiuto per capire il codice? Scrivi a RemixDev su Telegram o Reddit`,
 		contributeWebUI: {
 			text: `Se te la cavi con Vue.js (JavaScript), HTML o CSS, puoi contribuire alla {webui}.`,
 			webui: "WebUI",

@@ -99,7 +99,6 @@ const ru = {
 		},
 		acceptFeatures: `Можете предложить новые функции, но не слишком сложные, так как они будут добавлены в приложение, а не в саму библиотеку.`,
 		otherLanguages: `Если вы хорошо знаете другой язык программирования, можете портировать на нём deemix!`,
-		understandingCode: `Не можете разобраться в коде? Свяжитесь с RemixDev в Telegram или на Reddit.`,
 		contributeWebUI: {
 			text: `Если вы знаете Vue.js (JavaScript), HTML или CSS, можете внести вклад в развитие {webui}.`,
 			webui: "WebUI",

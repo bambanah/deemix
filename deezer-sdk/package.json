@@ -18,9 +18,9 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://gitlab.com/RemixDev/deezer-sdk"
+		"url": "https://github.com/bambanah/deemix"
 	},
-	"author": "RemixDev",
+	"author": "Bambanah",
 	"license": "GPL-3.0-or-later",
 	"dependencies": {
 		"got": "14.4.2",

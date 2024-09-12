@@ -101,7 +101,6 @@ const pt_br = {
 		},
 		acceptFeatures: `Eu aceito funcionalidades extras também, mas nada de coisas complexas, desde que ela possa ser implementada no app, e não na biblioteca.`,
 		otherLanguages: `Se você for fluente em outra linguagem de programação, você pode tentar portar o deemix para outra linguagem!`,
-		understandingCode: `Você precisa de ajuda para entender o código? Mande mensagem no RemixDex pelo Telegram ou pelo Reddit.`,
 		contributeWebUI: {
 			text: `Se você souber Vue.js (JavaScript), HTML ou CSS você pode contribuir para o {webui}.`,
 			webui: "WebUI",

@@ -87,7 +87,6 @@ const pl = {
 		},
 		acceptFeatures: `Przyjmuję nowe funkcje, ale nic złożonego, co mogłoby być zaimplementowane w aplikacji, a nie w bibliotece.`,
 		otherLanguages: `Jeżeli dobrze znasz inny język programowania, możesz spróbować przeportować deemix do innych języków!`,
-		understandingCode: `Potrzebujesz pomocy w zrozumieniu kodu? Zapytaj RemixDev na Telegramie lub Reddicie.`,
 		contributeWebUI: {
 			text: `Jeżeli znasz Vue.js (JavaScript), HTML lub CSS, możesz pomóc w {webui}.`,
 			webui: "WebUI",

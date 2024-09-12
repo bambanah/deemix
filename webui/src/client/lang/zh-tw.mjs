@@ -94,7 +94,6 @@ const zh_tw = {
 		},
 		acceptFeatures: `我也歡迎你提交新的功能－但前提是這個功能不能過於複雜－過於複雜的功能，應被新增至程式內而非函示庫內。`,
 		otherLanguages: `如果您精通其他程式語言，你也可以嘗試將 deemix 移植到其他程式語言中！`,
-		understandingCode: `你需要幫助了解本專案的程式碼嗎？只需在 Telegram 或 Reddit 上按一下 RemixDev。`,
 		contributeWebUI: {
 			text: `如果你熟悉 Vue.js（JavaScript）、HTML 或 CSS，你也可以參與 {webui} 前端的貢獻。`,
 			webui: "WebUI",

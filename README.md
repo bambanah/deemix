@@ -1,54 +1,67 @@
-# deemix-gui
+# Deemix
 
-An electron app that wraps deemix-webui and lets you use the deemix-js library
+This is the monorepo for the revived Deemix project, originally created by the very talented [RemixDev](https://gitlab.com/RemixDev).
+
+It contains the following packages:
+
+- **deezer-sdk**: Wrapper for Deezer's [API](https://developers.deezer.com/api)
+- **deemix**: The brains of the operation
+- **webui**: [Vue.js](https://vuejs.org/) + [Express](https://expressjs.com/) web interface
+- **gui**: Packaged [Electron](https://www.electronjs.org/) app
 
 ## Downloads
 
-Downloads are available [here](https://www.reddit.com/r/deemix/comments/hmrhhs/download_links/)
+A compiled electron app is available to download from the [releases page](https://github.com/bambanah/deemix/releases).
 
-## Running from source
-
-You need to use nodejs 16.x, using `yarn` is recommended.
-
-If you're using git to get this repo you should use `git submodule update --init --recursive` as well. If you're just downloading the archive.zip, make sure you download and extract deemix-webui into the webui folder.
-
-Install the dependencies using `yarn install-all` for production.
-Install the dependencies using `yarn install-all-dev` for development.
-Then you should be able to run the app with `yarn start`.
-If you want to further develop deemix-gui and propose a PR, use `yarn dev`
-
-Commands for easy setup:
-
-```sh
-# Production
-git clone https://gitlab.com/RemixDev/deemix-gui.git . && git submodule update --init --recursive && yarn install-all
-# Development
-git clone https://gitlab.com/RemixDev/deemix-gui.git . && git submodule update --init --recursive && yarn install-all-dev
-```
-
-You can change the default port by setting the environment variable `PORT` to any other number before starting the app.
-
-## Building the app
-
-To build the app you need to have git installed and the repo cloned with `git`.
-Make sure you've installed the dependencies for all packages (the root folder, `server` and `webui`).
-Then from the root folder run `yarn dist` to make a distributable package for your current OS or `yarn dist-server` to make an executable for only the server.
+Deemix is also available as a [docker image](https://github.com/bambanah/deemix/pkgs/container/deemix).
 
 ## Feature requests
 
-Before asking for a feature make sure it isn't an already open issue on the repo
+Before asking for a feature make sure there isn't already an [open issue](https://github.com/bambanah/deemix/issues).
 
-# License
+## Developing
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+This repo uses [pnpm](https://pnpm.io/) for package management and [Turborepo](https://turbo.build/repo/docs) for monorepo management.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
+### Dependencies
 
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
+- Install Node.js 20.x
+- Enable pnpm:
+  ```bash
+  corepack enable
+  ```
+
+### Local Development
+
+1. Clone the repository
+   ```bash
+   git clone https://github.com/bambanah/deemix.git
+   # - OR -
+   gh repo clone bambanah/deemix
+   ```
+2. Install dependencies
+   ```bash
+   pnpm i
+   ```
+3. Start development server
+   ```bash
+   pnpm dev
+   ```
+   - This will start the development server on port 6595
+   - It will also watch for changes in dependencies and hot reload the app
+
+### Building the Docker Image
+
+A docker image can be built with the provided Dockerfile.
+
+```bash
+docker build -t deemix .
+```
+
+### Packaging the Electron GUI
+
+A distributable GUI app can be built with the following command:
+
+```bash
+pnpm make
+```

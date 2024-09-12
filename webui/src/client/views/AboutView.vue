@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import paypal from "@/assets/paypal.svg?url";
 import { pinia } from "@/stores";
 import { useAppInfoStore } from "@/stores/appInfo";
 import { useOnline } from "@/use/online";
@@ -79,28 +78,13 @@ const updateUrl = computed(() => {
 				>
 			</li>
 			<li>
-				<a href="https://gitlab.com/RemixDev/deemix-js" target="_blank"
+				<a href="https://github.com/bambanah/deemix" target="_blank"
 					>🚀 {{ t("about.officialRepo") }}</a
 				>
 			</li>
 			<li>
-				<a href="https://gitlab.com/RemixDev/deemix-webui" target="_blank">
-					💻 {{ t("about.officialWebuiRepo") }}
-				</a>
-			</li>
-			<li>
 				<a href="https://www.reddit.com/r/deemix" target="_blank"
 					>🤖 {{ t("about.officialSubreddit") }}</a
-				>
-			</li>
-			<li>
-				<a href="https://tg.deemix.app" target="_blank"
-					>📰 {{ t("about.newsChannel") }}</a
-				>
-			</li>
-			<li>
-				<a href="https://t.me/RemixDevNews" target="_blank"
-					>💾 {{ t("about.devlogChannel") }}</a
 				>
 			</li>
 		</ul>
@@ -151,31 +135,6 @@ const updateUrl = computed(() => {
 			</i18n-t>
 			<li>
 				{{ t("about.otherLanguages") }}
-			</li>
-			<li>
-				{{ t("about.understandingCode") }}
-			</li>
-		</ul>
-
-		<h2>
-			{{ t("about.titles.donations") }}
-			<span class="subheading">
-				{{ t("about.subtitles.donations") }}
-			</span>
-		</h2>
-		<ul>
-			<li v-html="t('about.itsFree')"></li>
-			<li>
-				{{ t("about.notObligated") }}
-			</li>
-		</ul>
-		<ul>
-			<li>
-				<img :src="paypal" class="mr-2 h-4 w-4 align-middle" />
-				<strong>PayPal: </strong>
-				<a href="https://paypal.me/RemixDev" target="_blank"
-					>PayPal.me/RemixDev</a
-				>
 			</li>
 		</ul>
 

@@ -71,7 +71,6 @@ const hr = {
 		},
 		acceptFeatures: `Prihavaćam i značajke, ali bez kompleksnih stvari, jer one mogu biti implementirane direktno u aplikaciji, a ne u biblioteci.`,
 		otherLanguages: `Ako ste vješti u drugom programskom jezikumožete probati portati deemix u drugi programski jezik!`,
-		understandingCode: `Trebate pomoć s razumijevanjem koda? Samo potraži RemixDev na Telegramu ili Redditu.`,
 		contributeWebUI: {
 			text: `Ako znaš Vue.js (JavaScript), HTML ili CSS možete doprinijeti za {webui}.`,
 			webui: "WebUI",

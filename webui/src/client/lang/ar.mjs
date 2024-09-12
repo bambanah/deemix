@@ -57,7 +57,6 @@ const ar = {
 		dontOpenIssues: `<strong>DO NOT</strong> open issues for asking questions, there is a subreddit for that.`,
 		acceptFeatures: `أقبل اقتراحات الميزات أيضًا ، ولكن لا أشياء معقدة ، فقط اشياء يمكنني تنفيذها مباشرة في التطبيق وليس في المكتبة.`,
 		otherLanguages: `إذا كنت تجيد لغة برمجة أخرى ، يمكنك محاولة تحويل ديمكس إلى لغات برمجة أخرى!`,
-		understandingCode: `أنت بحاجة إلى مساعدة في فهم الكود؟ فقط اتصل بـ RemixDev على تيليكرام او ريديت.`,
 		itsFree: `يجب ان تتذكر ان <strong>هذا هو مشروع مجاني</strong> <strong>و عليك دعم الفنانين المفضلين لك قبل ان تدعم مطورين البرنامج</strong>.`,
 		notObligated: `لا تشعر بالالتزام بالتبرع ، لكني أقدر ذلك على أي حال!`,
 	},

@@ -109,8 +109,6 @@ const fr = {
 			"J'accepte également les nouvelles fonctionnalités, mais pas de choses complexes, dans la mesure où elles peuvent être implémentées directement dans l'application et non dans la bibliothèque.",
 		otherLanguages:
 			"Si vous maîtrisez un autre langage de programmation, vous pouvez essayer de transposer deemix dans ce dernier !",
-		understandingCode:
-			"Vous avez besoin d'aide pour comprendre le code ? Il suffit de contacter RemixDev sur Telegram ou Reddit.",
 		contributeWebUI: {
 			text: `Si vous vous y connaissez en Vue.js (JavaScript), HTML ou CSS, vous pouvez contribuer à la {webui}.`,
 			webui: "WebUI",
