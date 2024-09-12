@@ -1,5 +1,12 @@
 # deezer-sdk
 
+## 1.8.0
+
+### Minor Changes
+
+- 4a38238: Use redis to cache Deezer API calls
+- 0d08d68: Rename to deezer-sdk
+
 ## 1.7.0
 
 ### Minor Changes

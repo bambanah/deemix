@@ -1,5 +1,20 @@
 # deemix-webui
 
+## 4.1.0
+
+### Minor Changes
+
+- b853925: Increase spotify playlist conversion speed
+- 4a38238: Significantly faster Deezer API calls by caching using Redis
+
+### Patch Changes
+
+- 656a309: Fix version numbers not displaying correctly
+- Updated dependencies [4a38238]
+- Updated dependencies [0d08d68]
+  - deezer-sdk@1.8.0
+  - deemix@3.11.1
+
 ## 4.0.3
 
 ### Patch Changes
