@@ -19,7 +19,9 @@ FROM base AS installer
 
 COPY --from=builder /app/out/json/ .
 
-RUN pnpm install
+RUN apk add --no-cache python3 make g++
+
+RUN pnpm install --frozen-lockfile
 
 COPY --from=builder /app/out/full/ .
 
@@ -43,4 +45,4 @@ EXPOSE 6595
 
 WORKDIR /app/webui
 
-ENTRYPOINT ["node", "src/server/dist/main.js"]
+ENTRYPOINT ["node", "dist/main.js"]
