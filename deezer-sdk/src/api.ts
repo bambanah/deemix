@@ -1,5 +1,5 @@
+import { createCache, memoryStore, type MemoryCache } from "cache-manager";
 import got from "got";
-import { createClient, type RedisClientType } from "redis";
 import { CookieJar } from "tough-cookie";
 import {
 	APIError,
@@ -203,41 +203,28 @@ export class API {
 	http_headers: { "User-Agent": string };
 	cookie_jar: CookieJar;
 	access_token: string | null;
-	redisClient?: RedisClientType;
+	cache: MemoryCache;
 
 	constructor(cookie_jar: CookieJar, headers: { "User-Agent": string }) {
 		this.http_headers = headers;
 		this.cookie_jar = cookie_jar;
 		this.access_token = null;
 
-		const url = process.env.REDIS_URL || "redis://localhost:6379";
-		if (url && process.env.REDIS_PASSWORD) {
-			this.redisClient = createClient({
-				url: url,
-				password: process.env.REDIS_PASSWORD,
-			});
-
-			this.redisClient.on("error", (err) => {
-				if (err.code === "ECONNREFUSED") {
-					this.redisClient?.disconnect();
-				} else {
-					console.error("Redis error", err);
-				}
-			});
-
-			this.redisClient.connect();
-		}
+		// Create a memory cache
+		this.cache = createCache(
+			memoryStore({
+				max: 5000,
+				ttl: 0 /* do not expire */,
+			})
+		);
 	}
 
 	async call(endpoint: string, args: APIArgs = {}): Promise<unknown> {
 		if (this.access_token) args["access_token"] = this.access_token;
 
-		if (this.redisClient?.isReady) {
-			const cachedResponse = await this.redisClient.get(endpoint);
-
-			if (cachedResponse) {
-				return JSON.parse(cachedResponse);
-			}
+		const cachedResponse = await this.cache.get<string>(endpoint);
+		if (cachedResponse) {
+			return JSON.parse(cachedResponse);
 		}
 
 		let response;
@@ -317,8 +304,7 @@ export class API {
 			throw new APIError(response.error);
 		}
 
-		if (this.redisClient?.isReady)
-			this.redisClient.set(endpoint, JSON.stringify(response));
+		this.cache.set(endpoint, JSON.stringify(response));
 
 		return response;
 	}
