@@ -88,7 +88,6 @@ const fil = {
 		},
 		acceptFeatures: `Tumatangggap din ako ng mga feature, basta hindi komplikado, dahil diretso ko itong nilalagay sa app at hindi sa library.`,
 		otherLanguages: `Kung ikaw ay maraming alam sa ibang programming language, maaari mo ring subukan i-port ang deemix sa iba't ibang programming language!`,
-		understandingCode: `Kailangan mo ba ng tulong para maintindihan ang code? Bisitahin si RemixDev sa Telegram o sa Reddit.`,
 		contributeWebUI: {
 			text: `Kung may alam ka sa Vue.js (JavaScript), HTML o kaya CSS, maaari kang sumali at tumulong dito sa {webui}.`,
 			webui: "WebUI",

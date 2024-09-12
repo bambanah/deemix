@@ -71,7 +71,6 @@ const tr = {
 		},
 		acceptFeatures: `Yeni özellikleri de kabul ediyorum, fakat karışık şeyleri kütüphaneye değil uygulamaya eklendiği için kabul edemiyorum.`,
 		otherLanguages: `Eğer diğer programlama dillerinde kendine güveniyorsan, deemix'i farklı dillere port etmeye çalışabilirsin!`,
-		understandingCode: `Kodu anlamak için yardım mı lazım? Reddit üzerinden veya Telegramdan RemixDev'e ulaş.`,
 		contributeWebUI: {
 			text: `Eğer Vue.js (JavaScript), HTML veya CSS biliyorsan, {webui}.`,
 			webui: "Web Kullanıcı Arayüzüne katkıda bulanabilirsin",

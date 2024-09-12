@@ -93,8 +93,6 @@ const es = {
 			"También acepto características, pero no cosas complejas, ya que se pueden implementar directamente en la aplicación y no en la biblioteca.",
 		otherLanguages:
 			"¡Si dominas otro lenguaje de programación podrías intentar portar Deemix a otros lenguajes de programación!",
-		understandingCode:
-			"¿Necesitas ayuda para entender el código? Sólo tienes que poner RemixDev en Telegram o Reddit.",
 		contributeWebUI: {
 			text: `Si conoces Vue.js (JavaScript), HTML o CSS podrías contribuir a la {webui}.`,
 			webui: "WebUI",

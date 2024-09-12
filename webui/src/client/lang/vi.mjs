@@ -72,7 +72,6 @@ const vi = {
 		},
 		acceptFeatures: `Tôi có chấp nhận yêu cầu về tính năng mới nhưng không quá phức tạp bởi vì chúng có thể được triển khai trực tiếp vào ứng dụng thay vì vào thư viện.`,
 		otherLanguages: `Nếu bạn thành thạo với một ngôn ngữ khác, bạn có thể port deemix sang ngôn ngữ đó!`,
-		understandingCode: `Bạn muốn hiểu code của deemix? Xin hãy liên lạc RemixDev trên Telegram hoặc Reddit.`,
 		contributeWebUI: {
 			text: `Nếu bạn biết Vue.js (JavaScript), HTML hoặc CSS, bạn có thể góp phần phát triển {webui}.`,
 			webui: "WebUI",

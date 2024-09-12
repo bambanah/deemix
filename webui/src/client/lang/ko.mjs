@@ -94,7 +94,6 @@ const ko = {
 		},
 		acceptFeatures: `복잡하지 않은 기능 추가도 받습니다, 라이브러리가 아닌 앱에서 직접 구현할 수 있는 것으로요.`,
 		otherLanguages: `당신이 다른 프로그램 언어에 능통하면, 이 deemix 프로그램을 다른 프로그래밍 언어로 포팅할 수도 있습니다!`,
-		understandingCode: `코드를 이해하는 데 도움이 필요합니까? 위에 있는 RemixDev, 텔레그램, 서브레딧 링크를 누르세요.`,
 		contributeWebUI: {
 			text: `만약 당신이 Vue.js (JavaScript), HTML 또는 CSS 개발자라면 {webui}에 도움을 주세요.`,
 			webui: "WebUI",

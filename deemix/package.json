@@ -12,7 +12,7 @@
 		"lint": "eslint .",
 		"type-check": "tsc --noEmit"
 	},
-	"author": "RemixDev",
+	"author": "Bambanah",
 	"license": "GPL-3.0-or-later",
 	"dependencies": {
 		"@spotify/web-api-ts-sdk": "^1.2.0",

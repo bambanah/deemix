@@ -72,7 +72,6 @@ const id = {
 		},
 		acceptFeatures: `Kami juga menerima fitur baru, tapi jangan yang terlalu kompleks, karena hal itu lebih baik diimplementasikan langsung di aplikasi daripada di pustaka.`,
 		otherLanguages: `Kalau kamu mahir dengan bahasa pemrograman lain, kamu bisa coba mentransfer deemix ke bahasa tersebut!`,
-		understandingCode: `Butuh bantuan untuk memahami kode deemix? Kontak RemixDev di Telegram atau Reddit.`,
 		contributeWebUI: {
 			text: `Kalau kamu paham Vue.js (JavaScript), HTML, atau CSS, kamu bisa berkontribusi pada {webui}.`,
 			webui: "WebUI",
