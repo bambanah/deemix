@@ -3,16 +3,17 @@
 	"version": "0.2.5",
 	"private": true,
 	"description": "A standalone electron app that wraps deemix-webui",
-	"main": "dist/main.mjs",
+	"main": "dist/main.js",
 	"homepage": "https://github.com/bambanah/deemix",
 	"author": "Bambanah <hello@lachie.xyz>",
 	"license": "GPL-3.0-only",
 	"type": "module",
 	"scripts": {
 		"dev": "electron .",
-		"build": "node ./scripts/build.mjs --mode production",
+		"build": "node ./scripts/build.js --mode production",
 		"package": "electron-forge package",
 		"make": "electron-forge make",
+		"lint": "eslint .",
 		"type-check": "tsc --noEmit"
 	},
 	"devDependencies": {
