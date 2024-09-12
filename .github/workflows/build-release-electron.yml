@@ -9,6 +9,7 @@ on:
       - main
     paths:
       - gui/**
+      - .github/workflows/build-release-electron.yml
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
