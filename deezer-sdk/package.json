@@ -7,8 +7,10 @@
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"scripts": {
-		"dev": "tsc --watch",
-		"build": "tsc",
+		"dev": "run-p watch:*",
+		"watch:build": "tsup src/index.ts --format esm --watch",
+		"watch:tsc": "tsc -w",
+		"build": "tsup src/index.ts --format esm && tsc",
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"type-check": "tsc --noEmit"
