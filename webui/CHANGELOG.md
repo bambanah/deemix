@@ -1,5 +1,11 @@
 # deemix-webui
 
+## 4.1.4
+
+### Patch Changes
+
+- 44510fd: Actually fix docker permissions
+
 ## 4.1.3
 
 ### Patch Changes
