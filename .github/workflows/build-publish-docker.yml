@@ -3,7 +3,12 @@ name: Build and Publish Docker
 on:
   push:
     tags:
-      - "deemix-webui@*"
+      - deemix-webui@*
+  pull_request:
+    branches:
+      - main
+    paths:
+      - webui/**
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
