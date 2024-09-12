@@ -1,5 +1,11 @@
 # deemix-webui
 
+## 4.1.1
+
+### Patch Changes
+
+- 57cf04d: Manual deploy
+
 ## 4.1.0
 
 ### Minor Changes
