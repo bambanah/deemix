@@ -5,6 +5,8 @@
 		"outDir": "./dist",
 		"strict": false,
 		"strictNullChecks": true,
+		"emitDeclarationOnly": true,
+		"declaration": true,
 		"types": ["vitest/globals"]
 	},
 	"include": ["./src/**/*.ts"]
