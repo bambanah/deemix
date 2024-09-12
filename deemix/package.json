@@ -22,7 +22,8 @@
 		"got": "^11.8.2",
 		"html-entities": "^2.3.3",
 		"metaflac-js2": "^1.0.8",
-		"tough-cookie": "^4.0.0"
+		"tough-cookie": "^4.0.0",
+		"typescript": "~5.6.0"
 	},
 	"devDependencies": {
 		"@types/async": "^3.2.24",
