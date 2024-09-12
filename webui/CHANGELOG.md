@@ -1,5 +1,11 @@
 # deemix-webui
 
+## 4.1.3
+
+### Patch Changes
+
+- 813225f: Fix docker permissions for downloaded files
+
 ## 4.1.2
 
 ### Patch Changes
