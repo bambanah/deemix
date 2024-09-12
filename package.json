@@ -23,25 +23,15 @@
 		"@changesets/cli": "^2.27.7",
 		"@commitlint/cli": "^19.4.0",
 		"@commitlint/config-conventional": "^19.2.2",
-		"@eslint/js": "^9.10.0",
 		"@total-typescript/tsconfig": "^1.0.4",
-		"@types/eslint__js": "^8.42.3",
 		"@types/node": "^20.16.3",
-		"@typescript-eslint/parser": "^8.3.0",
 		"esbuild": "^0.23.1",
-		"eslint": "^9.9.0",
-		"eslint-config-prettier": "^9.1.0",
-		"eslint-plugin-jest": "^28.8.3",
-		"eslint-plugin-vue": "^9.27.0",
-		"globals": "^15.9.0",
 		"husky": "^9.1.5",
 		"npm-run-all2": "^6.2.0",
 		"prettier": "^3.2.5",
 		"prettier-plugin-tailwindcss": "^0.6.6",
 		"tsx": "^4.19.0",
-		"turbo": "^2.1.1",
-		"typescript": "^5.5.4",
-		"typescript-eslint": "^8.3.0"
+		"turbo": "^2.1.1"
 	},
 	"packageManager": "pnpm@9.9.0+sha512.60c18acd138bff695d339be6ad13f7e936eea6745660d4cc4a776d5247c540d0edee1a563695c183a66eb917ef88f2b4feb1fc25f32a7adcadc7aaf3438e99c1"
 }
