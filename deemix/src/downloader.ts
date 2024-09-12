@@ -49,7 +49,7 @@ export class Downloader {
 	listener: any;
 	playlistCovername: null;
 	playlistURLs: any[];
-	coverQueue: {};
+	coverQueue: Record<string, any>;
 
 	constructor(
 		dz: Deezer,

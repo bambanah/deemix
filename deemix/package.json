@@ -9,6 +9,7 @@
 	"scripts": {
 		"dev": "tsup src/index.ts --format esm --dts --watch",
 		"build": "tsup src/index.ts --format esm",
+		"lint": "eslint .",
 		"type-check": "tsc --noEmit"
 	},
 	"author": "RemixDev",
@@ -23,10 +24,15 @@
 		"html-entities": "^2.3.3",
 		"metaflac-js2": "^1.0.8",
 		"tough-cookie": "^4.0.0",
-		"typescript": "~5.6.0"
+		"typescript": "~5.5.0"
 	},
 	"devDependencies": {
 		"@types/async": "^3.2.24",
-		"tsup": "^8.2.4"
+		"tsup": "^8.2.4",
+		"eslint": "~9.9.0",
+		"eslint-config-prettier": "^9.1.0",
+		"@typescript-eslint/parser": "~8.1.0",
+		"@eslint/js": "^9.10.0",
+		"typescript-eslint": "8.3.0"
 	}
 }

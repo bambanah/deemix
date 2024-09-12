@@ -8,7 +8,7 @@ export default class BasePlugin {
 		return [link, undefined, undefined];
 	}
 
-	/* eslint no-unused-vars: ["error", { "args": "none" }] */
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	async generateDownloadObject(dz, link, bitrate, listener) {
 		return null;
 	}
