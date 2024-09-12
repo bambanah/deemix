@@ -73,6 +73,7 @@ export class Downloader {
 		if (this.listener) {
 			this.listener.send("downloadInfo", {
 				uuid: this.downloadObject.uuid,
+				title: this.downloadObject.title,
 				data,
 				state,
 			});
@@ -130,10 +131,21 @@ export class Downloader {
 
 		if (this.listener) {
 			if (this.downloadObject.isCanceled) {
-				this.listener.send("currentItemCancelled", this.downloadObject.uuid);
-				this.listener.send("removedFromQueue", this.downloadObject.uuid);
+				this.listener.send(
+					"currentItemCancelled",
+					this.downloadObject.title ??
+						this.downloadObject.title ??
+						this.downloadObject.uuid
+				);
+				this.listener.send(
+					"removedFromQueue",
+					this.downloadObject.title ?? this.downloadObject.uuid
+				);
 			} else {
-				this.listener.send("finishDownload", this.downloadObject.uuid);
+				this.listener.send("finishDownload", {
+					uuid: this.downloadObject.uuid,
+					title: this.downloadObject.title,
+				});
 			}
 		}
 	}
@@ -238,7 +250,6 @@ export class Downloader {
 			if (e.name === "MD5NotFound") {
 				throw new DownloadFailed("notLoggedIn");
 			}
-			console.trace(e);
 			throw e;
 		}
 
@@ -272,7 +283,7 @@ export class Downloader {
 			if (e.name === "TrackNot360") {
 				throw new DownloadFailed("no360RA");
 			}
-			console.trace(e);
+			console.error(e);
 			throw e;
 		}
 		track.bitrate = selectedFormat;
@@ -543,7 +554,6 @@ export class Downloader {
 			} else if (e instanceof DownloadCanceled) {
 				return;
 			} else {
-				console.trace(e);
 				result = {
 					error: {
 						message: e.message,
@@ -568,6 +578,7 @@ export class Downloader {
 				const error = result.error;
 				this.listener.send("updateQueue", {
 					uuid: this.downloadObject.uuid,
+					title: this.downloadObject.title,
 					failed: true,
 					data: error.data,
 					error: error.message,
@@ -581,7 +592,6 @@ export class Downloader {
 	}
 
 	afterDownloadErrorReport(position, error, itemData = {}) {
-		console.trace(error);
 		this.downloadObject.errors.push({
 			message: error.message,
 			stack: String(error.stack),

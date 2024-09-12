@@ -94,12 +94,14 @@ export class IDownloadObject {
 	updateProgress(listener) {
 		if (
 			Math.floor(this.progressNext) !== this.progress &&
-			Math.floor(this.progressNext) % 2 === 0
+			Math.floor(this.progressNext) % 10 === 0 &&
+			Math.round(this.progressNext) !== 100
 		) {
 			this.progress = Math.floor(this.progressNext);
 			if (listener)
 				listener.send("updateQueue", {
 					uuid: this.uuid,
+					title: this.title,
 					progress: this.progress,
 				});
 		}

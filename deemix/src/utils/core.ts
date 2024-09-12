@@ -125,7 +125,7 @@ export function removeDuplicateArtists(artist, artists) {
 	return [artist, artists];
 }
 
-export function formatListener(key, data) {
+export function formatListener(key: string, data) {
 	let message = "";
 
 	switch (key) {
@@ -134,15 +134,12 @@ export function formatListener(key, data) {
 		case "finishAddingArtist":
 			return `Finished gathering ${data.name}'s albums (${data.id})`;
 		case "updateQueue":
-			message = `[${data.uuid}]`;
-			if (data.downloaded)
-				message += ` Completed download of ${data.downloadPath.split("/").at(-1)}`;
 			if (data.failed)
-				message += ` ${data.data.artist} - ${data.data.title} :: ${data.error}`;
-			if (data.progress) message += ` Download: ${data.progress}%`;
-			if (data.conversion) message += ` Conversion: ${data.conversion}%`;
+				message += `${data.data.artist} - ${data.data.title} :: ${data.error}`;
+			if (data.progress) message += `Downloading: ${data.progress}%`;
+			if (data.conversion) message += `Converting: ${data.conversion}%`;
 
-			return message === `[${data.uuid}]` ? "" : message;
+			return !message ? "" : `[${data.title ?? data.uuid}] ${message}`;
 		case "downloadInfo":
 			message = data.state;
 			switch (data.state) {
@@ -194,7 +191,7 @@ export function formatListener(key, data) {
 				case "stdout":
 					return `ExecuteCommand Output: ${data.data.stdout}`;
 			}
-			return `[${data.uuid}] ${data.data.artist} - ${data.data.title} :: ${message}`;
+			return `[${data.title ?? data.uuid}] ${data.data.artist} - ${data.data.title} :: ${message}`;
 		case "downloadWarn":
 			message = `[${data.uuid}] ${data.data.artist} - ${data.data.title} :: ${
 				ErrorMessages[data.state]
@@ -213,11 +210,11 @@ export function formatListener(key, data) {
 		case "removedFromQueue":
 			return `[${data}] Removed from the queue`;
 		case "finishDownload":
-			return `[${data}] Download complete`;
+			return `[${data.title ?? data.uuid}] Download complete`;
 		case "startConversion":
-			return `[${data}] Started converting`;
+			return `[${data.title ?? data.uuid}] Started converting`;
 		case "finishConversion":
-			return `[${data.uuid}] Conversion complete`;
+			return `[${data.title ?? data.uuid}] Conversion complete`;
 		default:
 			return message;
 	}

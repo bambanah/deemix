@@ -261,7 +261,11 @@ export default class SpotifyPlugin extends BasePlugin {
 		let conversionNext = 0;
 
 		const collection = [];
-		if (listener) listener.send("startConversion", downloadObject.uuid);
+		if (listener)
+			listener.send("startConversion", {
+				uuid: downloadObject.uuid,
+				title: downloadObject.title,
+			});
 
 		const q = queue(async (data: { track: Track; pos: number }, callback) => {
 			const { track, pos } = data;
@@ -330,12 +334,14 @@ export default class SpotifyPlugin extends BasePlugin {
 
 			if (
 				Math.round(conversionNext) !== conversion &&
-				Math.round(conversionNext) % 2 === 0
+				Math.round(conversionNext) % 10 === 0 &&
+				Math.round(conversionNext) !== 100
 			) {
 				conversion = Math.round(conversionNext);
 				if (listener)
 					listener.send("updateQueue", {
 						uuid: downloadObject.uuid,
+						title: downloadObject.title,
 						conversion,
 					});
 			}
