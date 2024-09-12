@@ -88,8 +88,8 @@ export class GW {
 	}
 
 	async api_call(method: string, args?: any, params?: any): Promise<any> {
-		if (typeof args === undefined) args = {};
-		if (typeof params === undefined) params = {};
+		if (args === undefined) args = {};
+		if (params === undefined) params = {};
 		if (!this.api_token && method !== "deezer.getUserData")
 			this.api_token = await this._get_token();
 		const p = {
@@ -368,7 +368,8 @@ export class GW {
 	add_song_to_favorites(sng_id) {
 		return this.gw_api_call("favorite_song.add", { SNG_ID: sng_id });
 	}
-	gw_api_call(arg0: string, arg1: {}) {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	gw_api_call(arg0: string, arg1: Record<string, any>) {
 		throw new Error("Method not implemented.");
 	}
 
@@ -499,7 +500,7 @@ export class GW {
 		if (parseInt(sng_id) > 0) {
 			try {
 				body = await this.get_track_page(sng_id);
-			} catch (e) {
+			} catch {
 				/* nothing */
 			}
 		}

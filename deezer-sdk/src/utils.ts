@@ -559,10 +559,10 @@ export function map_track(track: GWTrack): EnrichedAPITrack {
 
 // Cleanup terms that can hurt search results
 export function clean_search_query(term) {
-	term = term.replaceAll(/ feat[\.]? /g, " ");
-	term = term.replaceAll(/ ft[\.]? /g, " ");
-	term = term.replaceAll(/\(feat[\.]? /g, " ");
-	term = term.replaceAll(/\(ft[\.]? /g, " ");
+	term = term.replaceAll(/ feat[.]? /g, " ");
+	term = term.replaceAll(/ ft[.]? /g, " ");
+	term = term.replaceAll(/\(feat[.]? /g, " ");
+	term = term.replaceAll(/\(ft[.]? /g, " ");
 	term = term.replace(" & ", " ").replace("–", "-").replace("—", "-");
 	return term;
 }

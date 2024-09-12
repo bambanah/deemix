@@ -13,6 +13,7 @@
 		"build": "tsup src/index.ts --format esm && tsc --emitDeclarationOnly",
 		"test": "vitest run",
 		"test:watch": "vitest",
+		"lint": "eslint .",
 		"type-check": "tsc --noEmit"
 	},
 	"repository": {
@@ -30,6 +31,11 @@
 	"devDependencies": {
 		"@types/tough-cookie": "^4.0.5",
 		"tsup": "^8.2.4",
-		"vitest": "^2.0.5"
+		"vitest": "^2.0.5",
+		"eslint": "~9.9.0",
+		"eslint-config-prettier": "^9.1.0",
+		"@typescript-eslint/parser": "~8.1.0",
+		"@eslint/js": "^9.10.0",
+		"typescript-eslint": "8.3.0"
 	}
 }
