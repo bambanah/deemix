@@ -17,6 +17,10 @@ function checkPath(path: string) {
 
 export function getConfigFolder() {
 	if (userdata !== "") return userdata;
+
+	if (process.env.DEEMIX_DATA_DIR)
+		return process.env.DEEMIX_DATA_DIR.replace(/\/*$/, "") + "/";
+
 	if (process.env.XDG_CONFIG_HOME && userdata === "") {
 		userdata = `${process.env.XDG_CONFIG_HOME}${sep}`;
 		userdata = checkPath(userdata);
@@ -37,12 +41,15 @@ export function getConfigFolder() {
 	if (userdata === "") userdata = `${process.cwd()}${sep}config${sep}`;
 	else userdata += `deemix${sep}`;
 
-	if (process.env.DEEMIX_DATA_DIR) userdata = process.env.DEEMIX_DATA_DIR;
 	return userdata;
 }
 
 export function getMusicFolder() {
 	if (musicdata !== "") return musicdata;
+
+	if (process.env.DEEMIX_MUSIC_DIR)
+		return process.env.DEEMIX_MUSIC_DIR.replace(/\/*$/, "") + "/";
+
 	if (process.env.XDG_MUSIC_DIR && musicdata === "") {
 		musicdata = `${process.env.XDG_MUSIC_DIR}${sep}`;
 		musicdata = checkPath(musicdata);
@@ -90,6 +97,5 @@ export function getMusicFolder() {
 	if (musicdata === "") musicdata = `${process.cwd()}${sep}music${sep}`;
 	else musicdata += `deemix Music${sep}`;
 
-	if (process.env.DEEMIX_MUSIC_DIR) musicdata = process.env.DEEMIX_MUSIC_DIR;
 	return musicdata;
 }

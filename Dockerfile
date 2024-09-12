@@ -29,17 +29,22 @@ RUN pnpm turbo build --filter=deemix-webui...
 
 FROM base AS runner
 
-# RUN addgroup --system --gid 1001 expressjs
-# RUN adduser --system --uid 1001 expressjs
-# USER expressjs
-
-COPY --from=installer /app .
-
 ENV NODE_ENV=production
 
-ENV DEEMIX_DATA_DIR=/config/
-ENV DEEMIX_MUSIC_DIR=/downloads/
+ENV DEEMIX_DATA_DIR=/config
+ENV DEEMIX_MUSIC_DIR=/downloads
 ENV DEEMIX_HOST=0.0.0.0
+
+RUN apk add --no-cache shadow
+
+# RUN groupmod -g 1000 users
+RUN useradd -u 911 -U -d /config -s /bin/false abc
+RUN usermod -G users abc
+RUN mkdir -p \
+	$DEEMIX_DATA_DIR \
+	$DEEMIX_MUSIC_DIR
+
+COPY --from=installer /app .
 
 EXPOSE 6595
 
