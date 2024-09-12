@@ -1,4 +1,4 @@
-import { type EnrichedAPITrack } from "./api.js";
+import { type EnrichedAPITrack } from "./types.js";
 import { type GWTrack } from "./gw.js";
 
 // Explicit Content Lyrics
