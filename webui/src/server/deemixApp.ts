@@ -359,7 +359,6 @@ export class DeemixApp {
 					...downloadObject.getSlimmedDict(),
 					status: this.queue[currentUUID].status,
 				};
-
 				// Save queue status
 				this.queue[currentUUID] = savedObject;
 				fs.writeFileSync(
@@ -367,7 +366,7 @@ export class DeemixApp {
 					JSON.stringify(savedObject)
 				);
 			}
-			logger.info(this.queueOrder);
+
 			fs.writeFileSync(
 				configFolder + `queue${sep}order.json`,
 				JSON.stringify(this.queueOrder)

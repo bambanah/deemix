@@ -304,7 +304,7 @@ function startDownload(uuid) {
 	queueList.value[uuid].status = "downloading";
 }
 
-function finishDownload(uuid) {
+function finishDownload({ uuid }: { uuid: string }) {
 	const isInQueue =
 		queue.value.includes(uuid) || queueComplete.value.includes(uuid);
 
@@ -327,7 +327,7 @@ function finishDownload(uuid) {
 		toast(t("toasts.allDownloaded"), "done_all");
 	}
 }
-function startConversion(uuid) {
+function startConversion({ uuid }: { uuid: string; title: string }) {
 	queueList.value[uuid].status = "converting";
 	queueList.value[uuid].conversion = 0;
 }

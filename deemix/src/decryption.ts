@@ -6,10 +6,10 @@ import {
 	_ecbDecrypt,
 	generateBlowfishKey,
 	decryptChunk,
-} from "./utils/crypto";
-import { DownloadCanceled, DownloadEmpty } from "./errors";
+} from "./utils/crypto.js";
+import { DownloadCanceled, DownloadEmpty } from "./errors.js";
 
-import { USER_AGENT_HEADER, pipeline } from "./utils/index";
+import { USER_AGENT_HEADER, pipeline } from "./utils/index.js";
 
 export function generateStreamPath(sngID, md5, mediaVersion, format) {
 	let urlPart = md5 + "¤" + format + "¤" + sngID + "¤" + mediaVersion;
@@ -137,15 +137,6 @@ export async function streamTrack(writepath, track, downloadObject, listener) {
 				error = "DownloadEmpty";
 				request.destroy();
 			}
-			if (listener) {
-				listener.send("downloadInfo", {
-					uuid: downloadObject.uuid,
-					data: itemData,
-					state: "downloading",
-					alreadyStarted: false,
-					value: complete,
-				});
-			}
 		})
 		.on("data", function (chunk) {
 			if (downloadObject.isCanceled) {
@@ -194,6 +185,7 @@ export async function streamTrack(writepath, track, downloadObject, listener) {
 			if (listener) {
 				listener.send("downloadInfo", {
 					uuid: downloadObject.uuid,
+					title: downloadObject.title,
 					data: itemData,
 					state: "downloadTimeout",
 				});

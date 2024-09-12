@@ -34,7 +34,6 @@ export async function generateTrackItem(
 			try {
 				trackAPI = await dz.api.getTrack(id);
 			} catch (e) {
-				console.trace(e);
 				throw new GenerationError(`https://deezer.com/track/${id}`, e.message);
 			}
 			// Check if is an isrc: url
@@ -98,7 +97,6 @@ export async function generateAlbumItem(
 			}
 		});
 		if (!albumAPI) {
-			console.trace(lastError);
 			throw new GenerationError(
 				`https://deezer.com/album/${id}`,
 				lastError.message
@@ -120,7 +118,6 @@ export async function generateAlbumItem(
 				);
 			}
 		} catch (e) {
-			console.trace(e);
 			throw new GenerationError(`https://deezer.com/album/${id}`, e.message);
 		}
 	}

@@ -7,8 +7,10 @@
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"scripts": {
-		"dev": "tsup src/index.ts --format esm --dts --watch",
-		"build": "tsup src/index.ts --format esm",
+		"dev": "run-p watch:*",
+		"watch:build": "tsup src/index.ts --format esm --watch",
+		"watch:tsc": "tsc --emitDeclarationOnly -w",
+		"build": "tsup src/index.ts --format esm && tsc --emitDeclarationOnly",
 		"lint": "eslint .",
 		"type-check": "tsc --noEmit"
 	},
