@@ -1,5 +1,13 @@
 # deemix-webui
 
+## 4.2.3
+
+### Patch Changes
+
+- 56d4397: Remove "no update available" toast when logging in
+- 2fc213b: Fix item in download list not updating visually until a refresh
+- 5aa9f76: Display "retry" icon when hovering over retry button in download list
+
 ## 4.2.2
 
 ### Patch Changes
