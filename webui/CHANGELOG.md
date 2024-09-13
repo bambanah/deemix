@@ -1,5 +1,11 @@
 # deemix-webui
 
+## 4.2.2
+
+### Patch Changes
+
+- 23f876e: Persist Deezer cache when restarting deemix
+
 ## 4.2.1
 
 ### Patch Changes
