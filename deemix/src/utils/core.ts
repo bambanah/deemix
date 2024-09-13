@@ -206,9 +206,9 @@ export function formatListener(key: string, data) {
 			}
 			return message;
 		case "currentItemCancelled":
-			return `Current item cancelled (${data})`;
+			return `Current item cancelled (${data.title ?? data.uuid})`;
 		case "removedFromQueue":
-			return `[${data}] Removed from the queue`;
+			return `[${data.title ?? data.uuid}] Removed from the queue`;
 		case "finishDownload":
 			return `[${data.title ?? data.uuid}] Download complete`;
 		case "startConversion":

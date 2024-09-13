@@ -390,11 +390,11 @@ export class DeemixApp {
 						configFolder + `queue${sep}order.json`,
 						JSON.stringify(this.queueOrder)
 					);
+					this.listener.send("removedFromQueue", { uuid });
 					break;
 
 				default:
-					// This gets called even in the 'inQueue' case. Is this the expected behaviour? If no, de-comment the break
-					this.listener.send("removedFromQueue", uuid);
+					this.listener.send("removedFromQueue", { uuid });
 					break;
 			}
 			fs.unlinkSync(configFolder + `queue${sep}${uuid}.json`);

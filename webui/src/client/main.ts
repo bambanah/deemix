@@ -100,14 +100,9 @@ async function startApp() {
 	}
 
 	if (connectResponse.checkForUpdates) {
-		toast(
-			i18n.global.t("toasts.checkingUpdates"),
-			"loading",
-			false,
-			"updates-toast"
-		);
 		const updates = await fetchData("checkForUpdates");
 		appInfoStore.setUpdateInfo(updates);
+
 		if (updates.updateAvailable) {
 			toast(
 				i18n.global.t("toasts.updateAvailable"),
@@ -235,7 +230,7 @@ socket.on("cancellingCurrentItem", function (uuid: string) {
 	);
 });
 
-socket.on("currentItemCancelled", function (uuid: string) {
+socket.on("currentItemCancelled", function ({ uuid }: { uuid: string }) {
 	toast(
 		i18n.global.t("toasts.currentItemCancelled"),
 		"done",
