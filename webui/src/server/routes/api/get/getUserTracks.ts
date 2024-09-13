@@ -9,7 +9,7 @@ const handler: ApiHandler["handler"] = async (req, res) => {
 	const dz = sessionDZ[req.session.id];
 	let data;
 
-	if (dz.logged_in) {
+	if (dz.loggedIn) {
 		data = await dz.gw.get_my_favorite_tracks({ limit: -1 });
 	} else {
 		data = { error: "notLoggedIn" };

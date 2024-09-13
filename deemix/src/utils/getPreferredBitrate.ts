@@ -82,8 +82,8 @@ export async function getPreferredBitrate(
 		let url;
 		wrongLicense =
 			((formatName === "FLAC" || formatName.startsWith("MP4_RA")) &&
-				!dz.current_user?.can_stream_lossless) ||
-			(formatName === "MP3_320" && !dz.current_user?.can_stream_hq);
+				!dz.currentUser?.can_stream_lossless) ||
+			(formatName === "MP3_320" && !dz.currentUser?.can_stream_hq);
 		if (
 			track.filesizes[`${formatName.toLowerCase()}`] &&
 			track.filesizes[`${formatName.toLowerCase()}`] !== "0"
@@ -177,7 +177,7 @@ export async function getPreferredBitrate(
 
 		if (!shouldFallback) {
 			if (wrongLicense) throw new WrongLicense(formatName);
-			if (isGeolocked) throw new WrongGeolocation(dz.current_user.country);
+			if (isGeolocked) throw new WrongGeolocation(dz.currentUser.country);
 			throw new PreferredBitrateNotFound();
 		} else if (!falledBack) {
 			falledBack = true;

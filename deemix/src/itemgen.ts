@@ -214,7 +214,7 @@ export async function generatePlaylistItem(
 			}
 		}
 		// Check if private playlist and owner
-		if (!playlistAPI.public && playlistAPI.creator.id !== dz.current_user.id) {
+		if (!playlistAPI.public && playlistAPI.creator.id !== dz.currentUser.id) {
 			throw new NotYourPrivatePlaylist(`https://deezer.com/playlist/${id}`);
 		}
 	}
@@ -295,7 +295,7 @@ export async function generateArtistItem(
 	const artistDiscographyAPI = await dz.gw.get_artist_discography_tabs(id, {
 		limit: 100,
 	});
-	const albumList = [];
+	const albumList: (Single | Collection)[] = [];
 	if (tab === "discography") {
 		delete artistDiscographyAPI.all;
 		await each(artistDiscographyAPI, async (type: any) => {
