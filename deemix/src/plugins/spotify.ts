@@ -1,15 +1,16 @@
+import { Collection, Convertable } from "@/download-objects/Collection.js";
+import { generateAlbumItem } from "@/download-objects/generateAlbumItem.js";
+import { generateTrackItem } from "@/download-objects/generateTrackItem.js";
+import { AlbumNotOnDeezer, InvalidID, TrackNotOnDeezer } from "@/errors.js";
 import { type Settings } from "@/types/Settings.js";
 import Track from "@/types/Track.js";
+import { getConfigFolder } from "@/utils/localpaths.js";
 import { SpotifyApi, type MaxInt } from "@spotify/web-api-ts-sdk";
 import { queue } from "async";
 import { Deezer, type DeezerTrack } from "deezer-sdk";
 import fs from "fs";
 import got from "got";
 import { sep } from "path";
-import { AlbumNotOnDeezer, InvalidID, TrackNotOnDeezer } from "../errors.js";
-import { generateAlbumItem, generateTrackItem } from "../itemgen.js";
-import { Collection, Convertable } from "../types/DownloadObjects.js";
-import { getConfigFolder } from "../utils/localpaths.js";
 import BasePlugin from "./base.js";
 
 export default class SpotifyPlugin extends BasePlugin {
@@ -39,19 +40,22 @@ export default class SpotifyPlugin extends BasePlugin {
 		return this;
 	}
 
-	override async parseLink(link) {
+	override async parseLink(link: string) {
 		if (link.includes("link.tospotify.com")) {
-			link = await got.get(link, { https: { rejectUnauthorized: false } }); // Resolve URL shortner
-			link = link.url;
+			const response = await got.get(link, {
+				https: { rejectUnauthorized: false },
+			}); // Resolve URL shortner
+			link = response.url;
 		}
+
 		// Remove extra stuff
 		if (link.includes("?")) link = link.slice(0, link.indexOf("?"));
 		if (link.includes("&")) link = link.slice(0, link.indexOf("&"));
 		if (link.endsWith("/")) link = link.slice(0, -1); // Remove last slash if present
 
-		let link_type, link_id;
+		if (!link.includes("spotify")) return [link, undefined, undefined]; // return if not a spotify link
 
-		if (!link.includes("spotify")) return [link, link_type, link_id]; // return if not a spotify link
+		let link_type: string, link_id: string;
 
 		if (link.search(/[/:]track[/:](.+)/g) !== -1) {
 			link_type = "track";
