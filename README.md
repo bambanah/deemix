@@ -11,9 +11,51 @@ It contains the following packages:
 
 ## Downloads
 
-A compiled electron app is available to download from the [releases page](https://github.com/bambanah/deemix/releases).
+### Standalone Electron App
+
+[https://github.com/bambanah/deemix/releases](https://github.com/bambanah/deemix/releases)
+
+Note: The app is not signed (because it's crazy expensive), so you'll need to disable the security warnings when running it.
+
+#### For MacOS
+
+```bash
+xattr -d com.apple.quarantine /path/to/deemix.app
+```
+
+### Docker Image
 
 Deemix is also available as a [docker image](https://github.com/bambanah/deemix/pkgs/container/deemix).
+
+#### Example Usage
+
+```bash
+docker run -d --name Deemix \
+  -v /path/to/music:/downloads \
+  -v /path/to/config:/config \
+  -p 6595:6595 \
+  ghcr.io/bambanah/deemix:latest
+```
+
+#### Parameters
+
+All paremeters are optional - if not specified, the default value will be used.
+
+You'll probably want to at least map the download and config folders, as well as the port.
+
+| Parameter                        | Description                          | Default      |
+| -------------------------------- | ------------------------------------ | ------------ |
+| `-v /path/to/music:/downloads`   | Path to the music folder             |              |
+| `-v /path/to/config:/config`     | Path to the config folder            |              |
+| `-p 6595:6595`                   | Port mapped to the host              |              |
+| `-e DEEMIX_SERVER_PORT=6595`     | Port to expose the server on         | `6595`       |
+| `-e DEEMIX_DATA_DIR=/config`     | Path to the config folder            | `/config`    |
+| `-e DEEMIX_MUSIC_DIR=/downloads` | Path to the music folder             | `/downloads` |
+| `-e DEEMIX_HOST=0.0.0.0`         | Host to bind the server to           | `0.0.0.0`    |
+| `-e DEEMIX_SINGLE_USER=true`     | Enables single user mode             | `true`       |
+| `-e PUID=1000`                   | User ID to use for downloaded files  | `1000`       |
+| `-e PGID=1000`                   | Group ID to use for downloaded files | `1000`       |
+| `-e UMASK_SET=022`               | Set umask                            | `022`        |
 
 ## Feature requests
 
