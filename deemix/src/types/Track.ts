@@ -7,23 +7,23 @@ import {
 	type APITrack,
 	type EnrichedAPITrack,
 } from "deezer-sdk";
-import { AlbumDoesntExists, NoDataToParse } from "../errors";
-import { FeaturesOption } from "../settings";
+import { AlbumDoesntExists, NoDataToParse } from "../errors.js";
+import { FeaturesOption } from "../settings.js";
 import {
 	andCommaConcat,
 	changeCase,
 	generateReplayGainString,
 	removeDuplicateArtists,
 	removeFeatures,
-} from "../utils/index";
-import { Album } from "./Album";
-import { Artist } from "./Artist";
-import { CustomDate } from "./CustomDate";
-import { VARIOUS_ARTISTS } from "./index";
-import { Lyrics } from "./Lyrics";
-import { Picture } from "./Picture";
-import { Playlist } from "./Playlist";
-import type { Settings } from "./Settings";
+} from "../utils/index.js";
+import { Album } from "./Album.js";
+import { Artist } from "./Artist.js";
+import { CustomDate } from "./CustomDate.js";
+import { VARIOUS_ARTISTS } from "./index.js";
+import { Lyrics } from "./Lyrics.js";
+import { Picture } from "./Picture.js";
+import { Playlist } from "./Playlist.js";
+import type { Settings } from "./Settings.js";
 
 const { map_track, map_album } = utils;
 

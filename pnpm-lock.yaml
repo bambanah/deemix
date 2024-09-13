@@ -63,8 +63,8 @@ importers:
         specifier: workspace:*
         version: link:../deezer-sdk
       got:
-        specifier: ^11.8.2
-        version: 11.8.6
+        specifier: ^14.4.2
+        version: 14.4.2
       html-entities:
         specifier: ^2.3.3
         version: 2.5.2

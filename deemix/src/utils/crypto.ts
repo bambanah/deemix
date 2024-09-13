@@ -1,5 +1,5 @@
-import crypto from "crypto";
 import Blowfish from "blowfish-node";
+import crypto from "crypto";
 
 export function _md5(data, type: BufferEncoding = "binary") {
 	const md5sum = crypto.createHash("md5");
@@ -55,6 +55,7 @@ export function decryptChunk(chunk, blowFishKey) {
 		return Buffer.concat([cipher.update(chunk), cipher.final()]);
 	}
 	if (Blowfish) {
+		// @ts-expect-error TODO: figure out why this is not working
 		const cipher = new Blowfish(
 			blowFishKey,
 			Blowfish.MODE.CBC,

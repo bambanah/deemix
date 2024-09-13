@@ -1,5 +1,5 @@
-import { Picture } from "./Picture";
-import { VARIOUS_ARTISTS } from "./index";
+import { Picture } from "./Picture.js";
+import { VARIOUS_ARTISTS } from "./index.js";
 
 export class Artist {
 	id: number;

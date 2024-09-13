@@ -10,20 +10,29 @@ import {
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { HTTPError } from "got";
 import { tmpdir } from "os";
-import { streamTrack } from "./decryption";
-import { DownloadCanceled, DownloadFailed, ErrorMessages } from "./errors";
-import { DEFAULTS, OverwriteOption } from "./settings";
-import { Album, Playlist, StaticPicture, type Settings } from "./types";
-import { Collection, IDownloadObject, Single } from "./types/DownloadObjects";
-import Track, { formatsName } from "./types/Track";
-import { downloadImage, getPreferredBitrate, shellEscape } from "./utils";
-import { checkShouldDownload, tagTrack } from "./utils/downloadUtils";
+import { streamTrack } from "./decryption.js";
+import { DownloadCanceled, DownloadFailed, ErrorMessages } from "./errors.js";
+import { DEFAULTS, OverwriteOption } from "./settings.js";
+import { Album } from "./types/Album.js";
+import {
+	Collection,
+	IDownloadObject,
+	Single,
+} from "./types/DownloadObjects.js";
+import { StaticPicture } from "./types/Picture.js";
+import { Playlist } from "./types/Playlist.js";
+import type { Settings } from "./types/Settings.js";
+import Track, { formatsName } from "./types/Track.js";
+import { shellEscape } from "./utils/core.js";
+import { downloadImage } from "./utils/downloadImage.js";
+import { checkShouldDownload, tagTrack } from "./utils/downloadUtils.js";
+import { getPreferredBitrate } from "./utils/getPreferredBitrate.js";
 import {
 	generateAlbumName,
 	generateArtistName,
 	generateDownloadObjectName,
 	generatePath,
-} from "./utils/pathtemplates";
+} from "./utils/pathtemplates.js";
 
 const { map_track } = utils;
 

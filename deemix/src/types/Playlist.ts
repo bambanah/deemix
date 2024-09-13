@@ -1,6 +1,6 @@
-import { Artist } from "./Artist";
-import { CustomDate } from "./CustomDate";
-import { Picture, StaticPicture } from "./Picture";
+import { Artist } from "./Artist.js";
+import { CustomDate } from "./CustomDate.js";
+import { Picture, StaticPicture } from "./Picture.js";
 
 export class Playlist {
 	id: string;

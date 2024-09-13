@@ -1,9 +1,9 @@
+import { removeDuplicateArtists, removeFeatures } from "@/utils/core.js";
 import { type APIAlbum } from "deezer-sdk";
-import { removeDuplicateArtists, removeFeatures } from "../utils";
-import { Artist } from "./Artist";
-import { CustomDate } from "./CustomDate";
-import { Picture } from "./Picture";
-import { VARIOUS_ARTISTS } from "./index";
+import { Artist } from "./Artist.js";
+import { CustomDate } from "./CustomDate.js";
+import { Picture } from "./Picture.js";
+import { VARIOUS_ARTISTS } from "./index.js";
 
 export class Album {
 	id: string;

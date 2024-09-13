@@ -1,6 +1,6 @@
-import { OverwriteOption } from "../settings";
 import fs from "fs";
-import { tagID3, tagFLAC } from "../tagger";
+import { OverwriteOption } from "../settings.js";
+import { tagFLAC, tagID3 } from "../tagger.js";
 
 export const checkShouldDownload = (
 	filename,

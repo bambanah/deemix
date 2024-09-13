@@ -1,7 +1,7 @@
 import { TrackFormats } from "deezer-sdk";
-import { getMusicFolder, getConfigFolder } from "./utils/localpaths";
+import { getMusicFolder, getConfigFolder } from "./utils/localpaths.js";
 import fs from "fs";
-import { type Settings } from "./types/Settings";
+import { type Settings } from "./types/Settings.js";
 
 // Should the lib overwrite files?
 export const OverwriteOption = {
