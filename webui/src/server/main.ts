@@ -98,6 +98,9 @@ const wss = new WebSocketServer({ server });
 if (process.env.NODE_ENV === "production") {
 	const publicPath = join(dirname(fileURLToPath(import.meta.url)), "public");
 	app.use(express.static(publicPath));
+	app.get("*", (_, res) => {
+		res.sendFile(join(publicPath, "index.html"));
+	});
 } else {
 	ViteExpress.bind(app, server);
 }
