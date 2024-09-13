@@ -1,5 +1,7 @@
-import { createCache, memoryStore, type MemoryCache } from "cache-manager";
+import { sqliteStore } from "@resolid/cache-manager-sqlite";
+import { createCache, type Cache } from "cache-manager";
 import got from "got";
+import { join } from "path";
 import { CookieJar } from "tough-cookie";
 import {
 	APIError,
@@ -14,6 +16,7 @@ import {
 } from "./errors.js";
 import { SearchOrder, type APIAlbum, type APIOptions } from "./index.js";
 import { trackSchema, type DeezerTrack } from "./schema/track-schema.js";
+import { $cacheDir } from "./store.js";
 
 type APIArgs = Record<string | number, string | number>;
 
@@ -21,26 +24,27 @@ export class API {
 	http_headers: { "User-Agent": string };
 	cookie_jar: CookieJar;
 	access_token: string | null;
-	cache: MemoryCache;
+	cache?: Cache;
 
 	constructor(cookie_jar: CookieJar, headers: { "User-Agent": string }) {
 		this.http_headers = headers;
 		this.cookie_jar = cookie_jar;
 		this.access_token = null;
 
-		// Create a memory cache
-		this.cache = createCache(
-			memoryStore({
-				max: 5000,
-				ttl: 0 /* do not expire */,
-			})
-		);
+		if ($cacheDir.value) {
+			this.cache = createCache(
+				sqliteStore({
+					sqliteFile: join($cacheDir.value, "cache.db"),
+					cacheTableName: "deezer_api",
+				})
+			);
+		}
 	}
 
 	async call(endpoint: string, args: APIArgs = {}): Promise<unknown> {
 		if (this.access_token) args["access_token"] = this.access_token;
 
-		const cachedResponse = await this.cache.get<string>(endpoint);
+		const cachedResponse = await this.cache?.get<string>(endpoint);
 		if (cachedResponse) {
 			return JSON.parse(cachedResponse);
 		}
@@ -122,7 +126,7 @@ export class API {
 			throw new APIError(response.error);
 		}
 
-		this.cache.set(endpoint, JSON.stringify(response));
+		this.cache?.set(endpoint, JSON.stringify(response));
 
 		return response;
 	}

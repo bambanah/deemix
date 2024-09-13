@@ -12,7 +12,7 @@ import {
 	type Settings,
 	type SpotifySettings,
 } from "deemix";
-import { Deezer } from "deezer-sdk";
+import { Deezer, setDeezerCacheDir } from "deezer-sdk";
 import fs from "fs";
 import got from "got";
 import { sep } from "path";
@@ -27,6 +27,7 @@ export const getArlFromAccessToken = utils.getDeezerArlFromAccessToken;
 
 // Constants
 export const configFolder: string = utils.getConfigFolder();
+setDeezerCacheDir(configFolder);
 export const defaultSettings: Settings = settings.DEFAULTS;
 
 export const sessionDZ: any = {};
