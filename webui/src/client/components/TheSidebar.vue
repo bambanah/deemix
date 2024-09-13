@@ -42,7 +42,7 @@ router.afterEach((to) => {
 		<img
 			src="@/assets/deemix-icon.svg?url"
 			alt="deemix-icon"
-			class="mx-auto w-20"
+			class="mx-auto my-5 w-24"
 		/>
 		<router-link
 			v-for="link in links"
@@ -50,7 +50,7 @@ router.afterEach((to) => {
 			:aria-label="link.ariaLabel"
 			:class="{ 'bg-background-main': activeTablink === link.name }"
 			:to="{ name: link.routerName }"
-			class="main_tablinks hover:bg-background-main text-foreground group relative flex h-16 items-center no-underline"
+			class="main_tablinks hover:bg-background-main text-foreground group relative flex h-16 items-center px-4 no-underline"
 			@click="activeTablink = link.name"
 		>
 			<i
@@ -76,18 +76,18 @@ router.afterEach((to) => {
 			id="theme_selector"
 			:class="{ 'inline-grid gap-2': isSlim }"
 			aria-label="theme selector"
-			class="mt-5 flex h-12"
+			class="-ml-10 mb-5 mt-auto flex h-12 items-center justify-center gap-2"
 			role="link"
 		>
 			<i
-				class="material-icons side_icon side_icon--theme cursor-default p-2 text-3xl transition-all duration-500"
+				class="material-icons side_icon side_icon--theme w-10 p-2 text-xl transition-all duration-500"
 			>
 				brush
 			</i>
 			<div
 				id="theme_togglers"
 				:class="{ 'inline-grid gap-2': isSlim }"
-				class="relative flex w-full items-center justify-evenly"
+				class="relative flex items-center justify-center gap-3"
 			>
 				<div
 					v-for="theme of THEMES"
@@ -122,6 +122,11 @@ router.afterEach((to) => {
 #update-notification {
 	top: 12px;
 	left: 30px;
+}
+
+.side_icon--theme {
+	font-size: 1.5rem /* 24px */;
+	line-height: 2rem /* 32px */;
 }
 
 .theme_toggler {
