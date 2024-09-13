@@ -1,5 +1,11 @@
 # deemix-webui
 
+## 4.2.0
+
+### Minor Changes
+
+- 748510a: Docker image now correctly sets permissions and supports additional functionality due to being based on lsio/base
+
 ## 4.1.4
 
 ### Patch Changes
