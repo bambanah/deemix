@@ -7,10 +7,10 @@ import {
 	type CancelableRequest,
 	type Response as GotResponse,
 } from "got";
-import { generateCryptedStreamURL } from "../decryption";
-import { PreferredBitrateNotFound, TrackNot360 } from "../errors";
-import Track from "../types/Track";
-import { USER_AGENT_HEADER } from "../utils";
+import { generateCryptedStreamURL } from "../decryption.js";
+import { PreferredBitrateNotFound, TrackNot360 } from "../errors.js";
+import Track from "../types/Track.js";
+import { USER_AGENT_HEADER } from "../utils/core.js";
 
 const { WrongLicense, WrongGeolocation } = _errors;
 const { map_track } = utils;

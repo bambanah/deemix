@@ -1,7 +1,7 @@
 import { ID3Writer } from "browser-id3-writer";
 import Metaflac from "metaflac-js2";
 import fs from "fs";
-import Track from "./types/Track";
+import Track from "./types/Track.js";
 
 function tagID3(path: string, track: Track, save: any) {
 	const songBuffer = fs.readFileSync(path);

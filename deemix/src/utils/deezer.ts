@@ -1,7 +1,7 @@
 import got from "got";
 import { CookieJar } from "tough-cookie";
-import { USER_AGENT_HEADER } from ".";
-import { _md5 } from "./crypto";
+import { USER_AGENT_HEADER } from "./index.js";
+import { _md5 } from "./crypto.js";
 
 const CLIENT_ID = "172365";
 const CLIENT_SECRET = "fb0bec7ccc063dab0417eb7b0d847f34";

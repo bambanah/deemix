@@ -2,7 +2,7 @@ import { execSync } from "child_process";
 import fs from "fs";
 import { homedir } from "os";
 import { sep } from "path";
-import { canWrite } from "../utils";
+import { canWrite } from "../utils/core.js";
 
 const homedata = homedir();
 let userdata = "";

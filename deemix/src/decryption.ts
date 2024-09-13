@@ -1,4 +1,4 @@
-import got from "got";
+import got, { ReadError, TimeoutError } from "got";
 import fs from "fs";
 import {
 	_md5,
@@ -167,8 +167,8 @@ export async function streamTrack(writepath, track, downloadObject, listener) {
 	} catch (e) {
 		if (fs.existsSync(writepath)) fs.unlinkSync(writepath);
 		if (
-			e instanceof got.ReadError ||
-			e instanceof got.TimeoutError ||
+			e instanceof ReadError ||
+			e instanceof TimeoutError ||
 			[
 				"ESOCKETTIMEDOUT",
 				"ERR_STREAM_PREMATURE_CLOSE",

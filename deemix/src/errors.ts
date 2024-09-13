@@ -1,4 +1,4 @@
-import Track from "./types/Track";
+import Track from "./types/Track.js";
 
 export class DeemixError extends Error {
 	constructor(message?: string) {

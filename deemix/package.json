@@ -24,7 +24,7 @@
 		"blowfish-node": "^1.1.4",
 		"browser-id3-writer": "^6.1.0",
 		"deezer-sdk": "workspace:*",
-		"got": "^11.8.2",
+		"got": "^14.4.2",
 		"html-entities": "^2.3.3",
 		"metaflac-js2": "^1.0.8",
 		"tough-cookie": "^4.0.0",
