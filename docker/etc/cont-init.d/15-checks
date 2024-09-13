@@ -1,0 +1,23 @@
+#!/usr/bin/with-contenv bash
+# shellcheck disable=SC1008
+
+printf '[cont-init.d] Testing Access\n'
+
+if [ -w "/downloads" ]; then
+	printf '%-50s %2s %-5s \n' "[cont-init.d] Download Folder Write Access" ":" "Success"
+else
+	printf '%-50s %2s %-5s \n' "[cont-init.d] Download Folder Write Access" ":" "Failure"
+fi
+
+if [ -w "/config" ]; then
+	printf '%-50s %2s %-5s \n' "[cont-init.d] Config Folder Write Access" ":" "Success"
+else
+	printf '%-50s %2s %-5s \n' "[cont-init.d] Config Folder Write Access" ":" "Failure"
+fi
+
+until curl --fail -sf www.deezer.com; do
+	printf '%-50s %2s %-5s \n' "[cont-init.d] Internet Access" ":" "Failure. Trying again in 5 seconds"
+	sleep 5
+done
+
+printf '%-50s %2s %-5s \n' "[cont-init.d] Internet Access" ":" "Success"

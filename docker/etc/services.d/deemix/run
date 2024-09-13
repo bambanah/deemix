@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+# shellcheck disable=SC1008
+
+UMASK_SET=${UMASK_SET:-022}
+umask "$UMASK_SET"
+
+echo "[services.d] Starting Deemix"
+s6-setuidgid abc node /app/webui/dist/main.js
