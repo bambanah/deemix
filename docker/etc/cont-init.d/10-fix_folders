@@ -1,0 +1,19 @@
+#!/usr/bin/with-contenv bash
+# shellcheck disable=SC1008
+
+printf '[cont-init.d] Fixing Folder Permissions - Config Folder\n'
+
+chown -R abc:abc /config
+
+if [ -n "${DISABLE_OWNERSHIP_CHECK}" ]; then
+	printf '[cont-init.d] Download Folder Ownership Check disabled by Environment Variable\n'
+else
+	printf '[cont-init.d] Fixing Folder Permissions - Downloads Folder\n'
+	find /downloads -type d -exec chown abc:abc {} +
+fi
+
+# Fix misconfigured download locations. The container's download map is always /downloads.
+if [ -f "/config/config.json" ]; then
+	jq '.downloadLocation = "/downloads"' /config/config.json >tmp.$$.json && mv tmp.$$.json /config/config.json
+	chown abc:abc /config/config.json
+fi

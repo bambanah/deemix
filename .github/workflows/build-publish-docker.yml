@@ -8,8 +8,10 @@ on:
     branches:
       - main
     paths:
-      - webui/CHANGELOG.md
       - .github/workflows/build-publish-docker.yml
+      - Dockerfile
+      - docker/**
+      - webui/CHANGELOG.md
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
