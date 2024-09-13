@@ -10,6 +10,7 @@
 		"build:2-server": "tsc --build src/server/tsconfig.json",
 		"build:3-aliases": "tsc-alias -p src/server/tsconfig.json",
 		"build:4-version": "genversion -fe dist/helpers/web-version.js",
+		"start": "cross-env NODE_ENV=production node dist/main.js",
 		"test": "jest",
 		"test-watch": "jest --watch",
 		"testlang": "node ./tests/testlang.js",
