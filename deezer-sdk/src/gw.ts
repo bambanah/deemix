@@ -77,13 +77,13 @@ export const EMPTY_TRACK_OBJ = {
 } satisfies Partial<GWTrack>;
 
 export class GW {
-	http_headers: any;
-	cookie_jar: any;
+	httpHeaders: any;
+	cookieJar: any;
 	api_token: any;
 
-	constructor(cookie_jar, headers) {
-		this.http_headers = headers;
-		this.cookie_jar = cookie_jar;
+	constructor(cookieJar, headers) {
+		this.httpHeaders = headers;
+		this.cookieJar = cookieJar;
 		this.api_token = null;
 	}
 
@@ -105,8 +105,8 @@ export class GW {
 				.post("http://www.deezer.com/ajax/gw-light.php", {
 					searchParams: p,
 					json: args,
-					cookieJar: this.cookie_jar,
-					headers: this.http_headers,
+					cookieJar: this.cookieJar,
+					headers: this.httpHeaders,
 					https: {
 						rejectUnauthorized: false,
 					},

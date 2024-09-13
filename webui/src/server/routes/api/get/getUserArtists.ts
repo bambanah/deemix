@@ -9,8 +9,8 @@ const handler: ApiHandler["handler"] = async (req, res) => {
 	const dz = sessionDZ[req.session.id];
 	let data;
 
-	if (dz.logged_in) {
-		const userID = dz.current_user.id;
+	if (dz.loggedIn) {
+		const userID = dz.currentUser.id;
 		data = await dz.gw.get_user_artists(userID, { limit: -1 });
 	} else {
 		data = { error: "notLoggedIn" };

@@ -42,7 +42,7 @@ const handler: RequestHandler<any, any, RawLoginArlBody, any> = async (
 
 	const loginParams: { arl: string; child?: number } = { arl: req.body.arl };
 
-	// TODO Handle the child === 0 case, don't want to rely on the login_via_arl default param (it may change in the
+	// TODO Handle the child === 0 case, don't want to rely on the loginViaArl default param (it may change in the
 	//  future)
 	if (req.body.child) {
 		loginParams.child = req.body.child;
@@ -51,9 +51,9 @@ const handler: RequestHandler<any, any, RawLoginArlBody, any> = async (
 	let response;
 
 	if (process.env.NODE_ENV !== "test") {
-		if (!dz.logged_in) {
+		if (!dz.loggedIn) {
 			try {
-				response = await dz.login_via_arl(loginParams.arl, loginParams.child);
+				response = await dz.loginViaArl(loginParams.arl, loginParams.child);
 			} catch (e) {
 				logger.error(e);
 				response = false;
@@ -64,16 +64,16 @@ const handler: RequestHandler<any, any, RawLoginArlBody, any> = async (
 		}
 	} else {
 		const testDz = new Deezer();
-		response = await testDz.login_via_arl(loginParams.arl, loginParams.child);
+		response = await testDz.loginViaArl(loginParams.arl, loginParams.child);
 	}
 	if (response === LoginStatus.FAILED) sessionDZ[req.session.id] = new Deezer();
 	if (!(await deemix.isDeezerAvailable())) response = LoginStatus.NOT_AVAILABLE;
 	const returnValue = {
 		status: response,
 		arl: req.body.arl,
-		user: dz.current_user,
+		user: dz.currentUser,
 		childs: dz.childs,
-		currentChild: dz.selected_account,
+		currentChild: dz.selectedAccount,
 	};
 
 	if (

@@ -6,29 +6,29 @@ import { Cookie, CookieJar } from "tough-cookie";
 import type { User } from "./types.js";
 
 export class Deezer {
-	logged_in: boolean;
-	http_headers: { "User-Agent": string };
-	cookie_jar: CookieJar;
-	current_user?: User;
+	loggedIn: boolean;
+	httpHeaders: { "User-Agent": string };
+	cookieJar: CookieJar;
+	currentUser?: User;
 	childs: User[];
-	selected_account: number;
+	selectedAccount: number;
 	api: API;
 	gw: GW;
 
 	constructor() {
-		this.http_headers = {
+		this.httpHeaders = {
 			"User-Agent":
 				"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36",
 		};
-		this.cookie_jar = new CookieJar();
+		this.cookieJar = new CookieJar();
 
-		this.logged_in = false;
-		this.current_user = {};
+		this.loggedIn = false;
+		this.currentUser = {};
 		this.childs = [];
-		this.selected_account = 0;
+		this.selectedAccount = 0;
 
-		this.api = new API(this.cookie_jar, this.http_headers);
-		this.gw = new GW(this.cookie_jar, this.http_headers);
+		this.api = new API(this.cookieJar, this.httpHeaders);
+		this.gw = new GW(this.cookieJar, this.httpHeaders);
 	}
 
 	async login(
@@ -40,17 +40,17 @@ export class Deezer {
 		if (child && typeof child === "string") child = parseInt(child);
 
 		// Check if user already logged in
-		let user_data = await this.gw.get_user_data();
-		if (!user_data || (user_data && Object.keys(user_data).length === 0)) {
-			return (this.logged_in = false);
+		let userData = await this.gw.get_user_data();
+		if (!userData || (userData && Object.keys(userData).length === 0)) {
+			return (this.loggedIn = false);
 		}
 
-		if (user_data.USER.USER_ID === 0) return (this.logged_in = false);
+		if (userData.USER.USER_ID === 0) return (this.loggedIn = false);
 
 		const login = await got
 			.post("https://www.deezer.com/ajax/action.php", {
-				headers: this.http_headers,
-				cookieJar: this.cookie_jar,
+				headers: this.httpHeaders,
+				cookieJar: this.cookieJar,
 				https: {
 					rejectUnauthorized: false,
 				},
@@ -58,7 +58,7 @@ export class Deezer {
 					type: "login",
 					mail: email,
 					password,
-					checkFormLogin: user_data.checkFormLogin,
+					checkFormLogin: userData.checkFormLogin,
 					reCaptchaToken,
 				},
 			})
@@ -66,17 +66,17 @@ export class Deezer {
 
 		// Check if user logged in
 		if (login.indexOf("success") === -1) {
-			this.logged_in = false;
+			this.loggedIn = false;
 			return false;
 		}
-		user_data = await this.gw.get_user_data();
-		await this._post_login(user_data);
-		this.change_account(child);
-		this.logged_in = true;
+		userData = await this.gw.get_user_data();
+		await this._postLogin(userData);
+		this.changeAccount(child);
+		this.loggedIn = true;
 		return true;
 	}
 
-	async login_via_arl(arl: string, child: string | number = 0) {
+	async loginViaArl(arl: string, child: string | number = 0) {
 		if (child && typeof child === "string") child = parseInt(child);
 
 		// Create cookie
@@ -87,28 +87,28 @@ export class Deezer {
 			path: "/",
 			httpOnly: true,
 		});
-		await this.cookie_jar.setCookie(
+		await this.cookieJar.setCookie(
 			cookie_obj.toString(),
 			"https://www.deezer.com"
 		);
 
-		const user_data = await this.gw.get_user_data();
+		const userData = await this.gw.get_user_data();
 		// Check if user logged in
-		if (!user_data || (user_data && Object.keys(user_data).length === 0))
-			return (this.logged_in = false);
-		if (user_data.USER.USER_ID === 0) return (this.logged_in = false);
+		if (!userData || (userData && Object.keys(userData).length === 0))
+			return (this.loggedIn = false);
+		if (userData.USER.USER_ID === 0) return (this.loggedIn = false);
 
-		await this._post_login(user_data);
-		this.change_account(child);
-		this.logged_in = true;
+		await this._postLogin(userData);
+		this.changeAccount(child);
+		this.loggedIn = true;
 		return true;
 	}
 
-	async _post_login(user_data) {
+	async _postLogin(userData) {
 		this.childs = [];
 		const family =
-			user_data.USER.MULTI_ACCOUNT.ENABLED &&
-			!user_data.USER.MULTI_ACCOUNT.IS_SUB_ACCOUNT;
+			userData.USER.MULTI_ACCOUNT.ENABLED &&
+			!userData.USER.MULTI_ACCOUNT.IS_SUB_ACCOUNT;
 		if (family) {
 			const childs = await this.gw.get_child_accounts();
 			childs.forEach((child) => {
@@ -117,41 +117,41 @@ export class Deezer {
 						id: child.USER_ID,
 						name: child.BLOG_NAME,
 						picture: child.USER_PICTURE || "",
-						license_token: user_data.USER.OPTIONS.license_token,
+						license_token: userData.USER.OPTIONS.license_token,
 						can_stream_hq:
-							user_data.USER.OPTIONS.web_hq || user_data.USER.OPTIONS.mobile_hq,
+							userData.USER.OPTIONS.web_hq || userData.USER.OPTIONS.mobile_hq,
 						can_stream_lossless:
-							user_data.USER.OPTIONS.web_lossless ||
-							user_data.USER.OPTIONS.mobile_lossless,
-						country: user_data.USER.OPTIONS.license_country,
-						language: user_data.USER.SETTING.global.language || "",
+							userData.USER.OPTIONS.web_lossless ||
+							userData.USER.OPTIONS.mobile_lossless,
+						country: userData.USER.OPTIONS.license_country,
+						language: userData.USER.SETTING.global.language || "",
 						loved_tracks: child.LOVEDTRACKS_ID,
 					});
 				}
 			});
 		} else {
 			this.childs.push({
-				id: user_data.USER.USER_ID,
-				name: user_data.USER.BLOG_NAME,
-				picture: user_data.USER.USER_PICTURE || "",
-				license_token: user_data.USER.OPTIONS.license_token,
+				id: userData.USER.USER_ID,
+				name: userData.USER.BLOG_NAME,
+				picture: userData.USER.USER_PICTURE || "",
+				license_token: userData.USER.OPTIONS.license_token,
 				can_stream_hq:
-					user_data.USER.OPTIONS.web_hq || user_data.USER.OPTIONS.mobile_hq,
+					userData.USER.OPTIONS.web_hq || userData.USER.OPTIONS.mobile_hq,
 				can_stream_lossless:
-					user_data.USER.OPTIONS.web_lossless ||
-					user_data.USER.OPTIONS.mobile_lossless,
-				country: user_data.USER.OPTIONS.license_country,
-				language: user_data.USER.SETTING.global.language || "",
-				loved_tracks: user_data.USER.LOVEDTRACKS_ID,
+					userData.USER.OPTIONS.web_lossless ||
+					userData.USER.OPTIONS.mobile_lossless,
+				country: userData.USER.OPTIONS.license_country,
+				language: userData.USER.SETTING.global.language || "",
+				loved_tracks: userData.USER.LOVEDTRACKS_ID,
 			});
 		}
 	}
 
-	change_account(child_n) {
+	changeAccount(child_n) {
 		if (this.childs.length - 1 < child_n) child_n = 0;
-		this.current_user = this.childs[child_n];
-		this.selected_account = child_n;
-		let lang = this.current_user?.language
+		this.currentUser = this.childs[child_n];
+		this.selectedAccount = child_n;
+		let lang = this.currentUser?.language
 			?.toString()
 			.replace(/[^0-9A-Za-z *,-.;=]/g, "");
 		if (lang?.slice(2, 1) === "-") {
@@ -159,9 +159,9 @@ export class Deezer {
 		} else {
 			lang = lang?.slice(0, 2);
 		}
-		this.http_headers["Accept-Language"] = lang;
+		this.httpHeaders["Accept-Language"] = lang;
 
-		return [this.current_user, this.selected_account];
+		return [this.currentUser, this.selectedAccount];
 	}
 
 	async get_track_url(track_token, format) {
@@ -175,11 +175,11 @@ export class Deezer {
 
 	async get_tracks_url(track_tokens, format) {
 		if (!Array.isArray(track_tokens)) track_tokens = [track_tokens];
-		if (!this.current_user?.license_token) return [];
+		if (!this.currentUser?.license_token) return [];
 		if (
 			((format === "FLAC" || format.startsWith("MP4_RA")) &&
-				!this.current_user.can_stream_lossless) ||
-			(format === "MP3_320" && !this.current_user.can_stream_hq)
+				!this.currentUser.can_stream_lossless) ||
+			(format === "MP3_320" && !this.currentUser.can_stream_hq)
 		)
 			throw new WrongLicense(format);
 
@@ -189,13 +189,13 @@ export class Deezer {
 		try {
 			response = await got
 				.post("https://media.deezer.com/v1/get_url", {
-					headers: this.http_headers,
-					cookieJar: this.cookie_jar,
+					headers: this.httpHeaders,
+					cookieJar: this.cookieJar,
 					https: {
 						rejectUnauthorized: false,
 					},
 					json: {
-						license_token: this.current_user.license_token,
+						license_token: this.currentUser.license_token,
 						media: [
 							{
 								type: "FULL",
@@ -214,7 +214,7 @@ export class Deezer {
 			response.data.forEach((data) => {
 				if (data.errors) {
 					if (data.errors[0].code === 2002) {
-						result.push(new WrongGeolocation(this.current_user?.country));
+						result.push(new WrongGeolocation(this.currentUser?.country));
 					} else {
 						result.push(new DeezerError(JSON.stringify(response)));
 					}

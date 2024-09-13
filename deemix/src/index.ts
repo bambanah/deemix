@@ -10,6 +10,7 @@ import {
 	generatePlaylistItem,
 	generateTrackItem,
 } from "./itemgen.js";
+import type { IDownloadObject } from "./types/DownloadObjects.js";
 
 async function parseLink(link: string) {
 	if (link.includes("deezer.page.link")) {
@@ -58,7 +59,7 @@ async function generateDownloadObject(
 	bitrate: number,
 	plugins: Record<string, BasePlugin> = {},
 	listener: any
-) {
+): Promise<IDownloadObject | IDownloadObject[]> {
 	let link_type, link_id;
 	[link, link_type, link_id] = await parseLink(link);
 

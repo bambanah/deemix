@@ -24,7 +24,7 @@ const handler: RequestHandler<any, any, any, ChangeAccountQuery> = (
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer();
 	const dz = sessionDZ[req.session.id];
 
-	const accountData = dz.change_account(accountNum);
+	const accountData = dz.changeAccount(accountNum);
 
 	return res.status(200).send(accountData);
 };

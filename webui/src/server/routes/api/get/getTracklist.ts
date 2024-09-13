@@ -14,9 +14,12 @@ const handler: ApiHandler["handler"] = async (req, res) => {
 	switch (list_type) {
 		case "artist": {
 			const artistAPI = await dz.api.get_artist(list_id);
-			artistAPI.releases = await dz.gw.get_artist_discography_tabs(list_id, {
-				limit: 100,
-			});
+			(artistAPI as any).releases = await dz.gw.get_artist_discography_tabs(
+				list_id,
+				{
+					limit: 100,
+				}
+			);
 			res.send(artistAPI);
 			break;
 		}

@@ -30,11 +30,11 @@ export const configFolder: string = utils.getConfigFolder();
 setDeezerCacheDir(configFolder);
 export const defaultSettings: Settings = settings.DEFAULTS;
 
-export const sessionDZ: any = {};
+export const sessionDZ: Record<string, Deezer> = {};
 
 export class DeemixApp {
 	queueOrder: string[];
-	queue: any;
+	queue: Record<string, any>;
 	currentJob: any;
 
 	deezerAvailable: string | null;
@@ -181,11 +181,11 @@ export class DeemixApp {
 		bitrate: number,
 		retry: boolean = false
 	) {
-		if (!dz.logged_in) throw new NotLoggedIn();
+		if (!dz.loggedIn) throw new NotLoggedIn();
 		if (
 			!this.settings.feelingLucky &&
-			((!dz.current_user.can_stream_lossless && bitrate === 9) ||
-				(!dz.current_user.can_stream_hq && bitrate === 3))
+			((!dz.currentUser.can_stream_lossless && bitrate === 9) ||
+				(!dz.currentUser.can_stream_hq && bitrate === 3))
 		)
 			throw new CantStream(bitrate);
 

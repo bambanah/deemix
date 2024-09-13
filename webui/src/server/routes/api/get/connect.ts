@@ -36,8 +36,8 @@ const handler: ApiHandler["handler"] = async (req, res) => {
 
 	const result = <any>{
 		update,
-		autologin: !dz.logged_in,
-		currentUser: dz.current_user,
+		autologin: !dz.loggedIn,
+		currentUser: dz.currentUser,
 		deezerAvailable: await deemix.isDeezerAvailable(),
 		spotifyEnabled: deemix.plugins.spotify.enabled,
 		settingsData: deemix.getSettings(),

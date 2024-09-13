@@ -21,14 +21,14 @@ import { $cacheDir } from "./store.js";
 type APIArgs = Record<string | number, string | number>;
 
 export class API {
-	http_headers: { "User-Agent": string };
-	cookie_jar: CookieJar;
+	httpHeaders: { "User-Agent": string };
+	cookieJar: CookieJar;
 	access_token: string | null;
 	cache?: Cache;
 
-	constructor(cookie_jar: CookieJar, headers: { "User-Agent": string }) {
-		this.http_headers = headers;
-		this.cookie_jar = cookie_jar;
+	constructor(cookieJar: CookieJar, headers: { "User-Agent": string }) {
+		this.httpHeaders = headers;
+		this.cookieJar = cookieJar;
 		this.access_token = null;
 
 		if ($cacheDir.value) {
@@ -54,8 +54,8 @@ export class API {
 			response = await got
 				.get("https://api.deezer.com/" + endpoint, {
 					searchParams: args,
-					cookieJar: this.cookie_jar,
-					headers: this.http_headers,
+					cookieJar: this.cookieJar,
+					headers: this.httpHeaders,
 					https: {
 						rejectUnauthorized: false,
 					},
