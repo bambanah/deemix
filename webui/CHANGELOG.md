@@ -1,5 +1,11 @@
 # deemix-webui
 
+## 4.2.1
+
+### Patch Changes
+
+- 061147f: Fix refreshing when not on homepage causing 404
+
 ## 4.2.0
 
 ### Minor Changes
