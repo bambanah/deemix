@@ -2,7 +2,9 @@
 
 This is the monorepo for the revived Deemix project, originally created by the very talented [RemixDev](https://gitlab.com/RemixDev).
 
-It contains the following packages:
+The docker image was heavily inspired by the fantastic work of [Bockiii](https://gitlab.com/Bockiii/deemix-docker).
+
+### Packages in this Repo
 
 - **deezer-sdk**: Wrapper for Deezer's [API](https://developers.deezer.com/api)
 - **deemix**: The brains of the operation
