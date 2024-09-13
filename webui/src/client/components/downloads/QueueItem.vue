@@ -37,6 +37,7 @@ const { queueItem } = defineProps<Props>();
 const emit = defineEmits(["retry-download", "remove-item", "show-errors"]);
 
 const isLoading = ref(false);
+const hovered = ref(false);
 
 const hasFails = computed(() => queueItem.failed >= 1);
 const hasErrors = computed(() => queueItem.errors?.length >= 1);
@@ -223,9 +224,11 @@ function onResultIconClick() {
 					'cursor-pointer':
 						finishedWithFails || resultIconText === 'delete_forever',
 				}"
+				@mouseover="hovered = true"
+				@mouseleave="hovered = false"
 				@click="onResultIconClick"
 			>
-				{{ resultIconText }}
+				{{ hovered && finishedWithFails ? "refresh" : resultIconText }}
 			</i>
 			<div v-else class="circle-loader"></div>
 		</div>
@@ -276,7 +279,6 @@ function onResultIconClick() {
 	height: 24px;
 }
 .download-object > .download-bar > .queue_icon {
-	cursor: default;
 	margin-left: 8px;
 }
 .download-object > .download-bar > .progress {
