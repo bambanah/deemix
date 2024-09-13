@@ -1,7 +1,7 @@
 import { TrackFormats } from "deezer-sdk";
 import { CustomDate } from "../types/CustomDate.js";
 import Track from "@/types/Track.js";
-import { IDownloadObject } from "@/types/DownloadObjects.js";
+import { IDownloadObject } from "@/download-objects/DownloadObject.js";
 import { type Settings } from "@/types/Settings.js";
 
 const bitrateLabels = {

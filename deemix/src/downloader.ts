@@ -11,14 +11,13 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { HTTPError } from "got";
 import { tmpdir } from "os";
 import { streamTrack } from "./decryption.js";
+import { Collection } from "./download-objects/Collection.js";
+import { IDownloadObject } from "./download-objects/DownloadObject.js";
+import { Single } from "./download-objects/Single.js";
 import { DownloadCanceled, DownloadFailed, ErrorMessages } from "./errors.js";
 import { DEFAULTS, OverwriteOption } from "./settings.js";
 import { Album } from "./types/Album.js";
-import {
-	Collection,
-	IDownloadObject,
-	Single,
-} from "./types/DownloadObjects.js";
+import type { Listener } from "./types/listener.js";
 import { StaticPicture } from "./types/Picture.js";
 import { Playlist } from "./types/Playlist.js";
 import type { Settings } from "./types/Settings.js";
@@ -64,7 +63,7 @@ export class Downloader {
 		dz: Deezer,
 		downloadObject: IDownloadObject,
 		settings: Settings,
-		listener
+		listener: Listener
 	) {
 		this.dz = dz;
 		this.downloadObject = downloadObject;

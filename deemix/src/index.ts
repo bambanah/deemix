@@ -3,14 +3,15 @@ import { type Deezer } from "deezer-sdk";
 import got from "got";
 import { Downloader } from "./downloader.js";
 import { LinkNotRecognized, LinkNotSupported } from "./errors.js";
+import { generateTrackItem } from "./download-objects/generateTrackItem.js";
+import { generateArtistTopItem } from "./download-objects/generateArtistTopItem.js";
 import {
-	generateAlbumItem,
 	generateArtistItem,
-	generateArtistTopItem,
 	generatePlaylistItem,
-	generateTrackItem,
-} from "./itemgen.js";
-import type { IDownloadObject } from "./types/DownloadObjects.js";
+} from "./download-objects/generatePlaylistItem.js";
+import { generateAlbumItem } from "./download-objects/generateAlbumItem.js";
+import type { IDownloadObject } from "./download-objects/DownloadObject.js";
+import type { Listener } from "./types/listener.js";
 
 async function parseLink(link: string) {
 	if (link.includes("deezer.page.link")) {
@@ -58,27 +59,26 @@ async function generateDownloadObject(
 	link: string,
 	bitrate: number,
 	plugins: Record<string, BasePlugin> = {},
-	listener: any
+	listener: Listener
 ): Promise<IDownloadObject | IDownloadObject[]> {
-	let link_type, link_id;
+	let link_type: string | null = null;
+	let link_id: string | null = null;
+
 	[link, link_type, link_id] = await parseLink(link);
 
-	if (link_type == null || link_id == null) {
-		const pluginNames = Object.keys(plugins);
-		let currentPlugin;
-		let item = null;
-		for (let i = 0; i < pluginNames.length; i++) {
-			currentPlugin = plugins[pluginNames[i]];
-
-			item = await currentPlugin.generateDownloadObject(
+	// Link is not deezer - try to find a plugin that can handle it
+	if (!link_type || !link_id) {
+		for (const pluginName in plugins) {
+			const downloadObject = await plugins[pluginName].generateDownloadObject(
 				dz,
 				link,
 				bitrate,
 				listener
 			);
-			if (item) break;
+
+			if (downloadObject) return downloadObject;
 		}
-		if (item) return item;
+
 		throw new LinkNotRecognized(link);
 	}
 
@@ -111,6 +111,7 @@ export * as settings from "./settings.js";
 export * as tagger from "./tagger.js";
 export * from "./types/index.js";
 export * as utils from "./utils/index.js";
+export * from "./download-objects/index.js";
 
 // Exporting the organized objects
 export { Downloader, generateDownloadObject, itemgen, parseLink };

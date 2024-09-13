@@ -2,7 +2,7 @@ import { DeemixApp } from "@/deemixApp.js";
 import { logger, removeOldLogs } from "@/helpers/logger.js";
 import { loadLoginCredentials } from "@/helpers/loginStorage.js";
 import cookieParser from "cookie-parser";
-import { utils } from "deemix";
+import { utils, type Listener } from "deemix";
 import express from "express";
 import session from "express-session";
 import memorystore from "memorystore";
@@ -17,7 +17,7 @@ import { normalizePort } from "./helpers/port.js";
 import { getErrorCb, getListeningCb } from "./helpers/server-callbacks.js";
 import { registerApis } from "./routes/api/register.js";
 import indexRouter from "./routes/index.js";
-import type { Arguments, Listener } from "./types.js";
+import type { Arguments } from "./types.js";
 import { registerWebsocket } from "./websocket/index.js";
 
 const MemoryStore = memorystore(session);

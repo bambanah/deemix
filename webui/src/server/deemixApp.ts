@@ -1,25 +1,25 @@
 import { CantStream, NotLoggedIn } from "@/helpers/errors.js";
 import { logger } from "@/helpers/logger.js";
 import { GUI_VERSION, WEBUI_PACKAGE_VERSION } from "@/helpers/versions.js";
-import type { Listener } from "@/types.js";
 import {
+	Collection,
+	Convertable,
 	Downloader,
-	downloadObjects,
 	generateDownloadObject,
 	settings,
+	Single,
 	SpotifyPlugin,
 	utils,
+	type Listener,
 	type Settings,
 	type SpotifySettings,
 } from "deemix";
+import type { IDownloadObject } from "deemix/dist/download-objects/DownloadObject.js";
 import { Deezer, setDeezerCacheDir } from "deezer-sdk";
 import fs from "fs";
-import got from "got";
+import got, { type Response as GotResponse } from "got";
 import { sep } from "path";
 import { v4 as uuidv4 } from "uuid";
-
-// Types
-const { Single, Collection, Convertable } = downloadObjects;
 
 // Functions
 export const getAccessToken = utils.getDeezerAccessTokenFromEmailPassword;
@@ -32,16 +32,18 @@ export const defaultSettings: Settings = settings.DEFAULTS;
 
 export const sessionDZ: Record<string, Deezer> = {};
 
+type DeezerAvailable = "yes" | "no" | "no-network";
+
 export class DeemixApp {
 	queueOrder: string[];
 	queue: Record<string, any>;
-	currentJob: any;
+	currentJob: boolean | Downloader | null;
 
-	deezerAvailable: string | null;
+	deezerAvailable?: DeezerAvailable;
 	latestVersion: string | null;
 
 	plugins: Record<string, SpotifyPlugin>;
-	settings: any;
+	settings: Settings;
 
 	listener: Listener;
 
@@ -55,7 +57,6 @@ export class DeemixApp {
 		this.plugins = {
 			spotify: new SpotifyPlugin(),
 		};
-		this.deezerAvailable = null;
 		this.latestVersion = null;
 		this.listener = listener;
 
@@ -63,47 +64,43 @@ export class DeemixApp {
 		this.restoreQueueFromDisk();
 	}
 
-	async isDeezerAvailable(): Promise<string> {
-		if (this.deezerAvailable === null) {
-			let response;
-			try {
-				// @ts-ignore
-				response = await got.get("https://www.deezer.com/", {
-					headers: {
-						Cookie:
-							"dz_lang=en; Domain=deezer.com; Path=/; Secure; hostOnly=false;",
-					},
-					https: {
-						rejectUnauthorized: false,
-					},
-					retry: {
-						limit: 5,
-					},
-				});
-			} catch (e) {
-				logger.error(e);
-				this.deezerAvailable = "no-network";
-				return this.deezerAvailable;
-			}
-			const title = (
-				response.body.match(/<title[^>]*>([^<]+)<\/title>/)![1] || ""
-			).trim();
-			this.deezerAvailable =
-				title !== "Deezer will soon be available in your country."
-					? "yes"
-					: "no";
+	async isDeezerAvailable() {
+		if (this.deezerAvailable) return this.deezerAvailable;
+
+		let response: GotResponse<string>;
+		try {
+			response = await got.get("https://www.deezer.com/", {
+				headers: {
+					Cookie:
+						"dz_lang=en; Domain=deezer.com; Path=/; Secure; hostOnly=false;",
+				},
+				https: {
+					rejectUnauthorized: false,
+				},
+				retry: {
+					limit: 5,
+				},
+			});
+		} catch (e) {
+			logger.error(e);
+			this.deezerAvailable = "no-network";
+
+			return this.deezerAvailable;
 		}
+		const title = (
+			response.body.match(/<title[^>]*>([^<]+)<\/title>/)![1] || ""
+		).trim();
+
+		this.deezerAvailable =
+			title !== "Deezer will soon be available in your country." ? "yes" : "no";
+
 		return this.deezerAvailable;
 	}
 
 	async getLatestVersion(force = false): Promise<string | null> {
-		if (
-			(this.latestVersion === null || force) &&
-			!this.settings.disableUpdateCheck
-		) {
+		if (this.latestVersion === null || force) {
 			try {
 				const responseJson = await got
-					// @ts-ignore
 					.get(
 						`https://raw.githubusercontent.com/bambanah/deemix/main/${GUI_VERSION !== undefined ? "gui" : "webui"}/package.json`
 					)
@@ -149,7 +146,7 @@ export class DeemixApp {
 		);
 	}
 
-	getSettings(): any {
+	getSettings() {
 		return {
 			settings: this.settings,
 			defaultSettings,
@@ -169,9 +166,11 @@ export class DeemixApp {
 			queue: this.queue,
 			queueOrder: this.queueOrder,
 		};
-		if (this.currentJob && this.currentJob !== true) {
+
+		if (this.currentJob instanceof Downloader) {
 			result.current = this.currentJob.downloadObject.getSlimmedDict();
 		}
+
 		return result;
 	}
 
@@ -189,7 +188,7 @@ export class DeemixApp {
 		)
 			throw new CantStream(bitrate);
 
-		let downloadObjs: any[] = [];
+		let downloadObjs: IDownloadObject[] = [];
 		const downloadErrors: any[] = [];
 		let link: string = "";
 		const requestUUID = uuidv4();
@@ -204,21 +203,23 @@ export class DeemixApp {
 		for (let i = 0; i < url.length; i++) {
 			link = url[i];
 			logger.info(`Adding ${link} to queue`);
-			let downloadObj;
 			try {
-				downloadObj = await generateDownloadObject(
+				const downloadObj = await generateDownloadObject(
 					dz,
 					link,
 					bitrate,
 					this.plugins,
 					this.listener
 				);
+
+				if (Array.isArray(downloadObj)) {
+					downloadObjs = downloadObjs.concat(downloadObj);
+				} else if (downloadObj) {
+					downloadObjs.push(downloadObj);
+				}
 			} catch (e) {
 				downloadErrors.push(e);
 			}
-			if (Array.isArray(downloadObj)) {
-				downloadObjs = downloadObjs.concat(downloadObj);
-			} else if (downloadObj) downloadObjs.push(downloadObj);
 		}
 
 		if (downloadErrors.length) {
@@ -239,9 +240,9 @@ export class DeemixApp {
 			});
 		}
 
-		const slimmedObjects: any[] = [];
+		const slimmedObjects: Record<string, any>[] = [];
 
-		downloadObjs.forEach((downloadObj: any) => {
+		downloadObjs.forEach((downloadObj) => {
 			// Check if element is already in queue
 			if (Object.keys(this.queue).includes(downloadObj.uuid) && !retry) {
 				this.listener.send("alreadyInQueue", downloadObj.getEssentialDict());
@@ -260,11 +261,9 @@ export class DeemixApp {
 			this.queue[downloadObj.uuid] = downloadObj.getEssentialDict();
 			this.queue[downloadObj.uuid].status = "inQueue";
 
-			const savedObject = downloadObj.toDict();
-			savedObject.status = "inQueue";
 			fs.writeFileSync(
 				configFolder + `queue${sep}${downloadObj.uuid}.json`,
-				JSON.stringify(savedObject)
+				JSON.stringify({ ...downloadObj.toDict(), status: "inQueue" })
 			);
 
 			slimmedObjects.push(downloadObj.getSlimmedDict());
@@ -277,7 +276,7 @@ export class DeemixApp {
 		return slimmedObjects;
 	}
 
-	async startQueue(dz: Deezer): Promise<any> {
+	async startQueue(dz: Deezer) {
 		do {
 			if (this.currentJob !== null || this.queueOrder.length === 0) {
 				// Should not start another download
@@ -303,11 +302,8 @@ export class DeemixApp {
 					.readFileSync(configFolder + `queue${sep}${currentUUID}.json`)
 					.toString()
 			);
-			let downloadObject:
-				| downloadObjects.Single
-				| downloadObjects.Collection
-				| downloadObjects.Convertable
-				| undefined = undefined;
+			let downloadObject: Single | Collection | Convertable | undefined =
+				undefined;
 
 			switch (currentItem.__type__) {
 				case "Single":
@@ -381,7 +377,9 @@ export class DeemixApp {
 		if (Object.keys(this.queue).includes(uuid)) {
 			switch (this.queue[uuid].status) {
 				case "downloading":
-					this.currentJob.downloadObject.isCanceled = true;
+					if (this.currentJob instanceof Downloader) {
+						this.currentJob.downloadObject.isCanceled = true;
+					}
 					this.listener.send("cancellingCurrentItem", uuid);
 					break;
 				case "inQueue":
@@ -407,7 +405,10 @@ export class DeemixApp {
 		let currentItem: string | null = null;
 		Object.values(this.queue).forEach((downloadObject: any) => {
 			if (downloadObject.status === "downloading") {
-				this.currentJob.downloadObject.isCanceled = true;
+				if (this.currentJob instanceof Downloader) {
+					this.currentJob.downloadObject.isCanceled = true;
+				}
+
 				this.listener.send("cancellingCurrentItem", downloadObject.uuid);
 				currentItem = downloadObject.uuid;
 			}
