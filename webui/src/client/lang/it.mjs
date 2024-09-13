@@ -235,7 +235,6 @@ const it = {
 		finishGeneratingItems: "{n} oggetti generati.",
 		noLovedPlaylist: 'Nessuna playlist "Canzoni del cuore"!',
 		checkingUpdates: "Cercando aggiornamenti...",
-		noUpdateAvailable: "Nessun aggiornamento trovato",
 		updateAvailable: "È disponibile un aggiornamento!",
 		wrongSpotifyUsername: "{username} non è un username di Spotify valido",
 	},

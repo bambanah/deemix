@@ -228,7 +228,6 @@ const ru = {
 		finishGeneratingItems: "Обработано {n} загрузок.",
 		noLovedPlaylist: "Нет плейлиста с любимыми треками!",
 		checkingUpdates: "Проверка обновлений...",
-		noUpdateAvailable: "Обновления программы не найдены",
 		updateAvailable: "Доступно обновление программы!",
 	},
 	settings: {

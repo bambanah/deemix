@@ -238,7 +238,6 @@ const pt_br = {
 		finishGeneratingItems: "{n} itens gerados.",
 		noLovedPlaylist: "Nenhuma playlist de músicas curtidas!",
 		checkingUpdates: "Verificando por atualizações...",
-		noUpdateAvailable: "Nenhuma atualização disponível",
 		updateAvailable: "Uma atualização está disponível!",
 		wrongSpotifyUsername:
 			"{username} não é um nome de usuário válido do Spotify",

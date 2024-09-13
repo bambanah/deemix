@@ -115,13 +115,6 @@ async function startApp() {
 				true,
 				"updates-toast"
 			);
-		} else {
-			toast(
-				i18n.global.t("toasts.noUpdateAvailable"),
-				"done",
-				true,
-				"updates-toast"
-			);
 		}
 	}
 }
