@@ -140,16 +140,14 @@ export class Downloader {
 
 		if (this.listener) {
 			if (this.downloadObject.isCanceled) {
-				this.listener.send(
-					"currentItemCancelled",
-					this.downloadObject.title ??
-						this.downloadObject.title ??
-						this.downloadObject.uuid
-				);
-				this.listener.send(
-					"removedFromQueue",
-					this.downloadObject.title ?? this.downloadObject.uuid
-				);
+				this.listener.send("currentItemCancelled", {
+					uuid: this.downloadObject.uuid,
+					title: this.downloadObject.title,
+				});
+				this.listener.send("removedFromQueue", {
+					uuid: this.downloadObject.uuid,
+					title: this.downloadObject.title,
+				});
 			} else {
 				this.listener.send("finishDownload", {
 					uuid: this.downloadObject.uuid,

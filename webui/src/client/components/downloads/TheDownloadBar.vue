@@ -220,7 +220,7 @@ function updateQueue(update) {
 	}
 }
 
-function removeFromQueue(uuid) {
+function removeFromQueue({ uuid }: { uuid: string }) {
 	const index = queue.value.indexOf(uuid);
 
 	if (index > -1) {
@@ -344,10 +344,9 @@ onMounted(() => {
 	socket.on("startDownload", startDownload);
 	socket.on("startConversion", startConversion);
 	socket.on("finishConversion", finishConversion);
-	// socket.on('init_downloadQueue', initQueue)
 	socket.on("addedToQueue", addToQueue);
 	socket.on("updateQueue", updateQueue);
-	socket.on("removeFromQueue", removeFromQueue);
+	socket.on("removedFromQueue", removeFromQueue);
 	socket.on("finishDownload", finishDownload);
 	socket.on("removedAllDownloads", removeAllDownloads);
 	socket.on("removedFinishedDownloads", removedFinishedDownloads);
