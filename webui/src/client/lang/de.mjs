@@ -249,7 +249,6 @@ const de = {
 		finishGeneratingItems: "{n} Einträge generiert.",
 		noLovedPlaylist: "Keine Geliebten-Tracks-Wiedergabeliste!",
 		checkingUpdates: "Auf Aktualisierungen prüfen...",
-		noUpdateAvailable: "Keine Aktualisierungen gefunden",
 		updateAvailable: "Eine Aktualisierung ist verfügbar!",
 	},
 	settings: {

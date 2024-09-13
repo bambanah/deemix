@@ -235,7 +235,6 @@ const en = {
 		finishGeneratingItems: "Generated {n} items.",
 		noLovedPlaylist: "No loved tracks playlist!",
 		checkingUpdates: "Checking for updates...",
-		noUpdateAvailable: "No updates found",
 		updateAvailable: "An update is available!",
 		wrongSpotifyUsername: "{username} is not a valid spotify username",
 	},

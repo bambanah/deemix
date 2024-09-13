@@ -238,7 +238,6 @@ const gr = {
 		finishGeneratingItems: "Δημιουργήθηκαν {n} στοιχεία.",
 		noLovedPlaylist: "Δεν υπάρχει λίστα αναπαραγωγής αγαπημένων κομματιών!",
 		checkingUpdates: "Ελεγχος για ενημερώσεις...",
-		noUpdateAvailable: "Δεν βρέθηκαν ενημερώσεις",
 		updateAvailable: "Υπάρχει διαθέσιμη ενημέρωση!",
 	},
 	settings: {
