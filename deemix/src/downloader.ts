@@ -12,7 +12,7 @@ import { HTTPError } from "got";
 import { tmpdir } from "os";
 import { streamTrack } from "./decryption.js";
 import { Collection } from "./download-objects/Collection.js";
-import { IDownloadObject } from "./download-objects/DownloadObject.js";
+import { DownloadObject } from "./download-objects/DownloadObject.js";
 import { Single } from "./download-objects/Single.js";
 import { DownloadCanceled, DownloadFailed, ErrorMessages } from "./errors.js";
 import { DEFAULTS, OverwriteOption } from "./settings.js";
@@ -33,7 +33,7 @@ import {
 	generatePath,
 } from "./utils/pathtemplates.js";
 
-const { map_track } = utils;
+const { mapGwTrackToDeezer: map_track } = utils;
 
 const extensions = {
 	[TrackFormats.FLAC]: ".flac",
@@ -51,17 +51,17 @@ mkdirSync(TEMPDIR, { recursive: true });
 
 export class Downloader {
 	dz: Deezer;
-	downloadObject: IDownloadObject;
+	downloadObject: DownloadObject;
 	settings: Settings;
 	bitrate: number;
-	listener: any;
+	listener: Listener;
 	playlistCovername: null;
 	playlistURLs: any[];
 	coverQueue: Record<string, any>;
 
 	constructor(
 		dz: Deezer,
-		downloadObject: IDownloadObject,
+		downloadObject: DownloadObject,
 		settings: Settings,
 		listener: Listener
 	) {
@@ -89,71 +89,65 @@ export class Downloader {
 	}
 
 	warn(data, state, solution) {
-		if (this.listener) {
-			this.listener.send("downloadWarn", {
-				uuid: this.downloadObject.uuid,
-				data,
-				state,
-				solution,
-			});
-		}
+		this.listener.send("downloadWarn", {
+			uuid: this.downloadObject.uuid,
+			data,
+			state,
+			solution,
+		});
 	}
 
 	async start() {
-		if (!this.downloadObject.isCanceled) {
-			if (this.downloadObject instanceof Single) {
-				const track = await this.downloadWrapper({
-					trackAPI: this.downloadObject.single.trackAPI,
-					albumAPI: this.downloadObject.single.albumAPI,
-				});
-				if (track) await this.afterDownloadSingle(track);
-			} else if (this.downloadObject instanceof Collection) {
-				const tracks = [];
-
-				const q = queue(
-					async (data: { track: APITrack; pos: number }, callback) => {
-						if (this.downloadObject instanceof Collection) {
-							const { track, pos } = data;
-							tracks[pos] = await this.downloadWrapper({
-								trackAPI: track,
-								albumAPI: this.downloadObject.collection.albumAPI,
-								playlistAPI: this.downloadObject.collection.playlistAPI,
-							});
-						}
-
-						callback();
-					},
-					this.settings.queueConcurrency
-				);
-
-				if (this.downloadObject.collection.tracks.length) {
-					this.downloadObject.collection.tracks.forEach((track, pos) => {
-						q.push({ track, pos }, () => {});
-					});
-
-					await q.drain();
-				}
-				await this.afterDownloadCollection(tracks);
-			}
+		if (this.downloadObject.isCanceled) {
+			this.listener.send("currentItemCancelled", {
+				uuid: this.downloadObject.uuid,
+				title: this.downloadObject.title,
+			});
+			this.listener.send("removedFromQueue", {
+				uuid: this.downloadObject.uuid,
+				title: this.downloadObject.title,
+			});
 		}
 
-		if (this.listener) {
-			if (this.downloadObject.isCanceled) {
-				this.listener.send("currentItemCancelled", {
-					uuid: this.downloadObject.uuid,
-					title: this.downloadObject.title,
+		if (this.downloadObject instanceof Single) {
+			const track = await this.downloadWrapper({
+				trackAPI: this.downloadObject.single.trackAPI,
+				albumAPI: this.downloadObject.single.albumAPI,
+			});
+			if (track) await this.afterDownloadSingle(track);
+		} else if (this.downloadObject instanceof Collection) {
+			const tracks = [];
+
+			const q = queue(
+				async (data: { track: APITrack; pos: number }, callback) => {
+					if (this.downloadObject instanceof Collection) {
+						const { track, pos } = data;
+						tracks[pos] = await this.downloadWrapper({
+							trackAPI: track,
+							albumAPI: this.downloadObject.collection.albumAPI,
+							playlistAPI: this.downloadObject.collection.playlistAPI,
+						});
+					}
+
+					callback();
+				},
+				this.settings.queueConcurrency
+			);
+
+			if (this.downloadObject.collection.tracks.length) {
+				this.downloadObject.collection.tracks.forEach((track, pos) => {
+					q.push({ track, pos }, () => {});
 				});
-				this.listener.send("removedFromQueue", {
-					uuid: this.downloadObject.uuid,
-					title: this.downloadObject.title,
-				});
-			} else {
-				this.listener.send("finishDownload", {
-					uuid: this.downloadObject.uuid,
-					title: this.downloadObject.title,
-				});
+
+				await q.drain();
 			}
+			await this.afterDownloadCollection(tracks);
 		}
+
+		this.listener.send("finishDownload", {
+			uuid: this.downloadObject.uuid,
+			title: this.downloadObject.title,
+		});
 	}
 
 	async download(

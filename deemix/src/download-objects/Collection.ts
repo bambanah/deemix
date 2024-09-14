@@ -1,6 +1,8 @@
-import { IDownloadObject } from "./DownloadObject.js";
+import type { Listener } from "@/types/listener.js";
+import { DownloadObject } from "./DownloadObject.js";
+import { type Track as SpotifyTrack } from "@spotify/web-api-ts-sdk";
 
-export class Collection extends IDownloadObject {
+export class Collection extends DownloadObject {
 	collection: any;
 
 	constructor(obj) {
@@ -15,12 +17,12 @@ export class Collection extends IDownloadObject {
 		return { ...item, collection: this.collection };
 	}
 
-	completeTrackProgress(listener) {
+	completeTrackProgress(listener: Listener) {
 		this.progressNext += (1 / this.size) * 100;
 		this.updateProgress(listener);
 	}
 
-	removeTrackProgress(listener) {
+	removeTrackProgress(listener: Listener) {
 		this.progressNext -= (1 / this.size) * 100;
 		this.updateProgress(listener);
 	}
@@ -28,12 +30,12 @@ export class Collection extends IDownloadObject {
 
 export class Convertable extends Collection {
 	plugin: string;
-	conversion_data: any;
+	conversionData: SpotifyTrack[];
 
 	constructor(obj) {
 		super(obj);
 		this.plugin = obj.plugin;
-		this.conversion_data = obj.conversion_data;
+		this.conversionData = obj.conversion_data;
 		this.__type__ = "Convertable";
 	}
 
@@ -43,7 +45,7 @@ export class Convertable extends Collection {
 		return {
 			...item,
 			plugin: this.plugin,
-			conversion_data: this.conversion_data,
+			conversion_data: this.conversionData,
 		};
 	}
 }

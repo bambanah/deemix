@@ -13,7 +13,7 @@ import Track from "../types/Track.js";
 import { USER_AGENT_HEADER } from "../utils/core.js";
 
 const { WrongLicense, WrongGeolocation } = _errors;
-const { map_track } = utils;
+const { mapGwTrackToDeezer: map_track } = utils;
 
 const formats_non_360 = {
 	[TrackFormats.FLAC]: "FLAC",

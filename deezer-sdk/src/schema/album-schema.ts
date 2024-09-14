@@ -12,7 +12,7 @@ export const trackAlbumSchema = z.object({
 	cover_big: z.string(),
 	cover_xl: z.string(),
 	md5_image: z.string(),
-	release_date: z.string(),
+	release_date: z.string().optional(),
 	tracklist: z.string(),
 	type: z.literal("album"),
 });

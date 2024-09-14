@@ -1,12 +1,16 @@
-import { IDownloadObject } from "./DownloadObject.js";
+import type { DeezerTrack } from "deezer-sdk";
+import { DownloadObject } from "./DownloadObject.js";
 
-export class Single extends IDownloadObject {
-	single: any;
+export class Single extends DownloadObject {
+	single: DeezerTrack;
 
-	constructor(obj) {
-		super(obj);
+	constructor({
+		single,
+		...rest
+	}: { single: DeezerTrack } & Partial<DownloadObject>) {
+		super(rest);
 		this.size = 1;
-		this.single = obj.single;
+		this.single = single;
 		this.__type__ = "Single";
 	}
 

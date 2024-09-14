@@ -99,7 +99,7 @@ const handler: ApiHandler["handler"] = async (req, res) => {
 			let current_disk = 0;
 
 			releaseTracksAPI.forEach((track: any) => {
-				if (track.SNG_ID) track = dzUtils.map_track(track);
+				if (track.SNG_ID) track = dzUtils.mapGwTrackToDeezer(track);
 				if (showdiscs && parseInt(track.disk_number) !== current_disk) {
 					current_disk = parseInt(track.disk_number);
 					tracks.push({ type: "disc_separator", number: current_disk });

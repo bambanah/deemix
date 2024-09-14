@@ -10,7 +10,7 @@ import { GenerationError, InvalidID } from "../errors.js";
 import { Collection } from "./Collection.js";
 import { generateTrackItem } from "./generateTrackItem.js";
 
-const { map_track, map_album } = utils;
+const { mapGwTrackToDeezer: map_track, map_album } = utils;
 
 export async function generateAlbumItem(
 	dz: Deezer,
@@ -74,7 +74,6 @@ export async function generateAlbumItem(
 				dz,
 				albumAPI.tracks.data[0].id,
 				bitrate,
-				null,
 				albumAPI
 			);
 		}

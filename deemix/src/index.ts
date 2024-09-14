@@ -10,7 +10,7 @@ import {
 	generatePlaylistItem,
 } from "./download-objects/generatePlaylistItem.js";
 import { generateAlbumItem } from "./download-objects/generateAlbumItem.js";
-import type { IDownloadObject } from "./download-objects/DownloadObject.js";
+import type { DownloadObject } from "./download-objects/DownloadObject.js";
 import type { Listener } from "./types/listener.js";
 
 async function parseLink(link: string) {
@@ -60,7 +60,7 @@ async function generateDownloadObject(
 	bitrate: number,
 	plugins: Record<string, BasePlugin> = {},
 	listener: Listener
-): Promise<IDownloadObject | IDownloadObject[]> {
+): Promise<DownloadObject | DownloadObject[]> {
 	let link_type: string | null = null;
 	let link_id: string | null = null;
 

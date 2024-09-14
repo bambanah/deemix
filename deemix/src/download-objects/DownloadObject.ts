@@ -1,5 +1,5 @@
-export class IDownloadObject {
-	type: any;
+export class DownloadObject {
+	type: "track" | "album" | "playlist" | "artist" | "spotify_playlist";
 	id: any;
 	bitrate: number;
 	title: any;

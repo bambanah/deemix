@@ -54,6 +54,7 @@ export const trackSchema = baseTrackSchema.extend({
 	release_date: z.string(),
 	bpm: z.number(),
 	gain: z.number(),
+	md5_origin: z.number().optional(),
 	available_countries: z.array(z.string()),
 	alternative: z.lazy(() => trackSchema).optional(),
 	contributors: z.array(z.lazy(() => contributorSchema)).optional(),

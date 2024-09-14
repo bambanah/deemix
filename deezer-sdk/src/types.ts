@@ -72,7 +72,7 @@ export interface APIAlbum {
 	cover_medium: string;
 	cover_big: string;
 	cover_xl: string;
-	release_date: string; // Assuming the date is in string format (e.g., "YYYY-MM-DD")
+	release_date?: string; // Assuming the date is in string format (e.g., "YYYY-MM-DD")
 	root_artist?: APIArtist;
 	nb_tracks?: number;
 	nb_disk?: number;
@@ -173,7 +173,7 @@ export interface APIPlaylist {
 export interface EnrichedAPITrack
 	extends Omit<APITrack, "album" | "artist" | "contributors"> {
 	type?: string;
-	md5_origin?: string;
+	md5_origin?: number;
 	filesizes?: Record<string, any>;
 	media_version?: number;
 	track_token_expire?: number;
@@ -181,7 +181,6 @@ export interface EnrichedAPITrack
 	user_id: string;
 	lyrics_id?: string;
 	physical_release_date?: string;
-	song_contributors?: any;
 	fallback_id?: number;
 	digital_release_date?: string;
 	genre_id?: number;
@@ -191,6 +190,7 @@ export interface EnrichedAPITrack
 	album?: EnrichedAPIAlbum;
 	artist: EnrichedAPIArtist;
 	contributors: EnrichedAPIContributor[];
+	song_contributors: EnrichedAPIContributor[];
 }
 
 export interface EnrichedAPIContributor extends APIContributor {

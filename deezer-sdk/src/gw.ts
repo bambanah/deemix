@@ -179,7 +179,7 @@ export class GW {
 		return this.api_call("deezer.getChildAccounts");
 	}
 
-	get_track(sng_id): Promise<GWTrack> {
+	getTrack(sng_id: string | number): Promise<GWTrack> {
 		return this.api_call("song.getData", { SNG_ID: sng_id });
 	}
 
@@ -510,7 +510,7 @@ export class GW {
 			if (body.ISRC) body.DATA.ALBUM_FALLBACK = body.ISRC;
 			body = body.DATA;
 		} else {
-			body = await this.get_track(sng_id);
+			body = await this.getTrack(sng_id);
 		}
 		return body;
 	}

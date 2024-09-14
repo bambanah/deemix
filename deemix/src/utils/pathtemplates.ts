@@ -1,7 +1,7 @@
 import { TrackFormats } from "deezer-sdk";
 import { CustomDate } from "../types/CustomDate.js";
 import Track from "@/types/Track.js";
-import { IDownloadObject } from "@/download-objects/DownloadObject.js";
+import { DownloadObject } from "@/download-objects/DownloadObject.js";
 import { type Settings } from "@/types/Settings.js";
 
 const bitrateLabels = {
@@ -116,7 +116,7 @@ const shouldCreateCDFolder = (
 
 export function generatePath(
 	track: Track,
-	downloadObject: IDownloadObject,
+	downloadObject: DownloadObject,
 	settings: Settings
 ) {
 	let filenameTemplate = "%artist% - %title%";
