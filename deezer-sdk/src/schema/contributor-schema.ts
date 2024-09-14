@@ -6,10 +6,12 @@ export const artistSchema = z.object({
 	link: z.string().optional(),
 	share: z.string().optional(),
 	picture: z.string(),
-	picture_small: z.string(),
-	picture_medium: z.string(),
-	picture_big: z.string(),
-	picture_xl: z.string(),
+	picture_small: z.string().optional(),
+	picture_medium: z.string().optional(),
+	picture_big: z.string().optional(),
+	picture_xl: z.string().optional(),
+	tracklist: z.string().optional(),
+	md5_image: z.string().optional(),
 	type: z.literal("artist"),
 });
 

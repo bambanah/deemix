@@ -14,7 +14,7 @@ import {
 	type Settings,
 	type SpotifySettings,
 } from "deemix";
-import type { IDownloadObject } from "deemix/dist/download-objects/DownloadObject.js";
+import type { DownloadObject } from "deemix/dist/download-objects/DownloadObject.js";
 import { Deezer, setDeezerCacheDir } from "deezer-sdk";
 import fs from "fs";
 import got, { type Response as GotResponse } from "got";
@@ -188,7 +188,7 @@ export class DeemixApp {
 		)
 			throw new CantStream(bitrate);
 
-		let downloadObjs: IDownloadObject[] = [];
+		let downloadObjs: DownloadObject[] = [];
 		const downloadErrors: any[] = [];
 		let link: string = "";
 		const requestUUID = uuidv4();
@@ -297,7 +297,7 @@ export class DeemixApp {
 				return null;
 			}
 			this.queue[currentUUID].status = "downloading";
-			const currentItem: any = JSON.parse(
+			const currentItem = JSON.parse(
 				fs
 					.readFileSync(configFolder + `queue${sep}${currentUUID}.json`)
 					.toString()
@@ -336,7 +336,7 @@ export class DeemixApp {
 				this.settings,
 				this.listener
 			);
-			this.listener.send("startDownload", currentUUID);
+
 			await this.currentJob.start();
 
 			if (!downloadObject.isCanceled) {

@@ -25,7 +25,7 @@ import { Picture } from "./Picture.js";
 import { Playlist } from "./Playlist.js";
 import type { Settings } from "./Settings.js";
 
-const { map_track, map_album } = utils;
+const { mapGwTrackToDeezer: map_track, map_album } = utils;
 
 export const formatsName = {
 	[TrackFormats.FLAC]: "FLAC",
@@ -42,7 +42,7 @@ class Track {
 	id: number;
 	name?: string;
 	title: string;
-	MD5?: string;
+	MD5?: number;
 	mediaVersion?: number;
 	trackToken: string;
 	trackTokenExpiration?: number;
@@ -82,7 +82,6 @@ class Track {
 	constructor() {
 		this.id = 0;
 		this.title = "";
-		this.MD5 = "";
 		this.trackToken = "";
 		this.duration = 0;
 		this.fallbackID = 0;

@@ -3,15 +3,28 @@ import { generateAlbumItem } from "@/download-objects/generateAlbumItem.js";
 import { generateTrackItem } from "@/download-objects/generateTrackItem.js";
 import { AlbumNotOnDeezer, InvalidID, TrackNotOnDeezer } from "@/errors.js";
 import { type Settings } from "@/types/Settings.js";
-import Track from "@/types/Track.js";
 import { getConfigFolder } from "@/utils/localpaths.js";
-import { SpotifyApi, type MaxInt } from "@spotify/web-api-ts-sdk";
+import {
+	SpotifyApi,
+	type MaxInt,
+	type Track as SpotifyTrack,
+} from "@spotify/web-api-ts-sdk";
 import { queue } from "async";
 import { Deezer, type DeezerTrack } from "deezer-sdk";
 import fs from "fs";
 import got from "got";
 import { sep } from "path";
 import BasePlugin from "./base.js";
+
+interface CachedTrack {
+	id?: number;
+	isrc?: string;
+	data?: {
+		title?: string;
+		artist: string;
+		album: string;
+	};
+}
 
 export default class SpotifyPlugin extends BasePlugin {
 	credentials: { clientId: string; clientSecret: string };
@@ -87,15 +100,16 @@ export default class SpotifyPlugin extends BasePlugin {
 		}
 	}
 
-	async generateTrackItem(dz: Deezer, link_id: number, bitrate: number) {
+	async generateTrackItem(dz: Deezer, linkId: string, bitrate: number) {
 		const cache = this.loadCache();
 
-		let cachedTrack;
-		if (cache.tracks[link_id]) {
-			cachedTrack = cache.tracks[link_id];
+		let cachedTrack: CachedTrack;
+
+		if (cache.tracks[linkId]) {
+			cachedTrack = cache.tracks[linkId];
 		} else {
-			cachedTrack = await this.getTrack(link_id);
-			cache.tracks[link_id] = cachedTrack;
+			cachedTrack = await this.getTrack(linkId);
+			cache.tracks[linkId] = cachedTrack;
 			this.saveCache(cache);
 		}
 
@@ -106,23 +120,26 @@ export default class SpotifyPlugin extends BasePlugin {
 				/* empty */
 			}
 		}
+
 		if (this.settings.fallbackSearch) {
-			if (!cachedTrack.id || cachedTrack.id === "0") {
+			if (!cachedTrack.id || cachedTrack.id === 0) {
 				const trackID = await dz.api.get_track_id_from_metadata(
 					cachedTrack.data.artist,
 					cachedTrack.data.title,
 					cachedTrack.data.album
 				);
+
 				if (trackID !== "0") {
 					cachedTrack.id = trackID;
-					cache.tracks[link_id] = cachedTrack;
+					cache.tracks[linkId] = cachedTrack;
 					this.saveCache(cache);
 				}
 			}
-			if (cachedTrack.id !== "0")
+			if (cachedTrack.id !== 0)
 				return generateTrackItem(dz, cachedTrack.id, bitrate);
 		}
-		throw new TrackNotOnDeezer(`https://open.spotify.com/track/${link_id}`);
+
+		throw new TrackNotOnDeezer(`https://open.spotify.com/track/${linkId}`);
 	}
 
 	async generateAlbumItem(dz: Deezer, link_id, bitrate) {
@@ -172,7 +189,7 @@ export default class SpotifyPlugin extends BasePlugin {
 			tracklistTemp = tracklistTemp.concat(spotifyPlaylist.tracks.items);
 		}
 
-		const tracklist = [];
+		const tracklist: SpotifyTrack[] = [];
 		tracklistTemp.forEach((item) => {
 			if (!item.track) return; // Skip everything that isn't a track
 			if (item.track.explicit && !playlistAPI.explicit)
@@ -199,7 +216,7 @@ export default class SpotifyPlugin extends BasePlugin {
 		});
 	}
 
-	async getTrack(track_id: number, spotifyTrack = null) {
+	async getTrack(track_id: string, spotifyTrack?: SpotifyTrack) {
 		if (!this.enabled) throw new Error("Spotify plugin not enabled");
 
 		const cachedTrack = {
@@ -216,6 +233,7 @@ export default class SpotifyPlugin extends BasePlugin {
 				throw e;
 			}
 		}
+
 		if (spotifyTrack.external_ids && spotifyTrack.external_ids.isrc)
 			cachedTrack.isrc = spotifyTrack.external_ids.isrc;
 
@@ -271,89 +289,92 @@ export default class SpotifyPlugin extends BasePlugin {
 				title: downloadObject.title,
 			});
 
-		const q = queue(async (data: { track: Track; pos: number }, callback) => {
-			const { track, pos } = data;
-			if (downloadObject.isCanceled) return;
+		const q = queue(
+			async (data: { track: SpotifyTrack; pos: number }, callback) => {
+				const { track, pos } = data;
+				if (downloadObject.isCanceled) return;
 
-			let cachedTrack;
-			if (cache.tracks[track.id]) {
-				cachedTrack = cache.tracks[track.id];
-			} else {
-				cachedTrack = await this.getTrack(track.id, track);
-				cache.tracks[track.id] = cachedTrack;
-				this.saveCache(cache);
-			}
-
-			let trackAPI: DeezerTrack;
-			if (cachedTrack.isrc) {
-				try {
-					trackAPI = await dz.api.getTrackByISRC(cachedTrack.isrc);
-					if (!trackAPI.id || !trackAPI.title) trackAPI = null;
-				} catch {
-					/* Empty */
+				let cachedTrack;
+				if (cache.tracks[track.id]) {
+					cachedTrack = cache.tracks[track.id];
+				} else {
+					cachedTrack = await this.getTrack(track.id, track);
+					cache.tracks[track.id] = cachedTrack;
+					this.saveCache(cache);
 				}
-			}
 
-			if (this.settings.fallbackSearch && !trackAPI) {
-				if (!cachedTrack.id || cachedTrack.id === "0") {
-					const trackID = await dz.api.get_track_id_from_metadata(
-						cachedTrack.data.artist,
-						cachedTrack.data.title,
-						cachedTrack.data.album
-					);
-					if (trackID !== "0") {
-						cachedTrack.id = trackID;
-						cache.tracks[track.id] = cachedTrack;
-						this.saveCache(cache);
+				let trackAPI: DeezerTrack;
+				if (cachedTrack.isrc) {
+					try {
+						trackAPI = await dz.api.getTrackByISRC(cachedTrack.isrc);
+						if (!trackAPI.id || !trackAPI.title) trackAPI = null;
+					} catch {
+						/* Empty */
 					}
 				}
-				if (cachedTrack.id !== "0")
-					trackAPI = await dz.api.getTrack(cachedTrack.id);
-			}
 
-			if (!trackAPI) {
-				trackAPI = {
-					id: "0",
-					title: track.name,
-					duration: 0,
-					md5_origin: 0,
-					media_version: 0,
-					filesizes: {},
-					album: {
-						title: track.album.name,
-						md5_image: "",
-					},
-					artist: {
-						id: 0,
-						name: track.artists[0].name,
-						md5_image: "",
-					},
-				};
-			}
+				if (this.settings.fallbackSearch && !trackAPI) {
+					if (!cachedTrack.id || cachedTrack.id === "0") {
+						const trackID = await dz.api.get_track_id_from_metadata(
+							cachedTrack.data.artist,
+							cachedTrack.data.title,
+							cachedTrack.data.album
+						);
+						if (trackID !== "0") {
+							cachedTrack.id = trackID;
+							cache.tracks[track.id] = cachedTrack;
+							this.saveCache(cache);
+						}
+					}
+					if (cachedTrack.id !== "0")
+						trackAPI = await dz.api.getTrack(cachedTrack.id);
+				}
 
-			trackAPI.position = pos + 1;
-			collection[pos] = trackAPI;
+				if (!trackAPI) {
+					trackAPI = {
+						id: "0",
+						title: track.name,
+						duration: 0,
+						md5_origin: 0,
+						media_version: 0,
+						filesizes: {},
+						album: {
+							title: track.album.name,
+							md5_image: "",
+						},
+						artist: {
+							id: 0,
+							name: track.artists[0].name,
+							md5_image: "",
+						},
+					};
+				}
 
-			conversionNext += (1 / downloadObject.size) * 100;
+				trackAPI.position = pos + 1;
+				collection[pos] = trackAPI;
 
-			if (
-				Math.round(conversionNext) !== conversion &&
-				Math.round(conversionNext) % 10 === 0 &&
-				Math.round(conversionNext) !== 100
-			) {
-				conversion = Math.round(conversionNext);
-				if (listener)
-					listener.send("updateQueue", {
-						uuid: downloadObject.uuid,
-						title: downloadObject.title,
-						conversion,
-					});
-			}
+				conversionNext += (1 / downloadObject.size) * 100;
 
-			callback();
-		}, settings.queueConcurrency);
+				if (
+					Math.round(conversionNext) !== conversion &&
+					Math.round(conversionNext) % 10 === 0 &&
+					Math.round(conversionNext) !== 100
+				) {
+					conversion = Math.round(conversionNext);
+					if (listener)
+						listener.send("updateQueue", {
+							uuid: downloadObject.uuid,
+							title: downloadObject.title,
+							conversion,
+						});
+				}
 
-		downloadObject.conversion_data.forEach((track, pos) => {
+				callback();
+			},
+			settings.queueConcurrency
+		);
+
+		downloadObject.conversionData.forEach((track, pos) => {
 			q.push({ track, pos }, () => {});
 		});
 

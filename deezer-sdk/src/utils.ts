@@ -1,4 +1,4 @@
-import { type EnrichedAPITrack } from "./types.js";
+import { type EnrichedAPIContributor, type EnrichedAPITrack } from "./types.js";
 import { type GWTrack } from "./gw.js";
 
 // Explicit Content Lyrics
@@ -416,8 +416,8 @@ export function map_playlist(playlist) {
 }
 
 // maps gw-light api tracks to standard api
-export function map_track(track: GWTrack): EnrichedAPITrack {
-	let result: EnrichedAPITrack = <any>{
+export function mapGwTrackToDeezer(track: GWTrack): EnrichedAPITrack {
+	const baseResult: Partial<EnrichedAPITrack> = {
 		id: track.SNG_ID,
 		readable: true, // not provided
 		title: track.SNG_TITLE,
@@ -426,7 +426,7 @@ export function map_track(track: GWTrack): EnrichedAPITrack {
 		link: `https://www.deezer.com/track/${track.SNG_ID}`,
 		share: `https://www.deezer.com/track/${track.SNG_ID}`,
 		duration: track.DURATION,
-		bpm: null, // not provided
+		// bpm: null, // not provided
 		available_countries: [], // not provided
 		contributors: [],
 		md5_image: track.ALB_PICTURE,
@@ -436,7 +436,7 @@ export function map_track(track: GWTrack): EnrichedAPITrack {
 			link: `https://www.deezer.com/artist/${track.ART_ID}`,
 			share: `https://www.deezer.com/artist/${track.ART_ID}`,
 			picture: `https://www.deezer.com/artist/${track.ART_ID}/image`,
-			radio: null, // not provided
+			// radio: null, // not provided
 			tracklist: `https://api.deezer.com/artist/${track.ART_ID}/top?limit=50`,
 			type: "artist",
 		},
@@ -450,7 +450,7 @@ export function map_track(track: GWTrack): EnrichedAPITrack {
 			cover_big: `https://e-cdns-images.dzcdn.net/images/cover/${track.ALB_PICTURE}/500x500-000000-80-0-0.jpg`,
 			cover_xl: `https://e-cdns-images.dzcdn.net/images/cover/${track.ALB_PICTURE}/1000x1000-000000-80-0-0.jpg`,
 			md5_image: track.ALB_PICTURE,
-			release_date: null, // not provided
+			// release_date: null, // not provided
 			tracklist: `https://api.deezer.com/album/${track.ALB_ID}/tracks`,
 			type: "album",
 		},
@@ -466,48 +466,82 @@ export function map_track(track: GWTrack): EnrichedAPITrack {
 	};
 
 	if (track.SNG_ID <= 0) {
-		result.token = track.TOKEN;
-		result.user_id = track.USER_ID;
-
-		if (result.filesizes) result.filesizes.mp3_misc = track.FILESIZE_MP3_MISC;
-
-		return result;
+		return {
+			...baseResult,
+			token: track.TOKEN,
+			user_id: track.USER_ID,
+			filesizes: {
+				...baseResult.filesizes,
+				mp3_misc: track.FILESIZE_MP3_MISC,
+			},
+		} as EnrichedAPITrack;
 	}
 
-	result.title_version = (track.VERSION || "").trim();
-	if (
-		result.title_version &&
-		result.title_short.includes(result.title_version)
-	) {
-		result.title_short = result.title_short
-			.replace(result.title_version, "")
-			.trim();
+	const titleVersion = (track.VERSION || "").trim();
+	const titleShort =
+		titleVersion && baseResult.title_short?.includes(titleVersion)
+			? baseResult.title_short.replace(titleVersion, "").trim()
+			: baseResult.title_short;
+
+	const additionalFields: Partial<EnrichedAPITrack> = {
+		title_version: titleVersion,
+		title_short: titleShort,
+		title: `${titleShort} ${titleVersion}`.trim(),
+		track_position: track.TRACK_NUMBER,
+		disk_number: track.DISK_NUMBER,
+		rank: track.RANK || track.RANK_SNG,
+		release_date: track.PHYSICAL_RELEASE_DATE,
+		explicit_lyrics: Boolean(track.EXPLICIT_LYRICS),
+		explicit_content_lyrics:
+			track.EXPLICIT_TRACK_CONTENT.EXPLICIT_LYRICS_STATUS,
+		explicit_content_cover: track.EXPLICIT_TRACK_CONTENT.EXPLICIT_COVER_STATUS,
+		preview: track.MEDIA[0]?.HREF,
+		gain: track.GAIN,
+		lyrics_id: track.LYRICS_ID,
+		physical_release_date: track.PHYSICAL_RELEASE_DATE,
+		song_contributors: track.SNG_CONTRIBUTORS,
+	};
+
+	if (track.FALLBACK) {
+		additionalFields.fallback_id = track.FALLBACK.SNG_ID;
 	}
-	result.title = `${result.title_short} ${result.title_version}`.trim();
-	result.track_position = track.TRACK_NUMBER;
-	result.disk_number = track.DISK_NUMBER;
-	result.rank = track.RANK || track.RANK_SNG;
-	result.release_date = track.PHYSICAL_RELEASE_DATE;
-	result.explicit_lyrics = is_explicit(track.EXPLICIT_LYRICS);
-	result.explicit_content_lyrics =
-		track.EXPLICIT_TRACK_CONTENT.EXPLICIT_LYRICS_STATUS;
-	result.explicit_content_cover =
-		track.EXPLICIT_TRACK_CONTENT.EXPLICIT_COVER_STATUS;
-	result.preview = track.MEDIA[0].HREF;
-	result.gain = track.GAIN;
+
+	if (track.DIGITAL_RELEASE_DATE) {
+		additionalFields.digital_release_date = track.DIGITAL_RELEASE_DATE;
+	}
+
+	if (track.GENRE_ID) {
+		additionalFields.genre_id = track.GENRE_ID;
+	}
+
+	if (track.COPYRIGHT) {
+		additionalFields.copyright = track.COPYRIGHT;
+	}
+
+	if (track.LYRICS) {
+		additionalFields.lyrics = track.LYRICS;
+	}
+
+	if (track.ALBUM_FALLBACK) {
+		additionalFields.alternative_albums = track.ALBUM_FALLBACK;
+	}
+
+	const filesizes: Record<string, number | undefined> = {
+		...baseResult.filesizes,
+		aac_64: track.FILESIZE_AAC_64,
+		mp3_64: track.FILESIZE_MP3_64,
+		mp3_128: track.FILESIZE_MP3_128,
+		mp3_256: track.FILESIZE_MP3_256,
+		mp3_320: track.FILESIZE_MP3_320,
+		mp4_ra1: track.FILESIZE_MP4_RA1,
+		mp4_ra2: track.FILESIZE_MP4_RA2,
+		mp4_ra3: track.FILESIZE_MP4_RA3,
+		flac: track.FILESIZE_FLAC,
+	};
+
 	if (track.ARTISTS) {
-		track.ARTISTS.forEach((contributor) => {
-			if (contributor.ART_ID === result.artist.id) {
-				result.artist = {
-					...result.artist,
-					picture_small: `https://e-cdns-images.dzcdn.net/images/artist/${contributor.ART_PICTURE}/56x56-000000-80-0-0.jpg`,
-					picture_medium: `https://e-cdns-images.dzcdn.net/images/artist/${contributor.ART_PICTURE}/250x250-000000-80-0-0.jpg`,
-					picture_big: `https://e-cdns-images.dzcdn.net/images/artist/${contributor.ART_PICTURE}/500x500-000000-80-0-0.jpg`,
-					picture_xl: `https://e-cdns-images.dzcdn.net/images/artist/${contributor.ART_PICTURE}/1000x1000-000000-80-0-0.jpg`,
-					md5_image: contributor.ART_PICTURE,
-				};
-			}
-			result.contributors.push({
+		const contributors: EnrichedAPIContributor[] = track.ARTISTS.map(
+			(contributor) => ({
 				id: contributor.ART_ID,
 				name: contributor.ART_NAME,
 				link: `https://www.deezer.com/artist/${contributor.ART_ID}`,
@@ -524,37 +558,29 @@ export function map_track(track: GWTrack): EnrichedAPITrack {
 				// Extras
 				order: contributor.ARTISTS_SONGS_ORDER,
 				rank: contributor.RANK,
-			});
-		});
-	}
-	// Extras
-	result = {
-		...result,
-		lyrics_id: track.LYRICS_ID,
-		physical_release_date: track.PHYSICAL_RELEASE_DATE,
-		song_contributors: track.SNG_CONTRIBUTORS,
-	};
-	if (track.FALLBACK) result.fallback_id = track.FALLBACK.SNG_ID;
-	if (track.DIGITAL_RELEASE_DATE)
-		result.digital_release_date = track.DIGITAL_RELEASE_DATE;
-	if (track.GENRE_ID) result.genre_id = track.GENRE_ID;
-	if (track.COPYRIGHT) result.copyright = track.COPYRIGHT;
-	if (track.LYRICS) result.lyrics = track.LYRICS;
-	if (track.ALBUM_FALLBACK) result.alternative_albums = track.ALBUM_FALLBACK;
-	result.filesizes = {
-		...result.filesizes,
-		aac_64: track.FILESIZE_AAC_64,
-		mp3_64: track.FILESIZE_MP3_64,
-		mp3_128: track.FILESIZE_MP3_128,
-		mp3_256: track.FILESIZE_MP3_256,
-		mp3_320: track.FILESIZE_MP3_320,
-		mp4_ra1: track.FILESIZE_MP4_RA1,
-		mp4_ra2: track.FILESIZE_MP4_RA2,
-		mp4_ra3: track.FILESIZE_MP4_RA3,
-		flac: track.FILESIZE_FLAC,
-	};
+			})
+		);
 
-	return result;
+		const mainArtist = contributors.find((c) => c.id === baseResult.artist?.id);
+		if (mainArtist && baseResult.artist) {
+			baseResult.artist = {
+				...baseResult.artist,
+				picture_small: mainArtist.picture_small,
+				picture_medium: mainArtist.picture_medium,
+				picture_big: mainArtist.picture_big,
+				picture_xl: mainArtist.picture_xl,
+				md5_image: mainArtist.md5_image,
+			};
+		}
+
+		additionalFields.contributors = contributors;
+	}
+
+	return {
+		...baseResult,
+		...additionalFields,
+		filesizes,
+	} as EnrichedAPITrack;
 }
 
 // Cleanup terms that can hurt search results

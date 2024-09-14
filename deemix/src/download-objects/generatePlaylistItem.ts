@@ -16,7 +16,7 @@ import { generateAlbumItem } from "./generateAlbumItem.js";
 import { Collection } from "./Collection.js";
 import type { Single } from "./Single.js";
 
-const { map_user_playlist, map_track } = utils;
+const { map_user_playlist, mapGwTrackToDeezer: map_track } = utils;
 
 export async function generatePlaylistItem(
 	dz: Deezer,
