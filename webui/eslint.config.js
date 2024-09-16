@@ -1,11 +1,9 @@
 import eslint from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
-import jestPlugin from "eslint-plugin-jest";
 import pluginVue from "eslint-plugin-vue";
 import globals from "globals";
 import tslint from "typescript-eslint";
 
-const jestPluginRecommended = jestPlugin.configs["flat/recommended"];
 const extraFileExtensions = [".vue"];
 
 export default tslint.config(
@@ -29,14 +27,6 @@ export default tslint.config(
 				parser: tslint.parser,
 				extraFileExtensions,
 			},
-		},
-	},
-	{
-		...jestPluginRecommended,
-		rules: {
-			...jestPluginRecommended.rules,
-			"jest/expect-expect": "off",
-			"jest/no-disabled-tests": "off",
 		},
 	},
 	{
