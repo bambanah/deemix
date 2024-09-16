@@ -337,6 +337,7 @@ export class DeemixApp {
 				this.listener
 			);
 
+			this.listener.send("startDownload", currentUUID);
 			await this.currentJob.start();
 
 			if (!downloadObject.isCanceled) {
