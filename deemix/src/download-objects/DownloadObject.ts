@@ -1,18 +1,20 @@
+import type { Listener } from "@/types/listener.js";
+
 export class DownloadObject {
 	type: "track" | "album" | "playlist" | "artist" | "spotify_playlist";
-	id: any;
+	id: number | string;
 	bitrate: number;
-	title: any;
+	title: string;
 	artist: any;
 	cover: any;
-	explicit: any;
-	size: any;
+	explicit: boolean;
+	size: number;
 	downloaded: number;
 	failed: number;
-	progress: any;
+	progress: number;
 	errors: any;
 	files: any;
-	extrasPath: any;
+	extrasPath: string;
 	progressNext: number;
 	uuid: string;
 	isCanceled: boolean;
@@ -91,10 +93,10 @@ export class DownloadObject {
 		};
 	}
 
-	updateProgress(listener) {
+	updateProgress(listener: Listener) {
 		if (
 			Math.floor(this.progressNext) !== this.progress &&
-			Math.floor(this.progressNext) % 10 === 0 &&
+			Math.floor(this.progressNext) % 2 === 0 &&
 			Math.round(this.progressNext) !== 100
 		) {
 			this.progress = Math.floor(this.progressNext);
