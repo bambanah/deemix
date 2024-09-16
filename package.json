@@ -15,6 +15,7 @@
 		"package": "turbo run package",
 		"make": "turbo run make",
 		"ci": "turbo run lint type-check build test",
+		"clean": "rimraf .turbo node_modules --glob **/dist **/out **/node_modules **/.turbo **/tsconfig.tsbuildinfo",
 		"prepare": "husky"
 	},
 	"devDependencies": {
@@ -28,6 +29,7 @@
 		"npm-run-all2": "^6.2.0",
 		"prettier": "^3.2.5",
 		"prettier-plugin-tailwindcss": "^0.6.6",
+		"rimraf": "^6.0.1",
 		"tsx": "^4.19.0",
 		"turbo": "^2.1.1"
 	},

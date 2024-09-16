@@ -53,7 +53,7 @@ async function main(argv) {
 				outfile: "./dist/main.js",
 				target: "esnext",
 				format: "esm",
-				external: ["electron", "lightningcss"],
+				external: ["electron", "lightningcss", "better-sqlite3"],
 				define: {
 					"process.env.NODE_ENV": JSON.stringify(BUILD_MODE),
 					"process.env.GUI_VERSION": JSON.stringify(packageJson.version),
