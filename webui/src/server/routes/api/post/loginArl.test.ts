@@ -1,7 +1,7 @@
 import { appSendPost } from "@/tests/utils.js";
 
 describe("loginArl requests", () => {
-	it("should respond 200 to calls with arl", async () => {
+	test("should respond 200 to calls with arl", async () => {
 		const batchCalls = ["/api/loginArl/?arl=abcdef1234"];
 
 		for (const uri of batchCalls) {
@@ -9,7 +9,7 @@ describe("loginArl requests", () => {
 		}
 	});
 
-	it("should respond 400 to calls without arl", async () => {
+	test("should respond 400 to calls without arl", async () => {
 		const batchCalls = [
 			"/api/loginArl/",
 			"/api/loginArl/?dummy=test",
@@ -21,13 +21,13 @@ describe("loginArl requests", () => {
 		}
 	});
 
-	it("should login using ARL", async () => {
+	test("should login using ARL", async () => {
 		appSendPost(`/api/loginArl/?arl=${process.env.DEEZER_ARL}`)
 			.expect(200)
 			.expect((response) => expect(response.body.status).toBe(true));
 	});
 
-	it("should not login using wrong ARL", async () => {
+	test("should not login using wrong ARL", async () => {
 		appSendPost(`/api/loginArl/?arl=abcdef1234`)
 			.expect(200)
 			.expect((response) => expect(response.body.status).toBe(false));

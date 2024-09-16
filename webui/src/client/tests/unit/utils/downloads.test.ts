@@ -2,7 +2,7 @@ import { aggregateDownloadLinks } from "../../../utils/downloads";
 
 describe("download utils", () => {
 	describe("aggregateDownloadLinks", () => {
-		it("merges links into a single string", () => {
+		test("merges links into a single string", () => {
 			const release = { link: "abcde" };
 			const aggregated = aggregateDownloadLinks([release, release]);
 

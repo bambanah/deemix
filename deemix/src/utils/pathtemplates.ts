@@ -1,8 +1,8 @@
-import { TrackFormats } from "deezer-sdk";
-import { CustomDate } from "../types/CustomDate.js";
-import Track from "@/types/Track.js";
-import { DownloadObject } from "@/download-objects/DownloadObject.js";
+import type { DownloadObject } from "@/download-objects/DownloadObject.js";
+import { CustomDate } from "@/types/CustomDate.js";
 import { type Settings } from "@/types/Settings.js";
+import Track from "@/types/Track.js";
+import { TrackFormats, type DeezerTrack } from "deezer-sdk";
 
 const bitrateLabels = {
 	[TrackFormats.MP4_RA3]: "360 HQ",
@@ -15,13 +15,13 @@ const bitrateLabels = {
 	[TrackFormats.LOCAL]: "MP3",
 };
 
-export function fixName(txt, char = "_") {
+export function fixName(txt: string, char = "_") {
 	txt = txt + "";
 	txt = txt.replace(/[\0/\\:*?"<>|]/g, char);
 	return txt.normalize("NFC");
 }
 
-export function fixLongName(name) {
+export function fixLongName(name: string) {
 	if (name.includes("/")) {
 		const sepName = name.split("/");
 		name = "";
@@ -36,7 +36,7 @@ export function fixLongName(name) {
 	return name;
 }
 
-export function antiDot(str) {
+export function antiDot(str: string) {
 	while (
 		str[str.length - 1] === "." ||
 		str[str.length - 1] === " " ||
@@ -50,7 +50,7 @@ export function antiDot(str) {
 	return str;
 }
 
-export function pad(num, max_val, settings) {
+export function pad(num, max_val, settings: Settings) {
 	let paddingSize;
 	if (parseInt(settings.paddingSize) === 0) {
 		paddingSize = (max_val + "").length;
@@ -103,7 +103,6 @@ const shouldCreateCDFolder = (
 	singleTrack: boolean
 ) => {
 	return (
-		track.album &&
 		track.album?.discTotal > 1 &&
 		settings.createAlbumFolder &&
 		settings.createCDFolder &&
@@ -115,18 +114,18 @@ const shouldCreateCDFolder = (
 };
 
 export function generatePath(
-	track: Track,
-	downloadObject: DownloadObject,
+	track: DeezerTrack,
+	downloadObjectType: DownloadObject["type"],
 	settings: Settings
 ) {
 	let filenameTemplate = "%artist% - %title%";
 	let singleTrack = false;
-	if (downloadObject.type === "track") {
+	if (downloadObjectType === "track") {
 		filenameTemplate = settings.createSingleFolder
 			? settings.albumTracknameTemplate
 			: settings.tracknameTemplate;
 		singleTrack = true;
-	} else if (downloadObject.type === "album") {
+	} else if (downloadObjectType === "album") {
 		filenameTemplate = settings.albumTracknameTemplate;
 	} else {
 		filenameTemplate = settings.playlistTracknameTemplate;
@@ -290,7 +289,12 @@ export function generateTrackName(
 	return antiDot(fixLongName(filename));
 }
 
-export function generateAlbumName(foldername, album, settings, playlist) {
+export function generateAlbumName(
+	foldername: string,
+	album,
+	settings: Settings,
+	playlist
+) {
 	const c = settings.illegalCharacterReplacer;
 	if (playlist && settings.tags.savePlaylistAsCompilation) {
 		foldername = foldername.replaceAll(
@@ -353,7 +357,12 @@ export function generateAlbumName(foldername, album, settings, playlist) {
 	return antiDot(fixLongName(foldername));
 }
 
-export function generateArtistName(foldername, artist, settings, rootArtist) {
+export function generateArtistName(
+	foldername: string,
+	artist,
+	settings: Settings,
+	rootArtist
+) {
 	const c = settings.illegalCharacterReplacer;
 	foldername = foldername.replaceAll("%artist%", fixName(artist.name, c));
 	foldername = foldername.replaceAll("%artist_id%", artist.id);
@@ -410,7 +419,11 @@ export function generatePlaylistName(
 	return antiDot(fixLongName(foldername));
 }
 
-export function generateDownloadObjectName(foldername, queueItem, settings) {
+export function generateDownloadObjectName(
+	foldername: string,
+	queueItem,
+	settings: Settings
+) {
 	const c = settings.illegalCharacterReplacer;
 	foldername = foldername.replaceAll("%title%", fixName(queueItem.title, c));
 	foldername = foldername.replaceAll("%artist%", fixName(queueItem.artist, c));

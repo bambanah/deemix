@@ -6,6 +6,7 @@
 		"strict": false,
 		// "strictNullChecks": true,
 		"declaration": true,
+		"types": ["vitest/globals"],
 		"paths": {
 			"@/*": ["./src/*"]
 		}

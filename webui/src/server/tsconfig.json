@@ -8,7 +8,7 @@
 			"@/*": ["./*"]
 		},
 
-		"types": ["jest"]
+		"types": ["vitest/globals"]
 	},
 	"include": ["./**/*.ts"]
 }

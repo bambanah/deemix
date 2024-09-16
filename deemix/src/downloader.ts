@@ -55,9 +55,9 @@ export class Downloader {
 	settings: Settings;
 	bitrate: number;
 	listener: Listener;
-	playlistCovername: null;
-	playlistURLs: any[];
-	coverQueue: Record<string, any>;
+	playlistCovername?: string;
+	playlistURLs: { url: string; ext: string }[];
+	coverQueue: Record<string, string>;
 
 	constructor(
 		dz: Deezer,
@@ -71,7 +71,6 @@ export class Downloader {
 		this.bitrate = downloadObject.bitrate;
 		this.listener = listener;
 
-		this.playlistCovername = null;
 		this.playlistURLs = [];
 
 		this.coverQueue = {};
@@ -181,7 +180,7 @@ export class Downloader {
 		}
 
 		const { filename, filepath, artistPath, coverPath, extrasPath } =
-			generatePath(track, this.downloadObject, this.settings);
+			generatePath(track, this.downloadObject.type, this.settings);
 
 		// Make sure the filepath exsists
 		mkdirSync(filepath, { recursive: true });
@@ -256,7 +255,7 @@ export class Downloader {
 		if (this.downloadObject.isCanceled) throw new DownloadCanceled();
 
 		// Check if the track is encoded
-		if (track.MD5 === "") throw new DownloadFailed("notEncoded", track);
+		if (track.MD5 === 0) throw new DownloadFailed("notEncoded", track);
 
 		// Check the target bitrate
 		let selectedFormat;
@@ -335,13 +334,13 @@ export class Downloader {
 
 		// Download and cache the coverart
 		if (!this.coverQueue[track.album.embeddedCoverPath]) {
-			this.coverQueue[track.album.embeddedCoverPath] = downloadImage(
+			this.coverQueue[track.album.embeddedCoverPath] = await downloadImage(
 				track.album.embeddedCoverURL,
 				track.album.embeddedCoverPath
 			);
 		}
 		track.album.embeddedCoverPath =
-			await this.coverQueue[track.album.embeddedCoverPath];
+			this.coverQueue[track.album.embeddedCoverPath];
 		if (this.coverQueue[track.album.embeddedCoverPath])
 			delete this.coverQueue[track.album.embeddedCoverPath];
 
