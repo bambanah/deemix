@@ -3,7 +3,7 @@ async function loadLang(lang_id) {
 	let language_module;
 	const result = [];
 	try {
-		language_module = await import(`../src/lang/${lang_id}.mjs`);
+		language_module = await import(`../lang/${lang_id}.mjs`);
 		language_module = language_module.default;
 	} catch {
 		language_module = {};
