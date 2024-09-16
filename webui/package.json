@@ -13,7 +13,7 @@
 		"start": "cross-env NODE_ENV=production node dist/main.js",
 		"test": "vitest run",
 		"test:watch": "vitest",
-		"testlang": "node ./tests/testlang.js",
+		"testlang": "node ./src/client/tests/testlang.js",
 		"lint": "eslint .",
 		"type-check": "run-p type-check:*",
 		"type-check:client": "vue-tsc --noEmit -p src/client/tsconfig.json",
