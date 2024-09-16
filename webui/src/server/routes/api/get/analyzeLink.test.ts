@@ -1,13 +1,13 @@
 import { appSendGet } from "@/tests/utils.js";
 
 describe("analyzeLink requests", () => {
-	it("should respond 200 to calls with supported term", async () => {
+	test("should respond 200 to calls with supported term", async () => {
 		appSendGet(
 			"/api/analyzeLink/?term=https://www.deezer.com/en/album/100896762"
 		).expect(200);
 	});
 
-	it("should respond with an error to calls with not supported term", async () => {
+	test("should respond with an error to calls with not supported term", async () => {
 		appSendGet(
 			"/api/analyzeLink/?term=https://www.deezer.com/en/artist/15166511"
 		)
@@ -17,7 +17,7 @@ describe("analyzeLink requests", () => {
 			});
 	});
 
-	it("should respond album analyzed data", async () => {
+	test("should respond album analyzed data", async () => {
 		appSendGet(
 			"/api/analyzeLink/?term=https://www.deezer.com/en/album/100896762"
 		).expect((res) => {
@@ -26,7 +26,7 @@ describe("analyzeLink requests", () => {
 		});
 	});
 
-	it("should respond track analyzed data", async () => {
+	test("should respond track analyzed data", async () => {
 		appSendGet(
 			"/api/analyzeLink/?term=https://www.deezer.com/en/track/1283264142"
 		).expect((res) => {

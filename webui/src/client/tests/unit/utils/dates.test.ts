@@ -2,11 +2,11 @@ import { checkNewRelease } from "../../../utils/dates";
 
 describe("date utils", () => {
 	describe("checkNewRelease", () => {
-		it("returns a positive result checking today's date", () => {
+		test("returns a positive result checking today's date", () => {
 			expect(checkNewRelease(new Date())).toBe(true);
 		});
 
-		it("returns a negative result checking a week ago's date", () => {
+		test("returns a negative result checking a week ago's date", () => {
 			const dateToCheck = new Date();
 			dateToCheck.setDate(dateToCheck.getDate() - 7);
 

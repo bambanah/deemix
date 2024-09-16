@@ -1,7 +1,7 @@
 import { appSendGet } from "@/tests/utils.js";
 
 describe("albumSearch requests", () => {
-	it("should respond 200 to calls with term", async () => {
+	test("should respond 200 to calls with term", async () => {
 		const batchCalls = [
 			"/api/album-search/?term=eminem",
 			"/api/album-search/?term=eminem?start=10",
@@ -15,7 +15,7 @@ describe("albumSearch requests", () => {
 		}
 	});
 
-	it("should respond 400 to calls without term", async () => {
+	test("should respond 400 to calls without term", async () => {
 		const batchCalls = [
 			"/api/album-search/",
 			"/api/album-search/?start=10",
@@ -29,7 +29,7 @@ describe("albumSearch requests", () => {
 		}
 	});
 
-	it("should respond the desired search result", async () => {
+	test("should respond the desired search result", async () => {
 		appSendGet("/api/album-search/?term=eminem")
 			.expect(200)
 			.expect((res) => {

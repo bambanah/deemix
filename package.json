@@ -16,7 +16,7 @@
 		"test": "turbo run test",
 		"package": "turbo run package",
 		"make": "turbo run make",
-		"ci": "turbo run lint type-check build",
+		"ci": "turbo run lint type-check build test",
 		"prepare": "husky"
 	},
 	"devDependencies": {
