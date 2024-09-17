@@ -97,17 +97,6 @@ export class Downloader {
 	}
 
 	async start() {
-		if (this.downloadObject.isCanceled) {
-			this.listener.send("currentItemCancelled", {
-				uuid: this.downloadObject.uuid,
-				title: this.downloadObject.title,
-			});
-			this.listener.send("removedFromQueue", {
-				uuid: this.downloadObject.uuid,
-				title: this.downloadObject.title,
-			});
-		}
-
 		if (this.downloadObject instanceof Single) {
 			const track = await this.downloadWrapper({
 				trackAPI: this.downloadObject.single.trackAPI,
@@ -141,6 +130,17 @@ export class Downloader {
 				await q.drain();
 			}
 			await this.afterDownloadCollection(tracks);
+		}
+
+		if (this.downloadObject.isCanceled) {
+			this.listener.send("currentItemCancelled", {
+				uuid: this.downloadObject.uuid,
+				title: this.downloadObject.title,
+			});
+			this.listener.send("removedFromQueue", {
+				uuid: this.downloadObject.uuid,
+				title: this.downloadObject.title,
+			});
 		}
 
 		this.listener.send("finishDownload", {
