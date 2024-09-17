@@ -26,6 +26,9 @@ importers:
       esbuild:
         specifier: ^0.23.1
         version: 0.23.1
+      globals:
+        specifier: ^15.9.0
+        version: 15.9.0
       husky:
         specifier: ^9.1.5
         version: 9.1.6
@@ -360,9 +363,6 @@ importers:
       genversion:
         specifier: ^3.2.0
         version: 3.2.0
-      globals:
-        specifier: ^15.9.0
-        version: 15.9.0
       nodemon:
         specifier: ^3.1.4
         version: 3.1.4
