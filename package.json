@@ -25,6 +25,7 @@
 		"@total-typescript/tsconfig": "^1.0.4",
 		"@types/node": "^20.16.3",
 		"esbuild": "^0.23.1",
+		"globals": "^15.9.0",
 		"husky": "^9.1.5",
 		"npm-run-all2": "^6.2.0",
 		"prettier": "^3.2.5",
