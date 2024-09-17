@@ -1,5 +1,11 @@
 # deemix-webui
 
+## 4.2.5
+
+### Patch Changes
+
+- a5dc8e6: Build docker image for arm64
+
 ## 4.2.4
 
 ### Patch Changes
