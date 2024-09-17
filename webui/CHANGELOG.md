@@ -1,5 +1,11 @@
 # deemix-webui
 
+## 4.2.4
+
+### Patch Changes
+
+- ba4e572: Fix cancelled item not being visually removed from queue
+
 ## 4.2.3
 
 ### Patch Changes

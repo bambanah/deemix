@@ -1,6 +1,6 @@
 {
 	"name": "deemix-gui",
-	"version": "0.2.12",
+	"version": "0.2.13",
 	"private": true,
 	"description": "A standalone electron app that wraps deemix-webui",
 	"main": "dist/main.js",

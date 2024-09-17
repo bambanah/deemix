@@ -1,5 +1,13 @@
 # deemix-gui
 
+## 0.2.13
+
+### Patch Changes
+
+- 2923635: Fix error with better-sqlite3 package crashing app
+- Updated dependencies [ba4e572]
+  - deemix-webui@4.2.4
+
 ## 0.2.12
 
 ### Patch Changes
