@@ -105,6 +105,7 @@ export class Downloader {
 			if (track) await this.afterDownloadSingle(track);
 		} else if (this.downloadObject instanceof Collection) {
 			const tracks = [];
+
 			const q = queue(
 				async (data: { track: APITrack; pos: number }, callback) => {
 					if (this.downloadObject instanceof Collection) {
@@ -115,6 +116,7 @@ export class Downloader {
 							playlistAPI: this.downloadObject.collection.playlistAPI,
 						});
 					}
+
 					callback();
 				},
 				this.settings.queueConcurrency
@@ -195,6 +197,11 @@ export class Downloader {
 			}
 			throw e;
 		}
+
+		if (this.downloadObject.isCanceled) throw new DownloadCanceled();
+
+		// Check if the track is encoded
+		if (track.MD5 === 0) throw new DownloadFailed("notEncoded", track);
 
 		// Check the target bitrate
 		let selectedFormat;
@@ -280,11 +287,6 @@ export class Downloader {
 			this.downloadObject.downloaded += 1;
 			return returnData;
 		}
-
-		if (this.downloadObject.isCanceled) throw new DownloadCanceled();
-
-		// Check if the track is encoded
-		if (track.MD5 === 0) throw new DownloadFailed("notEncoded", track);
 
 		// Apply Settings
 		track.applySettings(this.settings);
