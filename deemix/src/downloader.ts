@@ -105,7 +105,6 @@ export class Downloader {
 			if (track) await this.afterDownloadSingle(track);
 		} else if (this.downloadObject instanceof Collection) {
 			const tracks = [];
-
 			const q = queue(
 				async (data: { track: APITrack; pos: number }, callback) => {
 					if (this.downloadObject instanceof Collection) {
@@ -116,7 +115,6 @@ export class Downloader {
 							playlistAPI: this.downloadObject.collection.playlistAPI,
 						});
 					}
-
 					callback();
 				},
 				this.settings.queueConcurrency
@@ -179,6 +177,56 @@ export class Downloader {
 			}
 		}
 
+		// Enrich track with additional data
+		try {
+			await track.parseData(
+				this.dz,
+				trackAPI.id,
+				trackAPI,
+				albumAPI,
+				playlistAPI
+			);
+		} catch (e) {
+			if (e.name === "AlbumDoesntExists") {
+				throw new DownloadFailed("albumDoesntExists");
+			}
+			if (e.name === "MD5NotFound") {
+				throw new DownloadFailed("notLoggedIn");
+			}
+			throw e;
+		}
+
+		// Check the target bitrate
+		let selectedFormat;
+		try {
+			selectedFormat = await getPreferredBitrate(
+				this.dz,
+				track,
+				this.bitrate,
+				this.settings.fallbackBitrate,
+				this.settings.feelingLucky,
+				this.downloadObject.uuid,
+				this.listener
+			);
+		} catch (e) {
+			if (e.name === "WrongLicense") {
+				throw new DownloadFailed("wrongLicense");
+			}
+			if (e.name === "WrongGeolocation") {
+				throw new DownloadFailed("wrongGeolocation", track);
+			}
+			if (e.name === "PreferredBitrateNotFound") {
+				throw new DownloadFailed("wrongBitrate", track);
+			}
+			if (e.name === "TrackNot360") {
+				throw new DownloadFailed("no360RA");
+			}
+			console.error(e);
+			throw e;
+		}
+		track.bitrate = selectedFormat;
+		track.album.bitrate = selectedFormat;
+
 		const { filename, filepath, artistPath, coverPath, extrasPath } =
 			generatePath(track, this.downloadObject.type, this.settings);
 
@@ -233,60 +281,10 @@ export class Downloader {
 			return returnData;
 		}
 
-		// Enrich track with additional data
-		try {
-			await track.parseData(
-				this.dz,
-				trackAPI.id,
-				trackAPI,
-				albumAPI,
-				playlistAPI
-			);
-		} catch (e) {
-			if (e.name === "AlbumDoesntExists") {
-				throw new DownloadFailed("albumDoesntExists");
-			}
-			if (e.name === "MD5NotFound") {
-				throw new DownloadFailed("notLoggedIn");
-			}
-			throw e;
-		}
-
 		if (this.downloadObject.isCanceled) throw new DownloadCanceled();
 
 		// Check if the track is encoded
 		if (track.MD5 === 0) throw new DownloadFailed("notEncoded", track);
-
-		// Check the target bitrate
-		let selectedFormat;
-		try {
-			selectedFormat = await getPreferredBitrate(
-				this.dz,
-				track,
-				this.bitrate,
-				this.settings.fallbackBitrate,
-				this.settings.feelingLucky,
-				this.downloadObject.uuid,
-				this.listener
-			);
-		} catch (e) {
-			if (e.name === "WrongLicense") {
-				throw new DownloadFailed("wrongLicense");
-			}
-			if (e.name === "WrongGeolocation") {
-				throw new DownloadFailed("wrongGeolocation", track);
-			}
-			if (e.name === "PreferredBitrateNotFound") {
-				throw new DownloadFailed("wrongBitrate", track);
-			}
-			if (e.name === "TrackNot360") {
-				throw new DownloadFailed("no360RA");
-			}
-			console.error(e);
-			throw e;
-		}
-		track.bitrate = selectedFormat;
-		track.album.bitrate = selectedFormat;
 
 		// Apply Settings
 		track.applySettings(this.settings);
