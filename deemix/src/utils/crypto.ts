@@ -1,10 +1,18 @@
-import Blowfish from "blowfish-node";
 import {
 	createCipheriv,
 	createHash,
 	createDecipheriv,
 	getCiphers,
 } from "crypto";
+
+let Blowfish;
+
+try {
+	// eslint-disable-next-line @typescript-eslint/no-require-imports
+	Blowfish = require("./blowfish.cjs");
+} catch (e) {
+	console.error(e);
+}
 
 export function _md5(data, type: BufferEncoding = "binary") {
 	const md5sum = createHash("md5");
@@ -60,7 +68,6 @@ export function decryptChunk(chunk, blowFishKey) {
 		return Buffer.concat([cipher.update(chunk), cipher.final()]);
 	}
 	if (Blowfish) {
-		// @ts-expect-error TODO: figure out why this is not working
 		const cipher = new Blowfish(
 			blowFishKey,
 			Blowfish.MODE.CBC,
