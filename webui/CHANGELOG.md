@@ -1,5 +1,13 @@
 # deemix-webui
 
+## 4.2.6
+
+### Patch Changes
+
+- Updated dependencies [6d90884]
+- Updated dependencies [891f179]
+  - deemix@3.12.0
+
 ## 4.2.5
 
 ### Patch Changes
