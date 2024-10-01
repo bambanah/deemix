@@ -1,5 +1,11 @@
 # deemix
 
+## 3.12.0
+
+### Minor Changes
+
+- 891f179: Fix blowfish library causing downloaded tracks to have inconsistent playback speed
+
 ## 3.11.2
 
 ### Patch Changes
