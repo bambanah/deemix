@@ -1,14 +1,19 @@
 import Blowfish from "blowfish-node";
-import crypto from "crypto";
+import {
+	createCipheriv,
+	createHash,
+	createDecipheriv,
+	getCiphers,
+} from "crypto";
 
 export function _md5(data, type: BufferEncoding = "binary") {
-	const md5sum = crypto.createHash("md5");
+	const md5sum = createHash("md5");
 	md5sum.update(Buffer.from(data, type));
 	return md5sum.digest("hex");
 }
 
 export function _ecbCrypt(key, data) {
-	const cipher = crypto.createCipheriv(
+	const cipher = createCipheriv(
 		"aes-128-ecb",
 		Buffer.from(key),
 		Buffer.from("")
@@ -20,7 +25,7 @@ export function _ecbCrypt(key, data) {
 }
 
 export function _ecbDecrypt(key, data) {
-	const cipher = crypto.createDecipheriv(
+	const cipher = createDecipheriv(
 		"aes-128-ecb",
 		Buffer.from(key),
 		Buffer.from("")
@@ -44,9 +49,9 @@ export function generateBlowfishKey(trackId) {
 }
 
 export function decryptChunk(chunk, blowFishKey) {
-	const ciphers = crypto.getCiphers();
+	const ciphers = getCiphers();
 	if (ciphers.includes("bf-cbc")) {
-		const cipher = crypto.createDecipheriv(
+		const cipher = createDecipheriv(
 			"bf-cbc",
 			blowFishKey,
 			Buffer.from([0, 1, 2, 3, 4, 5, 6, 7])
