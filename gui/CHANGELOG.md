@@ -1,5 +1,11 @@
 # deemix-gui
 
+## 0.2.15
+
+### Patch Changes
+
+- deemix-webui@4.2.6
+
 ## 0.2.14
 
 ### Patch Changes
