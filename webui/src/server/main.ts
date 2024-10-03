@@ -3,7 +3,7 @@ import { logger, removeOldLogs } from "@/helpers/logger.js";
 import { loadLoginCredentials } from "@/helpers/loginStorage.js";
 import cookieParser from "cookie-parser";
 import { utils, type Listener } from "deemix";
-import express, {type Express} from "express";
+import express, { type Express } from "express";
 import session from "express-session";
 import memorystore from "memorystore";
 import morgan from "morgan";

@@ -3,3 +3,4 @@ packages:
   - "deemix"
   - "deezer-sdk"
   - "gui"
+  - "cli"
