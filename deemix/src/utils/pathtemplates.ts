@@ -50,17 +50,21 @@ export function antiDot(str: string) {
 	return str;
 }
 
-export function pad(num, max_val, settings: Settings) {
-	let paddingSize;
-	if (parseInt(settings.paddingSize) === 0) {
-		paddingSize = (max_val + "").length;
-	} else {
-		paddingSize = (10 ** (parseInt(settings.paddingSize) - 1) + "").length;
-	}
+export function pad(
+	num: number,
+	maxVal: number,
+	settings: Pick<Settings, "paddingSize" | "padTracks" | "padSingleDigit">
+) {
+	if (!settings.padTracks) return num + "";
+
+	let paddingSize =
+		settings.paddingSize === 0
+			? maxVal.toString().length
+			: settings.paddingSize;
+
 	if (settings.padSingleDigit && paddingSize === 1) paddingSize = 2;
 
-	if (settings.padTracks) return (num + "").padStart(paddingSize, "0");
-	return num + "";
+	return (num + "").padStart(paddingSize, "0");
 }
 
 const shouldCreatePlaylistFolder = (track: Track, settings: Settings) => {
@@ -275,7 +279,7 @@ export function generateTrackName(
 			"%position%",
 			pad(track.position, track.playlist.trackTotal, settings)
 		);
-	} else {
+	} else if (track.album) {
 		filename = filename.replaceAll("%playlist_id%", "");
 		if (track.album) {
 			filename = filename.replaceAll(

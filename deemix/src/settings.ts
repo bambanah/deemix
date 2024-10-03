@@ -37,7 +37,7 @@ export const DEFAULTS: Settings = {
 	createSingleFolder: false,
 	padTracks: true,
 	padSingleDigit: true,
-	paddingSize: "0",
+	paddingSize: 0,
 	illegalCharacterReplacer: "_",
 	queueConcurrency: 10,
 	maxBitrate: String(TrackFormats.MP3_128),

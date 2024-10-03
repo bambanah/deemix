@@ -57,7 +57,7 @@ export interface Settings {
 	createStructurePlaylist?: boolean;
 	createSingleFolder?: boolean;
 	padTracks?: boolean;
-	paddingSize?: string;
+	paddingSize?: number;
 	illegalCharacterReplacer?: string;
 	queueConcurrency?: number;
 	maxBitrate?: string;
