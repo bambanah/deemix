@@ -14,7 +14,7 @@ import {
 	type Settings,
 	type SpotifySettings,
 } from "deemix";
-import type { DownloadObject } from "deemix/dist/download-objects/DownloadObject.js";
+import type { DownloadObject } from "deemix";
 import { Deezer, setDeezerCacheDir } from "deezer-sdk";
 import fs from "fs";
 import got, { type Response as GotResponse } from "got";

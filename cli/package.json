@@ -1,0 +1,27 @@
+{
+	"name": "deemix-cli",
+	"version": "0.0.0",
+	"private": true,
+	"description": "A CLI wrapper for deemix",
+	"type": "module",
+	"scripts": {
+		"start": "tsx src/main.ts",
+		"build": "tsup src/main.ts --dts --format esm --clean",
+		"lint": "eslint .",
+		"type-check": "tsc --noEmit"
+	},
+	"dependencies": {
+		"commander": "^12.1.0",
+		"deemix": "workspace:*",
+		"deezer-sdk": "workspace:*"
+	},
+	"devDependencies": {
+		"tsup": "^8.2.4",
+		"tsx": "^4.19.1",
+		"@eslint/js": "^9.10.0",
+		"@typescript-eslint/parser": "~8.1.0",
+		"eslint": "~9.9.0",
+		"eslint-config-prettier": "^9.1.0",
+		"typescript-eslint": "8.3.0"
+	}
+}

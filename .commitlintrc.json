@@ -6,7 +6,7 @@
 		"scope-enum": [
 			2,
 			"always",
-			["deezer-sdk", "deemix", "webui", "gui", "repo"]
+			["deezer-sdk", "deemix", "cli", "webui", "gui", "repo"]
 		]
 	}
 }
