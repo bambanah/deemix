@@ -1,0 +1,45 @@
+name: Build and Publish CLI
+
+on:
+  push:
+    tags:
+      - deemix-cli@*
+  pull_request:
+    branches:
+      - main
+    paths:
+      - cli/CHANGELOG.md
+      - .github/workflows/build-release-cli.yml
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+env:
+  HUSKY: 0
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+
+jobs:
+  build-release-cli:
+    runs-on: macos-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm compile:cli
+
+      - name: Upload Artifacts
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            cli/out/deemix-cli-*

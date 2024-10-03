@@ -22,6 +22,10 @@
 		"make": {
 			"dependsOn": ["build", "^build"],
 			"outputs": ["dist/**", "out/**"]
+		},
+		"compile": {
+			"dependsOn": ["build", "^build"],
+			"outputs": ["dist/**", "out/**"]
 		}
 	}
 }
