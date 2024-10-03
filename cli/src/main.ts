@@ -43,4 +43,4 @@ console.log(
 
 const dz = new Deezer();
 
-console.log(dz.loggedIn);
+console.log("Logged in:", dz.loggedIn);
