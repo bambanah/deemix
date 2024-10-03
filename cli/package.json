@@ -3,25 +3,34 @@
 	"version": "0.0.0",
 	"private": true,
 	"description": "A CLI wrapper for deemix",
+	"main": "dist/main.cjs",
 	"type": "module",
+	"bin": {
+		"deemix": "dist/main.cjs"
+	},
 	"scripts": {
 		"start": "tsx src/main.ts",
-		"build": "tsup src/main.ts --dts --format esm --clean",
+		"build": "tsup src/main.ts --format cjs",
+		"compile": "pkg . --out-path out",
 		"lint": "eslint .",
 		"type-check": "tsc --noEmit"
 	},
-	"dependencies": {
-		"commander": "^12.1.0",
-		"deemix": "workspace:*",
-		"deezer-sdk": "workspace:*"
+	"pkg": {
+		"targets": [
+			"node20-macos-x64",
+			"node20-macos-arm64",
+			"node20-linux-x64",
+			"node20-linux-arm64",
+			"node20-win-x64",
+			"node20-win-arm64"
+		]
 	},
 	"devDependencies": {
+		"@yao-pkg/pkg": "^5.15.0",
+		"commander": "^12.1.0",
+		"deemix": "workspace:*",
+		"deezer-sdk": "workspace:*",
 		"tsup": "^8.2.4",
-		"tsx": "^4.19.1",
-		"@eslint/js": "^9.10.0",
-		"@typescript-eslint/parser": "~8.1.0",
-		"eslint": "~9.9.0",
-		"eslint-config-prettier": "^9.1.0",
-		"typescript-eslint": "8.3.0"
+		"tsx": "^4.19.1"
 	}
 }
