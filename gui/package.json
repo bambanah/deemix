@@ -29,8 +29,7 @@
 		"electron": "32.0.2",
 		"esbuild": "^0.23.1",
 		"node-gyp": "^10.2.0",
-		"tsup": "^8.2.4",
-		"typescript": "~5.6.2"
+		"tsup": "^8.2.4"
 	},
 	"dependencies": {
 		"better-sqlite3": "^11.3.0",
