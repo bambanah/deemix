@@ -173,6 +173,11 @@ function handleMainSearch(newValue) {
 	state.results.allTab.ARTIST.hasLoaded = true;
 	state.results.allTab.PLAYLIST.hasLoaded = true;
 
+	state.results.trackTab = newValue.TRACK;
+	state.results.albumTab = newValue.ALBUM;
+	state.results.artistTab = newValue.ARTIST;
+	state.results.playlistTab = newValue.PLAYLIST;
+
 	if (lastTab.value && lastTab.value.searchType !== "all") {
 		state.currentTab = lastTab.value;
 

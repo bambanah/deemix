@@ -62,7 +62,7 @@ function showAlbum(data) {
 		artist: { name: artistName },
 		tracks: albumTracks,
 		nb_tracks: numberOfTracks,
-		release_date,
+		release_date: albumReleaseDate,
 		cover_xl,
 	} = data;
 
@@ -75,7 +75,7 @@ function showAlbum(data) {
 		"globals.listTabs.trackN",
 		numberOfTracks
 	)}`;
-	release_date.value = release_date.substring(0, 10);
+	release_date.value = albumReleaseDate.substring(0, 10);
 	image.value = cover_xl;
 
 	if (isEmpty(albumTracks)) {
