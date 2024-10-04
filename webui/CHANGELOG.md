@@ -1,5 +1,14 @@
 # deemix-webui
 
+## 4.2.7
+
+### Patch Changes
+
+- 5f610aa: Minor fixes to ensure search views load as expected
+- Updated dependencies [5f610aa]
+  - deezer-sdk@1.9.0
+  - deemix@3.12.1
+
 ## 4.2.6
 
 ### Patch Changes
