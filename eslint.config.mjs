@@ -1,3 +1,4 @@
+// @ts-check
 import eslint from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
 import pluginVue from "eslint-plugin-vue";
@@ -9,26 +10,8 @@ const extraFileExtensions = [".vue"];
 export default tslint.config(
 	eslint.configs.recommended,
 	...tslint.configs.recommended,
-	// @ts-expect-error
+	// @ts-expect-error Fix your plugin
 	...pluginVue.configs["flat/recommended"],
-	{
-		files: ["**/*.ts"],
-		languageOptions: {
-			parserOptions: {
-				parser: tslint.parser,
-				extraFileExtensions,
-			},
-		},
-	},
-	{
-		files: ["**/*.vue"],
-		languageOptions: {
-			parserOptions: {
-				parser: tslint.parser,
-				extraFileExtensions,
-			},
-		},
-	},
 	{
 		languageOptions: {
 			globals: {
@@ -36,6 +19,18 @@ export default tslint.config(
 				...globals.node,
 			},
 		},
+	},
+	{
+		files: ["**/*.ts", "**/*.vue"],
+		languageOptions: {
+			parserOptions: {
+				parser: tslint.parser,
+				extraFileExtensions,
+			},
+		},
+	},
+	{
+		files: ["webui/**/*"],
 		rules: {
 			"vue/no-v-html": "off",
 			"vue/require-explicit-emits": "off",
@@ -45,6 +40,13 @@ export default tslint.config(
 			"no-console": ["error", { allow: ["warn", "error", "trace"] }],
 		},
 	},
-	{ ignores: ["node_modules/", "dist/"] },
+	{
+		files: ["deemix/**/*", "deezer-sdk/**/*"],
+		rules: {
+			"@typescript-eslint/no-explicit-any": "off",
+			"no-console": ["error", { allow: ["warn", "error", "trace"] }],
+		},
+	},
+	{ ignores: ["**/node_modules/", "**/dist/"] },
 	eslintConfigPrettier
 );
