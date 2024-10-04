@@ -12,6 +12,7 @@
 		"start": "tsx src/main.ts",
 		"build": "tsup src/main.ts --format cjs",
 		"compile": "pkg . --out-path out",
+		"test": "vitest run",
 		"lint": "eslint .",
 		"type-check": "tsc --noEmit"
 	},

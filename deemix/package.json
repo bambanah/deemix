@@ -33,7 +33,6 @@
 	"devDependencies": {
 		"@types/async": "^3.2.24",
 		"tsup": "^8.2.4",
-		"vite-tsconfig-paths": "^5.0.1",
-		"vitest": "^2.0.5"
+		"vite-tsconfig-paths": "^5.0.1"
 	}
 }
