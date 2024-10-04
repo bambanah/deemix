@@ -1,5 +1,11 @@
 # deezer-sdk
 
+## 1.9.0
+
+### Minor Changes
+
+- 5f610aa: Fix caching to allow search pagination to work properly
+
 ## 1.8.1
 
 ### Patch Changes
