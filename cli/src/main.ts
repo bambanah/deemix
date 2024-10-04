@@ -1,10 +1,12 @@
 import { Command } from "commander";
-import { settings, utils } from "deemix";
-import { Deezer } from "deezer-sdk";
+import { loadSettings, SpotifyPlugin, utils } from "deemix";
+import { Deezer, setDeezerCacheDir } from "deezer-sdk";
 import path from "path";
 import packageJson from "../package.json" with { type: "json" };
+import { parseBitrate } from "./bitrate";
+import { downloadLinks } from "./download";
+import { deezerLogin } from "./login";
 
-const { load: loadSettings } = settings;
 const { getConfigFolder } = utils;
 
 const program = new Command();
@@ -22,7 +24,7 @@ program
 	)
 	.parse();
 
-const { path: downloadPath, bitrate, portable } = program.opts();
+const { portable } = program.opts();
 
 let configFolder: string;
 
@@ -31,16 +33,29 @@ if (portable) {
 } else {
 	configFolder = getConfigFolder();
 }
+setDeezerCacheDir(configFolder);
 
-const loadedSettings = loadSettings(configFolder);
+const settings = loadSettings(configFolder);
 
-console.log(
-	loadedSettings.downloadLocation,
-	downloadPath,
-	loadedSettings.maxBitrate,
-	bitrate
-);
+const spotifyPlugin = new SpotifyPlugin(configFolder);
+spotifyPlugin.setup();
 
-const dz = new Deezer();
+const { path: downloadPath, bitrate } = program.opts();
 
-console.log("Logged in:", dz.loggedIn);
+if (downloadPath) settings.downloadLocation = path.resolve(downloadPath);
+if (bitrate) parseBitrate(settings, bitrate);
+
+const loginAndDownload = async () => {
+	const dz = new Deezer();
+	const loggedIn = await deezerLogin(dz, configFolder);
+
+	if (loggedIn) {
+		const urls = program.args;
+
+		await downloadLinks(dz, urls, settings, spotifyPlugin);
+	} else {
+		console.error("Not logged in");
+	}
+};
+
+loginAndDownload();

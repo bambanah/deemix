@@ -21,7 +21,7 @@ export const FeaturesOption = {
 	MOVE_TITLE: "2", // Move to track title
 };
 
-export const DEFAULTS: Settings = {
+export const DEFAULT_SETTINGS: Settings = {
 	downloadLocation: getMusicFolder(),
 	tracknameTemplate: "%artist% - %title%",
 	albumTracknameTemplate: "%tracknumber% - %title%",
@@ -40,7 +40,7 @@ export const DEFAULTS: Settings = {
 	paddingSize: 0,
 	illegalCharacterReplacer: "_",
 	queueConcurrency: 10,
-	maxBitrate: String(TrackFormats.MP3_128),
+	maxBitrate: TrackFormats.MP3_128,
 	feelingLucky: false,
 	fallbackBitrate: false,
 	fallbackSearch: false,
@@ -105,7 +105,7 @@ export const DEFAULTS: Settings = {
 	},
 };
 
-export function save(settings: Settings, configFolder) {
+export function saveSettings(settings: Settings, configFolder) {
 	configFolder = configFolder || getConfigFolder();
 	if (!fs.existsSync(configFolder)) fs.mkdirSync(configFolder);
 
@@ -115,12 +115,12 @@ export function save(settings: Settings, configFolder) {
 	);
 }
 
-export function load(configFolder: string) {
+export function loadSettings(configFolder: string) {
 	configFolder = configFolder || getConfigFolder();
 	if (!fs.existsSync(configFolder)) fs.mkdirSync(configFolder);
 
 	if (!fs.existsSync(configFolder + "config.json"))
-		save(DEFAULTS, configFolder);
+		saveSettings(DEFAULT_SETTINGS, configFolder);
 
 	let settings: Settings;
 	try {
@@ -128,35 +128,35 @@ export function load(configFolder: string) {
 			fs.readFileSync(configFolder + "config.json").toString()
 		);
 	} catch (e) {
-		if (e.name === "SyntaxError") save(DEFAULTS, configFolder);
-		settings = JSON.parse(JSON.stringify(DEFAULTS));
+		if (e.name === "SyntaxError") saveSettings(DEFAULT_SETTINGS, configFolder);
+		settings = JSON.parse(JSON.stringify(DEFAULT_SETTINGS));
 	}
-	if (check(settings) > 0) save(settings, configFolder);
+	if (check(settings) > 0) saveSettings(settings, configFolder);
 	return settings;
 }
 
 function check(settings: Settings) {
 	let changes = 0;
-	Object.keys(DEFAULTS).forEach((_iSet) => {
+	Object.keys(DEFAULT_SETTINGS).forEach((_iSet) => {
 		if (
 			settings[_iSet] === undefined ||
-			typeof settings[_iSet] !== typeof DEFAULTS[_iSet]
+			typeof settings[_iSet] !== typeof DEFAULT_SETTINGS[_iSet]
 		) {
-			settings[_iSet] = DEFAULTS[_iSet];
+			settings[_iSet] = DEFAULT_SETTINGS[_iSet];
 			changes++;
 		}
 	});
-	Object.keys(DEFAULTS.tags).forEach((_iSet) => {
+	Object.keys(DEFAULT_SETTINGS.tags).forEach((_iSet) => {
 		if (
 			settings.tags[_iSet] === undefined ||
-			typeof settings.tags[_iSet] !== typeof DEFAULTS.tags[_iSet]
+			typeof settings.tags[_iSet] !== typeof DEFAULT_SETTINGS.tags[_iSet]
 		) {
-			settings.tags[_iSet] = DEFAULTS.tags[_iSet];
+			settings.tags[_iSet] = DEFAULT_SETTINGS.tags[_iSet];
 			changes++;
 		}
 	});
 	if (settings.downloadLocation === "") {
-		settings.downloadLocation = DEFAULTS.downloadLocation;
+		settings.downloadLocation = DEFAULT_SETTINGS.downloadLocation;
 		changes++;
 	}
 	[
@@ -172,7 +172,7 @@ function check(settings: Settings) {
 		"paddingSize",
 	].forEach((template) => {
 		if (settings[template] === "") {
-			settings[template] = DEFAULTS[template];
+			settings[template] = DEFAULT_SETTINGS[template];
 			changes++;
 		}
 	});
