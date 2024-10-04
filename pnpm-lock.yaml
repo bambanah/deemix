@@ -23,6 +23,9 @@ importers:
       '@total-typescript/tsconfig':
         specifier: ^1.0.4
         version: 1.0.4
+      '@types/eslint-config-prettier':
+        specifier: ^6.11.3
+        version: 6.11.3
       '@types/eslint__js':
         specifier: ^8.42.3
         version: 8.42.3
@@ -41,6 +44,9 @@ importers:
       eslint-config-prettier:
         specifier: ^9.1.0
         version: 9.1.0(eslint@9.11.1(jiti@1.21.6))
+      eslint-plugin-vue:
+        specifier: ^9.28.0
+        version: 9.28.0(eslint@9.11.1(jiti@1.21.6))
       globals:
         specifier: ^15.9.0
         version: 15.9.0
@@ -71,6 +77,9 @@ importers:
       typescript-eslint:
         specifier: 8.3.0
         version: 8.3.0(eslint@9.11.1(jiti@1.21.6))(typescript@5.5.4)
+      vitest:
+        specifier: ^2.0.5
+        version: 2.0.5(@types/node@20.16.5)
 
   cli:
     dependencies:
@@ -133,9 +142,6 @@ importers:
       vite-tsconfig-paths:
         specifier: ^5.0.1
         version: 5.0.1(typescript@5.6.2)(vite@5.4.4(@types/node@20.16.5))
-      vitest:
-        specifier: ^2.0.5
-        version: 2.0.5(@types/node@20.16.5)
 
   deezer-sdk:
     dependencies:
@@ -164,9 +170,6 @@ importers:
       tsup:
         specifier: ^8.2.4
         version: 8.2.4(jiti@1.21.6)(postcss@8.4.45)(tsx@4.19.1)(typescript@5.6.2)(yaml@2.5.1)
-      vitest:
-        specifier: ^2.0.5
-        version: 2.0.5(@types/node@20.16.5)
 
   gui:
     dependencies:
@@ -349,9 +352,6 @@ importers:
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
-      eslint-plugin-vue:
-        specifier: ^9.28.0
-        version: 9.28.0(eslint@9.11.1(jiti@1.21.6))
       genversion:
         specifier: ^3.2.0
         version: 3.2.0
@@ -382,9 +382,6 @@ importers:
       vite-tsconfig-paths:
         specifier: ^5.0.1
         version: 5.0.1(typescript@5.6.2)(vite@5.4.4(@types/node@20.16.5))
-      vitest:
-        specifier: ^2.0.5
-        version: 2.0.5(@types/node@20.16.5)
       vue-tsc:
         specifier: ^2.1.6
         version: 2.1.6(typescript@5.6.2)
@@ -1238,6 +1235,9 @@ packages:
 
   '@types/cookiejar@2.1.5':
     resolution: {integrity: sha512-he+DHOWReW0nghN24E1WUqM0efK4kI9oTqDm6XmK8ZPe2djZ90BSNdGnIyCLzCPw7/pogPlGbzI2wHGGmi4O/Q==}
+
+  '@types/eslint-config-prettier@6.11.3':
+    resolution: {integrity: sha512-3wXCiM8croUnhg9LdtZUJQwNcQYGWxxdOWDjPe1ykCqJFPVpzAKfs/2dgSoCtAvdPeaponcWPI7mPcGGp9dkKQ==}
 
   '@types/eslint@9.6.1':
     resolution: {integrity: sha512-FXx2pKgId/WyYo2jXw63kk7/+TY7u7AziEJxJAnSFzHlqTAS3Ync6SvgYAN/k4/PQpnnVuzoMuVnByKK2qp0ag==}
@@ -6308,6 +6308,8 @@ snapshots:
       '@types/express': 4.17.21
 
   '@types/cookiejar@2.1.5': {}
+
+  '@types/eslint-config-prettier@6.11.3': {}
 
   '@types/eslint@9.6.1':
     dependencies:
