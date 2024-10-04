@@ -36,6 +36,7 @@ export class API {
 				sqliteStore({
 					sqliteFile: join($cacheDir.value, "cache.db"),
 					cacheTableName: "deezer_api",
+					ttl: 60000,
 				})
 			);
 		}
@@ -43,8 +44,9 @@ export class API {
 
 	async call(endpoint: string, args: APIArgs = {}): Promise<unknown> {
 		if (this.access_token) args["access_token"] = this.access_token;
-
-		const cachedResponse = await this.cache?.get<string>(endpoint);
+		
+		const cacheKey = endpoint + ":" + JSON.stringify(args);
+		const cachedResponse = await this.cache?.get<string>(cacheKey);
 		if (cachedResponse) {
 			return JSON.parse(cachedResponse);
 		}
@@ -126,7 +128,7 @@ export class API {
 			throw new APIError(response.error);
 		}
 
-		this.cache?.set(endpoint, JSON.stringify(response));
+		this.cache?.set(cacheKey, JSON.stringify(response));
 
 		return response;
 	}
