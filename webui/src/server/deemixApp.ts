@@ -4,17 +4,19 @@ import { GUI_VERSION, WEBUI_PACKAGE_VERSION } from "@/helpers/versions.js";
 import {
 	Collection,
 	Convertable,
+	DEFAULT_SETTINGS,
 	Downloader,
 	generateDownloadObject,
-	settings,
+	loadSettings,
+	saveSettings,
 	Single,
 	SpotifyPlugin,
 	utils,
+	type DownloadObject,
 	type Listener,
 	type Settings,
 	type SpotifySettings,
 } from "deemix";
-import type { DownloadObject } from "deemix";
 import { Deezer, setDeezerCacheDir } from "deezer-sdk";
 import fs from "fs";
 import got, { type Response as GotResponse } from "got";
@@ -28,7 +30,7 @@ export const getArlFromAccessToken = utils.getDeezerArlFromAccessToken;
 // Constants
 export const configFolder: string = utils.getConfigFolder();
 setDeezerCacheDir(configFolder);
-export const defaultSettings: Settings = settings.DEFAULTS;
+export const defaultSettings: Settings = DEFAULT_SETTINGS;
 
 export const sessionDZ: Record<string, Deezer> = {};
 
@@ -48,7 +50,7 @@ export class DeemixApp {
 	listener: Listener;
 
 	constructor(listener: Listener) {
-		this.settings = settings.load(configFolder);
+		this.settings = loadSettings(configFolder);
 
 		this.queueOrder = [];
 		this.queue = {};
@@ -156,7 +158,7 @@ export class DeemixApp {
 
 	saveSettings(newSettings: Settings, newSpotifySettings: SpotifySettings) {
 		newSettings.executeCommand = this.settings.executeCommand;
-		settings.save(newSettings, configFolder);
+		saveSettings(newSettings, configFolder);
 		this.settings = newSettings;
 		this.plugins.spotify.saveSettings(newSpotifySettings);
 	}

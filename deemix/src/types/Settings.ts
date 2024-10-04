@@ -60,7 +60,7 @@ export interface Settings {
 	paddingSize?: number;
 	illegalCharacterReplacer?: string;
 	queueConcurrency?: number;
-	maxBitrate?: string;
+	maxBitrate?: number;
 	fallbackBitrate?: boolean;
 	fallbackSearch?: boolean;
 	logErrors?: boolean;

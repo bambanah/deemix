@@ -73,6 +73,10 @@ importers:
         version: 8.3.0(eslint@9.11.1(jiti@1.21.6))(typescript@5.5.4)
 
   cli:
+    dependencies:
+      better-sqlite3:
+        specifier: ^11.3.0
+        version: 11.3.0
     devDependencies:
       '@yao-pkg/pkg':
         specifier: ^5.15.0

@@ -25,6 +25,9 @@
 			"node20-win-arm64"
 		]
 	},
+	"dependencies": {
+		"better-sqlite3": "^11.3.0"
+	},
 	"devDependencies": {
 		"@yao-pkg/pkg": "^5.15.0",
 		"commander": "^12.1.0",

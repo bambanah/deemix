@@ -15,7 +15,7 @@ import { Collection } from "./download-objects/Collection.js";
 import { DownloadObject } from "./download-objects/DownloadObject.js";
 import { Single } from "./download-objects/Single.js";
 import { DownloadCanceled, DownloadFailed, ErrorMessages } from "./errors.js";
-import { DEFAULTS, OverwriteOption } from "./settings.js";
+import { DEFAULT_SETTINGS, OverwriteOption } from "./settings.js";
 import { Album } from "./types/Album.js";
 import type { Listener } from "./types/listener.js";
 import { StaticPicture } from "./types/Picture.js";
@@ -67,7 +67,7 @@ export class Downloader {
 	) {
 		this.dz = dz;
 		this.downloadObject = downloadObject;
-		this.settings = settings || DEFAULTS;
+		this.settings = settings || DEFAULT_SETTINGS;
 		this.bitrate = downloadObject.bitrate;
 		this.listener = listener;
 
