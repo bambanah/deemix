@@ -17,8 +17,6 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env:
   HUSKY: 0
-  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   PLATFORMS: linux/amd64,linux/arm64
@@ -70,5 +68,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            TURBO_TOKEN=${{ env.TURBO_TOKEN }}
-            TURBO_TEAM=${{ env.TURBO_TEAM }}
+            TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
+            TURBO_TEAM=${{ vars.TURBO_TEAM }}
