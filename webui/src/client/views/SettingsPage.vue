@@ -942,7 +942,7 @@ function canDownload(bitrate: number) {
 				<p class="input-group-text">
 					{{ t("settings.downloads.maxBitrate.title") }}
 				</p>
-				<select v-model="settings.maxBitrate">
+				<select v-model.number="settings.maxBitrate">
 					<option value="9" :disabled="!canDownload(9)">
 						{{ t("settings.downloads.maxBitrate.9") }}
 					</option>
