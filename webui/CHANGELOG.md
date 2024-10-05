@@ -1,5 +1,11 @@
 # deemix-webui
 
+## 4.2.8
+
+### Patch Changes
+
+- 70351dd: Fix settings page to properly save bitrate
+
 ## 4.2.7
 
 ### Patch Changes
