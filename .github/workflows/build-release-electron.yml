@@ -52,6 +52,7 @@ jobs:
         run: echo "PYTHON=$(which python)" >> $GITHUB_ENV
 
       - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter=deemix-gui exec pnpm electron-rebuild
 
       - run: pnpm make
 
