@@ -1,5 +1,11 @@
 # deemix-gui
 
+## 0.3.0
+
+### Minor Changes
+
+- ae165de: Fix error with better-sqlite package not being found
+
 ## 0.2.17
 
 ### Patch Changes
