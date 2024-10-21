@@ -22,8 +22,10 @@ Note: The app is not signed (because it's crazy expensive), so you'll need to di
 #### For MacOS
 
 ```bash
-xattr -d com.apple.quarantine /path/to/deemix.app
+xattr -d com.apple.quarantine /Applications/deemix.app
 ```
+
+Modify path if installed to a different locaiton
 
 ### Docker Image
 
