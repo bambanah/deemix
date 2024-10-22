@@ -84,8 +84,8 @@ importers:
   cli:
     dependencies:
       better-sqlite3:
-        specifier: ^11.3.0
-        version: 11.3.0
+        specifier: ^11.4.0
+        version: 11.4.0
     devDependencies:
       '@yao-pkg/pkg':
         specifier: ^5.15.0
@@ -147,7 +147,7 @@ importers:
     dependencies:
       '@resolid/cache-manager-sqlite':
         specifier: ^5.1.6
-        version: 5.1.6(better-sqlite3@11.3.0)(cache-manager@5.7.6)
+        version: 5.1.6(better-sqlite3@11.4.0)(cache-manager@5.7.6)
       cache-manager:
         specifier: ^5.7.6
         version: 5.7.6
@@ -174,8 +174,8 @@ importers:
   gui:
     dependencies:
       better-sqlite3:
-        specifier: ^11.3.0
-        version: 11.3.0
+        specifier: ^11.4.0
+        version: 11.4.0
       deemix-webui:
         specifier: workspace:*
         version: link:../webui
@@ -225,6 +225,9 @@ importers:
       esbuild:
         specifier: ^0.23.1
         version: 0.23.1
+      esbuild-plugin-copy:
+        specifier: ^2.1.1
+        version: 2.1.1(esbuild@0.23.1)
       node-gyp:
         specifier: ^10.2.0
         version: 10.2.0
@@ -1702,8 +1705,8 @@ packages:
     resolution: {integrity: sha512-pbnl5XzGBdrFU/wT4jqmJVPn2B6UHPBOhzMQkY/SPUPB6QtUXtmBHBIwCbXJol93mOpGMnQyP/+BB19q04xj7g==}
     engines: {node: '>=4'}
 
-  better-sqlite3@11.3.0:
-    resolution: {integrity: sha512-iHt9j8NPYF3oKCNOO5ZI4JwThjt3Z6J6XrcwG85VNMVzv1ByqrHWv5VILEbCMFWDsoHhXvQ7oC8vgRXFAKgl9w==}
+  better-sqlite3@11.4.0:
+    resolution: {integrity: sha512-B7C9y2aSvtTwDJIz34iUxMjQWmbAYFmpq0Rwf9weYTtx6jUYsUKVt5ePPYlGyLVBoySppPa41PBrzl1ipMhG7A==}
 
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
@@ -2339,6 +2342,11 @@ packages:
 
   es6-error@4.1.1:
     resolution: {integrity: sha512-Um/+FxMr9CISWh0bi5Zv0iOD+4cFh5qLeks1qhAopKVAJw3drgKbKySikp7wGhDL0HPeaja0P5ULZrxLkniUVg==}
+
+  esbuild-plugin-copy@2.1.1:
+    resolution: {integrity: sha512-Bk66jpevTcV8KMFzZI1P7MZKZ+uDcrZm2G2egZ2jNIvVnivDpodZI+/KnpL3Jnap0PBdIHU7HwFGB8r+vV5CVw==}
+    peerDependencies:
+      esbuild: '>= 0.14.0'
 
   esbuild@0.21.5:
     resolution: {integrity: sha512-mg3OPMV4hXywwpoDxu3Qda5xCKQi+vCTZq8S9J/EpkhB2HzKXq4SNFZE3+NK93JYxc8VMSep+lOUSC/RVKaBqw==}
@@ -6206,9 +6214,9 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@resolid/cache-manager-sqlite@5.1.6(better-sqlite3@11.3.0)(cache-manager@5.7.6)':
+  '@resolid/cache-manager-sqlite@5.1.6(better-sqlite3@11.4.0)(cache-manager@5.7.6)':
     dependencies:
-      better-sqlite3: 11.3.0
+      better-sqlite3: 11.4.0
       cache-manager: 5.7.6
 
   '@rollup/rollup-android-arm-eabi@4.21.2':
@@ -6897,7 +6905,7 @@ snapshots:
     dependencies:
       is-windows: 1.0.2
 
-  better-sqlite3@11.3.0:
+  better-sqlite3@11.4.0:
     dependencies:
       bindings: 1.5.0
       prebuild-install: 7.1.2
@@ -7599,6 +7607,14 @@ snapshots:
 
   es6-error@4.1.1:
     optional: true
+
+  esbuild-plugin-copy@2.1.1(esbuild@0.23.1):
+    dependencies:
+      chalk: 4.1.2
+      chokidar: 3.6.0
+      esbuild: 0.23.1
+      fs-extra: 10.1.0
+      globby: 11.1.0
 
   esbuild@0.21.5:
     optionalDependencies:
