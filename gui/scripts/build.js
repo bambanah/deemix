@@ -1,10 +1,11 @@
 import * as esbuild from "esbuild";
+import copy from "esbuild-plugin-copy";
 import fsp from "node:fs/promises";
+import { createRequire } from "node:module";
 import path from "node:path";
 import url from "node:url";
 import { getArg, hasArg, log } from "./utils.js";
 
-import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 const packageJson = require("../package.json");
 
@@ -53,17 +54,29 @@ async function main(argv) {
 				outfile: "./dist/main.js",
 				target: "esnext",
 				format: "esm",
-				external: ["electron", "lightningcss", "better-sqlite3"],
+				external: ["electron", "lightningcss"],
 				define: {
 					"process.env.NODE_ENV": JSON.stringify(BUILD_MODE),
 					"process.env.GUI_VERSION": JSON.stringify(packageJson.version),
+					"process.env.USE_DEEZER_CACHE": "false",
 				},
 				loader: {
 					".node": "copy",
 					".png": "file",
 				},
-				plugins: [log],
+				plugins: [
+					log,
+					copy({
+						assets: [
+							{
+								from: "./node_modules/better-sqlite3/build/Release/better_sqlite3.node",
+								to: "../build/better_sqlite3.node",
+							},
+						],
+					}),
+				],
 			};
+
 			if (IS_WATCH) {
 				await esbuild.context(options).then((ctx) => ctx.watch());
 			} else {
@@ -85,6 +98,7 @@ async function main(argv) {
 				sourcemap: true,
 				plugins: [log],
 			};
+
 			if (IS_WATCH) {
 				await esbuild.context(options).then((ctx) => ctx.watch());
 			} else {

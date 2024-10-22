@@ -28,11 +28,12 @@
 		"@types/yargs": "^17.0.32",
 		"electron": "32.0.2",
 		"esbuild": "^0.23.1",
+		"esbuild-plugin-copy": "^2.1.1",
 		"node-gyp": "^10.2.0",
 		"tsup": "^8.2.4"
 	},
 	"dependencies": {
-		"better-sqlite3": "^11.3.0",
+		"better-sqlite3": "^11.4.0",
 		"deemix-webui": "workspace:*",
 		"electron-context-menu": "^4.0.4",
 		"electron-squirrel-startup": "^1.0.1",
