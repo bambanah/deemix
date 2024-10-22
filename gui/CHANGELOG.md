@@ -1,5 +1,11 @@
 # deemix-gui
 
+## 0.3.1
+
+### Patch Changes
+
+- 09058b6: Fix missing sqlite library causing crash
+
 ## 0.3.0
 
 ### Minor Changes
