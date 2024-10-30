@@ -12,9 +12,7 @@ import { getFormItem } from "@/utils/forms";
 import { socket } from "@/utils/socket";
 import { toast } from "@/utils/toasts";
 import { copyToClipboard } from "@/utils/utils";
-// import { type Settings } from "deemix";
-import { debounce } from "lodash-es";
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 const loginStore = useLoginStore(pinia);
@@ -33,6 +31,13 @@ const initialSettings = {
 	downloadLocation: "",
 };
 
+const appInfoRef = reactive({
+	hasSlimDownloads: appInfoStore.hasSlimDownloads,
+	hasSlimSidebar: appInfoStore.hasSlimSidebar,
+	showBitrateTags: appInfoStore.showBitrateTags,
+	showSearchButton: appInfoStore.showSearchButton,
+	previewVolume: appInfoStore.previewVolume,
+});
 const settings = ref<any>(initialSettings);
 const lastSettings = ref<any>(initialSettings);
 const defaultSettings = ref({});
@@ -58,12 +63,6 @@ const arl = computed(() => loginStore.arl);
 const user = computed(() => loginStore.user);
 const isLoggedIn = computed(() => loginStore.isLoggedIn);
 const clientMode = computed(() => loginStore.clientMode);
-const previewVolume = computed({
-	get: () => appInfoStore.previewVolume,
-	set: debounce(function (value) {
-		appInfoStore.setPreviewVolume(value);
-	}, 20),
-});
 const pictureHref = computed(() => {
 	// Default image: https://e-cdns-images.dzcdn.net/images/user/125x125-000000-80-0-0.jpg
 	return `https://e-cdns-images.dzcdn.net/images/user/${user.value.picture}/125x125-000000-80-0-0.jpg`;
@@ -123,6 +122,12 @@ function copyARLtoClipboard() {
 function saveSettings() {
 	lastSettings.value = settings.value;
 	lastCredentials.value = spotifyFeatures.value;
+
+	appInfoStore.setSlimDownloads(appInfoRef.hasSlimDownloads);
+	appInfoStore.setSlimSidebar(appInfoRef.hasSlimSidebar);
+	appInfoStore.setShowBitrateTags(appInfoRef.showBitrateTags);
+	appInfoStore.setShowSearchButton(appInfoRef.showSearchButton);
+	appInfoStore.setPreviewVolume(appInfoRef.previewVolume);
 
 	let changed = false;
 
@@ -436,25 +441,25 @@ function canDownload(bitrate: number) {
 			</template>
 
 			<label class="with-checkbox">
-				<input v-model="appInfoStore.hasSlimDownloads" type="checkbox" />
+				<input v-model="appInfoRef.hasSlimDownloads" type="checkbox" />
 				<span class="checkbox-text">{{
 					t("settings.appearance.slimDownloadTab")
 				}}</span>
 			</label>
 			<label class="with-checkbox mb-4">
-				<input v-model="appInfoStore.hasSlimSidebar" type="checkbox" />
+				<input v-model="appInfoRef.hasSlimSidebar" type="checkbox" />
 				<span class="checkbox-text">{{
 					t("settings.appearance.slimSidebar")
 				}}</span>
 			</label>
 			<label class="with-checkbox mb-4">
-				<input v-model="appInfoStore.showBitrateTags" type="checkbox" />
+				<input v-model="appInfoRef.showBitrateTags" type="checkbox" />
 				<span class="checkbox-text">{{
 					t("settings.appearance.bitrateTags")
 				}}</span>
 			</label>
 			<label class="with-checkbox mb-4">
-				<input v-model="appInfoStore.showSearchButton" type="checkbox" />
+				<input v-model="appInfoRef.showSearchButton" type="checkbox" />
 				<span class="checkbox-text">{{
 					t("settings.appearance.searchButton")
 				}}</span>
@@ -1290,14 +1295,14 @@ function canDownload(bitrate: number) {
 			<div class="input-group">
 				<p class="input-group-text">{{ t("settings.other.previewVolume") }}</p>
 				<input
-					v-model.number="appInfoStore.previewVolume"
+					v-model.number="appInfoRef.previewVolume"
 					class="slider"
 					max="100"
 					min="0"
 					step="1"
 					type="range"
 				/>
-				<span>{{ previewVolume }}%</span>
+				<span>{{ appInfoRef.previewVolume }}%</span>
 			</div>
 
 			<div class="input-group">
