@@ -8,6 +8,7 @@ import {
 	type Settings,
 } from "deemix";
 import { TrackFormats, type Deezer } from "deezer-sdk";
+import { configFolder } from "./main";
 
 const listener: Listener = {
 	send: (key: string, data?: unknown) => {
@@ -35,12 +36,24 @@ export const downloadLinks = async (
 				{ spotify: spotifyPlugin },
 				listener
 			);
+
 			if (Array.isArray(downloadObject)) {
 				downloadObjects.concat(downloadObject);
 			} else {
 				downloadObjects.push(downloadObject);
 			}
 		} catch (e) {
+			if (e instanceof Error && e.name === "PluginNotEnabledError") {
+				console.warn(
+					`Populate Spotify app credentials to download Spotify links:\n\t${configFolder}spotify/config.json\n`
+				);
+				console.log(
+					"Documentation: https://developer.spotify.com/documentation/web-api/tutorials/getting-started#create-an-app"
+				);
+
+				continue;
+			}
+
 			if (e instanceof Error) {
 				console.error(e);
 			}

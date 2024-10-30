@@ -1,7 +1,12 @@
 import { Collection, Convertable } from "@/download-objects/Collection.js";
 import { generateAlbumItem } from "@/download-objects/generateAlbumItem.js";
 import { generateTrackItem } from "@/download-objects/generateTrackItem.js";
-import { AlbumNotOnDeezer, InvalidID, TrackNotOnDeezer } from "@/errors.js";
+import {
+	AlbumNotOnDeezer,
+	InvalidID,
+	PluginNotEnabledError,
+	TrackNotOnDeezer,
+} from "@/errors.js";
 import { type Settings } from "@/types/Settings.js";
 import { getConfigFolder } from "@/utils/localpaths.js";
 import {
@@ -162,7 +167,7 @@ export default class SpotifyPlugin extends BasePlugin {
 	}
 
 	async generatePlaylistItem(dz: Deezer, link_id: string, bitrate: number) {
-		if (!this.enabled) throw new Error("Spotify plugin not enabled");
+		if (!this.enabled) throw new PluginNotEnabledError("Spotify");
 
 		const spotifyPlaylist = await this.sp.playlists.getPlaylist(link_id);
 
@@ -217,7 +222,7 @@ export default class SpotifyPlugin extends BasePlugin {
 	}
 
 	async getTrack(track_id: string, spotifyTrack?: SpotifyTrack) {
-		if (!this.enabled) throw new Error("Spotify plugin not enabled");
+		if (!this.enabled) throw new PluginNotEnabledError("Spotify");
 
 		const cachedTrack = {
 			isrc: null,
@@ -247,7 +252,7 @@ export default class SpotifyPlugin extends BasePlugin {
 	}
 
 	async getAlbum(album_id: string, spotifyAlbum = null) {
-		if (!this.enabled) throw new Error("Spotify plugin not enabled");
+		if (!this.enabled) throw new PluginNotEnabledError("Spotify");
 		const cachedAlbum = {
 			upc: null,
 			data: null,
