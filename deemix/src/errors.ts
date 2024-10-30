@@ -90,6 +90,15 @@ export class DownloadError extends DeemixError {
 	}
 }
 
+export class PluginNotEnabledError extends DeemixError {
+	constructor(pluginName: string) {
+		const message = `${pluginName} plugin not enabled`;
+		super(message);
+
+		this.name = "PluginNotEnabledError";
+	}
+}
+
 export const ErrorMessages = {
 	notOnDeezer: "Track not available on Deezer!",
 	notEncoded: "Track not yet encoded!",
