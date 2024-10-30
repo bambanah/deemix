@@ -1,5 +1,11 @@
 # deemix-cli
 
+## 0.1.0
+
+### Minor Changes
+
+- f120283: Correctly create portable config
+
 ## 0.0.2
 
 ### Patch Changes
