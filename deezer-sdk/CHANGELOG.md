@@ -1,5 +1,11 @@
 # deezer-sdk
 
+## 1.10.0
+
+### Minor Changes
+
+- 9ea682c: Temporarily disable API caching
+
 ## 1.9.0
 
 ### Minor Changes
