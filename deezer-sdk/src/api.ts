@@ -1,7 +1,4 @@
-import { sqliteStore } from "@resolid/cache-manager-sqlite";
-import { createCache, type Cache } from "cache-manager";
 import got from "got";
-import { join } from "path";
 import { CookieJar } from "tough-cookie";
 import {
 	APIError,
@@ -16,7 +13,6 @@ import {
 } from "./errors.js";
 import { SearchOrder, type APIAlbum, type APIOptions } from "./index.js";
 import { trackSchema, type DeezerTrack } from "./schema/track-schema.js";
-import { $cacheDir } from "./store.js";
 
 type APIArgs = Record<string | number, string | number>;
 
@@ -24,32 +20,15 @@ export class API {
 	httpHeaders: { "User-Agent": string };
 	cookieJar: CookieJar;
 	access_token: string | null;
-	cache?: Cache;
 
 	constructor(cookieJar: CookieJar, headers: { "User-Agent": string }) {
 		this.httpHeaders = headers;
 		this.cookieJar = cookieJar;
 		this.access_token = null;
-
-		if ($cacheDir.value) {
-			this.cache = createCache(
-				sqliteStore({
-					sqliteFile: join($cacheDir.value, "cache.db"),
-					cacheTableName: "deezer_api",
-					ttl: 60000,
-				})
-			);
-		}
 	}
 
 	async call(endpoint: string, args: APIArgs = {}): Promise<unknown> {
 		if (this.access_token) args["access_token"] = this.access_token;
-		
-		const cacheKey = endpoint + ":" + JSON.stringify(args);
-		const cachedResponse = await this.cache?.get<string>(cacheKey);
-		if (cachedResponse) {
-			return JSON.parse(cachedResponse);
-		}
 
 		let response;
 		try {
@@ -127,8 +106,6 @@ export class API {
 			}
 			throw new APIError(response.error);
 		}
-
-		this.cache?.set(cacheKey, JSON.stringify(response));
 
 		return response;
 	}

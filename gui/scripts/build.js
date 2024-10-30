@@ -1,5 +1,4 @@
 import * as esbuild from "esbuild";
-import copy from "esbuild-plugin-copy";
 import fsp from "node:fs/promises";
 import { createRequire } from "node:module";
 import path from "node:path";
@@ -63,17 +62,7 @@ async function main(argv) {
 					".node": "copy",
 					".png": "file",
 				},
-				plugins: [
-					log,
-					copy({
-						assets: [
-							{
-								from: "./node_modules/better-sqlite3/build/Release/better_sqlite3.node",
-								to: "../build/better_sqlite3.node",
-							},
-						],
-					}),
-				],
+				plugins: [log],
 			};
 
 			if (IS_WATCH) {
