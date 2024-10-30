@@ -22,22 +22,8 @@ export default {
 			config: {},
 		},
 		{
-			name: "@electron-forge/maker-dmg",
-			config: {
-				bin: "Deemix",
-			},
-		},
-		{
-			name: "@electron-forge/maker-deb",
-			config: {
-				bin: "Deemix",
-			},
-		},
-		{
-			name: "@electron-forge/maker-rpm",
-			config: {
-				bin: "Deemix",
-			},
+			name: "@electron-forge/maker-zip",
+			config: {},
 		},
 	],
 	plugins: [

@@ -17,19 +17,19 @@
 		"type-check": "tsc --noEmit"
 	},
 	"devDependencies": {
-		"@electron-forge/cli": "^7.3.1",
-		"@electron-forge/maker-deb": "^7.3.1",
-		"@electron-forge/maker-dmg": "^7.4.0",
-		"@electron-forge/maker-rpm": "^7.3.1",
-		"@electron-forge/maker-squirrel": "^7.3.1",
-		"@electron-forge/maker-zip": "^7.3.1",
-		"@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
-		"@electron/rebuild": "^3.6.0",
-		"@types/yargs": "^17.0.32",
-		"electron": "32.0.2",
-		"esbuild": "^0.23.1",
+		"@electron-forge/cli": "^7.5.0",
+		"@electron-forge/maker-deb": "^7.5.0",
+		"@electron-forge/maker-dmg": "^7.5.0",
+		"@electron-forge/maker-rpm": "^7.5.0",
+		"@electron-forge/maker-squirrel": "^7.5.0",
+		"@electron-forge/maker-zip": "^7.5.0",
+		"@electron-forge/plugin-auto-unpack-natives": "^7.5.0",
+		"@electron/rebuild": "^3.7.0",
+		"@types/yargs": "^17.0.33",
+		"electron": "33.0.2",
+		"esbuild": "^0.24.0",
 		"node-gyp": "^10.2.0",
-		"tsup": "^8.2.4"
+		"tsup": "^8.3.5"
 	},
 	"dependencies": {
 		"deemix-webui": "workspace:*",
