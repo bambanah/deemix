@@ -1,5 +1,11 @@
 # deemix-webui
 
+## 4.2.10
+
+### Patch Changes
+
+- 9da832b: Fix appearance settings not saving
+
 ## 4.2.9
 
 ### Patch Changes

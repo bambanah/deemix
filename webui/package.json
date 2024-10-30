@@ -1,6 +1,6 @@
 {
 	"name": "deemix-webui",
-	"version": "4.2.9",
+	"version": "4.2.10",
 	"private": true,
 	"type": "module",
 	"scripts": {
