@@ -1,5 +1,3 @@
-import { Deezer } from "deezer-sdk";
-import type { RequestHandler } from "express";
 import { DeemixApp, sessionDZ } from "@/deemixApp.js";
 import { logger } from "@/helpers/logger.js";
 import {
@@ -7,6 +5,8 @@ import {
 	saveLoginCredentials,
 } from "@/helpers/loginStorage.js";
 import { type ApiHandler } from "@/types.js";
+import { Deezer } from "deezer-sdk";
+import type { RequestHandler } from "express";
 
 export interface RawLoginArlBody {
 	arl: string;
@@ -33,11 +33,11 @@ const handler: RequestHandler<any, any, RawLoginArlBody, any> = async (
 	const isSingleUser: boolean = req.app.get("isSingleUser");
 
 	if (!req.body) {
-		return res.status(400).send();
+		res.status(400).send();
 	}
 
 	if (!req.body.arl) {
-		return res.status(400).send();
+		res.status(400).send();
 	}
 
 	const loginParams: { arl: string; child?: number } = { arl: req.body.arl };
@@ -87,7 +87,7 @@ const handler: RequestHandler<any, any, RawLoginArlBody, any> = async (
 				arl: returnValue.arl,
 			});
 	} else if (isSingleUser) resetLoginCredentials();
-	return res.status(200).send(returnValue);
+	res.status(200).send(returnValue);
 };
 
 const apiHandler = { path, handler };

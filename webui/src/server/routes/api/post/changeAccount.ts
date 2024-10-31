@@ -14,7 +14,7 @@ const handler: RequestHandler<any, any, any, ChangeAccountQuery> = (
 	res
 ) => {
 	if (!req.query || !req.query.child) {
-		return res
+		res
 			.status(400)
 			.send({ errorMessage: "No child specified", errorCode: "CA01" });
 	}
@@ -26,7 +26,7 @@ const handler: RequestHandler<any, any, any, ChangeAccountQuery> = (
 
 	const accountData = dz.changeAccount(accountNum);
 
-	return res.status(200).send(accountData);
+	res.status(200).send(accountData);
 };
 
 const apiHandler: ApiHandler = { path, handler };

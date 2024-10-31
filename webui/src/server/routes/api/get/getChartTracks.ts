@@ -35,7 +35,7 @@ const handler: RequestHandler<any, any, any, RawChartTracksQuery> = async (
 			index,
 			limit,
 		});
-		return res.status(200).send(response);
+		res.status(200).send(response);
 	} catch (error) {
 		if (error instanceof BadRequestError) {
 			logger.error(error.message);

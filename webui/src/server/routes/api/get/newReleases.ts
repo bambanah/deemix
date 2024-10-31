@@ -57,7 +57,7 @@ const handler: ApiHandler["handler"] = async (req, res) => {
 		total: albums.length,
 	};
 
-	return res.send(output);
+	res.send(output);
 };
 
 const apiHandler: ApiHandler = { path, handler };

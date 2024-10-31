@@ -22,7 +22,7 @@ const handler: RequestHandler<ResBody, any, any, AnalyzeQuery> = async (
 ) => {
 	try {
 		if (!req.query || !req.query.term) {
-			return res
+			res
 				.status(400)
 				.send({ errorMessage: "No term specified", errorCode: "AL01" });
 		}
@@ -37,14 +37,12 @@ const handler: RequestHandler<ResBody, any, any, AnalyzeQuery> = async (
 			const apiMethod = linkType === "track" ? "get_track" : "get_album";
 			const resBody: ResBody = await dz.api[apiMethod](linkId);
 
-			return res.status(200).send(resBody);
+			res.status(200).send(resBody);
 		}
 
-		return res
-			.status(400)
-			.send({ errorMessage: "Not supported", errorCode: "AL02" });
+		res.status(400).send({ errorMessage: "Not supported", errorCode: "AL02" });
 	} catch (error) {
-		return res.status(500).send({
+		res.status(500).send({
 			errorMessage: "The server had a problem. Please try again",
 			errorObject: error,
 			errorCode: "AL03",
