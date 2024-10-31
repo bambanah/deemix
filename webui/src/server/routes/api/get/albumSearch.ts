@@ -1,7 +1,7 @@
 import { Deezer } from "deezer-sdk";
 import type { RequestHandler } from "express";
-import { sessionDZ } from "../../../deemixApp.js";
-import type { ApiHandler } from "../../../types.js";
+import { sessionDZ } from "@/deemixApp.js";
+import type { ApiHandler } from "@/types.js";
 
 export interface RawAlbumQuery {
 	term: string;
@@ -29,13 +29,13 @@ const handler: RequestHandler<any, any, any, RawAlbumQuery> = async (
 	const dz = sessionDZ[req.session.id];
 
 	if (!req.query) {
-		return res.status(400).send();
+		res.status(400).send();
 	}
 
 	const { term, start, nb } = parseQuery(req.query);
 
 	if (!term || term.trim() === "") {
-		return res.status(400).send();
+		res.status(400).send();
 	}
 
 	const results = await dz.gw.search_music(term, "ALBUM", {
@@ -52,7 +52,7 @@ const handler: RequestHandler<any, any, any, RawAlbumQuery> = async (
 		total: albums.length,
 	};
 
-	return res.send(output);
+	res.send(output);
 };
 
 export const apiHandler = { path, handler };
