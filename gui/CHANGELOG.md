@@ -1,5 +1,11 @@
 # deemix-gui
 
+## 0.3.4
+
+### Patch Changes
+
+- 6ea7bd1: Publish as ZIP
+
 ## 0.3.3
 
 ### Patch Changes
