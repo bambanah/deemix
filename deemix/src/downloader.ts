@@ -46,7 +46,9 @@ const extensions = {
 	[TrackFormats.MP4_RA1]: ".mp4",
 } as const;
 
-const TEMPDIR = tmpdir() + "/deemix-imgs";
+const TEMPDIR = tmpdir() + '/deemix-imgs';
+const coverCache = new Map();
+const coverDownloadPromises = new Map();
 mkdirSync(TEMPDIR, { recursive: true });
 
 export class Downloader {
@@ -57,7 +59,7 @@ export class Downloader {
 	listener: Listener;
 	playlistCovername?: string;
 	playlistURLs: { url: string; ext: string }[];
-	coverQueue: Record<string, string>;
+	coverQueue: Record<string, Promise<string>>;
 
 	constructor(
 		dz: Deezer,
@@ -333,7 +335,20 @@ export class Downloader {
 		}_${this.settings.embeddedArtworkSize}${ext}`;
 
 		// Download and cache the coverart
-		if (!this.coverQueue[track.album.embeddedCoverPath]) {
+	if (!this.coverQueue[track.album.embeddedCoverPath]) {
+		this.coverQueue[track.album.embeddedCoverPath] = this.downloadAndCacheCover(
+			track.album.embeddedCoverURL,
+			track.album.embeddedCoverPath
+		);
+	}
+	try {
+		track.album.embeddedCoverPath = await this.coverQueue[track.album.embeddedCoverPath];
+	} catch (error) {
+		console.error('Error downloading cover:', error);
+		// Use a default cover or skip if download fails
+		track.album.embeddedCoverPath = '';
+	}
+	delete this.coverQueue[track.album.embeddedCoverPath];
 			this.coverQueue[track.album.embeddedCoverPath] = await downloadImage(
 				track.album.embeddedCoverURL,
 				track.album.embeddedCoverPath
@@ -830,5 +845,27 @@ export class Downloader {
 		} catch (e) {
 			this.afterDownloadErrorReport("ExecuteCommand", e);
 		}
+	async downloadAndCacheCover(url: string, path: string): Promise<string> {
+		if (coverCache.has(path)) {
+			return coverCache.get(path);
+		}
+		if (coverDownloadPromises.has(path)) {
+			return coverDownloadPromises.get(path);
+		}
+		const downloadPromise = new Promise<string>(async (resolve, reject) => {
+			try {
+				await downloadImage(url, path);
+				coverCache.set(path, path);
+				resolve(path);
+			} catch (error) {
+				console.error('Error downloading cover:', error);
+				reject(error);
+			} finally {
+				coverDownloadPromises.delete(path);
+			}
+		});
+		coverDownloadPromises.set(path, downloadPromise);
+		return downloadPromise;
+	}
 	}
 }
