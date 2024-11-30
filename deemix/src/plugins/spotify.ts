@@ -231,7 +231,7 @@ export default class SpotifyPlugin extends BasePlugin {
 
 		if (!spotifyTrack) {
 			try {
-				spotifyTrack = await this.sp.tracks.get("0ehcOXeXkE1Cozi3NIRWrv");
+				spotifyTrack = await this.sp.tracks.get(track_id);
 			} catch (e) {
 				if (e.body.error.message === "invalid id")
 					throw new InvalidID(`https://open.spotify.com/track/${track_id}`);
