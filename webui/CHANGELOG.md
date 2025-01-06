@@ -1,5 +1,11 @@
 # deemix-webui
 
+## 4.3.0
+
+### Minor Changes
+
+- a56a2d9: Correctly slim the sidebar when slimSidebar enabled
+
 ## 4.2.10
 
 ### Patch Changes
