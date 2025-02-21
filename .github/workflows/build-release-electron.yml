@@ -64,3 +64,4 @@ jobs:
             gui/out/**/Deemix.exe
             gui/out/**/Deemix*Setup.exe
             gui/out/make/zip/**/*.zip
+            gui/out/make/deb/**/*.deb

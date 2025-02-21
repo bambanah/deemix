@@ -14,6 +14,7 @@ export default {
 			/^\/tsconfig.json/,
 		],
 		icon: "./build/icon.ico",
+		executableName: "deemix-gui",
 	},
 	rebuildConfig: {},
 	makers: [
@@ -24,6 +25,18 @@ export default {
 		{
 			name: "@electron-forge/maker-zip",
 			config: {},
+		},
+		{
+			name: "@electron-forge/maker-deb",
+			config: {
+				options: {
+					name: "deemix",
+					productName: "Deemix",
+					section: "sound",
+					icon: "./build/icon.ico",
+					categories: ["Audio"],
+				},
+			},
 		},
 	],
 	plugins: [
