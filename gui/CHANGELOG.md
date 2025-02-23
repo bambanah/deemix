@@ -1,5 +1,11 @@
 # deemix-gui
 
+## 0.3.6
+
+### Patch Changes
+
+- ee844b6: Added deb maker to the releases
+
 ## 0.3.5
 
 ### Patch Changes
