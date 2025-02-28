@@ -4,7 +4,7 @@ This is the monorepo for the revived Deemix project, originally created by the v
 
 The docker image was heavily inspired by the fantastic work of [Bockiii](https://gitlab.com/Bockiii/deemix-docker).
 
-### Packages in this Repo
+## Packages in this Repo
 
 - **deezer-sdk**: Wrapper for Deezer's [API](https://developers.deezer.com/api)
 - **deemix**: The brains of the operation
@@ -73,6 +73,7 @@ This repo uses [pnpm](https://pnpm.io/) for package management and [Turborepo](h
 
 - Install Node.js 20.x
 - Enable pnpm:
+
   ```bash
   corepack enable
   ```
@@ -80,19 +81,25 @@ This repo uses [pnpm](https://pnpm.io/) for package management and [Turborepo](h
 ### Local Development
 
 1. Clone the repository
+
    ```bash
    git clone https://github.com/bambanah/deemix.git
    # - OR -
    gh repo clone bambanah/deemix
    ```
+
 2. Install dependencies
+
    ```bash
    pnpm i
    ```
+
 3. Start development server
+
    ```bash
    pnpm dev
    ```
+
    - This will start the development server on port 6595
    - It will also watch for changes in dependencies and hot reload the app
 

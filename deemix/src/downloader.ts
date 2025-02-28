@@ -32,6 +32,7 @@ import {
 	generateDownloadObjectName,
 	generatePath,
 } from "./utils/pathtemplates.js";
+import { relative } from 'path';
 
 const { mapGwTrackToDeezer: map_track } = utils;
 
@@ -459,6 +460,9 @@ export class Downloader {
 			tagTrack(extension, writepath, track, this.settings.tags);
 		}
 
+		// Add this after setting track.filename
+		track.downloadPath = `${filepath}/${filename}${extension}`;
+
 		if (track.searched) returnData.searched = true;
 		this.downloadObject.downloaded += 1;
 
@@ -747,7 +751,15 @@ export class Downloader {
 			}
 
 			// Save filename for playlist file
-			playlist[i] = track.filename || "";
+			// Store the complete path relative to the extrasPath
+			if (track.path) {
+				const fullPath = track.path;
+				// Get path relative to the extrasPath for M3U8 compatibility
+				const relativePath = fullPath.slice(this.downloadObject.extrasPath.length + 1);
+				playlist[i] = relativePath || "";
+			} else {
+				playlist[i] = track.filename || "";
+			}
 		}
 
 		// Create errors logfile
@@ -799,9 +811,46 @@ export class Downloader {
 						this.downloadObject,
 						this.settings
 					) || "playlist";
+
+				// Create proper M3U8 file with headers and metadata
+				const playlistLines = ["#EXTM3U"];
+
+				// Process each track to include proper metadata and paths
+				this.downloadObject.tracks.forEach((track, idx) => {
+					if (!playlist[idx]) return;
+
+					// Get track metadata if available
+					const artist = track.artist || this.downloadObject.artist?.name || "Unknown Artist";
+					const title = track.title || `Track ${idx + 1}`;
+					const duration = track.duration || -1; // -1 if duration unknown
+
+					// Add EXTINF line with metadata
+					playlistLines.push(`#EXTINF:${duration},${artist} - ${title}`);
+
+					// Add file path (ensure forward slashes for cross-platform compatibility)
+					let trackPath = playlist[idx];
+
+					// If we have a complete file path stored in downloadObject
+					if (track.downloadPath) {
+						// Calculate relative path from playlist file location to track
+						const playlistDir = this.downloadObject.extrasPath;
+						const trackDir = path.dirname(track.downloadPath);
+
+						// Create path that's relative to playlist location
+						let relativePath = path.relative(playlistDir, track.downloadPath);
+
+						// Ensure forward slashes for compatibility
+						relativePath = relativePath.replace(/\\/g, '/');
+
+						trackPath = relativePath;
+					}
+
+					playlistLines.push(trackPath);
+				});
+
 				writeFileSync(
 					`${this.downloadObject.extrasPath}/${filename}.m3u8`,
-					playlist.join("\n")
+					playlistLines.join("\n")
 				);
 			}
 		} catch (e) {

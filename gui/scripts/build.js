@@ -28,14 +28,40 @@ async function main(argv) {
 	}
 
 	// Copy Web static resources
-	if (BUILD_MODE == "production" || BUILD_MODE == "prerelease") {
-		// Copy Web static resources
-		console.log("[build] Copy web static dist");
-		await fsp.cp(
-			path.resolve(WEBUI_DIR, "dist/public"),
-			path.resolve(DIST_DIR, "public"),
-			{ recursive: true }
-		);
+	if (BUILD_MODE === "production" || BUILD_MODE === "prerelease") {
+		try {
+			// Check if webui dist folder exists
+			const webuiDistPath = path.resolve(WEBUI_DIR, "dist");
+			const webuiPublicPath = path.resolve(WEBUI_DIR, "dist/public");
+
+			await fsp.access(webuiDistPath);
+
+			// Copy Web static resources - check if public subfolder exists
+			console.log("[build] Copy web static dist");
+
+			try {
+				// Try to access the public subfolder
+				await fsp.access(webuiPublicPath);
+
+				// If public subfolder exists, copy it
+				await fsp.cp(
+					webuiPublicPath,
+					path.resolve(DIST_DIR, "public"),
+					{ recursive: true }
+				);
+			} catch (e) {
+				// If no public subfolder, copy the whole dist directory
+				await fsp.cp(
+					webuiDistPath,
+					path.resolve(DIST_DIR, "public"),
+					{ recursive: true }
+				);
+			}
+
+			console.log("[build] Web static dist copied successfully");
+		} catch (error) {
+			console.error("[build] Error copying web static resources:", error.message);
+		}
 	}
 
 	// Build main and preload
@@ -98,4 +124,9 @@ async function main(argv) {
 	console.log("[build] Complete.");
 }
 
-await main(process.argv);
+try {
+  await main(process.argv);
+} catch (error) {
+  console.error("[build] Unexpected error:", error);
+  process.exit(1);
+}
