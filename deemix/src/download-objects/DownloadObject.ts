@@ -21,6 +21,9 @@ export class DownloadObject {
 	__type__: "Single" | "Collection" | "Convertable";
 
 	constructor(obj) {
+		if (!obj || typeof obj !== 'object') {
+			throw new Error("Invalid download object data.");
+		}
 		this.type = obj.type;
 		this.id = obj.id;
 		this.bitrate = obj.bitrate;
@@ -94,6 +97,9 @@ export class DownloadObject {
 	}
 
 	updateProgress(listener: Listener) {
+		if (typeof this.progressNext !== 'number' || this.progressNext < 0 || this.progressNext > 100) {
+			throw new Error("Invalid progress value.");
+		}
 		if (
 			Math.floor(this.progressNext) !== this.progress &&
 			Math.floor(this.progressNext) % 2 === 0 &&
