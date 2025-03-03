@@ -17,7 +17,8 @@
 		"compile:cli": "turbo run compile --filter=deemix-cli...",
 		"ci": "turbo run lint type-check build test",
 		"clean": "rimraf .turbo node_modules --glob **/dist **/out **/node_modules **/.turbo **/tsconfig.tsbuildinfo",
-		"prepare": "husky"
+		"prepare": "husky",
+		"changeset": "changeset"
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.27.7",
