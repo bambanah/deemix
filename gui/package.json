@@ -25,11 +25,13 @@
 		"@electron-forge/maker-zip": "^7.5.0",
 		"@electron-forge/plugin-auto-unpack-natives": "^7.5.0",
 		"@electron/rebuild": "^3.7.0",
+		"@types/node": "^20.11.24",
 		"@types/yargs": "^17.0.33",
 		"electron": "33.0.2",
 		"esbuild": "^0.24.0",
 		"node-gyp": "^10.2.0",
-		"tsup": "^8.3.5"
+		"tsup": "^8.3.5",
+		"typescript": "^5.3.3"
 	},
 	"dependencies": {
 		"deemix-webui": "workspace:*",

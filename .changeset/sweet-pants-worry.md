@@ -30,9 +30,16 @@ BREAKING CHANGES:
   - Better progress tracking with validation
   - Improved error logging and user feedback
 - Modern Build System:
-  - TypeScript-first development
-  - Turbo and pnpm workspace optimization
-  - Strict type checking enabled
+  - TypeScript-first development with strict type checking
+  - Turborepo pipeline optimization with proper task dependencies
+  - Workspace management using pnpm for better dependency control
+  - Docker support for containerized deployments
+- Testing and Quality:
+  - Vitest test runner integration
+  - Comprehensive ESLint configuration
+  - Prettier code formatting
+  - Husky git hooks for code quality
+  - Commitlint for consistent commit messages
 
 HOW TO UPDATE:
 
@@ -53,7 +60,14 @@ HOW TO UPDATE:
    - Your existing settings will be migrated automatically
    - Expect improved error messages and download progress tracking
 
-4. For all users:
+4. For Developers:
+   - Use pnpm for package management (`pnpm install`)
+   - Run tests with `pnpm test`
+   - Ensure commits follow conventional commit format
+   - Use provided Docker configurations for deployment
+   - Check ESLint and Prettier configurations for code style
+
+5. For all users:
    - Check the documentation for your specific package
    - Note that configuration files may have a new format
    - Be prepared to handle new validation errors
