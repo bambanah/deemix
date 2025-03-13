@@ -322,6 +322,11 @@ export function generateAlbumName(
 		fixName(album.artists.join(", "), c)
 	);
 	foldername = foldername.replaceAll("%artist_id%", album.mainArtist.id);
+	if (playlist) {
+		foldername = foldername.replaceAll("%playlist%", fixName(playlist.title, c));
+	} else {
+		foldername = foldername.replaceAll("%playlist%", fixName(album.title, c));
+	}
 	if (album.rootArtist) {
 		foldername = foldername.replaceAll(
 			"%root_artist%",
