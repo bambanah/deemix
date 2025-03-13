@@ -490,6 +490,10 @@ export class Downloader {
 			artist: trackAPI.artist.name,
 		};
 
+		if (!trackAPI.downloadURL) {
+			throw new Error("Track download URL is missing.");
+		}
+
 		let result;
 		try {
 			result = await this.download(extraData, track);

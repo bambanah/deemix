@@ -8,6 +8,11 @@ export const deezerLogin = async (dz: Deezer, configFolder: string) => {
 
 	if (existsSync(arlFileLocation)) {
 		const arl = readFileSync(arlFileLocation).toString().trim();
+		if (!arl) {
+			console.error("ARL file is empty.");
+			process.exit(1);
+		}
+
 		const loggedIn = await dz.loginViaArl(arl);
 
 		if (loggedIn) {
@@ -23,6 +28,11 @@ export const deezerLogin = async (dz: Deezer, configFolder: string) => {
 		output: process.stdout,
 	});
 	const arl = await rl.question("Enter your ARL: ");
+	if (!arl) {
+		console.error("Invalid ARL input.");
+		process.exit(1);
+	}
+
 	await dz.loginViaArl(arl);
 	writeFileSync(arlFileLocation, arl);
 
