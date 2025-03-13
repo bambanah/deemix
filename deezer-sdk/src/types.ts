@@ -1,4 +1,3 @@
-// Number association for formats
 export const TrackFormats = {
 	FLAC: 9,
 	MP3_320: 3,
@@ -30,7 +29,6 @@ export interface APIOptions {
 	order?: string;
 }
 
-// Possible values for order parameter in search
 export const SearchOrder = {
 	RANKING: "RANKING",
 	TRACK_ASC: "TRACK_ASC",
@@ -72,7 +70,7 @@ export interface APIAlbum {
 	cover_medium: string;
 	cover_big: string;
 	cover_xl: string;
-	release_date?: string; // Assuming the date is in string format (e.g., "YYYY-MM-DD")
+	release_date?: string;
 	root_artist?: APIArtist;
 	nb_tracks?: number;
 	nb_disk?: number;
@@ -104,19 +102,19 @@ export interface APITrack {
 	track_position: number;
 	disk_number: number;
 	rank: number;
-	release_date: string; // Assuming the date is in string format (e.g., "YYYY-MM-DD")
+	release_date: string;
 	explicit_lyrics: boolean;
 	explicit_content_lyrics: number;
 	explicit_content_cover: number;
 	preview: string;
 	bpm: number;
 	gain: number;
-	available_countries: string[]; // List of countries as strings
-	alternative?: APITrack; // Assuming alternative is of type Track
+	available_countries: string[];
+	alternative?: APITrack;
 	alternative_albums?: {
 		data: APIAlbum[];
 	};
-	contributors?: APIContributor[]; // Assuming Contributor is an object
+	contributors?: APIContributor[];
 	md5_image: string;
 	track_token: string;
 	artist: APIArtist;
@@ -128,6 +126,7 @@ export interface APITrack {
 	copyright?: string;
 	physical_release_date?: string;
 	genres?: string[];
+	downloadURL?: string;
 }
 
 export interface APIContributor {
@@ -169,9 +168,7 @@ export interface APIPlaylist {
 	explicit?: any;
 }
 
-// Contains additional information from GW
-export interface EnrichedAPITrack
-	extends Omit<APITrack, "album" | "artist" | "contributors"> {
+export interface EnrichedAPITrack extends Omit<APITrack, "album" | "artist" | "contributors"> {
 	type?: string;
 	md5_origin?: number;
 	filesizes?: Record<string, any>;
