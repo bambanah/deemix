@@ -1,5 +1,11 @@
 # deemix
 
+## 3.13.0
+
+### Minor Changes
+
+- ec74308: Fix name generation for %playlist% replacement
+
 ## 3.12.2
 
 ### Patch Changes
