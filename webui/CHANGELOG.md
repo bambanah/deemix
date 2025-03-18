@@ -1,5 +1,13 @@
 # deemix-webui
 
+## 4.3.2
+
+### Patch Changes
+
+- 079a2fd: Add hint for spotify username to explain that it's the public username, not the one used to sign in
+- Updated dependencies [d4015d3]
+  - deemix@3.13.1
+
 ## 4.3.1
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # deemix-gui
 
+## 0.3.8
+
+### Patch Changes
+
+- 3aaad56: Fix incorrect folder permissions
+- Updated dependencies [079a2fd]
+  - deemix-webui@4.3.2
+
 ## 0.3.7
 
 ### Patch Changes
