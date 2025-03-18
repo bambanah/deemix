@@ -323,7 +323,10 @@ export function generateAlbumName(
 	);
 	foldername = foldername.replaceAll("%artist_id%", album.mainArtist.id);
 	if (playlist) {
-		foldername = foldername.replaceAll("%playlist%", fixName(playlist.title, c));
+		foldername = foldername.replaceAll(
+			"%playlist%",
+			fixName(playlist.title, c)
+		);
 	} else {
 		foldername = foldername.replaceAll("%playlist%", fixName(album.title, c));
 	}
@@ -439,10 +442,20 @@ export function generateDownloadObjectName(
 	foldername = foldername.replaceAll("%size%", queueItem.size);
 	foldername = foldername.replaceAll("%type%", fixName(queueItem.type, c));
 	foldername = foldername.replaceAll("%id%", fixName(queueItem.id, c));
-	if (queueItem.type === "playlist" && queueItem.collection && queueItem.collection.playlistAPI) {
-		foldername = foldername.replaceAll("%playlist%", fixName(queueItem.collection.playlistAPI.title, c));
+	if (
+		queueItem.type === "playlist" &&
+		queueItem.collection &&
+		queueItem.collection.playlistAPI
+	) {
+		foldername = foldername.replaceAll(
+			"%playlist%",
+			fixName(queueItem.collection.playlistAPI.title, c)
+		);
 	} else {
-		foldername = foldername.replaceAll("%playlist%", fixName(queueItem.title, c));
+		foldername = foldername.replaceAll(
+			"%playlist%",
+			fixName(queueItem.title, c)
+		);
 	}
 	foldername = foldername.replaceAll(
 		"%bitrate%",

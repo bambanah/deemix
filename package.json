@@ -6,7 +6,7 @@
 	"author": "Bambanah",
 	"license": "GPL-3.0-only",
 	"scripts": {
-		"dev": "turbo run deemix-webui#dev",
+		"dev": "turbo run dev --filter=deemix-webui...",
 		"dev:gui": "turbo run deemix-gui#dev",
 		"build": "turbo run build",
 		"lint": "turbo run lint",
