@@ -6,15 +6,15 @@
 	"author": "Bambanah",
 	"license": "GPL-3.0-only",
 	"scripts": {
-		"dev": "pnpm -r --parallel --filter=!deemix-gui dev",
-		"dev:gui": "pnpm -C gui dev",
+		"dev": "turbo run deemix-webui#dev",
+		"dev:gui": "turbo run deemix-gui#dev",
 		"build": "turbo run build",
 		"lint": "turbo run lint",
 		"type-check": "turbo run type-check",
 		"test": "turbo run test",
 		"package": "turbo run package",
 		"make": "turbo run make",
-		"compile:cli": "turbo run compile --filter=deemix-cli...",
+		"compile:cli": "turbo run deemix-cli#compile",
 		"ci": "turbo run lint type-check build test",
 		"clean": "rimraf .turbo node_modules --glob **/dist **/out **/node_modules **/.turbo **/tsconfig.tsbuildinfo",
 		"prepare": "husky"

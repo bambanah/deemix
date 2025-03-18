@@ -4,6 +4,11 @@
 		"lint": {
 			"outputs": []
 		},
+		"dev": {
+			"dependsOn": ["^build"],
+			"persistent": true,
+			"cache": false
+		},
 		"build": {
 			"dependsOn": ["^build"],
 			"outputs": ["dist/**"]
