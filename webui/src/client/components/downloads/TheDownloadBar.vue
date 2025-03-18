@@ -7,7 +7,7 @@ import { useLoginStore } from "@/stores/login";
 import { fetchData, postToServer } from "@/utils/api-utils";
 import { socket } from "@/utils/socket";
 import { toast } from "@/utils/toasts";
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 
@@ -21,7 +21,7 @@ const loginStore = useLoginStore(pinia);
 const appInfoStore = useAppInfoStore(pinia);
 const errorStore = useErrorStore(pinia);
 
-const container = ref<HTMLElement | null>(null);
+const container = useTemplateRef("container");
 const toggler = ref<HTMLElement | null>(null);
 const list = ref<HTMLElement | null>(null);
 
@@ -389,7 +389,7 @@ onUnmounted(() => {
 		:class="{ 'tab-hidden': !isExpanded, 'w-8': !isExpanded }"
 		:data-label="t('downloads')"
 		aria-label="downloads"
-		@transitionend="$refs.container.style.transition = ''"
+		@transitionend="container.style.transition = ''"
 	>
 		<!-- Drag handler -->
 		<div

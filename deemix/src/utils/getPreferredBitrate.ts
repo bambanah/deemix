@@ -79,7 +79,7 @@ export async function getPreferredBitrate(
 		feelingLucky: boolean
 	) {
 		// Check the track with the legit method
-		let url;
+		let url: string;
 		wrongLicense =
 			((formatName === "FLAC" || formatName.startsWith("MP4_RA")) &&
 				!dz.currentUser?.can_stream_lossless) ||
