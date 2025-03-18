@@ -2,87 +2,88 @@ import { ID3Writer } from "browser-id3-writer";
 import Metaflac from "metaflac-js2";
 import fs from "fs";
 import Track from "./types/Track.js";
+import type { Tags } from "@/types/Settings.js";
 
-function tagID3(path: string, track: Track, save: any) {
+function tagID3(path: string, track: Track, save: Tags) {
 	const songBuffer = fs.readFileSync(path);
-	const tag: any = new ID3Writer(songBuffer);
-	tag.separateWithNull = String.fromCharCode(0);
+	const writer = new ID3Writer(songBuffer);
 
-	if (save.title) tag.setFrame("TIT2", track.title);
+	if (save.title) writer.setFrame("TIT2", track.title);
 
 	if (save.artist && track.artists.length) {
 		if (save.multiArtistSeparator === "default") {
-			tag.setFrame("TPE1", track.artists);
+			writer.setFrame("TPE1", track.artists);
 		} else {
 			if (save.multiArtistSeparator === "nothing") {
-				tag.setFrame("TPE1", [track.mainArtist.name]);
+				writer.setFrame("TPE1", [track.mainArtist.name]);
 			} else {
-				tag.setFrame("TPE1", [track.artistsString]);
+				writer.setFrame("TPE1", [track.artistsString]);
 			}
 			// Tag ARTISTS is added to keep the multiartist support when using a non standard tagging method
 			// https://picard-docs.musicbrainz.org/en/appendices/tag_mapping.html#artists
 			if (save.artists) {
-				tag.setFrame("TXXX", {
+				writer.setFrame("TXXX", {
 					description: "ARTISTS",
-					value: track.artists,
+					value: track.artists.join(", "),
 				});
 			}
 		}
 	}
 
-	if (save.album) tag.setFrame("TALB", track.album.title);
+	if (save.album) writer.setFrame("TALB", track.album.title);
 
 	if (save.albumArtist && track.album.artists.length) {
 		if (save.singleAlbumArtist && track.album.mainArtist.save) {
-			tag.setFrame("TPE2", [track.album.mainArtist.name]);
+			writer.setFrame("TPE2", track.album.mainArtist.name);
 		} else {
-			tag.setFrame("TPE2", track.album.artists);
+			writer.setFrame("TPE2", track.album.artists.join(", "));
 		}
 	}
 
 	if (save.trackNumber) {
 		let trackNumber = String(track.trackNumber);
 		if (save.trackTotal) trackNumber += `/${track.album.trackTotal}`;
-		tag.setFrame("TRCK", trackNumber);
+		writer.setFrame("TRCK", trackNumber);
 	}
 	if (save.discNumber) {
 		let discNumber = String(track.discNumber);
 		if (save.discTotal) discNumber += `/${track.album.discTotal}`;
-		tag.setFrame("TPOS", discNumber);
+		writer.setFrame("TPOS", discNumber);
 	}
 
-	if (save.genre) tag.setFrame("TCON", track.album.genre);
-	if (save.year) tag.setFrame("TYER", track.date.year);
+	if (save.genre) writer.setFrame("TCON", track.album.genre);
+	if (save.year) writer.setFrame("TYER", Number(track.date.year));
 
 	// Referencing ID3 standard
 	// https://id3.org/id3v2.3.0#TDAT
 	// The 'Date' frame is a numeric string in the DDMM format.
-	if (save.date) tag.setFrame("TDAT", "" + track.date.day + track.date.month);
+	if (save.date)
+		writer.setFrame("TDAT", "" + track.date.day + track.date.month);
 
-	if (save.length) tag.setFrame("TLEN", track.duration * 1000);
-	if (save.bpm && track.bpm) tag.setFrame("TBPM", track.bpm);
-	if (save.label) tag.setFrame("TPUB", track.album.label);
-	if (save.isrc) tag.setFrame("TSRC", track.ISRC);
+	if (save.length) writer.setFrame("TLEN", track.duration * 1000);
+	if (save.bpm && track.bpm) writer.setFrame("TBPM", track.bpm);
+	if (save.label) writer.setFrame("TPUB", track.album.label);
+	if (save.isrc) writer.setFrame("TSRC", track.ISRC);
 	if (save.barcode) {
-		tag.setFrame("TXXX", {
+		writer.setFrame("TXXX", {
 			description: "BARCODE",
 			value: track.album.barcode,
 		});
 	}
 	if (save.explicit) {
-		tag.setFrame("TXXX", {
+		writer.setFrame("TXXX", {
 			description: "ITUNESADVISORY",
 			value: track.explicit ? "1" : "0",
 		});
 	}
 	if (save.replayGain) {
-		tag.setFrame("TXXX", {
+		writer.setFrame("TXXX", {
 			description: "REPLAYGAIN_TRACK_GAIN",
 			value: track.replayGain,
 		});
 	}
 	if (save.lyrics && track.lyrics.unsync) {
-		tag.setFrame("USLT", {
+		writer.setFrame("USLT", {
 			description: "",
 			lyrics: track.lyrics.unsync,
 			language: "XXX",
@@ -90,11 +91,10 @@ function tagID3(path: string, track: Track, save: any) {
 	}
 
 	if (save.syncedLyrics && track.lyrics.syncID3.length !== 0) {
-		tag.setFrame("SYLT", {
-			text: track.lyrics.syncID3,
+		writer.setFrame("SYLT", {
 			type: 1,
+			text: track.lyrics.syncID3,
 			timestampFormat: 2,
-			useUnicodeEncoding: true,
 		});
 	}
 
@@ -105,43 +105,44 @@ function tagID3(path: string, track: Track, save: any) {
 				involvedPeople.push([role, person]);
 			});
 		} else if (role === "composer" && save.composer) {
-			tag.setFrame("TCOM", track.contributors.composer);
+			writer.setFrame("TCOM", track.contributors.composer);
 		}
 	});
 	if (involvedPeople.length && save.involvedPeople)
-		tag.setFrame("IPLS", involvedPeople);
+		writer.setFrame("IPLS", involvedPeople);
 
-	if (save.copyright && track.copyright) tag.setFrame("TCOP", track.copyright);
+	if (save.copyright && track.copyright)
+		writer.setFrame("TCOP", track.copyright);
 	if (
 		(save.savePlaylistAsCompilation && track.playlist) ||
 		track.album.recordType === "compile"
 	) {
-		tag.setFrame("TCMP", "1");
+		writer.setFrame("TCMP", "1");
 	}
 
 	if (save.source) {
-		tag.setFrame("TXXX", {
+		writer.setFrame("TXXX", {
 			description: "SOURCE",
 			value: "Deezer",
 		});
-		tag.setFrame("TXXX", {
+		writer.setFrame("TXXX", {
 			description: "SOURCEID",
-			value: track.id,
+			value: track.id.toString(),
 		});
 	}
 
-	if (save.rating) {
-		let rank = (track.rank / 10000) * 2.55;
-		rank = rank > 255 ? 255 : Math.round(rank);
-		tag.setFrame("POPM", {
-			rating: rank,
-		});
-	}
+	// if (save.rating) {
+	// 	let rank = (track.rank / 10000) * 2.55;
+	// 	rank = rank > 255 ? 255 : Math.round(rank);
+	// 	writer.setFrame("POPM", {
+	// 		rating: rank,
+	// 	});
+	// }
 
 	if (save.cover && track.album.embeddedCoverPath) {
 		const coverArrayBuffer = fs.readFileSync(track.album.embeddedCoverPath);
 		if (coverArrayBuffer.length !== 0) {
-			tag.setFrame("APIC", {
+			writer.setFrame("APIC", {
 				type: 3,
 				data: coverArrayBuffer,
 				description: "cover",
@@ -149,9 +150,8 @@ function tagID3(path: string, track: Track, save: any) {
 			});
 		}
 	}
-	tag.addTag();
 
-	let taggedSongBuffer = Buffer.from(tag.arrayBuffer);
+	let taggedSongBuffer = Buffer.from(writer.addTag());
 	if (taggedSongBuffer.slice(-128, -125).toString() === "TAG") {
 		taggedSongBuffer = taggedSongBuffer.slice(0, -128);
 	}
