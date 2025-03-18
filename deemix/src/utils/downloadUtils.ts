@@ -1,14 +1,15 @@
 import fs from "fs";
 import { OverwriteOption } from "../settings.js";
 import { tagFLAC, tagID3 } from "../tagger.js";
+import type Track from "@/types/Track.js";
 
 export const checkShouldDownload = (
-	filename,
-	filepath,
-	extension,
-	writepath,
-	overwriteFile,
-	track
+	filename: string,
+	filepath: string,
+	extension: string,
+	writepath: string,
+	overwriteFile: string,
+	track: Track
 ) => {
 	if (
 		overwriteFile === OverwriteOption.OVERWRITE ||

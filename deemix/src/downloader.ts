@@ -293,14 +293,16 @@ export class Downloader {
 		if (this.downloadObject.isCanceled) throw new DownloadCanceled();
 
 		if (this.settings.overwriteFile === OverwriteOption.KEEP_BOTH) {
-			const baseFilename = `${filepath}/${filename}`;
-			let currentFilename;
+			const originalFilename = `${filepath}/${filename}`;
+
 			let c = 0;
-			do {
+			let currentFilename = originalFilename;
+			while (existsSync(currentFilename + extension)) {
 				c++;
-				currentFilename = `${baseFilename} (${c})${extension}`;
-			} while (existsSync(currentFilename));
-			writepath = currentFilename;
+				currentFilename = `${originalFilename} (${c})`;
+			}
+
+			writepath = currentFilename + extension;
 		}
 
 		itemData = {
