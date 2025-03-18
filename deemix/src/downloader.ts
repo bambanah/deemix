@@ -234,6 +234,8 @@ export class Downloader {
 		track.bitrate = selectedFormat;
 		track.album.bitrate = selectedFormat;
 
+		track.applySettings(this.settings);
+
 		const { filename, filepath, artistPath, coverPath, extrasPath } =
 			generatePath(track, this.downloadObject.type, this.settings);
 
@@ -288,12 +290,6 @@ export class Downloader {
 			return returnData;
 		}
 
-		// Apply Settings
-		track.applySettings(this.settings);
-
-		// Generate filename and filepath from metadata
-		// const { filename, filepath, artistPath, coverPath, extrasPath } =
-		// 	generatePath(track, this.downloadObject, this.settings);
 		if (this.downloadObject.isCanceled) throw new DownloadCanceled();
 
 		if (this.settings.overwriteFile === OverwriteOption.KEEP_BOTH) {
