@@ -13,7 +13,9 @@ on:
       - docker/**
       - webui/CHANGELOG.md
 
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   HUSKY: 0
