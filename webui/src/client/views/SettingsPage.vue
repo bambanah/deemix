@@ -1353,6 +1353,9 @@ function canDownload(bitrate: number) {
 
 			<div class="input-group">
 				<p class="input-group-text">{{ t("settings.spotify.username") }}</p>
+				<p class="input-group-text text-sm text-gray-400">
+					{{ t("settings.spotify.usernameHint") }}
+				</p>
 				<input v-model="spotifyUser" type="text" />
 			</div>
 
@@ -1461,6 +1464,8 @@ function canDownload(bitrate: number) {
 }
 
 /* Input group */
+.input-group {
+}
 .input-group .input-group-text {
 	margin-bottom: 0.5rem;
 }
