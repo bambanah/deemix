@@ -10,7 +10,6 @@ const extraFileExtensions = [".vue"];
 export default tslint.config(
 	eslint.configs.recommended,
 	...tslint.configs.recommended,
-	// @ts-expect-error Fix your plugin
 	...pluginVue.configs["flat/recommended"],
 	{
 		languageOptions: {
