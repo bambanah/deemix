@@ -1,5 +1,12 @@
 # deemix
 
+## 3.13.2
+
+### Patch Changes
+
+- 059678b: Fix itunes compilation flag not saving correctly
+- 5fc671e: Fix "keep both" download option adding number to first song
+
 ## 3.13.1
 
 ### Patch Changes

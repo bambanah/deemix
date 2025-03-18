@@ -1,5 +1,14 @@
 # deemix-webui
 
+## 4.3.3
+
+### Patch Changes
+
+- fd5103f: Fix executeCommand not being saved
+- Updated dependencies [059678b]
+- Updated dependencies [5fc671e]
+  - deemix@3.13.2
+
 ## 4.3.2
 
 ### Patch Changes
