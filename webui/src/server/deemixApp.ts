@@ -157,7 +157,6 @@ export class DeemixApp {
 	}
 
 	saveSettings(newSettings: Settings, newSpotifySettings: SpotifySettings) {
-		newSettings.executeCommand = this.settings.executeCommand;
 		saveSettings(newSettings, configFolder);
 		this.settings = newSettings;
 		this.plugins.spotify.saveSettings(newSpotifySettings);
