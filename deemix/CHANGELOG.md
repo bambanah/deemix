@@ -1,5 +1,11 @@
 # deemix
 
+## 3.13.1
+
+### Patch Changes
+
+- d4015d3: Fix title casing not being applied correctly
+
 ## 3.13.0
 
 ### Minor Changes
