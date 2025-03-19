@@ -6,6 +6,9 @@ export class Collection extends DownloadObject {
 	collection: any;
 
 	constructor(obj) {
+		if (!obj || typeof obj !== 'object' || !obj.collection) {
+			throw new Error("Invalid collection data.");
+		}
 		super(obj);
 		this.collection = obj.collection;
 		this.__type__ = "Collection";
@@ -33,6 +36,9 @@ export class Convertable extends Collection {
 	conversionData: SpotifyTrack[];
 
 	constructor(obj) {
+		if (!obj || typeof obj !== 'object' || !obj.plugin || !obj.conversion_data) {
+			throw new Error("Invalid conversion data.");
+		}
 		super(obj);
 		this.plugin = obj.plugin;
 		this.conversionData = obj.conversion_data;
