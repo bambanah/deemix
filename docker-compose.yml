@@ -1,0 +1,10 @@
+services:
+  deemix:
+    container_name: Deemix
+    build: .
+    restart: unless-stopped
+    ports:
+      - 6595:6595
+    volumes:
+      - /var/lib/deemix:/config
+      - /path/to/music:/downloads
