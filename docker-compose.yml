@@ -6,5 +6,5 @@ services:
     ports:
       - 6595:6595
     volumes:
-      - ${DEEMIX_CONFIG_PATH}:/config   # Set the `DEEMIX_CONFIG_PATH` environment variable in the shell where `docker-compose up` is being ran
-      - ${DEEMIX_MUSIC_PATH}:/downloads # Set the `DEEMIX_MUSIC_PATH` environment variable in the shell where `docker-compose up` is being ran
+      - "${DEEMIX_CONFIG_PATH}:/config"   # Set the `DEEMIX_CONFIG_PATH` environment variable in the shell where `docker-compose up` is being ran
+      - "${DEEMIX_MUSIC_PATH}:/downloads" # Set the `DEEMIX_MUSIC_PATH` environment variable in the shell where `docker-compose up` is being ran
