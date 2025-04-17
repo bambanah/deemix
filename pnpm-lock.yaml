@@ -341,7 +341,7 @@ importers:
         version: 17.0.33
       '@vitejs/plugin-vue':
         specifier: ^5.1.3
-        version: 5.1.4(vite@5.4.18(@types/node@22.14.1))(vue@3.5.12(typescript@5.8.3))
+        version: 5.1.4(vite@6.2.2(@types/node@22.14.1)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0))(vue@3.5.12(typescript@5.8.3))
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.47)
@@ -370,14 +370,14 @@ importers:
         specifier: ^4.19.1
         version: 4.19.2
       vite:
-        specifier: ^5.4.18
-        version: 5.4.18(@types/node@22.14.1)
+        specifier: ^6.0.15
+        version: 6.2.2(@types/node@22.14.1)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0)
       vite-svg-loader:
         specifier: ^5.1.0
         version: 5.1.0(vue@3.5.12(typescript@5.8.3))
       vite-tsconfig-paths:
         specifier: ^5.1.4
-        version: 5.1.4(typescript@5.8.3)(vite@5.4.18(@types/node@22.14.1))
+        version: 5.1.4(typescript@5.8.3)(vite@6.2.2(@types/node@22.14.1)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0))
       vue-tsc:
         specifier: ^2.2.8
         version: 2.2.8(typescript@5.8.3)
@@ -7127,9 +7127,9 @@ snapshots:
       '@typescript-eslint/types': 8.26.1
       eslint-visitor-keys: 4.2.0
 
-  '@vitejs/plugin-vue@5.1.4(vite@5.4.18(@types/node@22.14.1))(vue@3.5.12(typescript@5.8.3))':
+  '@vitejs/plugin-vue@5.1.4(vite@6.2.2(@types/node@22.14.1)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0))(vue@3.5.12(typescript@5.8.3))':
     dependencies:
-      vite: 5.4.18(@types/node@22.14.1)
+      vite: 6.2.2(@types/node@22.14.1)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0)
       vue: 3.5.12(typescript@5.8.3)
 
   '@vitest/expect@2.1.9':
@@ -10932,7 +10932,7 @@ snapshots:
     dependencies:
       browserslist: 4.23.3
       escalade: 3.2.0
-      picocolors: 1.1.1
+      picocolors: 1.1.0
 
   uri-js@4.4.1:
     dependencies:
@@ -11006,13 +11006,13 @@ snapshots:
       - supports-color
       - typescript
 
-  vite-tsconfig-paths@5.1.4(typescript@5.8.3)(vite@5.4.18(@types/node@22.14.1)):
+  vite-tsconfig-paths@5.1.4(typescript@5.8.3)(vite@6.2.2(@types/node@22.14.1)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0)):
     dependencies:
       debug: 4.4.0
       globrex: 0.1.2
       tsconfck: 3.1.3(typescript@5.8.3)
     optionalDependencies:
-      vite: 5.4.18(@types/node@22.14.1)
+      vite: 6.2.2(@types/node@22.14.1)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0)
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -11026,14 +11026,17 @@ snapshots:
       '@types/node': 20.17.3
       fsevents: 2.3.3
 
-  vite@5.4.18(@types/node@22.14.1):
+  vite@6.2.2(@types/node@22.14.1)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0):
     dependencies:
-      esbuild: 0.21.5
+      esbuild: 0.25.2
       postcss: 8.5.3
       rollup: 4.40.0
     optionalDependencies:
       '@types/node': 22.14.1
       fsevents: 2.3.3
+      jiti: 2.4.2
+      tsx: 4.19.2
+      yaml: 2.6.0
 
   vite@6.2.2(@types/node@22.14.1)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.6.0):
     dependencies:
