@@ -42,6 +42,10 @@ export function reverseStreamURL(url) {
 }
 
 export async function streamTrack(writepath, track, downloadObject, listener) {
+	if (!track.downloadURL) {
+		throw new Error("Track download URL is missing.");
+	}
+
 	if (downloadObject && downloadObject.isCanceled) throw new DownloadCanceled();
 	const headers = { "User-Agent": USER_AGENT_HEADER };
 	let chunkLength = 0;

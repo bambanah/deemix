@@ -17,7 +17,8 @@
 		"compile:cli": "turbo run deemix-cli#compile",
 		"ci": "turbo run lint type-check build test",
 		"clean": "rimraf .turbo node_modules --glob **/dist **/out **/node_modules **/.turbo **/tsconfig.tsbuildinfo",
-		"prepare": "husky"
+		"prepare": "husky",
+		"changeset": "changeset"
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.28.1",
@@ -25,10 +26,11 @@
 		"@commitlint/config-conventional": "^19.8.0",
 		"@eslint/js": "^9.22.0",
 		"@total-typescript/tsconfig": "^1.0.4",
+		"@types/eslint": "^8.56.2",
 		"@types/eslint-config-prettier": "^6.11.3",
 		"@types/node": "^20.16.3",
 		"@typescript-eslint/parser": "~8.26.1",
-		"esbuild": "^0.25.1",
+		"esbuild": "^0.25.0",
 		"eslint": "^9.22.0",
 		"eslint-config-prettier": "^10.1.1",
 		"eslint-plugin-vue": "^10.0.0",

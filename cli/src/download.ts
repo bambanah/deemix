@@ -24,6 +24,14 @@ export const downloadLinks = async (
 	settings: Settings,
 	spotifyPlugin: SpotifyPlugin
 ) => {
+	if (!settings) {
+		throw new Error("Settings object is required.");
+	}
+
+	if (!spotifyPlugin) {
+		throw new Error("Spotify plugin is required.");
+	}
+
 	const bitrate = settings.maxBitrate ?? TrackFormats.MP3_128;
 
 	const downloadObjects = [];
@@ -51,6 +59,11 @@ export const downloadLinks = async (
 					"Documentation: https://developer.spotify.com/documentation/web-api/tutorials/getting-started#create-an-app"
 				);
 
+				continue;
+			}
+
+			if (e instanceof Error && e.name === "LinkNotRecognized") {
+				console.error(`Invalid URL: ${url}`);
 				continue;
 			}
 

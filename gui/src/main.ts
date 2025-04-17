@@ -14,6 +14,7 @@ import { platform } from "os";
 import { join } from "path";
 import { hideBin } from "yargs/helpers";
 import yargs from "yargs/yargs";
+import WindowStateManager from "electron-window-state-manager";
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 if (require("electron-squirrel-startup") === true) app.quit();
@@ -33,9 +34,17 @@ process.env.DEEMIX_HOST = argv.host;
 let win: BrowserWindow | null = null;
 
 async function main() {
+	// Configure window state manager
+	const windowState = new WindowStateManager("main", {
+		defaultWidth: 800,
+		defaultHeight: 600,
+	});
+
 	win = new BrowserWindow({
-		width: 800,
-		height: 600,
+		width: windowState.width,
+		height: windowState.height,
+		x: windowState.x,
+		y: windowState.y,
 		useContentSize: true,
 		autoHideMenuBar: true,
 		icon: join(
@@ -46,6 +55,17 @@ async function main() {
 			preload: join(path.dirname(fileURLToPath(import.meta.url)), "preload.js"),
 		},
 	});
+
+	// Restore maximized state
+	if (windowState.maximized) {
+		win.maximize();
+	}
+
+	// Save window state on changes
+	win.on("resize", () => windowState.saveState(win));
+	win.on("move", () => windowState.saveState(win));
+	win.on("maximize", () => windowState.saveState(win));
+	win.on("unmaximize", () => windowState.saveState(win));
 
 	if (process.env.NODE_ENV === "development") {
 		win.setMenu(null);
@@ -81,7 +101,29 @@ async function main() {
 		return { action: "deny" };
 	});
 
-	win.loadURL(`http://localhost:${PORT}`);
+	// Add connection error handling
+	let retryCount = 0;
+	const maxRetries = 5;
+	const retryDelay = 1000;
+
+	const tryConnect = async () => {
+		try {
+			await win.loadURL(`http://localhost:${PORT}`);
+		} catch (error) {
+			if (retryCount < maxRetries) {
+				retryCount++;
+				setTimeout(tryConnect, retryDelay);
+			} else {
+				dialog.showErrorBox(
+					"Connection Error",
+					`Failed to connect to deemix server at http://localhost:${PORT}. Please check if the server is running.`
+				);
+				app.quit();
+			}
+		}
+	};
+
+	await tryConnect();
 
 	win.on("close", () => {
 		if (deemixApp.getSettings().settings.clearQueueOnExit) {
