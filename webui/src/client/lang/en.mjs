@@ -466,6 +466,8 @@ const en = {
 			clientID: "Spotify ClientID",
 			clientSecret: "Spotify Client Secret",
 			username: "Spotify Username",
+			usernameHint:
+				"Your public username used for grabbing your public playlists. Not the username you use to sign in.",
 			question: "How do I enable Spotify Features?",
 			howTo: {
 				prologue: {

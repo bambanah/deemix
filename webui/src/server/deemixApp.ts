@@ -157,7 +157,6 @@ export class DeemixApp {
 	}
 
 	saveSettings(newSettings: Settings, newSpotifySettings: SpotifySettings) {
-		newSettings.executeCommand = this.settings.executeCommand;
 		saveSettings(newSettings, configFolder);
 		this.settings = newSettings;
 		this.plugins.spotify.saveSettings(newSpotifySettings);
@@ -192,7 +191,7 @@ export class DeemixApp {
 
 		let downloadObjs: DownloadObject[] = [];
 		const downloadErrors: any[] = [];
-		let link: string = "";
+		let link = "";
 		const requestUUID = uuidv4();
 
 		if (url.length > 1) {
@@ -225,7 +224,7 @@ export class DeemixApp {
 		}
 
 		if (downloadErrors.length) {
-			downloadErrors.forEach((e: any) => {
+			downloadErrors.forEach((e) => {
 				if (!e.errid) logger.error(e);
 				this.listener.send("queueError", {
 					link: e.link,

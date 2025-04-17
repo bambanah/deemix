@@ -1,5 +1,24 @@
 # deemix
 
+## 3.13.2
+
+### Patch Changes
+
+- 059678b: Fix itunes compilation flag not saving correctly
+- 5fc671e: Fix "keep both" download option adding number to first song
+
+## 3.13.1
+
+### Patch Changes
+
+- d4015d3: Fix title casing not being applied correctly
+
+## 3.13.0
+
+### Minor Changes
+
+- ec74308: Fix name generation for %playlist% replacement
+
 ## 3.12.2
 
 ### Patch Changes
