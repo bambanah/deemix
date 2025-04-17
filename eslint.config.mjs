@@ -9,8 +9,10 @@ import tsPlugin from "@typescript-eslint/eslint-plugin";
 const extraFileExtensions = [".vue"];
 const compat = new FlatCompat();
 
-export default [
-	js.configs.recommended,
+export default tslint.config(
+	eslint.configs.recommended,
+	...tslint.configs.recommended,
+	...pluginVue.configs["flat/recommended"],
 	{
 		files: ["**/*.{ts,tsx,mts,cts}"],
 		languageOptions: {

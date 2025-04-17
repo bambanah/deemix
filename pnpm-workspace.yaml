@@ -1,6 +1,12 @@
 packages:
-  - "webui"
-  - "deemix"
-  - "deezer-sdk"
-  - "gui"
-  - "cli"
+  - webui
+  - deemix
+  - deezer-sdk
+  - gui
+  - cli
+onlyBuiltDependencies:
+  - electron
+  - electron-winstaller
+  - esbuild
+  - utf-8-validate
+  - vue-demi

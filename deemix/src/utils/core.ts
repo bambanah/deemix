@@ -1,4 +1,4 @@
-import { accessSync, constants } from "fs";
+import { accessSync, constants, type PathLike } from "fs";
 import stream from "stream";
 import { promisify } from "util";
 import { ErrorMessages } from "@/errors.js";
@@ -8,7 +8,7 @@ export const pipeline = promisify(stream.pipeline);
 export const USER_AGENT_HEADER =
 	"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36";
 
-export function canWrite(path) {
+export function canWrite(path: PathLike) {
 	try {
 		accessSync(path, constants.R_OK | constants.W_OK);
 	} catch {
@@ -17,43 +17,45 @@ export function canWrite(path) {
 	return true;
 }
 
-export function generateReplayGainString(trackGain) {
-	return `${Math.round((parseFloat(trackGain) + 18.4) * -100) / 100} dB`;
+export function generateReplayGainString(trackGain: number) {
+	return `${Math.round((trackGain + 18.4) * -100) / 100} dB`;
 }
 
-export function changeCase(txt, type) {
-	switch (type) {
+export function changeCase(text: string, caseType: string) {
+	switch (caseType) {
 		case "lower":
-			return txt.toLowerCase();
+			return text.toLowerCase();
 		case "upper":
-			return txt.toUpperCase();
-		case "start":
-			txt = txt.trim().split(" ");
-			for (let i = 0; i < txt.length; i++) {
+			return text.toUpperCase();
+		case "start": {
+			const words = text.trim().split(" ");
+			for (let i = 0; i < words.length; i++) {
 				if (
 					["(", "{", "[", "'", '"'].some(
-						(bracket) => txt[i].length > 1 && txt[i].startsWith(bracket)
+						(bracket) => words[i].length > 1 && words[i].startsWith(bracket)
 					)
 				) {
-					txt[i] =
-						txt[i][0] +
-						txt[i][1].toUpperCase() +
-						txt[i].substr(2).toLowerCase();
-				} else if (txt[i].length > 1) {
-					txt[i] = txt[i][0].toUpperCase() + txt[i].substr(1).toLowerCase();
+					words[i] =
+						words[i][0] +
+						words[i][1].toUpperCase() +
+						words[i].substr(2).toLowerCase();
+				} else if (words[i].length > 1) {
+					words[i] =
+						words[i][0].toUpperCase() + words[i].substr(1).toLowerCase();
 				} else {
-					txt[i] = txt[i][0].toUpperCase();
+					words[i] = words[i][0].toUpperCase();
 				}
 			}
-			return txt.join(" ");
+			return words.join(" ");
+		}
 		case "sentence":
-			return txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase();
+			return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 		default:
-			return txt;
+			return text;
 	}
 }
 
-export function removeFeatures(title) {
+export function removeFeatures(title: string) {
 	let clean = title;
 	let found = false;
 	let pos;
@@ -81,23 +83,25 @@ export function removeFeatures(title) {
 	return clean;
 }
 
-export function andCommaConcat(lst) {
-	const tot = lst.length;
+export function andCommaConcat(list: string[]) {
+	const total = list.length;
 	let result = "";
-	lst.forEach((art, i) => {
+
+	list.forEach((art, i) => {
 		result += art;
-		if (tot !== i + 1) {
-			if (tot - 1 === i + 1) {
+		if (total !== i + 1) {
+			if (total - 1 === i + 1) {
 				result += " & ";
 			} else {
 				result += ", ";
 			}
 		}
 	});
+
 	return result;
 }
 
-export function uniqueArray(arr) {
+export function uniqueArray(arr: any[]) {
 	arr.forEach((namePrinc, iPrinc) => {
 		arr.forEach((nameRest, iRest) => {
 			if (

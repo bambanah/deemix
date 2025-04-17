@@ -1312,8 +1312,11 @@ function canDownload(bitrate: number) {
 				<p class="secondary-text">
 					{{ t("settings.other.executeCommand.description") }}
 				</p>
-				<p v-if="settings.executeCommand">{{ settings.executeCommand }}</p>
-				<p v-else>{{ t("globals.empty").capitalize() }}</p>
+				<input
+					v-model="settings.executeCommand"
+					type="text"
+					class="font-mono text-base"
+				/>
 			</div>
 		</BaseAccordion>
 
@@ -1353,6 +1356,9 @@ function canDownload(bitrate: number) {
 
 			<div class="input-group">
 				<p class="input-group-text">{{ t("settings.spotify.username") }}</p>
+				<p class="input-group-text text-sm text-gray-400">
+					{{ t("settings.spotify.usernameHint") }}
+				</p>
 				<input v-model="spotifyUser" type="text" />
 			</div>
 
@@ -1460,7 +1466,6 @@ function canDownload(bitrate: number) {
 	user-select: none;
 }
 
-/* Input group */
 .input-group .input-group-text {
 	margin-bottom: 0.5rem;
 }

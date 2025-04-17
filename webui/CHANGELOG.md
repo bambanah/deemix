@@ -1,5 +1,29 @@
 # deemix-webui
 
+## 4.3.3
+
+### Patch Changes
+
+- fd5103f: Fix executeCommand not being saved
+- Updated dependencies [059678b]
+- Updated dependencies [5fc671e]
+  - deemix@3.13.2
+
+## 4.3.2
+
+### Patch Changes
+
+- 079a2fd: Add hint for spotify username to explain that it's the public username, not the one used to sign in
+- Updated dependencies [d4015d3]
+  - deemix@3.13.1
+
+## 4.3.1
+
+### Patch Changes
+
+- Updated dependencies [ec74308]
+  - deemix@3.13.0
+
 ## 4.3.0
 
 ### Minor Changes

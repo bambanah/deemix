@@ -1,14 +1,16 @@
+import type { Tags } from "@/types/Settings.js";
+import type Track from "@/types/Track.js";
 import fs from "fs";
 import { OverwriteOption } from "../settings.js";
 import { tagFLAC, tagID3 } from "../tagger.js";
 
 export const checkShouldDownload = (
-	filename,
-	filepath,
-	extension,
-	writepath,
-	overwriteFile,
-	track
+	filename: string,
+	filepath: string,
+	extension: string,
+	writepath: string,
+	overwriteFile: string,
+	track: Track
 ) => {
 	if (
 		overwriteFile === OverwriteOption.OVERWRITE ||
@@ -54,7 +56,12 @@ export const checkShouldDownload = (
 	return !trackAlreadyDownloaded;
 };
 
-export const tagTrack = (extension, writepath, track, tags) => {
+export const tagTrack = (
+	extension: string,
+	writepath: string,
+	track,
+	tags: Tags
+) => {
 	if (extension === ".mp3") {
 		tagID3(writepath, track, tags);
 	} else if (extension === ".flac") {
