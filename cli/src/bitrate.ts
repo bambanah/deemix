@@ -46,6 +46,10 @@ export function parseBitrate(
 }
 
 export function getBitrateNumberFromText(text: string) {
+	if (typeof text !== "string" || text.trim() === "") {
+		throw new Error("Invalid input: Bitrate text must be a non-empty string.");
+	}
+
 	text = text.trim().toLowerCase();
 
 	for (const [bitrate, bitrateTexts] of Object.entries(bitrateTextNumberMap)) {
