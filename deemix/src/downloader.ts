@@ -1,5 +1,5 @@
 import { each, queue } from "async";
-import { exec } from "child_process";
+import { execFile } from "child_process";
 import {
 	Deezer,
 	TrackFormats,
@@ -675,10 +675,14 @@ export class Downloader {
 		// Execute command after download
 		try {
 			if (this.settings.executeCommand !== "") {
-				const child = exec(
-					this.settings.executeCommand
-						.replaceAll("%folder%", shellEscape(this.downloadObject.extrasPath))
-						.replaceAll("%filename%", shellEscape(track.filename)),
+				const command = this.settings.executeCommand
+					.replaceAll("%folder%", shellEscape(this.downloadObject.extrasPath))
+					.replaceAll("%filename%", shellEscape(track.filename));
+
+				const [cmd, ...args] = command.split(" ");
+				const child = execFile(
+					cmd,
+					args,
 					(error, stdout, stderr) => {
 						if (error) this.afterDownloadErrorReport("ExecuteCommand", error);
 						const itemData = { stderr, stdout };
