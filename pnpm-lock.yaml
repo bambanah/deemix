@@ -114,9 +114,6 @@ importers:
       async:
         specifier: ^3.2.0
         version: 3.2.6
-      blowfish-node:
-        specifier: ^1.1.4
-        version: 1.1.4
       browser-id3-writer:
         specifier: ^6.2.0
         version: 6.2.0
@@ -2284,9 +2281,6 @@ packages:
 
   bl@4.1.0:
     resolution: {integrity: sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==}
-
-  blowfish-node@1.1.4:
-    resolution: {integrity: sha512-Iahpxc/cutT0M0tgwV5goklB+EzDuiYLgwJg050AmUG2jSIOpViWMLdnRgBxzZuNfswAgHSUiIdvmNdgL2v6DA==}
 
   bluebird@3.7.2:
     resolution: {integrity: sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==}
@@ -7793,8 +7787,6 @@ snapshots:
       buffer: 5.7.1
       inherits: 2.0.4
       readable-stream: 3.6.2
-
-  blowfish-node@1.1.4: {}
 
   bluebird@3.7.2: {}
 
