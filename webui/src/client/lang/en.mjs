@@ -132,9 +132,9 @@ const en = {
 			notEncoded: "Track not yet encoded!",
 			notEncodedNoAlternative:
 				"Track not yet encoded and no alternative found!",
-			wrongBitrate: "Track not found at desired bitrate.",
+			wrongBitrate: "Track not found at {bitrate} bitrate.",
 			wrongBitrateNoAlternative:
-				"Track not found at desired bitrate and no alternative found!",
+				"Track not found at {bitrate} bitrate and no alternative found!",
 			no360RA: "Track is not available in Reality Audio 360.",
 			notAvailable: "Track not available on Deezer's servers!",
 			notAvailableNoAlternative:
@@ -339,6 +339,13 @@ const en = {
 				9: "FLAC 1411kbps",
 				3: "MP3 320kbps",
 				1: "MP3 128kbps",
+			},
+			minimumBitrate: {
+				title: "Minimum Bitrate",
+				3: "MP3 320kbps",
+				1: "MP3 128kbps",
+				description:
+					"When bitrate fallback is enabled, this sets the minimum quality level. Downloads will fail instead of falling below this level.",
 			},
 			overwriteFile: {
 				title: "Should I overwrite the files?",

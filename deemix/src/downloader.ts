@@ -35,6 +35,29 @@ import {
 
 const { mapGwTrackToDeezer: map_track } = utils;
 
+// Helper function to convert bitrate values to readable strings
+function formatBitrateString(bitrate: number): string {
+	switch (bitrate) {
+		case TrackFormats.FLAC:
+			return "FLAC";
+		case TrackFormats.MP3_320:
+			return "MP3 320kbps";
+		case TrackFormats.MP3_128:
+			return "MP3 128kbps";
+		case TrackFormats.MP4_RA3:
+			return "360 RA3";
+		case TrackFormats.MP4_RA2:
+			return "360 RA2";
+		case TrackFormats.MP4_RA1:
+			return "360 RA1";
+		default:
+			return `${bitrate}`;
+	}
+}
+
+const TEMPDIR = tmpdir() + "/deemix-imgs";
+mkdirSync(TEMPDIR, { recursive: true });
+
 const extensions = {
 	[TrackFormats.FLAC]: ".flac",
 	[TrackFormats.LOCAL]: ".mp3",
@@ -45,9 +68,6 @@ const extensions = {
 	[TrackFormats.MP4_RA2]: ".mp4",
 	[TrackFormats.MP4_RA1]: ".mp4",
 } as const;
-
-const TEMPDIR = tmpdir() + "/deemix-imgs";
-mkdirSync(TEMPDIR, { recursive: true });
 
 export class Downloader {
 	dz: Deezer;
@@ -213,17 +233,34 @@ export class Downloader {
 				this.settings.fallbackBitrate,
 				this.settings.feelingLucky,
 				this.downloadObject.uuid,
-				this.listener
+				this.listener,
+				this.settings.minimumBitrate
 			);
 		} catch (e) {
 			if (e.name === "WrongLicense") {
-				throw new DownloadFailed("wrongLicense");
+				const formatName = e.message;
+				const bitrateError = new DownloadFailed("wrongLicense");
+				bitrateError.message = ErrorMessages.wrongLicense.replace(
+					"{bitrate}",
+					formatName || "desired bitrate"
+				);
+				throw bitrateError;
 			}
 			if (e.name === "WrongGeolocation") {
 				throw new DownloadFailed("wrongGeolocation", track);
 			}
 			if (e.name === "PreferredBitrateNotFound") {
-				throw new DownloadFailed("wrongBitrate", track);
+				const errid = e.bitrate ? "wrongBitrate" : "wrongBitrate";
+				const message = e.bitrate
+					? ErrorMessages.wrongBitrate.replace(
+							"{bitrate}",
+							formatBitrateString(e.bitrate)
+						)
+					: ErrorMessages.wrongBitrate.replace("{bitrate}", "desired");
+
+				const error = new DownloadFailed(errid, track, e.bitrate);
+				error.message = message;
+				throw error;
 			}
 			if (e.name === "TrackNot360") {
 				throw new DownloadFailed("no360RA");
@@ -538,7 +575,14 @@ export class Downloader {
 						}
 					}
 					e.errid += "NoAlternative";
-					e.message = ErrorMessages[e.errid];
+					if (e.errid === "wrongBitrateNoAlternative" && e.bitrate) {
+						e.message = ErrorMessages.wrongBitrateNoAlternative.replace(
+							"{bitrate}",
+							formatBitrateString(e.bitrate)
+						);
+					} else {
+						e.message = ErrorMessages[e.errid];
+					}
 				}
 				result = {
 					error: {
