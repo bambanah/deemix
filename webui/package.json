@@ -81,7 +81,7 @@
 		"supertest": "^7.0.0",
 		"tsc-alias": "^1.8.10",
 		"tsx": "^4.19.1",
-		"vite": "^5.4.2",
+		"vite": "^5.4.19",
 		"vite-svg-loader": "^5.1.0",
 		"vite-tsconfig-paths": "^5.1.4",
 		"vue-tsc": "^2.2.8"
