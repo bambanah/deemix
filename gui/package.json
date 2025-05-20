@@ -27,7 +27,7 @@
 		"@electron/rebuild": "^3.7.0",
 		"@types/yargs": "^17.0.33",
 		"electron": "33.0.2",
-		"esbuild": "^0.24.0",
+		"esbuild": "^0.25.0",
 		"node-gyp": "^10.2.0",
 		"tsup": "^8.3.5"
 	},
