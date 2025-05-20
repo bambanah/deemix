@@ -34,15 +34,19 @@ export function parseBitrate(
 	settings: Pick<Settings, "maxBitrate">,
 	bitrate: string
 ) {
-	const downloadBitrate = getBitrateNumberFromText(bitrate);
-
-	if (downloadBitrate) {
-		settings.maxBitrate = downloadBitrate;
-	} else {
-		displayBitrateHelp(bitrate);
-
+	if (typeof bitrate !== "string") {
+		console.error("Bitrate must be a string");
 		process.exit(1);
 	}
+
+	const downloadBitrate = getBitrateNumberFromText(bitrate);
+
+	if (downloadBitrate === undefined) {
+		displayBitrateHelp(bitrate);
+		process.exit(1);
+	}
+
+	settings.maxBitrate = downloadBitrate;
 }
 
 export function getBitrateNumberFromText(text: string) {

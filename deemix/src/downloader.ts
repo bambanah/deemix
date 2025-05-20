@@ -65,6 +65,8 @@ export class Downloader {
 		settings: Settings,
 		listener: Listener
 	) {
+		if (!dz) throw new Error('Deezer instance is required');
+		if (!downloadObject) throw new Error('DownloadObject is required');
 		this.dz = dz;
 		this.downloadObject = downloadObject;
 		this.settings = settings || DEFAULT_SETTINGS;

@@ -24,6 +24,14 @@ export const downloadLinks = async (
 	settings: Settings,
 	spotifyPlugin: SpotifyPlugin
 ) => {
+	if (!dz || !urls || !settings || !spotifyPlugin) {
+		throw new Error("Missing required parameters");
+	}
+
+	if (!Array.isArray(urls)) {
+		throw new Error("URLs must be an array");
+	}
+
 	const bitrate = settings.maxBitrate ?? TrackFormats.MP3_128;
 
 	const downloadObjects = [];

@@ -4,18 +4,25 @@ import readline from "node:readline/promises";
 import path from "path";
 
 export const deezerLogin = async (dz: Deezer, configFolder: string) => {
+	if (!dz || typeof configFolder !== "string") {
+		throw new Error("Invalid parameters");
+	}
+
 	const arlFileLocation = path.join(configFolder, ".arl");
 
 	if (existsSync(arlFileLocation)) {
-		const arl = readFileSync(arlFileLocation).toString().trim();
-		const loggedIn = await dz.loginViaArl(arl);
+		try {
+			const arl = readFileSync(arlFileLocation).toString().trim();
+			if (!arl) throw new Error("Empty ARL file");
 
-		if (loggedIn) {
+			const loggedIn = await dz.loginViaArl(arl);
+			if (!loggedIn) throw new Error("Invalid ARL");
+
 			return true;
+		} catch (e) {
+			rmSync(arlFileLocation);
+			throw e;
 		}
-
-		// If the ARL is invalid, remove it
-		rmSync(arlFileLocation);
 	}
 
 	const rl = readline.createInterface({

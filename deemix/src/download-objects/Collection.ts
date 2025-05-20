@@ -6,6 +6,10 @@ export class Collection extends DownloadObject {
 	collection: any;
 
 	constructor(obj) {
+		if (!obj?.collection) {
+			throw new Error("Invalid collection data");
+		}
+
 		super(obj);
 		this.collection = obj.collection;
 		this.__type__ = "Collection";
