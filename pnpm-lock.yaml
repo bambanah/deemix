@@ -137,7 +137,7 @@ importers:
         version: 8.3.5(jiti@2.4.2)(postcss@8.5.3)(tsx@4.19.3)(typescript@5.8.2)(yaml@2.6.0)
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.8.2)(vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.6.0))
+        version: 5.0.1(typescript@5.8.2)(vite@6.2.7(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.6.0))
 
   deezer-sdk:
     dependencies:
@@ -332,7 +332,7 @@ importers:
         version: 17.0.33
       '@vitejs/plugin-vue':
         specifier: ^5.1.3
-        version: 5.1.4(vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0))(vue@3.5.12(typescript@5.8.2))
+        version: 5.1.4(vite@6.2.7(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0))(vue@3.5.12(typescript@5.8.2))
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.47)
@@ -361,14 +361,14 @@ importers:
         specifier: ^4.19.1
         version: 4.19.2
       vite:
-        specifier: ^6.1.6
-        version: 6.2.2(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0)
+        specifier: ^6.2.7
+        version: 6.2.7(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0)
       vite-svg-loader:
         specifier: ^5.1.0
         version: 5.1.0(vue@3.5.12(typescript@5.8.2))
       vite-tsconfig-paths:
         specifier: ^5.1.4
-        version: 5.1.4(typescript@5.8.2)(vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0))
+        version: 5.1.4(typescript@5.8.2)(vite@6.2.7(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0))
       vue-tsc:
         specifier: ^2.2.8
         version: 2.2.8(typescript@5.8.2)
@@ -5383,8 +5383,8 @@ packages:
       terser:
         optional: true
 
-  vite@6.2.2:
-    resolution: {integrity: sha512-yW7PeMM+LkDzc7CgJuRLMW2Jz0FxMOsVJ8Lv3gpgW9WLcb9cTW+121UEr1hvmfR7w3SegR5ItvYyzVz1vxNJgQ==}
+  vite@6.2.7:
+    resolution: {integrity: sha512-qg3LkeuinTrZoJHHF94coSaTfIPyBYoywp+ys4qu20oSJFbKMYoIJo0FWJT9q6Vp49l6z9IsJRbHdcGtiKbGoQ==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
     peerDependencies:
@@ -7107,9 +7107,9 @@ snapshots:
       '@typescript-eslint/types': 8.26.1
       eslint-visitor-keys: 4.2.0
 
-  '@vitejs/plugin-vue@5.1.4(vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0))(vue@3.5.12(typescript@5.8.2))':
+  '@vitejs/plugin-vue@5.1.4(vite@6.2.7(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0))(vue@3.5.12(typescript@5.8.2))':
     dependencies:
-      vite: 6.2.2(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0)
+      vite: 6.2.7(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0)
       vue: 3.5.12(typescript@5.8.2)
 
   '@vitest/expect@2.1.9':
@@ -10978,24 +10978,24 @@ snapshots:
       svgo: 3.3.2
       vue: 3.5.12(typescript@5.8.2)
 
-  vite-tsconfig-paths@5.0.1(typescript@5.8.2)(vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.6.0)):
+  vite-tsconfig-paths@5.0.1(typescript@5.8.2)(vite@6.2.7(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.6.0)):
     dependencies:
       debug: 4.3.7(supports-color@5.5.0)
       globrex: 0.1.2
       tsconfck: 3.1.3(typescript@5.8.2)
     optionalDependencies:
-      vite: 6.2.2(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.6.0)
+      vite: 6.2.7(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.6.0)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  vite-tsconfig-paths@5.1.4(typescript@5.8.2)(vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0)):
+  vite-tsconfig-paths@5.1.4(typescript@5.8.2)(vite@6.2.7(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0)):
     dependencies:
       debug: 4.4.0
       globrex: 0.1.2
       tsconfck: 3.1.3(typescript@5.8.2)
     optionalDependencies:
-      vite: 6.2.2(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0)
+      vite: 6.2.7(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0)
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -11009,7 +11009,7 @@ snapshots:
       '@types/node': 20.17.3
       fsevents: 2.3.3
 
-  vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0):
+  vite@6.2.7(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.6.0):
     dependencies:
       esbuild: 0.25.4
       postcss: 8.5.3
@@ -11021,7 +11021,7 @@ snapshots:
       tsx: 4.19.2
       yaml: 2.6.0
 
-  vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.6.0):
+  vite@6.2.7(@types/node@22.13.10)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.6.0):
     dependencies:
       esbuild: 0.25.4
       postcss: 8.5.3
