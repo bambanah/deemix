@@ -11,6 +11,8 @@ The docker image was heavily inspired by the fantastic work of [Bockiii](https:/
 - **webui**: [Vue.js](https://vuejs.org/) + [Express](https://expressjs.com/) web interface
 - **gui**: Packaged [Electron](https://www.electronjs.org/) app
 
+<a href='https://ko-fi.com/L3L71IQN1F' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi6.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+
 ## Downloads
 
 ### Standalone Electron App
