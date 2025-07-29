@@ -107,7 +107,7 @@ const pt_br = {
 		},
 		itsFree: `Lembre-se que <strong>este projeto é livre</strong> e <strong>você deve dar suporte aos artistas que você ama</strong> antes de dar suporte aos desenvolvedores.`,
 		notObligated: `Não se sinta na obrigação de doar, eu agradeço de qualquer maneira!`,
-		lincensedUnder: {
+		licencedUnder: {
 			text: `Esse é um projeto licenciado através da {gpl3}.`,
 			gpl3: "GNU General Public License 3.0",
 		},

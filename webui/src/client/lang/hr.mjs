@@ -77,7 +77,7 @@ const hr = {
 		},
 		itsFree: `Trebate zapamtiti da je ovo <strong>besplatni projekt</strong> i <strong>trebali biste podržati autore koje volite</strong> prije podržavanja developera.`,
 		notObligated: `Nemojte se osjećati obveznim darivati, svejedno vas cijenim!`,
-		lincensedUnder: {
+		licencedUnder: {
 			text: `Ovaj rad licenciran je unutar {gpl3}.`,
 			gpl3: "GNU General Public License 3.0",
 		},

@@ -60,54 +60,15 @@ const en = {
 			deemixVersion: "deemix lib version",
 		},
 		titles: {
-			usefulLinks: "Useful Links",
-			bugReports: "Bug Reports",
-			contributing: "Contributing",
-			donations: "Donations",
+			bugReportsContributing: "Bug Reports & Contributing",
 			license: "License",
 		},
-		subtitles: {
-			bugReports: "Is there something that isn't working in deemix? Tell us!",
-			contributing:
-				"You want to contribute to this project? You can do it in different ways!",
-			donations:
-				"You want to contribute monetarily? You could make a donation!",
-		},
-		usesLibrary:
-			"This app uses the <strong>deemix</strong> library, which you can use to make your own UI for deemix.",
-		thanks: `Thanks to <strong>rtonno</strong>, <strong>uhwot</strong> and <strong>lollilol</strong> for helping me with this project and to <strong>BasCurtiz</strong> for making the icon.`,
-		upToDate: {
-			text: `Stay up to date with the updates by following the {newsChannel} on Telegram.`,
-			newsChannel: "news channel",
-		},
-		officialWebsite: "Official Website",
-		officialRepo: "Official Library Repository",
-		officialWebuiRepo: "Official WebUI Repository",
-		officialSubreddit: "Official Subreddit",
-		newsChannel: "News Channel",
-		devlogChannel: "Devlog Channel",
-		questions: {
-			text: `If you have questions or problems with the app, search for a solution on the {subreddit} first. Then, if you don't find anything you can make a post with your issue on the subreddit.`,
-			subreddit: "subreddit",
-		},
+		officialRepo: "Contribute on GitHub",
 		beforeReporting: `Before reporting a bug make sure you're running the latest version of the app and that what you want to report is actually a bug and not something that's wrong only on your end.`,
 		beSure: `Make sure the bug is reproducible on other machines and also <strong>DO NOT</strong> report a bug if it's already been reported.`,
 		duplicateReports:
 			"Duplicate bug reports will be closed, so keep an eye out on that.",
-		dontOpenIssues: `<strong>DO NOT</strong> open issues for asking questions, there is a subreddit for that.`,
-		newUI: {
-			text: `If you're fluent in python you could try to make a new UI for the app using the base library, or fix bugs in the library with a pull request on the {repo}.`,
-			repo: "repo",
-		},
-		acceptFeatures: `I accept features as well, but no complex things, as they can be implementend directly in the app and not the library.`,
-		otherLanguages: `If you're fluent in another programming language you could try to port deemix into other programming languages!`,
-		contributeWebUI: {
-			text: `If you know Vue.js (JavaScript), HTML or CSS you could contribute to the {webui}.`,
-			webui: "WebUI",
-		},
-		itsFree: `You should remember that <strong>this is a free project</strong> and <strong>you should support the artists you love</strong> before supporting the developers.`,
-		notObligated: `Don't feel obligated to donate, I appreciate you anyway!`,
-		lincensedUnder: {
+		licencedUnder: {
 			text: `This work is licensed under the {gpl3}.`,
 			gpl3: "GNU General Public License 3.0",
 		},

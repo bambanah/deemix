@@ -116,7 +116,7 @@ const de = {
 			"Du solltest im Kopf behalten das <strong>dies ein kostenfreies Projekt ist</strong> und <strong>Du die Künstler unterstützen sollst, die du magst</strong> bevor du die Entwickler unterstützt.",
 		notObligated:
 			"Fühle dich nicht gezwungen zu spenden, danke, dass du deemix verwendest!",
-		lincensedUnder: {
+		licencedUnder: {
 			text: "Diese Arbeit ist lizensiert unter der {gpl3}.",
 			gpl3: "GNU General Public License 3.0",
 		},

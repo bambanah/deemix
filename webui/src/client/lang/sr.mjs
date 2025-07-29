@@ -101,7 +101,7 @@ const sr = {
 		},
 		itsFree: `Имајте на уму да је ово <strong>бесплатни пројекат</strong> и да би требало да <strong>подржите извођаче које волите</strong> пре него да подржите програмере.`,
 		notObligated: `Не осећајте обавезу да донирате, свакако вас ценим!`,
-		lincensedUnder: {
+		licencedUnder: {
 			text: `Ова апликација је објављена под лиценцом {gpl3}.`,
 			gpl3: "GNU General Public License 3.0",
 		},

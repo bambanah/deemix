@@ -78,7 +78,7 @@ const id = {
 		},
 		itsFree: `Perlu diingat bahwa <strong>ini adalah proyek gratis</strong> dan <strong>dukung artis idolamu terlebih dahulu</strong> sebelum mendukung kami sebagai pengembang aplikasi.`,
 		notObligated: `Jangan merasa terpaksa untuk menyumbang, kami tetap menghargai kamu!`,
-		lincensedUnder: {
+		licencedUnder: {
 			text: `Pekerjaan ini ada di bawah lisensi {gpl3}.`,
 			gpl3: "GNU General Public License 3.0",
 		},

@@ -78,7 +78,7 @@ const vi = {
 		},
 		itsFree: `Bạn nên nhớ rằng <strong>đây là một dự án phi lợi nhuận</strong> và <strong>bạn nên ủng hộ những Nghệ sĩ yêu thích của bạn</strong> trước khi ủng hộ nhà phát triển.`,
 		notObligated: `Đừng nghĩ rằng bạn phải đóng góp tiền, tôi vẫn sẽ rất biết ơn bạn!`,
-		lincensedUnder: {
+		licencedUnder: {
 			text: `Dự án này được cấp phép bởi {gpl3}.`,
 			gpl3: "GNU General Public License 3.0",
 		},

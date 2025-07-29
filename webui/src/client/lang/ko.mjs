@@ -100,7 +100,7 @@ const ko = {
 		},
 		itsFree: `사용하기 전에 이 프로그램이 <strong>무료 프로젝트</strong>이고 개발자를 지원하기 전에 <strong>예술가들</strong>을 먼저 지원해야 함을 기억하세요.`,
 		notObligated: `기부는 프로젝트를 지속할 수 있는 동력이 됩니다!`,
-		lincensedUnder: {
+		licencedUnder: {
 			text: `이 작업이 요구하고 있는 라이센스는 아래와 같습니다 {gpl3}.`,
 			gpl3: "GNU General Public License 3.0",
 		},

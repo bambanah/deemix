@@ -117,7 +117,7 @@ const fr = {
 			"N'oubliez pas que <strong>ce projet est libre</strong> et qu'il est important de <strong>soutenir vos artistes préférés</strong> avant de supporter les développeurs.",
 		notObligated:
 			"Ne vous sentez pas obligé de faire un don, vous êtes tout de même apprécié !",
-		lincensedUnder: {
+		licencedUnder: {
 			text: `Ce projet s'inscrit dans le cadre de la {gpl3}.`,
 			gpl3: "Licence publique générale GNU, version 3",
 		},

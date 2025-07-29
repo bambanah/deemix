@@ -106,7 +106,7 @@ const it = {
 		},
 		itsFree: `Ricordati che <strong>questo è un progetto gratuito</strong> e che <strong>dovresti supportare gli artisti che ami</strong> prima di supportare gli sviluppatori.`,
 		notObligated: `Non sentirti obbligato a donare, mi stai simpatico lo stesso!`,
-		lincensedUnder: {
+		licencedUnder: {
 			text: `Questo progetto è sotto la licenza {gpl3}.`,
 			gpl3: "GNU General Public License 3.0",
 		},
