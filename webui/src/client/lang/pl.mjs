@@ -93,7 +93,7 @@ const pl = {
 		},
 		itsFree: `Pamiętaj, że <strong>ten projekt jest darmowy</strong> i <strong>powinieneś wspierać artystów</strong> przed twórcami aplikacji.`,
 		notObligated: `Nie czuj potrzeby płacenia, i tak cię doceniam!`,
-		lincensedUnder: {
+		licencedUnder: {
 			text: `Ten projekt jest chroniony licencją {gpl3}.`,
 			gpl3: "GNU General Public License 3.0",
 		},

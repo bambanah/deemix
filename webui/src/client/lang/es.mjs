@@ -101,7 +101,7 @@ const es = {
 			"Debes recordar que <strong>este es un proyecto libre</strong> y <strong>debes apoyar a los artistas que amas</strong> antes de apoyar a los desarrolladores.",
 		notObligated:
 			"No te sientas obligado a donar, ¡te aprecio de todas formas!",
-		lincensedUnder: {
+		licencedUnder: {
 			text: `Esta obra está autorizada bajo una {gpl3}.`,
 			gpl3: "GNU Licencia Pública General 3.0",
 		},

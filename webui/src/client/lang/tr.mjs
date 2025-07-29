@@ -77,7 +77,7 @@ const tr = {
 		},
 		itsFree: `Bunun <strong>ücretsiz bir proje olduğunu</strong> ve <strong>geliştiricilerden önce</strong> sevdiğiniz sanatçıları desteklemeniz gerektiğini unutmayın.`,
 		notObligated: `Kendinizi bağış yapmak zorunda hissetmeyin!, Sizi her halinizle seviyorum!`,
-		lincensedUnder: {
+		licencedUnder: {
 			text: `Bu çalışma lisanslıdır: {gpl3}.`,
 			gpl3: "GNU General Public License 3.0",
 		},

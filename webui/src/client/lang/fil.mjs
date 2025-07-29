@@ -94,7 +94,7 @@ const fil = {
 		},
 		itsFree: `Lagi mong tandaang <strong>ang proyektong ito ay libre</strong> at <strong>suportuhanmuna ang minamahal ninyong mga artist</strong> bago ang mga developer.`,
 		notObligated: `Huwag mong pilitin ang sarili para mag-donate, Naiintindihan ka namin!`,
-		lincensedUnder: {
+		licencedUnder: {
 			text: `Ang aktibidad na ito ay lisensiyado sa {gpl3}.`,
 			gpl3: "GNU General Public License 3.0",
 		},

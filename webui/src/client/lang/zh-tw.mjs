@@ -100,7 +100,7 @@ const zh_tw = {
 		},
 		itsFree: `記得，<strong>這是一個免費的專案</strong>，<strong>在支持開發人員之前，應該先支持你喜歡的歌手或藝人</ strong>。`,
 		notObligated: `別認為你有義務捐款，無論如何我們都感謝您！`,
-		lincensedUnder: {
+		licencedUnder: {
 			text: `本作品使用 {gpl3} 許可授權。`,
 			gpl3: "GNU General Public License 3.0",
 		},
