@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      egoroof-blowfish:
+        specifier: ^4.0.1
+        version: 4.0.1
     devDependencies:
       '@changesets/cli':
         specifier: ^2.28.1
@@ -2786,6 +2790,9 @@ packages:
 
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
+
+  egoroof-blowfish@4.0.1:
+    resolution: {integrity: sha512-e2gdfyLZrDvyuHX2NkRPFxEuYCIddp+W3MucqjBw9h9nineZUWynuuqQh+R5sNT9IVopPFBHwcnBYHqTcB1Vdw==}
 
   ejs@3.1.10:
     resolution: {integrity: sha512-UeJmFfOrAQS8OJWPZ4qtgHyWExa088/MtK5UEyoJGFH67cDEXkZSviOiKRCZ4Xij0zxI3JECgYs3oKx+AizQBA==}
@@ -8301,6 +8308,8 @@ snapshots:
   eastasianwidth@0.2.0: {}
 
   ee-first@1.1.1: {}
+
+  egoroof-blowfish@4.0.1: {}
 
   ejs@3.1.10:
     dependencies:

@@ -8,10 +8,10 @@ const CLIENT_SECRET = "fb0bec7ccc063dab0417eb7b0d847f34";
 
 export async function getDeezerAccessTokenFromEmailPassword(email, password) {
 	let accessToken = null;
-	password = _md5(password, "utf8");
+	password = _md5(password, "binary");
 	const hash = _md5(
 		[CLIENT_ID, email, password, CLIENT_SECRET].join(""),
-		"utf8"
+		"binary"
 	);
 	try {
 		const response = got.get("https://api.deezer.com/auth/token", {
