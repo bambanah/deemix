@@ -1,5 +1,11 @@
 # deemix-webui
 
+## 4.3.4
+
+### Patch Changes
+
+- 014f8a4: Update about page to remove outdated or redundant information
+
 ## 4.3.3
 
 ### Patch Changes
