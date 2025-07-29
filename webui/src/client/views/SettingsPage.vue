@@ -962,6 +962,31 @@ function canDownload(bitrate: number) {
 
 			<div class="input-group">
 				<p class="input-group-text">
+					{{ t("settings.downloads.minimumBitrate.title") }}
+					<span
+						class="material-icons-outlined cursor-help align-text-bottom text-base"
+						title="Sets the minimum bitrate when fallback is enabled. Downloads will fail rather than fall below this quality level."
+					>
+					</span>
+				</p>
+				<select v-model.number="settings.minimumBitrate">
+					<option value="3">
+						{{ t("settings.downloads.minimumBitrate.3") }}
+					</option>
+					<option value="1">
+						{{ t("settings.downloads.minimumBitrate.1") }}
+					</option>
+				</select>
+				<p
+					v-if="settings.fallbackBitrate"
+					class="text-description mt-1 text-sm"
+				>
+					{{ t("settings.downloads.minimumBitrate.description") }}
+				</p>
+			</div>
+
+			<div class="input-group">
+				<p class="input-group-text">
 					{{ t("settings.downloads.overwriteFile.title") }}
 				</p>
 				<select v-model="settings.overwriteFile">

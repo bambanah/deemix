@@ -103,9 +103,9 @@ export const ErrorMessages = {
 	notOnDeezer: "Track not available on Deezer!",
 	notEncoded: "Track not yet encoded!",
 	notEncodedNoAlternative: "Track not yet encoded and no alternative found!",
-	wrongBitrate: "Track not found at desired bitrate.",
+	wrongBitrate: "Track not found at {bitrate} bitrate.",
 	wrongBitrateNoAlternative:
-		"Track not found at desired bitrate and no alternative found!",
+		"Track not found at {bitrate} bitrate and no alternative found!",
 	wrongLicense: "Your account can't stream the track at the desired bitrate.",
 	no360RA: "Track is not available in Reality Audio 360.",
 	notAvailable: "Track not available on deezer's servers!",
@@ -124,14 +124,20 @@ export const ErrorMessages = {
 export class DownloadFailed extends DownloadError {
 	errid: keyof typeof ErrorMessages;
 	track: Track;
+	bitrate?: number;
 
-	constructor(errid: keyof typeof ErrorMessages, track?: Track) {
+	constructor(
+		errid: keyof typeof ErrorMessages,
+		track?: Track,
+		bitrate?: number
+	) {
 		super();
 
 		this.errid = errid;
 		this.message = ErrorMessages[errid];
 		this.name = "DownloadFailed";
 		this.track = track;
+		this.bitrate = bitrate;
 	}
 }
 
@@ -143,9 +149,12 @@ export class TrackNot360 extends DownloadError {
 }
 
 export class PreferredBitrateNotFound extends DownloadError {
-	constructor() {
+	bitrate?: number;
+
+	constructor(bitrate?: number) {
 		super();
 		this.name = "PreferredBitrateNotFound";
+		this.bitrate = bitrate;
 	}
 }
 

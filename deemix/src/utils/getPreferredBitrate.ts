@@ -33,7 +33,8 @@ export async function getPreferredBitrate(
 	shouldFallback: boolean,
 	feelingLucky: boolean,
 	uuid: string,
-	listener: any
+	listener: any,
+	minimumBitrate: number = TrackFormats.MP3_128
 ) {
 	let falledBack = false;
 	let hasAlternative = track.fallbackID !== 0;
@@ -144,6 +145,14 @@ export async function getPreferredBitrate(
 			continue;
 		}
 
+		// Current bitrate is lower than minimum bitrate; skip and throw error if no viable formats found
+		if (formatNumber < minimumBitrate) {
+			if (i === Object.keys(formats).length - 1) {
+				throw new PreferredBitrateNotFound(minimumBitrate);
+			}
+			continue;
+		}
+
 		let currentTrack = track;
 		let url = await getCorrectURL(
 			currentTrack,
@@ -178,7 +187,7 @@ export async function getPreferredBitrate(
 		if (!shouldFallback) {
 			if (wrongLicense) throw new WrongLicense(formatName);
 			if (isGeolocked) throw new WrongGeolocation(dz.currentUser.country);
-			throw new PreferredBitrateNotFound();
+			throw new PreferredBitrateNotFound(preferredBitrate);
 		} else if (!falledBack) {
 			falledBack = true;
 			if (listener && uuid) {
