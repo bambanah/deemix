@@ -5,8 +5,4 @@ packages:
   - gui
   - cli
 onlyBuiltDependencies:
-  - electron
-  - electron-winstaller
-  - esbuild
-  - utf-8-validate
-  - vue-demi
+  - "@tailwindcss/oxide"
