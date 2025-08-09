@@ -6,3 +6,8 @@ packages:
   - cli
 onlyBuiltDependencies:
   - "@tailwindcss/oxide"
+  - electron
+  - electron-winstaller
+  - esbuild
+  - utf-8-validate
+  - vue-demi

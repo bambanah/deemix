@@ -31,7 +31,6 @@
 		"commander": "^12.1.0",
 		"deemix": "workspace:*",
 		"deezer-sdk": "workspace:*",
-		"tsup": "^8.2.4",
 		"tsx": "^4.19.1"
 	}
 }
