@@ -20,8 +20,9 @@ const state = reactive<{
 	tabs: typeof tabs;
 }>({
 	activeTab: "playlist",
-	tabs: ["playlist", "album", "artist", "track"],
+	tabs,
 });
+
 const {
 	favoriteArtists,
 	favoriteAlbums,
@@ -103,18 +104,6 @@ function getActiveRelease(tab?: (typeof state.tabs)[number]) {
 	return toDownload;
 }
 
-function getTabLength(tab?: (typeof tabs)[number]) {
-	if (!tab) tab = state.activeTab;
-
-	let total = state.tabs[`${tab}s`]?.length;
-
-	if (tab === "playlist") {
-		total += favoriteSpotifyPlaylists.value.length;
-	}
-
-	return total || 0;
-}
-
 function getLovedTracksPlaylist() {
 	const lovedTracks = favoritePlaylists.value.filter((playlist) => {
 		return playlist.is_loved_track;
@@ -171,7 +160,10 @@ const activeTabEmpty = computed(() => {
 		>
 			{{
 				t("globals.download", {
-					thing: t(`globals.listTabs.${state.activeTab}N`, getTabLength()),
+					thing: t(
+						`globals.listTabs.${state.activeTab}N`,
+						getActiveRelease().length
+					),
 				})
 			}}
 		</button>
