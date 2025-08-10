@@ -41,6 +41,7 @@ export const DEFAULT_SETTINGS: Settings = {
 	illegalCharacterReplacer: "_",
 	queueConcurrency: 10,
 	maxBitrate: TrackFormats.MP3_128,
+	minimumBitrate: TrackFormats.MP3_128,
 	feelingLucky: false,
 	fallbackBitrate: false,
 	fallbackSearch: false,
