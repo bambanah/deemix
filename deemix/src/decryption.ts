@@ -71,16 +71,16 @@ export async function streamTrack(writepath, track, downloadObject, listener) {
 				modifiedStream = Buffer.concat([modifiedStream, chunk]);
 				while (modifiedStream.length >= 2048 * 3) {
 					let decryptedChunks = Buffer.alloc(0);
-					const decryptingChunks = modifiedStream.slice(0, 2048 * 3);
-					modifiedStream = modifiedStream.slice(2048 * 3);
+					const decryptingChunks = modifiedStream.subarray(0, 2048 * 3);
+					modifiedStream = modifiedStream.subarray(2048 * 3);
 					if (decryptingChunks.length >= 2048) {
 						decryptedChunks = decryptChunk(
-							decryptingChunks.slice(0, 2048),
+							decryptingChunks.subarray(0, 2048),
 							blowfishKey
 						);
 						decryptedChunks = Buffer.concat([
 							decryptedChunks,
-							decryptingChunks.slice(2048),
+							decryptingChunks.subarray(2048),
 						]);
 					}
 					yield decryptedChunks;
@@ -90,13 +90,13 @@ export async function streamTrack(writepath, track, downloadObject, listener) {
 		if (isCryptedStream) {
 			let decryptedChunks = Buffer.alloc(0);
 			if (modifiedStream.length >= 2048) {
-				decryptedChunks = decryptChunk(
-					modifiedStream.slice(0, 2048),
+				decryptedChunks = await decryptChunk(
+					modifiedStream.subarray(0, 2048),
 					blowfishKey
 				);
 				decryptedChunks = Buffer.concat([
 					decryptedChunks,
-					modifiedStream.slice(2048),
+					modifiedStream.subarray(2048),
 				]);
 				yield decryptedChunks;
 			} else {
@@ -111,14 +111,14 @@ export async function streamTrack(writepath, track, downloadObject, listener) {
 			if (
 				isStart &&
 				chunk[0] === 0 &&
-				chunk.slice(4, 8).toString() !== "ftyp"
+				chunk.subarray(4, 8).toString() !== "ftyp"
 			) {
 				let i;
 				for (i = 0; i < chunk.length; i++) {
 					const byte = chunk[i];
 					if (byte !== 0) break;
 				}
-				chunk = chunk.slice(i);
+				chunk = chunk.subarray(i);
 			}
 			isStart = false;
 			yield chunk;
