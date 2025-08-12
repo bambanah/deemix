@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - gui/CHANGELOG.md
+      - packages/gui/CHANGELOG.md
       - .github/workflows/build-release-electron.yml
 
 concurrency:
