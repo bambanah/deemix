@@ -33,9 +33,9 @@ COPY --from=builder /app/out/full/ .
 
 RUN pnpm turbo build --filter=deemix-webui...
 
-FROM ghcr.io/linuxserver/baseimage-alpine:3.20 AS runner
+FROM ghcr.io/linuxserver/baseimage-alpine:3.22 AS runner
 
-RUN apk add --no-cache nodejs=~24
+RUN apk add --no-cache nodejs>=24.0.0
 
 COPY --from=installer /app /app
 
