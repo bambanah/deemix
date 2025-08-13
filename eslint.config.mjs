@@ -29,7 +29,7 @@ export default tslint.config(
 		},
 	},
 	{
-		files: ["webui/**/*"],
+		files: ["packages/webui/**/*"],
 		rules: {
 			"vue/no-v-html": "off",
 			"vue/require-explicit-emits": "off",
@@ -40,7 +40,7 @@ export default tslint.config(
 		},
 	},
 	{
-		files: ["deemix/**/*", "deezer-sdk/**/*"],
+		files: ["packages/deemix/**/*", "packages/deezer-sdk/**/*"],
 		rules: {
 			"@typescript-eslint/no-explicit-any": "off",
 			"no-console": ["error", { allow: ["warn", "error", "trace"] }],
