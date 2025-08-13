@@ -80,7 +80,6 @@
 		"prettier": "^3.3.3",
 		"supertest": "^7.0.0",
 		"tsc-alias": "^1.8.10",
-		"tsx": "^4.19.1",
 		"vite": "^5.4.2",
 		"vite-svg-loader": "^5.1.0",
 		"vite-tsconfig-paths": "^5.1.4",
