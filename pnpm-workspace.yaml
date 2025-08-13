@@ -1,2 +1,8 @@
 packages:
   - packages/*
+onlyBuiltDependencies:
+  - electron
+  - electron-winstaller
+  - esbuild
+  - utf-8-validate
+  - vue-demi
