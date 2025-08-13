@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - cli/CHANGELOG.md
+      - packages/cli/CHANGELOG.md
       - .github/workflows/build-release-cli.yml
 
 concurrency:
@@ -32,7 +32,7 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
@@ -44,4 +44,4 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            cli/out/deemix-cli-*
+            packages/cli/out/deemix-cli-*

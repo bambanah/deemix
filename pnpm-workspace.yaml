@@ -1,11 +1,6 @@
 packages:
-  - webui
-  - deemix
-  - deezer-sdk
-  - gui
-  - cli
+  - packages/*
 onlyBuiltDependencies:
-  - "@tailwindcss/oxide"
   - electron
   - electron-winstaller
   - esbuild

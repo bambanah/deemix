@@ -12,10 +12,10 @@
 	function i(r, e) {
 		for (var t = 0; t < e.length; t++) {
 			var n = e[t];
-			(n.enumerable = n.enumerable || !1),
+			((n.enumerable = n.enumerable || !1),
 				(n.configurable = !0),
 				"value" in n && (n.writable = !0),
-				Object.defineProperty(r, n.key, n);
+				Object.defineProperty(r, n.key, n));
 		}
 	}
 	var d = { ECB: 0, CBC: 1 },
@@ -255,7 +255,8 @@
 							if (55295 < i && i < 56320) {
 								if (++n >= r.length)
 									return (
-										console.error("Incomplete surrogate pair"), e.subarray(0, t)
+										console.error("Incomplete surrogate pair"),
+										e.subarray(0, t)
 									);
 								var o = r.charCodeAt(n);
 								if (o < 56320 || 57343 < o)
@@ -269,9 +270,9 @@
 										),
 										e.subarray(0, t)
 									);
-								(e[t++] =
+								((e[t++] =
 									((i = 65536 + ((1023 & i) << 10) + (1023 & o)) >> 18) | 240),
-									(e[t++] = ((i >> 12) & 63) | 128);
+									(e[t++] = ((i >> 12) & 63) | 128));
 							} else e[t++] = (i >> 12) | 224;
 							e[t++] = ((i >> 6) & 63) | 128;
 						}
@@ -289,7 +290,7 @@
 				throw new Error("Key should be a string or an ArrayBuffer / Buffer");
 			if (!_(d, e)) throw new Error("Unsupported mode");
 			if (!_(v, t)) throw new Error("Unsupported padding");
-			(this.mode = e),
+			((this.mode = e),
 				(this.padding = t),
 				(this.iv = null),
 				(this.p = p.slice()),
@@ -299,7 +300,7 @@
 					for (var e = []; e.length < 72; )
 						for (var t = 0; t < r.length; t++) e.push(r[t]);
 					return new Uint8Array(e);
-				})(A(r)));
+				})(A(r))));
 			for (var n = 0, i = 0; n < 18; n++, i += 4) {
 				var o = E(r[i], r[i + 1], r[i + 2], r[i + 3]);
 				this.p[n] = B(this.p[n], o);
@@ -308,12 +309,12 @@
 				var u = this._encryptBlock(s, h),
 					s = u[0],
 					h = u[1];
-				(this.p[f] = s), (this.p[f + 1] = h);
+				((this.p[f] = s), (this.p[f + 1] = h));
 			}
 			for (var a = 0; a < 4; a++)
 				for (var c = 0; c < 256; c += 2) {
 					var l = this._encryptBlock(s, h);
-					(s = l[0]), (h = l[1]), (this.s[a][c] = s), (this.s[a][c + 1] = h);
+					((s = l[0]), (h = l[1]), (this.s[a][c] = s), (this.s[a][c + 1] = h));
 				}
 		}
 		var e,
@@ -346,7 +347,7 @@
 								s = t;
 								break;
 							case v.ONE_AND_ZEROS:
-								i.push(128), o--;
+								(i.push(128), o--);
 								break;
 							case v.SPACES:
 								s = 32;
@@ -356,9 +357,9 @@
 								i.push(t);
 								break;
 							}
-							i.push(s), o--;
+							(i.push(s), o--);
 						}
-						return n.set(r), n.set(i, r.length), n;
+						return (n.set(r), n.set(i, r.length), n);
 					})(A(r), this.padding)),
 					this.mode === d.ECB
 						? this._encodeECB(r)
@@ -392,11 +393,11 @@
 								if (127 < n)
 									if (191 < n && n < 224) {
 										if (e >= r.length)
-											return console.error("Incomplete 2-byte sequence"), t;
+											return (console.error("Incomplete 2-byte sequence"), t);
 										n = ((31 & n) << 6) | (63 & r[e++]);
 									} else if (223 < n && n < 240) {
 										if (e + 1 >= r.length)
-											return console.error("Incomplete 3-byte sequence"), t;
+											return (console.error("Incomplete 3-byte sequence"), t);
 										n = ((15 & n) << 12) | ((63 & r[e++]) << 6) | (63 & r[e++]);
 									} else {
 										if (!(239 < n && n < 248))
@@ -410,7 +411,7 @@
 												t
 											);
 										if (e + 2 >= r.length)
-											return console.error("Incomplete 4-byte sequence"), t;
+											return (console.error("Incomplete 4-byte sequence"), t);
 										n =
 											((7 & n) << 18) |
 											((63 & r[e++]) << 12) |
@@ -428,9 +429,9 @@
 											),
 											t
 										);
-									(n -= 65536),
+									((n -= 65536),
 										(t += String.fromCharCode((n >> 10) | 55296)),
-										(t += String.fromCharCode((1023 & n) | 56320));
+										(t += String.fromCharCode((1023 & n) | 56320)));
 								}
 							}
 							return t;
@@ -443,22 +444,24 @@
 				for (var t = 0; t < 16; t++) {
 					r = B(r, this.p[t]);
 					var n = [(e = B(e, this._f(r))), r];
-					(r = n[0]), (e = n[1]);
+					((r = n[0]), (e = n[1]));
 				}
 				var i = [e, r];
 				return (
-					(e = B((e = i[1]), this.p[16])), [(r = B((r = i[0]), this.p[17])), e]
+					(e = B((e = i[1]), this.p[16])),
+					[(r = B((r = i[0]), this.p[17])), e]
 				);
 			}),
 			(n._decryptBlock = function (r, e) {
 				for (var t = 17; 1 < t; t--) {
 					r = B(r, this.p[t]);
 					var n = [(e = B(e, this._f(r))), r];
-					(r = n[0]), (e = n[1]);
+					((r = n[0]), (e = n[1]));
 				}
 				var i = [e, r];
 				return (
-					(e = B((e = i[1]), this.p[1])), [(r = B((r = i[0]), this.p[0])), e]
+					(e = B((e = i[1]), this.p[1])),
+					[(r = B((r = i[0]), this.p[0])), e]
 				);
 			}),
 			(n._f = function (r) {
@@ -472,7 +475,7 @@
 						o = this._encryptBlock(n, i),
 						n = o[0],
 						i = o[1];
-					e.set(a(n), t), e.set(a(i), t + 4);
+					(e.set(a(n), t), e.set(a(i), t + 4));
 				}
 				return e;
 			}),
@@ -489,7 +492,10 @@
 						s = E(r[i + 4], r[i + 5], r[i + 6], r[i + 7]),
 						h = [B(t, o), B(n, s)],
 						h = this._encryptBlock((o = h[0]), (s = h[1]));
-					(o = h[0]), (n = s = h[1]), e.set(a((t = o)), i), e.set(a(s), i + 4);
+					((o = h[0]),
+						(n = s = h[1]),
+						e.set(a((t = o)), i),
+						e.set(a(s), i + 4));
 				}
 				return e;
 			}),
@@ -500,7 +506,7 @@
 						o = this._decryptBlock(n, i),
 						n = o[0],
 						i = o[1];
-					e.set(a(n), t), e.set(a(i), t + 4);
+					(e.set(a(n), t), e.set(a(i), t + 4));
 				}
 				return e;
 			}),
@@ -519,11 +525,11 @@
 						f = h[0],
 						u = h[1],
 						h = [B(t, f), B(n, u)];
-					(u = h[1]),
+					((u = h[1]),
 						(t = o),
 						(n = s),
 						e.set(a((f = h[0])), i),
-						e.set(a(u), i + 4);
+						e.set(a(u), i + 4));
 				}
 				return e;
 			}),
