@@ -1,5 +1,11 @@
 # deemix-webui
 
+## 4.3.5
+
+### Patch Changes
+
+- 34ce4ff: Fix dockerfile
+
 ## 4.3.4
 
 ### Patch Changes
