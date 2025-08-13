@@ -1,5 +1,14 @@
 # deemix-webui
 
+## 4.3.4
+
+### Patch Changes
+
+- 2470a90: Fix favourites download button always showing 0
+- 014f8a4: Update about page to remove outdated or redundant information
+- Updated dependencies [3c3999d]
+  - deemix@3.13.3
+
 ## 4.3.3
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # deemix
 
+## 3.13.3
+
+### Patch Changes
+
+- 3c3999d: Fix typing issue preventing some tags from being written
+
 ## 3.13.2
 
 ### Patch Changes
