@@ -5,4 +5,4 @@ UMASK_SET=${UMASK_SET:-022}
 umask "$UMASK_SET"
 
 echo "[services.d] Starting Deemix"
-s6-setuidgid abc node /app/webui/dist/main.js
+s6-setuidgid abc node /app/packages/webui/dist/main.js
