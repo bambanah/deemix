@@ -63,7 +63,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            gui/out/**/Deemix.exe
-            gui/out/**/Deemix*Setup.exe
-            gui/out/make/zip/**/*.zip
-            gui/out/make/deb/**/*.deb
+            packages/gui/out/**/Deemix.exe
+            packages/gui/out/**/Deemix*Setup.exe
+            packages/gui/out/make/zip/**/*.zip
+            packages/gui/out/make/deb/**/*.deb

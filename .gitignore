@@ -26,7 +26,7 @@ release/
 out/
 
 .DS_Store
-webui/public/js/*
+packages/webui/public/js/*
 
 .turbo
 tsconfig.tsbuildinfo
