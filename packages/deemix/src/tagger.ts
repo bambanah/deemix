@@ -6,7 +6,7 @@ import type { Tags } from "@/types/Settings.js";
 
 function tagID3(path: string, track: Track, save: Tags) {
 	const songBuffer = fs.readFileSync(path);
-	const writer = new ID3Writer(songBuffer);
+	const writer = new ID3Writer(songBuffer.buffer);
 
 	if (save.title) writer.setFrame("TIT2", track.title);
 
@@ -144,7 +144,7 @@ function tagID3(path: string, track: Track, save: Tags) {
 		if (coverArrayBuffer.length !== 0) {
 			writer.setFrame("APIC", {
 				type: 3,
-				data: coverArrayBuffer,
+				data: coverArrayBuffer.buffer,
 				description: "cover",
 				useUnicodeEncoding: save.coverDescriptionUTF8,
 			});
