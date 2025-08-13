@@ -1,5 +1,11 @@
 # deemix-gui
 
+## 0.3.11
+
+### Patch Changes
+
+- 9b2d88d: Fix missed packages folder config
+
 ## 0.3.10
 
 ### Patch Changes
