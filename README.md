@@ -73,7 +73,7 @@ This repo uses [pnpm](https://pnpm.io/) for package management and [Turborepo](h
 
 ### Dependencies
 
-- Install Node.js 20.x
+- Install Node.js 24.x
 - Enable pnpm:
   ```bash
   corepack enable
@@ -95,6 +95,7 @@ This repo uses [pnpm](https://pnpm.io/) for package management and [Turborepo](h
    ```bash
    pnpm dev
    ```
+
    - This will start the development server on port 6595
    - It will also watch for changes in dependencies and hot reload the app
 

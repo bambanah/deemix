@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:24-alpine AS base
 
 ARG TURBO_TEAM
 ENV TURBO_TEAM=$TURBO_TEAM
@@ -35,7 +35,7 @@ RUN pnpm turbo build --filter=deemix-webui...
 
 FROM ghcr.io/linuxserver/baseimage-alpine:3.20 AS runner
 
-RUN apk add --no-cache nodejs=~20
+RUN apk add --no-cache nodejs=~24
 
 COPY --from=installer /app /app
 

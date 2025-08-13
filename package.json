@@ -5,6 +5,9 @@
 	"repository": "https://github.com/bambanah/deemix.git",
 	"author": "Bambanah",
 	"license": "GPL-3.0-only",
+	"engines": {
+		"node": ">=24"
+	},
 	"scripts": {
 		"dev": "turbo run dev --filter=deemix-webui...",
 		"dev:gui": "turbo run deemix-gui#dev",
