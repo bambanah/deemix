@@ -39,7 +39,7 @@ RUN apk add --no-cache nodejs>=24.0.0
 
 COPY --from=installer /app /app
 
-COPY docker/ /
+COPY --chown=root:root docker/ /
 
 ENV DEEMIX_DATA_DIR=/config/
 ENV DEEMIX_MUSIC_DIR=/downloads/
