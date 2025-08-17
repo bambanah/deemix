@@ -9,6 +9,7 @@ import {
 	shell,
 } from "electron";
 import contextMenu from "electron-context-menu";
+import fs from "fs";
 import { fileURLToPath } from "node:url";
 import { platform } from "os";
 import { join } from "path";
@@ -32,10 +33,31 @@ process.env.DEEMIX_HOST = argv.host;
 
 let win: BrowserWindow | null = null;
 
+const windowStatePath = join(app.getPath("userData"), "window-state.json");
+
+function getWindowState() {
+	try {
+		const data = fs.readFileSync(windowStatePath, "utf-8");
+		return JSON.parse(data);
+	} catch {
+		return { width: 800, height: 600, isMaximized: false };
+	}
+}
+
+function saveWindowState(win: BrowserWindow) {
+	if (!win) return;
+	const bounds = win.getNormalBounds();
+	const isMaximized = win.isMaximized();
+	fs.writeFileSync(windowStatePath, JSON.stringify({ ...bounds, isMaximized }));
+}
+
 async function main() {
+	const state = getWindowState();
 	win = new BrowserWindow({
-		width: 800,
-		height: 600,
+		width: state.width || 800,
+		height: state.height || 600,
+		x: state.x,
+		y: state.y,
 		useContentSize: true,
 		autoHideMenuBar: true,
 		icon: join(
@@ -46,6 +68,10 @@ async function main() {
 			preload: join(path.dirname(fileURLToPath(import.meta.url)), "preload.js"),
 		},
 	});
+
+	if (state.isMaximized) {
+		win.maximize();
+	}
 
 	if (process.env.NODE_ENV === "development") {
 		win.setMenu(null);
@@ -84,6 +110,7 @@ async function main() {
 	win.loadURL(`http://localhost:${PORT}`);
 
 	win.on("close", () => {
+		saveWindowState(win!);
 		if (deemixApp.getSettings().settings.clearQueueOnExit) {
 			deemixApp.cancelAllDownloads();
 		}
