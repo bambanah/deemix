@@ -99,8 +99,13 @@ importers:
         specifier: workspace:*
         version: link:../deezer-sdk
 
+  packages/common: {}
+
   packages/deemix:
     dependencies:
+      '@deemix/common':
+        specifier: workspace:*
+        version: link:../common
       '@spotify/web-api-ts-sdk':
         specifier: ^1.2.0
         version: 1.2.0
@@ -209,6 +214,9 @@ importers:
 
   packages/webui:
     dependencies:
+      '@deemix/common':
+        specifier: workspace:*
+        version: link:../common
       cookie-parser:
         specifier: 1.4.6
         version: 1.4.6

@@ -33,6 +33,7 @@
 		".": "./dist/main.js"
 	},
 	"dependencies": {
+		"@deemix/common": "workspace:*",
 		"cookie-parser": "1.4.6",
 		"date-fns": "^3.6.0",
 		"deemix": "workspace:*",
