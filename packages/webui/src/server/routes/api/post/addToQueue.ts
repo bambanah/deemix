@@ -1,13 +1,13 @@
 import { Deezer } from "deezer-sdk";
 import { type ApiHandler } from "../../../types.js";
-import { sessionDZ } from "../../../deemixApp.js";
+import { DeemixApp, sessionDZ } from "../../../deemixApp.js";
 import { logger } from "../../../helpers/logger.js";
 
 const path: ApiHandler["path"] = "/addToQueue";
 
 const handler: ApiHandler["handler"] = async (req, res) => {
 	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer();
-	const deemix = req.app.get("deemix");
+	const deemix: DeemixApp = req.app.get("deemix");
 	const dz = sessionDZ[req.session.id];
 
 	const url = req.body.url.split(/[\s;]+/);

@@ -204,9 +204,8 @@ export class Downloader {
 		if (track.MD5 === 0) throw new DownloadFailed("notEncoded", track);
 
 		// Check the target bitrate
-		let selectedFormat;
 		try {
-			selectedFormat = await getPreferredBitrate(
+			const selectedFormat = await getPreferredBitrate(
 				this.dz,
 				track,
 				this.bitrate,
@@ -215,6 +214,8 @@ export class Downloader {
 				this.downloadObject.uuid,
 				this.listener
 			);
+			track.bitrate = selectedFormat;
+			track.album.bitrate = selectedFormat;
 		} catch (e) {
 			if (e.name === "WrongLicense") {
 				throw new DownloadFailed("wrongLicense");
@@ -231,8 +232,6 @@ export class Downloader {
 			console.error(e);
 			throw e;
 		}
-		track.bitrate = selectedFormat;
-		track.album.bitrate = selectedFormat;
 
 		track.applySettings(this.settings);
 

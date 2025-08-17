@@ -34,7 +34,7 @@ export async function getPreferredBitrate(
 	feelingLucky: boolean,
 	uuid: string,
 	listener: any
-) {
+): Promise<(typeof TrackFormats)[keyof typeof TrackFormats]> {
 	let falledBack = false;
 	let hasAlternative = track.fallbackID !== 0;
 	let isGeolocked = false;
@@ -123,7 +123,9 @@ export async function getPreferredBitrate(
 	const is360Format = Object.keys(formats_360).includes(
 		preferredBitrate.toString()
 	);
-	let formats: Record<number, string>;
+	let formats: Partial<
+		Record<(typeof TrackFormats)[keyof typeof TrackFormats], string>
+	>;
 	if (!shouldFallback) {
 		formats = { ...formats_360, ...formats_non_360 };
 	} else if (is360Format) {
@@ -136,7 +138,9 @@ export async function getPreferredBitrate(
 	await track.checkAndRenewTrackToken(dz);
 	for (let i = 0; i < Object.keys(formats).length; i++) {
 		// Check bitrates
-		const formatNumber = parseInt(Object.keys(formats).reverse()[i]);
+		const formatNumber = parseInt(
+			Object.keys(formats).reverse()[i]
+		) as keyof typeof formats;
 		const formatName = formats[formatNumber];
 
 		// Current bitrate is higher than preferred bitrate; skip

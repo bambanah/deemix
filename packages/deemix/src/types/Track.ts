@@ -129,7 +129,7 @@ class Track {
 
 	async parseData(
 		dz: Deezer,
-		id,
+		id: number,
 		existingTrack?: APITrack,
 		albumAPI?: APIAlbum,
 		playlistAPI?: APIPlaylist,
