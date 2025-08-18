@@ -1,5 +1,11 @@
 # deemix-gui
 
+## 0.4.0
+
+### Minor Changes
+
+- 2530d26: Remember window size after reopening
+
 ## 0.3.12
 
 ### Patch Changes
