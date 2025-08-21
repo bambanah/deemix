@@ -13,22 +13,31 @@ import {
 } from "./errors.js";
 import { SearchOrder, type APIAlbum, type APIOptions } from "./index.js";
 import { trackSchema, type DeezerTrack } from "./schema/track-schema.js";
+import { type Headers } from "got";
+import type { Cache } from "file-system-cache";
 
 type APIArgs = Record<string | number, string | number>;
 
 export class API {
-	httpHeaders: { "User-Agent": string };
+	httpHeaders: Headers;
 	cookieJar: CookieJar;
 	access_token: string | null;
+	cache?: Cache;
 
-	constructor(cookieJar: CookieJar, headers: { "User-Agent": string }) {
+	constructor(cookieJar: CookieJar, headers: Headers, cache?: Cache) {
 		this.httpHeaders = headers;
 		this.cookieJar = cookieJar;
 		this.access_token = null;
+
+		if (cache) this.cache = cache;
 	}
 
 	async call(endpoint: string, args: APIArgs = {}): Promise<unknown> {
 		if (this.access_token) args["access_token"] = this.access_token;
+
+		const cacheKey = `${endpoint}:${JSON.stringify(args)}`;
+		const cacheResult = await this.cache?.get(cacheKey);
+		if (cacheResult) return cacheResult;
 
 		let response;
 		try {
@@ -106,6 +115,8 @@ export class API {
 			}
 			throw new APIError(response.error);
 		}
+
+		this.cache?.set(cacheKey, response);
 
 		return response;
 	}

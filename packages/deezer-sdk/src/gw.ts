@@ -8,6 +8,9 @@ import {
 } from "./utils.js";
 import { GWAPIError } from "./errors.js";
 import { type APIOptions } from "./index.js";
+import type { CookieJar } from "tough-cookie";
+import { type Headers } from "got";
+import { Cache } from "file-system-cache";
 
 export const PlaylistStatus = {
 	PUBLIC: 0,
@@ -77,33 +80,43 @@ export const EMPTY_TRACK_OBJ = {
 } satisfies Partial<GWTrack>;
 
 export class GW {
-	httpHeaders: any;
-	cookieJar: any;
+	httpHeaders: Headers;
+	cookieJar: CookieJar;
 	api_token: any;
+	cache?: Cache;
 
-	constructor(cookieJar, headers) {
+	constructor(cookieJar: CookieJar, headers: Headers, cache?: Cache) {
 		this.httpHeaders = headers;
 		this.cookieJar = cookieJar;
 		this.api_token = null;
+		if (cache) this.cache = cache;
 	}
 
-	async api_call(method: string, args?: any, params?: any): Promise<any> {
-		if (args === undefined) args = {};
-		if (params === undefined) params = {};
+	async api_call(
+		method: string,
+		args: any = {},
+		params: any = {}
+	): Promise<any> {
 		if (!this.api_token && method !== "deezer.getUserData")
 			this.api_token = await this._get_token();
-		const p = {
-			api_version: "1.0",
-			api_token: method === "deezer.getUserData" ? "null" : this.api_token,
-			input: "3",
-			method,
-			...params,
-		};
+
+		const cacheKey = `${method}:${JSON.stringify(args)}:${JSON.stringify(params)}`;
+		const cachedResult = await this.cache?.get(cacheKey);
+
+		if (cachedResult && method !== "deezer.getUserData") return cachedResult;
+
 		let result_json;
 		try {
 			result_json = await got
 				.post("http://www.deezer.com/ajax/gw-light.php", {
-					searchParams: p,
+					searchParams: {
+						api_version: "1.0",
+						api_token:
+							method === "deezer.getUserData" ? "null" : this.api_token,
+						input: "3",
+						method,
+						...params,
+					},
 					json: args,
 					cookieJar: this.cookieJar,
 					headers: this.httpHeaders,
@@ -148,6 +161,9 @@ export class GW {
 		}
 		if (!this.api_token && method === "deezer.getUserData")
 			this.api_token = result_json.results.checkForm;
+
+		this.cache?.set(cacheKey, result_json.results);
+
 		return result_json.results;
 	}
 

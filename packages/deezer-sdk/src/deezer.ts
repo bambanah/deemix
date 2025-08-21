@@ -4,31 +4,36 @@ import { GW } from "./gw.js";
 import got from "got";
 import { Cookie, CookieJar } from "tough-cookie";
 import type { User } from "./types.js";
+import { type Headers } from "got";
+import { Cache } from "file-system-cache";
+import { $cacheDir } from "./store.js";
 
 export class Deezer {
-	loggedIn: boolean;
-	httpHeaders: { "User-Agent": string };
-	cookieJar: CookieJar;
-	currentUser?: User;
-	childs: User[];
-	selectedAccount: number;
+	loggedIn = false;
+	httpHeaders: Headers = {
+		"User-Agent":
+			"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36",
+	};
+	cookieJar = new CookieJar();
+	currentUser: User = {};
+	childs: User[] = [];
+	selectedAccount = 0;
+
 	api: API;
 	gw: GW;
 
+	cache: Cache | undefined;
+
 	constructor() {
-		this.httpHeaders = {
-			"User-Agent":
-				"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36",
-		};
-		this.cookieJar = new CookieJar();
+		if ($cacheDir.value) {
+			this.cache = new Cache({
+				basePath: $cacheDir.value,
+				ttl: 60 * 60 * 24 * 30, // 30 days
+			});
+		}
 
-		this.loggedIn = false;
-		this.currentUser = {};
-		this.childs = [];
-		this.selectedAccount = 0;
-
-		this.api = new API(this.cookieJar, this.httpHeaders);
-		this.gw = new GW(this.cookieJar, this.httpHeaders);
+		this.api = new API(this.cookieJar, this.httpHeaders, this.cache);
+		this.gw = new GW(this.cookieJar, this.httpHeaders, this.cache);
 	}
 
 	async login(
@@ -149,7 +154,7 @@ export class Deezer {
 
 	changeAccount(child_n) {
 		if (this.childs.length - 1 < child_n) child_n = 0;
-		this.currentUser = this.childs[child_n];
+		this.currentUser = this.childs[child_n] ?? this.currentUser;
 		this.selectedAccount = child_n;
 		let lang = this.currentUser?.language
 			?.toString()

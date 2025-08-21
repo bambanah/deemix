@@ -36,7 +36,7 @@ if (portable) {
 } else {
 	configFolder = getConfigFolder();
 }
-setDeezerCacheDir(configFolder);
+setDeezerCacheDir(`${configFolder}.cache`);
 
 const settings = loadSettings(configFolder);
 
