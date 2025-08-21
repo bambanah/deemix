@@ -2,7 +2,7 @@
 import BaseAccordion from "@/components/globals/BaseAccordion.vue";
 
 interface Props {
-	templateVariables: string[];
+	templateVariables: readonly string[];
 }
 
 const { templateVariables } = defineProps<Props>();
@@ -23,7 +23,7 @@ const { templateVariables } = defineProps<Props>();
 				class="bg-panels-bg hover:shadow-outline mt-2 inline-block cursor-pointer rounded p-2 tracking-wider first:ml-2"
 				@click="$emit('variable-click', templateVariable)"
 			>
-				{{ templateVariable }}
+				%{{ templateVariable }}%
 			</span>
 		</div>
 	</BaseAccordion>
