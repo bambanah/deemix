@@ -29,7 +29,7 @@ export const getArlFromAccessToken = utils.getDeezerArlFromAccessToken;
 
 // Constants
 export const configFolder: string = utils.getConfigFolder();
-setDeezerCacheDir(configFolder);
+setDeezerCacheDir(`${configFolder}.cache/`);
 export const defaultSettings: Settings = DEFAULT_SETTINGS;
 
 export const sessionDZ: Record<string, Deezer> = {};

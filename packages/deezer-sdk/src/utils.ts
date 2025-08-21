@@ -426,6 +426,7 @@ export function mapGwTrackToDeezer(track: GWTrack): EnrichedAPITrack {
 		link: `https://www.deezer.com/track/${track.SNG_ID}`,
 		share: `https://www.deezer.com/track/${track.SNG_ID}`,
 		duration: track.DURATION,
+		position: track.TRACK_NUMBER,
 		// bpm: null, // not provided
 		available_countries: [], // not provided
 		contributors: [],

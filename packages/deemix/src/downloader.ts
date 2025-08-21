@@ -170,24 +170,23 @@ export class Downloader {
 		if (!track) {
 			track = new Track();
 			track.parseTrack(trackAPI);
-			if (albumAPI) {
-				track.album = new Album(albumAPI.id, albumAPI.title);
-				track.album.parseAlbum(albumAPI);
-			}
-			if (playlistAPI) {
-				track.playlist = new Playlist(playlistAPI);
-			}
+		}
+
+		track.id = track.id ?? trackAPI.id;
+
+		if (!track.album && albumAPI) {
+			track.album = new Album(albumAPI.id, albumAPI.title);
+			track.album.parseAlbum(albumAPI);
+		}
+
+		if (!track.playlist && playlistAPI) {
+			track.playlist = new Playlist(playlistAPI);
 		}
 
 		// Enrich track with additional data
 		try {
-			await track.parseData(
-				this.dz,
-				trackAPI.id,
-				trackAPI,
-				albumAPI,
-				playlistAPI
-			);
+			// FIXME: This takes ages - speed it up, and check if we need to run it before checking if we should download the track
+			await track.enrichMetadata(this.dz);
 		} catch (e) {
 			if (e.name === "AlbumDoesntExists") {
 				throw new DownloadFailed("albumDoesntExists");
@@ -204,9 +203,8 @@ export class Downloader {
 		if (track.MD5 === 0) throw new DownloadFailed("notEncoded", track);
 
 		// Check the target bitrate
-		let selectedFormat;
 		try {
-			selectedFormat = await getPreferredBitrate(
+			const selectedFormat = await getPreferredBitrate(
 				this.dz,
 				track,
 				this.bitrate,
@@ -215,6 +213,8 @@ export class Downloader {
 				this.downloadObject.uuid,
 				this.listener
 			);
+			track.bitrate = selectedFormat;
+			track.album.bitrate = selectedFormat;
 		} catch (e) {
 			if (e.name === "WrongLicense") {
 				throw new DownloadFailed("wrongLicense");
@@ -231,8 +231,6 @@ export class Downloader {
 			console.error(e);
 			throw e;
 		}
-		track.bitrate = selectedFormat;
-		track.album.bitrate = selectedFormat;
 
 		track.applySettings(this.settings);
 

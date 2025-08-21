@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BaseAccordion from "@/components/globals/BaseAccordion.vue";
 import TemplateVariablesList from "@/components/settings/TemplateVariablesList.vue";
-import { trackTemplateVariables } from "@/data/file-templates";
+import { TRACK_NAME_TEMPLATE_VARIABLES } from "@deemix/common/constants";
 import { getSettingsData } from "@/data/settings";
 import { pinia } from "@/stores";
 import { useAppInfoStore } from "@/stores/appInfo";
@@ -502,7 +502,7 @@ function canDownload(bitrate: number) {
 			<input v-model="settings.tracknameTemplate" type="text" />
 
 			<TemplateVariablesList
-				:template-variables="trackTemplateVariables"
+				:template-variables="TRACK_NAME_TEMPLATE_VARIABLES"
 				@variable-click="onTemplateVariableClick"
 			>
 				<template #title>
@@ -513,7 +513,7 @@ function canDownload(bitrate: number) {
 			<p>{{ t("settings.templates.albumTracknameTemplate") }}</p>
 			<input v-model="settings.albumTracknameTemplate" type="text" />
 			<TemplateVariablesList
-				:template-variables="trackTemplateVariables"
+				:template-variables="TRACK_NAME_TEMPLATE_VARIABLES"
 				@variable-click="onTemplateVariableClick"
 			>
 				<template #title>
@@ -524,7 +524,7 @@ function canDownload(bitrate: number) {
 			<p>{{ t("settings.templates.playlistTracknameTemplate") }}</p>
 			<input v-model="settings.playlistTracknameTemplate" type="text" />
 			<TemplateVariablesList
-				:template-variables="trackTemplateVariables"
+				:template-variables="TRACK_NAME_TEMPLATE_VARIABLES"
 				@variable-click="onTemplateVariableClick"
 			>
 				<template #title>
