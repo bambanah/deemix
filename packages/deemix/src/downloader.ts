@@ -170,24 +170,23 @@ export class Downloader {
 		if (!track) {
 			track = new Track();
 			track.parseTrack(trackAPI);
-			if (albumAPI) {
-				track.album = new Album(albumAPI.id, albumAPI.title);
-				track.album.parseAlbum(albumAPI);
-			}
-			if (playlistAPI) {
-				track.playlist = new Playlist(playlistAPI);
-			}
+		}
+
+		track.id = track.id ?? trackAPI.id;
+
+		if (!track.album && albumAPI) {
+			track.album = new Album(albumAPI.id, albumAPI.title);
+			track.album.parseAlbum(albumAPI);
+		}
+
+		if (!track.playlist && playlistAPI) {
+			track.playlist = new Playlist(playlistAPI);
 		}
 
 		// Enrich track with additional data
 		try {
-			await track.parseData(
-				this.dz,
-				trackAPI.id,
-				trackAPI,
-				albumAPI,
-				playlistAPI
-			);
+			// FIXME: This takes ages - speed it up, and check if we need to run it before checking if we should download the track
+			await track.enrichMetadata(this.dz);
 		} catch (e) {
 			if (e.name === "AlbumDoesntExists") {
 				throw new DownloadFailed("albumDoesntExists");

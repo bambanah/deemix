@@ -3,7 +3,6 @@ import {
 	TrackFormats,
 	utils,
 	type APIAlbum,
-	type APIPlaylist,
 	type APITrack,
 	type EnrichedAPITrack,
 } from "deezer-sdk";
@@ -39,80 +38,47 @@ export const formatsName = {
 } as const;
 
 class Track {
-	id: number;
+	id: number = 0;
 	name?: string;
-	title: string;
+	title: string = "";
 	MD5?: number;
 	mediaVersion?: number;
-	trackToken: string;
+	trackToken: string = "";
 	trackTokenExpiration?: number;
-	duration: number;
-	fallbackID: number;
-	albumsFallback: any[];
-	filesizes: Record<string, any>;
-	local: boolean;
-	mainArtist: Artist | null;
-	artist: { Main: any[]; Featured?: any[] };
-	artists: any[];
-	album: Album | null;
-	trackNumber: number;
-	discNumber: number;
-	date: CustomDate;
-	lyrics: Lyrics | null;
+	duration: number = 0;
+	fallbackID: number = 0;
+	albumsFallback: any[] = [];
+	filesizes: Record<string, any> = {};
+	local: boolean = false;
+	mainArtist: Artist | null = null;
+	artist: { Main: any[]; Featured?: any[] } = { Main: [] };
+	artists: any[] = [];
+	album: Album | null = null;
+	trackNumber: number = 0;
+	discNumber: number = 0;
+	date: CustomDate = new CustomDate();
+	lyrics: Lyrics | null = null;
 	bpm: number;
-	contributors: Record<string, any>;
-	copyright: string;
-	explicit: boolean;
-	ISRC: string;
-	replayGain: string;
-	playlist: Playlist | null;
-	position: number | null;
-	searched: boolean;
-	bitrate: keyof typeof formatsName;
-	dateString: string;
-	artistsString: string;
-	mainArtistsString: string;
-	featArtistsString: string;
-	fullArtistsString: string;
-	urls: Partial<Record<(typeof formatsName)[keyof typeof formatsName], string>>;
+	contributors: Record<string, any> = {};
+	copyright: string = "";
+	explicit: boolean = false;
+	ISRC: string = "";
+	replayGain: string = "";
+	playlist: Playlist | null = null;
+	position: number | null = null;
+	searched: boolean = false;
+	bitrate: keyof typeof formatsName = 0;
+	dateString: string = "";
+	artistsString: string = "";
+	mainArtistsString: string = "";
+	featArtistsString: string = "";
+	fullArtistsString: string = "";
+	urls: Partial<
+		Record<(typeof formatsName)[keyof typeof formatsName], string>
+	> = {};
 	downloadURL: string;
 	rank: any;
 	artistString: any;
-
-	constructor() {
-		this.id = 0;
-		this.title = "";
-		this.trackToken = "";
-		this.duration = 0;
-		this.fallbackID = 0;
-		this.albumsFallback = [];
-		this.filesizes = {};
-		this.local = false;
-		this.mainArtist = null;
-		this.artist = { Main: [] };
-		this.artists = [];
-		this.album = null;
-		this.trackNumber = 0;
-		this.discNumber = 0;
-		this.date = new CustomDate();
-		this.lyrics = null;
-		this.bpm = 0;
-		this.contributors = {};
-		this.copyright = "";
-		this.explicit = false;
-		this.ISRC = "";
-		this.replayGain = "";
-		this.playlist = null;
-		this.position = null;
-		this.searched = false;
-		this.bitrate = 0;
-		this.dateString = "";
-		this.artistsString = "";
-		this.mainArtistsString = "";
-		this.featArtistsString = "";
-		this.fullArtistsString = "";
-		this.urls = {};
-	}
 
 	parseEssentialData(trackAPI: EnrichedAPITrack) {
 		this.id = trackAPI.id;
@@ -127,85 +93,82 @@ class Track {
 		this.urls = {};
 	}
 
-	async parseData(
-		dz: Deezer,
-		id: number,
-		existingTrack?: APITrack,
-		albumAPI?: APIAlbum,
-		playlistAPI?: APIPlaylist,
-		refetch: boolean = true
-	) {
-		if (id && refetch) {
-			const gwTrack = await dz.gw.get_track_with_fallback(id);
-			const newTrack = map_track(gwTrack);
+	async enrichMetadata(dz: Deezer) {
+		if (!this.id) throw new NoDataToParse();
 
-			this.parseEssentialData(newTrack);
+		if (!this.album) {
+			const gwTrack = await dz.gw.get_track_with_fallback(this.id);
+			const mappedGwTrack = map_track(gwTrack);
 
-			existingTrack = { ...existingTrack, ...newTrack };
-		} else if (!existingTrack) {
-			throw new NoDataToParse();
+			if (!this.position) this.position = mappedGwTrack.position;
+
+			this.parseEssentialData(mappedGwTrack);
+
+			if (!this.album) {
+				this.album = new Album(
+					mappedGwTrack.album.id,
+					mappedGwTrack.album.title,
+					mappedGwTrack.album.md5_origin || ""
+				);
+			}
 		}
 
 		// only public api has bpm
-		if (!existingTrack.bpm && !this.local) {
+		if (!this.local && !this.bpm) {
 			try {
-				const trackAPI_new = await dz.api.getTrack(existingTrack.id);
-				trackAPI_new.release_date = existingTrack.release_date;
-				existingTrack = { ...existingTrack, ...trackAPI_new };
+				const apiTrack = await dz.api.getTrack(this.id);
+				if (!this.position && apiTrack.position)
+					this.position = apiTrack.position;
+
+				if (this.local) {
+					this.parseLocalTrackData(apiTrack);
+				} else {
+					this.parseTrack(apiTrack);
+				}
 			} catch {
 				/* empty */
 			}
 		}
 
-		if (this.local) {
-			this.parseLocalTrackData(existingTrack);
-		} else {
-			this.parseTrack(existingTrack);
-
+		if (!this.local) {
 			// Get Lyrics Data
-			if (!existingTrack.lyrics && this.lyrics.id !== "0") {
+			if (!this.lyrics && this.lyrics.id !== "0") {
 				try {
-					existingTrack.lyrics = await dz.gw.get_track_lyrics(this.id);
+					this.lyrics = await dz.gw.get_track_lyrics(this.id);
 				} catch {
 					this.lyrics.id = "0";
 				}
 			}
 			if (this.lyrics.id !== "0") {
-				this.lyrics.parseLyrics(existingTrack.lyrics);
+				this.lyrics.parseLyrics(this.lyrics);
 			}
 
-			// Parse Album Data
-			this.album = new Album(
-				existingTrack.album.id,
-				existingTrack.album.title,
-				existingTrack.album.md5_origin || ""
-			);
+			if (!this.album) {
+				this.album = new Album();
+			}
 
 			// Get album Data
-			if (!albumAPI) {
-				try {
-					albumAPI = await dz.api.get_album(this.album.id);
-				} catch {
-					albumAPI = null;
-				}
+			// TODO: Missing genres and upc from album
+			try {
+				const apiAlbum = await dz.api.get_album(this.album.id);
+				this.album.parseAlbum(apiAlbum);
+			} catch (e) {
+				console.error(e);
 			}
 
 			// Get album_gw Data
 			// Only gw has disk number
-			if (!albumAPI || (albumAPI && !albumAPI.nb_disk)) {
-				let albumAPI_gw;
+			if (!this.album.trackTotal) {
 				try {
-					albumAPI_gw = await dz.gw.get_album(this.album.id);
-					albumAPI_gw = map_album(albumAPI_gw);
-				} catch {
-					albumAPI_gw = {};
+					const gwAlbum = await dz.gw.get_album(this.album.id);
+					const mappedAlbum = map_album(gwAlbum) as APIAlbum;
+					this.album.parseAlbum(mappedAlbum);
+				} catch (e) {
+					console.error("Error getting gw album:", e);
 				}
-				if (!albumAPI) albumAPI = <any>{};
-				albumAPI = { ...albumAPI_gw, ...albumAPI };
 			}
 
-			if (!albumAPI) throw new AlbumDoesntExists();
-			this.album.parseAlbum(albumAPI);
+			if (!this.album.id) throw new AlbumDoesntExists();
 
 			// albumAPI_gw doesn't contain the artist cover
 			// Getting artist image ID
@@ -222,11 +185,6 @@ class Track {
 
 			// Fill missing data
 			if (this.album.date && !this.date) this.date = this.album.date;
-			if (existingTrack.genres) {
-				existingTrack.genres.forEach((genre) => {
-					if (!this.album.genre.includes(genre)) this.album.genre.push(genre);
-				});
-			}
 		}
 
 		// Remove unwanted charaters in track name
@@ -237,17 +195,11 @@ class Track {
 		if (!this.artist.Main.length) {
 			this.artist.Main = [this.mainArtist.name];
 		}
-		this.position = existingTrack.position;
-
-		if (playlistAPI) {
-			this.playlist = new Playlist(playlistAPI);
-		}
 
 		this.generateMainFeatStrings();
-		return this;
 	}
 
-	parseLocalTrackData(trackAPI) {
+	parseLocalTrackData(trackAPI: APITrack) {
 		// Local tracks has only the trackAPI_gw page and
 		// contains only the tags provided by the file
 		this.title = trackAPI.title;
@@ -265,6 +217,7 @@ class Track {
 	}
 
 	parseTrack(trackAPI: APITrack) {
+		this.id = trackAPI.id;
 		this.title = trackAPI.title;
 
 		this.discNumber = trackAPI.disk_number;
