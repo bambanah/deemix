@@ -49,19 +49,22 @@ All paremeters are optional - if not specified, the default value will be used.
 
 You'll probably want to at least map the download and config folders, as well as the port.
 
-| Parameter                        | Description                          | Default      |
-| -------------------------------- | ------------------------------------ | ------------ |
-| `-v /path/to/music:/downloads`   | Path to the music folder             |              |
-| `-v /path/to/config:/config`     | Path to the config folder            |              |
-| `-p 6595:6595`                   | Port mapped to the host              |              |
-| `-e DEEMIX_SERVER_PORT=6595`     | Port to expose the server on         | `6595`       |
-| `-e DEEMIX_DATA_DIR=/config`     | Path to the config folder            | `/config`    |
-| `-e DEEMIX_MUSIC_DIR=/downloads` | Path to the music folder             | `/downloads` |
-| `-e DEEMIX_HOST=0.0.0.0`         | Host to bind the server to           | `0.0.0.0`    |
-| `-e DEEMIX_SINGLE_USER=true`     | Enables single user mode             | `true`       |
-| `-e PUID=1000`                   | User ID to use for downloaded files  | `1000`       |
-| `-e PGID=1000`                   | Group ID to use for downloaded files | `1000`       |
-| `-e UMASK_SET=022`               | Set umask                            | `022`        |
+| Parameter                               | Description                                               | Default      |
+|-----------------------------------------|-----------------------------------------------------------|--------------|
+| `-v /path/to/music:/downloads`          | Path to the music folder                                  |              |
+| `-v /path/to/config:/config`            | Path to the config folder                                 |              |
+| `-p 6595:6595`                          | Port mapped to the host                                   |              |
+| `-e DEEMIX_SERVER_PORT=6595`            | Port to expose the server on                              | `6595`       |
+| `-e DEEMIX_DATA_DIR=/config`            | Path to the config folder                                 | `/config`    |
+| `-e DEEMIX_MUSIC_DIR=/downloads`        | Path to the music folder                                  | `/downloads` |
+| `-e DEEMIX_HOST=0.0.0.0`                | Host to bind the server to                                | `0.0.0.0`    |
+| `-e DEEMIX_SINGLE_USER=true`            | Enables single user mode                                  | `true`       |
+| `-e PUID=1000`                          | User ID to use for downloaded files                       | `1000`       |
+| `-e PGID=1000`                          | Group ID to use for downloaded files                      | `1000`       |
+| `-e UMASK_SET=022`                      | Set umask                                                 | `022`        |
+| `-e DISABLE_OWNERSHIP_CHECK=true`       | Disable ownership fix on container start globally         |              |
+| `-e DISABLE_OWNERSHIP_CHECK_MUSIC=true` | Disable ownership fix on container start for music files  |              |
+| `-e DISABLE_OWNERSHIP_CHECK_DATA=true`  | Disable ownership fix on container start for config files |              |
 
 ## Feature requests
 
