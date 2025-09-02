@@ -1,19 +1,24 @@
 #!/usr/bin/with-contenv bash
 # shellcheck disable=SC1008
 
-printf '[cont-init.d] Creating Folders if Missing\n'
+printf '[cont-init.d] Creating folders if missing\n'
 
 mkdir -p "$DEEMIX_MUSIC_DIR"
 mkdir -p "$DEEMIX_DATA_DIR"
 
-printf '[cont-init.d] Fixing Folder Permissions - Config Folder\n'
+printf '[cont-init.d] Fixing folder permissions\n'
 
-chown -R "$PUID":"$PGID" "$DEEMIX_MUSIC_DIR"
-
-if [ -n "${DISABLE_OWNERSHIP_CHECK}" ]; then
-	printf '[cont-init.d] Download Folder Ownership Check disabled by Environment Variable\n'
+if [ -n "${DISABLE_OWNERSHIP_CHECK}" ] || [ -n "${DISABLE_OWNERSHIP_CHECK_MUSIC}" ] || x; then
+	printf '[cont-init.d] Music folder ownership check disabled by environment variable\n'
 else
-	printf '[cont-init.d] Fixing Folder Permissions - Downloads Folder\n'
+	printf '[cont-init.d] Fixing music folder permissions\n'
+	chown -R "$PUID":"$PGID" "$DEEMIX_MUSIC_DIR"
+fi
+
+if [ -n "${DISABLE_OWNERSHIP_CHECK}" ] || [ -n "${DISABLE_OWNERSHIP_CHECK_DATA}" ] || x; then
+	printf '[cont-init.d] Data folder ownership check disabled by environment variable\n'
+else
+	printf '[cont-init.d] Fixing data folder permissions\n'
 	chown -R "$PUID":"$PGID" "$DEEMIX_DATA_DIR"
 fi
 
