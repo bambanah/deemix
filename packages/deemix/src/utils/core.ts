@@ -176,7 +176,7 @@ export function formatListener(key: string, data) {
 					message = "Downloading track.";
 					break;
 				case "downloadTimeout":
-					message = "Deezer timedout when downloading track, retrying...";
+					message = "Deezer timed out when downloading track, retrying...";
 					break;
 				case "downloaded":
 					message = "Track downloaded.";
