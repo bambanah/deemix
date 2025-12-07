@@ -239,8 +239,15 @@ export default class SpotifyPlugin extends BasePlugin {
 			}
 		}
 
-		if (spotifyTrack.external_ids && spotifyTrack.external_ids.isrc)
-			cachedTrack.isrc = spotifyTrack.external_ids.isrc;
+		if (spotifyTrack.external_ids && spotifyTrack.external_ids.isrc) {
+			let isrc = spotifyTrack.external_ids.isrc;
+			if (isrc.includes("-")) {
+				isrc = isrc.replaceAll("-", "");
+				console.log("fixed invalid isrc id");
+			}
+
+			cachedTrack.isrc = isrc;
+		}
 
 		cachedTrack.data = {
 			title: spotifyTrack.name,
