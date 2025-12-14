@@ -148,12 +148,16 @@ const stopStackedTabsPreview = async () => {
 };
 
 const previewMouseEnter = (e: MouseEvent) => {
+	if (!e) return;
+
 	if (e.currentTarget) {
 		(e.currentTarget as HTMLElement).classList.remove("opacity-0");
 	}
 };
 
 const previewMouseLeave = (e: MouseEvent) => {
+	if (!e) return;
+
 	const { currentTarget: obj } = e;
 	const parentIsPlaying = (obj as HTMLElement)?.parentElement?.hasAttribute(
 		"playing"
