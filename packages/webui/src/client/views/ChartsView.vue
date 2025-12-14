@@ -112,16 +112,19 @@ watch(id, (newId) => {
 		</div>
 
 		<div v-else>
-			<button class="btn btn-primary" @click="onChangeCountry">
-				{{ t("charts.changeCountry") }}
-			</button>
-			<button
-				:data-link="'https://www.deezer.com/playlist/' + id"
-				class="btn btn-primary"
-				@click.stop="addToQueue"
-			>
-				{{ t("charts.download") }}
-			</button>
+			<div class="flex gap-x-1">
+				<button class="btn btn-primary" @click="onChangeCountry">
+					{{ t("charts.changeCountry") }}
+				</button>
+				<button
+					:data-link="'https://www.deezer.com/playlist/' + id"
+					class="btn btn-primary"
+					@click.stop="addToQueue"
+				>
+					{{ t("charts.download") }}
+				</button>
+			</div>
+
 			<table class="table--charts table">
 				<tbody>
 					<tr v-for="(track, pos) in chart" :key="pos" class="track_row">
