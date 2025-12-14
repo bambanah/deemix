@@ -1,6 +1,6 @@
 <template>
 	<i
-		class="material-icons preview_controls absolute right-0 top-0 flex h-full w-full items-center justify-center rounded bg-black bg-opacity-50 text-center text-white opacity-0 transition-opacity duration-200 ease-in-out"
+		class="material-icons preview_controls absolute right-0 top-0 !flex flex h-full w-full items-center justify-center rounded bg-black bg-opacity-50 text-center text-white opacity-0 transition-opacity duration-200 ease-in-out"
 		:title="t('globals.play_hint').toString()"
 		@mouseenter="previewMouseEnter"
 		@mouseleave="previewMouseLeave"
