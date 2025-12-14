@@ -28,13 +28,13 @@ function getTrackList(event) {
 
 	const {
 		currentTarget: {
-			dataset: { title, id },
+			dataset: { title, id: countryId },
 		},
 	} = event;
 
 	country.value = title;
 	localStorage.setItem("chart", country.value);
-	id.value = id;
+	id.value = countryId;
 }
 
 function setTracklist(data) {
