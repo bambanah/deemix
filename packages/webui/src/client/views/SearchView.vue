@@ -21,6 +21,7 @@ import { uniqWith } from "lodash-es";
 import { computed, onMounted, reactive, ref, watch, watchEffect } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
+import { markRaw } from "vue";
 
 const resetObj = { data: [], next: 0, total: 0, hasLoaded: false };
 
@@ -84,34 +85,34 @@ const state = reactive<State>({
 		{
 			name: t("globals.listTabs.all"),
 			searchType: "all",
-			component: ResultsAll,
+			component: markRaw(ResultsAll),
 			viewInfo: "allTab",
 		},
 		{
 			name: t("globals.listTabs.track", 2),
 			searchType: "track",
-			component: ResultsTracks,
+			component: markRaw(ResultsTracks),
 			viewInfo: "trackTab",
 			formatFunc: formatSingleTrack,
 		},
 		{
 			name: t("globals.listTabs.album", 2),
 			searchType: "album",
-			component: ResultsAlbums,
+			component: markRaw(ResultsAlbums),
 			viewInfo: "albumTab",
 			formatFunc: formatAlbums,
 		},
 		{
 			name: t("globals.listTabs.artist", 2),
 			searchType: "artist",
-			component: ResultsArtists,
+			component: markRaw(ResultsArtists),
 			viewInfo: "artistTab",
 			formatFunc: formatArtist,
 		},
 		{
 			name: t("globals.listTabs.playlist", 2),
 			searchType: "playlist",
-			component: ResultsPlaylists,
+			component: markRaw(ResultsPlaylists),
 			viewInfo: "playlistTab",
 			formatFunc: formatPlaylist,
 		},
