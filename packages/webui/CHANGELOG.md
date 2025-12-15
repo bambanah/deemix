@@ -1,5 +1,22 @@
 # deemix-webui
 
+## 4.4.0
+
+### Minor Changes
+
+- a0b3fc8: - Added two env vars for disabling chown on container init for data and music directories: DISABLE_OWNERSHIP_CHECK_MUSIC and DISABLE_OWNERSHIP_CHECK_DATA
+  - Using DISABLE_OWNERSHIP_CHECK now disables chown for both directories as expected
+
+### Patch Changes
+
+- 49b7795: - optimize component handling with markRaw in search tabs
+  - fix "change country" button on the charts page
+  - add space between the buttons on the charts page
+  - handle undefined MouseEvent
+  - center the preview controls
+- Updated dependencies [fdd11fd]
+  - deemix@3.13.4
+
 ## 4.3.5
 
 ### Patch Changes
