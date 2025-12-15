@@ -1,5 +1,11 @@
 # deemix
 
+## 3.13.4
+
+### Patch Changes
+
+- fdd11fd: Fix typo and automatically correct invalid ISRC IDs
+
 ## 3.13.3
 
 ### Patch Changes
