@@ -22,13 +22,13 @@
 	"license": "GPL-3.0-or-later",
 	"dependencies": {
 		"@spotify/web-api-ts-sdk": "^1.2.0",
-		"async": "^3.2.0",
-		"browser-id3-writer": "^6.3.0",
+		"async": "^3.2.6",
+		"browser-id3-writer": "^6.3.1",
 		"deezer-sdk": "workspace:*",
-		"got": "^14.4.7",
+		"got": "^14.6.5",
 		"html-entities": "^2.6.0",
 		"metaflac-js2": "^1.0.8",
-		"tough-cookie": "^4.0.0"
+		"tough-cookie": "^4.1.4"
 	},
 	"devDependencies": {
 		"@types/async": "^3.2.25",
