@@ -104,7 +104,7 @@ export class DeemixApp {
 			try {
 				const responseJson = await got
 					.get(
-						`https://raw.githubusercontent.com/bambanah/deemix/main/${GUI_VERSION !== undefined ? "gui" : "webui"}/package.json`
+						`https://raw.githubusercontent.com/bambanah/deemix/main/packages/${GUI_VERSION !== undefined ? "gui" : "webui"}/package.json`
 					)
 					.json();
 				this.latestVersion = JSON.parse(JSON.stringify(responseJson)).version;
