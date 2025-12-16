@@ -17,22 +17,22 @@
 		"type-check": "tsc --noEmit"
 	},
 	"devDependencies": {
-		"@electron-forge/cli": "^7.8.3",
-		"@electron-forge/maker-deb": "^7.8.3",
-		"@electron-forge/maker-dmg": "^7.8.3",
-		"@electron-forge/maker-rpm": "^7.8.3",
-		"@electron-forge/maker-squirrel": "^7.8.3",
-		"@electron-forge/maker-zip": "^7.8.3",
-		"@electron-forge/plugin-auto-unpack-natives": "^7.8.3",
-		"@electron/rebuild": "^4.0.1",
-		"@types/yargs": "^17.0.33",
+		"@electron-forge/cli": "^7.10.2",
+		"@electron-forge/maker-deb": "^7.10.2",
+		"@electron-forge/maker-dmg": "^7.10.2",
+		"@electron-forge/maker-rpm": "^7.10.2",
+		"@electron-forge/maker-squirrel": "^7.10.2",
+		"@electron-forge/maker-zip": "^7.10.2",
+		"@electron-forge/plugin-auto-unpack-natives": "^7.10.2",
+		"@electron/rebuild": "^4.0.2",
+		"@types/yargs": "^17.0.35",
 		"electron": "37.2.6",
-		"esbuild": "^0.25.8",
-		"node-gyp": "^11.3.0"
+		"esbuild": "^0.25.12",
+		"node-gyp": "^11.5.0"
 	},
 	"dependencies": {
 		"deemix-webui": "workspace:*",
-		"electron-context-menu": "^4.1.0",
+		"electron-context-menu": "^4.1.1",
 		"electron-squirrel-startup": "^1.0.1",
 		"electron-window-state-manager": "^0.3.2",
 		"yargs": "^17.7.2"
