@@ -37,7 +37,7 @@ const updateUrl = computed(() => {
 				{{ appInfo.webuiVersion || t("about.updates.versionNotAvailable") }}
 			</p>
 			<p v-if="appInfo.guiVersion">
-				{{ t("about.updates.currentWebuiVersion") }}:
+				{{ t("about.updates.currentGuiVersion") }}:
 				{{ appInfo.guiVersion || t("about.updates.versionNotAvailable") }}
 			</p>
 			<p>{{ t("about.updates.deemixVersion") }}: {{ appInfo.deemixVersion }}</p>

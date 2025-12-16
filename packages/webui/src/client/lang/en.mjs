@@ -55,6 +55,7 @@ const en = {
 		updates: {
 			currentVersion: "Current Version",
 			currentWebuiVersion: "Current WebUI Version",
+			currentGuiVersion: "Current GUI Version",
 			versionNotAvailable: "N/A",
 			updateAvailable: `An update is available: {version}`,
 			deemixVersion: "deemix lib version",
