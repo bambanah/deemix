@@ -73,7 +73,7 @@ const { t } = useI18n();
 						{{
 							t("globals.by", { artist: release.artistName }) +
 							" - " +
-							t("globals.listTabs.trackN", release.albumTracks)
+							t("globals.listTabs.trackN", parseInt(release.albumTracks))
 						}}
 					</p>
 				</div>
