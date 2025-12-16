@@ -107,6 +107,10 @@ export function map_user_track(track) {
 			"https://e-cdns-images.dzcdn.net/images/artist/" +
 			art_picture +
 			"/1000x1000-000000-80-0-0.jpg";
+
+		if (track.MEDIA && track.MEDIA.length > 0) {
+			result.preview = track.MEDIA[0].HREF;
+		}
 	}
 
 	return result;
