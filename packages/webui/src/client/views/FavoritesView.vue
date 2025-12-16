@@ -310,7 +310,7 @@ const activeTabEmpty = computed(() => {
 							is-circle
 							@click.stop="addToQueue"
 						/>
-						<p class="primary-text">{{ release.name }}</p>
+						<p class="primary-text text-center">{{ release.name }}</p>
 					</div>
 				</router-link>
 			</div>
