@@ -1,5 +1,11 @@
 # deezer-sdk
 
+## 1.10.1
+
+### Patch Changes
+
+- 9388fd1: add missing track preview for favourite tracks
+
 ## 1.10.0
 
 ### Minor Changes

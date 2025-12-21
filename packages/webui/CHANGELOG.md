@@ -1,5 +1,17 @@
 # deemix-webui
 
+## 4.4.1
+
+### Patch Changes
+
+- 02cdb0f: fix the update check (#238)
+- 43eb13c: missing PreviewControls when hovering over the track cover
+- e11cf95: center artist names (favorites tab)
+- 8cb72b6: fix missing number of tracks in album during the search (#244)
+- Updated dependencies [9388fd1]
+  - deezer-sdk@1.10.1
+  - deemix@3.13.5
+
 ## 4.4.0
 
 ### Minor Changes
