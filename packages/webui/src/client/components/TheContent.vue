@@ -101,6 +101,12 @@ main {
 	overflow-x: hidden;
 }
 
+@media (max-width: 767px) {
+	main {
+		height: calc(100dvh - 93px - env(safe-area-inset-bottom, 0px));
+	}
+}
+
 main::-webkit-scrollbar {
 	width: 10px;
 }
