@@ -404,7 +404,8 @@ onUnmounted(() => {
 	<!-- Mobile FAB button (when sheet is closed) -->
 	<button
 		v-if="!isMobileDownloadsOpen"
-		class="bg-primary fixed bottom-4 right-4 z-30 flex h-14 w-14 items-center justify-center rounded-full border-2 border-white/30 shadow-lg md:hidden"
+		class="bg-primary fixed right-4 z-30 flex h-14 w-14 items-center justify-center rounded-full border-2 border-white/30 shadow-lg md:hidden"
+		style="bottom: calc(1rem + env(safe-area-inset-bottom, 0px))"
 		aria-label="Open downloads"
 		@click="toggleMobileDownloads"
 	>
