@@ -12,6 +12,8 @@ interface AppInfoState {
 	hasSlimSidebar: boolean;
 	showBitrateTags: boolean;
 	showSearchButton: boolean;
+	isMobileSidebarOpen: boolean;
+	isMobileDownloadsOpen: boolean;
 }
 
 export const useAppInfoStore = defineStore("appInfo", {
@@ -22,6 +24,8 @@ export const useAppInfoStore = defineStore("appInfo", {
 		hasSlimSidebar: localStorage.getItem("slimSidebar") === "true",
 		showBitrateTags: localStorage.getItem("showBitrateTags") === "true",
 		showSearchButton: localStorage.getItem("showSearchButton") === "true",
+		isMobileSidebarOpen: false,
+		isMobileDownloadsOpen: false,
 	}),
 	actions: {
 		setAppInfo(payload: AppInfoState) {
@@ -61,6 +65,18 @@ export const useAppInfoStore = defineStore("appInfo", {
 		setShowSearchButton(showSearchButton: AppInfoState["showSearchButton"]) {
 			this.showSearchButton = showSearchButton;
 			localStorage.setItem("showSearchButton", showSearchButton.toString());
+		},
+		toggleMobileSidebar() {
+			this.isMobileSidebarOpen = !this.isMobileSidebarOpen;
+		},
+		closeMobileSidebar() {
+			this.isMobileSidebarOpen = false;
+		},
+		toggleMobileDownloads() {
+			this.isMobileDownloadsOpen = !this.isMobileDownloadsOpen;
+		},
+		closeMobileDownloads() {
+			this.isMobileDownloadsOpen = false;
 		},
 	},
 });

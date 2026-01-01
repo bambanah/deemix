@@ -14,19 +14,43 @@ const appInfoStore = useAppInfoStore(pinia);
 
 const updateAvailable = computed(() => appInfoStore.updateAvailable);
 const hasSlimSidebar = computed(() => appInfoStore.hasSlimSidebar);
+const isMobileSidebarOpen = computed(() => appInfoStore.isMobileSidebarOpen);
+
+function closeSidebar() {
+	appInfoStore.closeMobileSidebar();
+}
+
+function handleNavClick() {
+	// Close sidebar on mobile after navigation
+	appInfoStore.closeMobileSidebar();
+}
 </script>
 
 <template>
+	<!-- Mobile backdrop overlay -->
+	<div
+		v-if="isMobileSidebarOpen"
+		class="fixed inset-0 z-40 bg-black bg-opacity-50 md:hidden"
+		@click="closeSidebar"
+	></div>
+
 	<aside
-		class="bg-panels-bg text-foreground left-0 top-0 flex h-screen flex-col"
+		class="bg-panels-bg text-foreground left-0 top-0 flex h-screen flex-col transition-transform duration-300 ease-in-out md:relative md:translate-x-0"
 		:class="{
 			'slim-sidebar w-20': hasSlimSidebar,
 			'min-w-56': !hasSlimSidebar,
+			'fixed z-50 -translate-x-full': !isMobileSidebarOpen,
+			'fixed z-50 translate-x-0': isMobileSidebarOpen,
+			'md:flex': true,
 		}"
 		aria-label="sidebar"
 		role="navigation"
 	>
-		<router-link :to="{ name: 'Home' }" class="flex w-full justify-center">
+		<router-link
+			:to="{ name: 'Home' }"
+			class="flex w-full justify-center"
+			@click="handleNavClick"
+		>
 			<img
 				src="@/assets/deemix-icon.svg?url"
 				alt="deemix-icon"
@@ -49,6 +73,7 @@ const hasSlimSidebar = computed(() => appInfoStore.hasSlimSidebar);
 					'justify-center': hasSlimSidebar,
 				}"
 				:to="{ name: link.routerName }"
+				@click="handleNavClick"
 			>
 				<i
 					:class="{ 'text-primary': route.name === link.routerName }"

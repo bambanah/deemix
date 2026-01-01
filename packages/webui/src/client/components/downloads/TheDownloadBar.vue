@@ -36,6 +36,18 @@ const isExpanded = ref(localStorage.getItem("downloadTabOpen") === "true");
 const clientMode = computed(() => loginStore.clientMode);
 const isSlim = computed(() => appInfoStore.hasSlimDownloads);
 const showTags = computed(() => appInfoStore.showBitrateTags);
+const isMobileDownloadsOpen = computed(
+	() => appInfoStore.isMobileDownloadsOpen
+);
+
+const queueCount = computed(
+	() => queue.value.length + queueComplete.value.length
+);
+
+function toggleMobileDownloads() {
+	appInfoStore.toggleMobileDownloads();
+}
+
 const finishedWithoutErrors = computed(() => {
 	const isCompletedWithoutErrors = (el) =>
 		(el.status || "") === "download finished" && el.errors.length === 0;
@@ -382,10 +394,92 @@ onUnmounted(() => {
 </script>
 
 <template>
+	<!-- Mobile bottom sheet backdrop -->
+	<div
+		v-if="isMobileDownloadsOpen"
+		class="fixed inset-0 z-40 bg-black bg-opacity-50 md:hidden"
+		@click="toggleMobileDownloads"
+	></div>
+
+	<!-- Mobile FAB button (when sheet is closed) -->
+	<button
+		v-if="!isMobileDownloadsOpen"
+		class="bg-primary fixed bottom-4 right-4 z-30 flex h-14 w-14 items-center justify-center rounded-full border-2 border-white/30 shadow-lg md:hidden"
+		aria-label="Open downloads"
+		@click="toggleMobileDownloads"
+	>
+		<i class="material-icons text-2xl text-white">download</i>
+		<span
+			v-if="queueCount > 0"
+			class="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white"
+		>
+			{{ queueCount > 9 ? "9+" : queueCount }}
+		</span>
+	</button>
+
+	<!-- Mobile bottom sheet -->
+	<section
+		class="bg-panels-bg text-foreground fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl transition-transform duration-300 ease-in-out md:hidden"
+		:class="{
+			'translate-y-full': !isMobileDownloadsOpen,
+			'translate-y-0': isMobileDownloadsOpen,
+		}"
+		style="height: 60vh"
+		aria-label="downloads"
+	>
+		<!-- Mobile sheet handle -->
+		<div class="flex justify-center py-2" @click="toggleMobileDownloads">
+			<div class="h-1 w-12 rounded-full bg-gray-500"></div>
+		</div>
+
+		<!-- Mobile header -->
+		<div class="flex items-center justify-between px-4 pb-2">
+			<span class="text-lg font-semibold capitalize">{{ t("downloads") }}</span>
+			<div class="flex gap-2">
+				<i
+					v-if="clientMode"
+					class="material-icons cursor-pointer text-xl"
+					@click="openDownloadsFolder"
+				>
+					folder_open
+				</i>
+				<i class="material-icons cursor-pointer text-xl" @click="cleanQueue">
+					clear_all
+				</i>
+				<i class="material-icons cursor-pointer text-xl" @click="cancelQueue">
+					delete_sweep
+				</i>
+				<i
+					class="material-icons cursor-pointer text-xl"
+					@click="toggleMobileDownloads"
+				>
+					close
+				</i>
+			</div>
+		</div>
+
+		<!-- Mobile queue list -->
+		<div class="h-[calc(60vh-80px)] overflow-y-auto px-4">
+			<QueueItem
+				v-for="item in queueList"
+				:key="item.uuid"
+				:queue-item="item"
+				:show-tags="showTags"
+				@show-errors="showErrorsTab"
+				@remove-item="onRemoveItem"
+				@retry-download="onRetryDownload"
+			/>
+			<p v-if="queueCount === 0" class="py-8 text-center text-gray-500">
+				No downloads in queue
+			</p>
+		</div>
+	</section>
+
+	<!-- Desktop sidebar (unchanged) -->
 	<section
 		id="download_tab_container"
 		ref="container"
-		class="bg-panels-bg text-foreground block h-screen"
+		class="bg-panels-bg text-foreground hidden h-screen md:block"
 		:class="{ 'tab-hidden': !isExpanded, 'w-8': !isExpanded }"
 		:data-label="t('downloads')"
 		aria-label="downloads"

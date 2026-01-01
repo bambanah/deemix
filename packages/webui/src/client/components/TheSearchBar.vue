@@ -135,7 +135,7 @@ onUnmounted(() => {
 
 <template>
 	<header id="search" aria-label="searchbar" :class="{ showSearchButton }">
-		<div v-show="!showSearchButton" class="search__icon">
+		<div v-show="!showSearchButton" class="search__icon hidden md:block">
 			<i class="material-icons">search</i>
 		</div>
 
@@ -226,7 +226,7 @@ input[type="search"]::-webkit-search-cancel-button {
 #search .searchButton {
 	background-color: var(--primary-color);
 	color: var(--primary-text);
-	height: 100%;
+	align-self: stretch;
 	width: 48px;
 	display: flex;
 	text-decoration: none;
