@@ -1,0 +1,7 @@
+{
+	"name": "@deemix/common",
+	"type": "module",
+	"exports": {
+		"./constants": "./src/constants.ts"
+	}
+}
