@@ -1,5 +1,11 @@
 # deemix-webui
 
+## 4.5.0
+
+### Minor Changes
+
+- 2d3aeb3: Add mobile responsive UI with hamburger menu and download sheet
+
 ## 4.4.1
 
 ### Patch Changes
