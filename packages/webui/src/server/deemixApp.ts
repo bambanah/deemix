@@ -11,6 +11,7 @@ import {
 	saveSettings,
 	Single,
 	SpotifyPlugin,
+	ListenBrainzPlugin,
 	utils,
 	type DownloadObject,
 	type Listener,
@@ -44,7 +45,7 @@ export class DeemixApp {
 	deezerAvailable?: DeezerAvailable;
 	latestVersion: string | null;
 
-	plugins: Record<string, SpotifyPlugin>;
+	plugins: Record<string, any>;
 	settings: Settings;
 
 	listener: Listener;
@@ -58,11 +59,13 @@ export class DeemixApp {
 
 		this.plugins = {
 			spotify: new SpotifyPlugin(),
+			listenbrainz: new ListenBrainzPlugin(),
 		};
 		this.latestVersion = null;
 		this.listener = listener;
 
 		this.plugins.spotify.setup();
+		this.plugins.listenbrainz.setup();
 		this.restoreQueueFromDisk();
 	}
 

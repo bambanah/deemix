@@ -26,7 +26,8 @@ export function isValidURL(text: string): boolean {
 			lowerCaseText.includes("deezer.com") ||
 			lowerCaseText.includes("deezer.page.link") ||
 			lowerCaseText.includes("open.spotify.com") ||
-			lowerCaseText.includes("link.tospotify.com")
+			lowerCaseText.includes("link.tospotify.com") ||
+			lowerCaseText.includes("listenbrainz.org")
 		) {
 			return true;
 		}
