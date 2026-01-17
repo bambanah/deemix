@@ -1,10 +1,5 @@
 import { Collection, Convertable } from "@/download-objects/Collection.js";
-import {
-	AlbumNotOnDeezer,
-	InvalidID,
-	PluginNotEnabledError,
-	TrackNotOnDeezer,
-} from "@/errors.js";
+import { PluginNotEnabledError } from "@/errors.js";
 import { type Settings } from "@/types/Settings.js";
 import { getConfigFolder } from "@/utils/localpaths.js";
 import { queue } from "async";
@@ -84,11 +79,6 @@ export default class ListenBrainzPlugin extends BasePlugin {
 		// The playlist data is nested under a 'playlist' key, which is also nested
 		const listenBrainzPlaylist = response.playlist.playlist;
 
-		console.log(
-			"ListenBrainz Playlist Keys:",
-			Object.keys(listenBrainzPlaylist)
-		);
-
 		const playlistAPI: any = this._convertPlaylistStructure(listenBrainzPlaylist);
 		playlistAPI.various_artist = await dz.api.get_artist(5080); // Useful for save as compilation
 
@@ -119,8 +109,6 @@ export default class ListenBrainzPlugin extends BasePlugin {
 		listener: any = null
 	): Promise<Collection> {
 		const collection = [];
-		let conversion = 0;
-		let conversionNext = 0;
 
 		if (listener)
 			listener.send("startConversion", {
@@ -140,11 +128,6 @@ export default class ListenBrainzPlugin extends BasePlugin {
 						title: downloadObject.title,
 						conversion: Math.round(progress),
 					});
-					console.log(
-						`Converting track ${pos + 1}/${downloadObject.size}: ${
-							track.creator
-						} - ${track.title}`
-					);
 				}
 
 				let trackAPI: DeezerTrack;
