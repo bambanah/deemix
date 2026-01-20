@@ -596,3 +596,57 @@ export function clean_search_query(term) {
 	term = term.replace(" & ", " ").replace("–", "-").replace("—", "-");
 	return term;
 }
+
+export function levenshtein(a: string, b: string): number {
+	if (a.length === 0) return b.length;
+	if (b.length === 0) return a.length;
+
+	const matrix: number[][] = Array(b.length + 1)
+		.fill(null)
+		.map(() => Array(a.length + 1).fill(0));
+
+	// increment along the first column of each row
+	for (let i = 0; i <= b.length; i++) {
+		matrix[i]![0] = i;
+	}
+
+	// increment each column in the first row
+	for (let j = 0; j <= a.length; j++) {
+		matrix[0]![j] = j;
+	}
+
+	// Fill in the rest of the matrix
+	for (let i = 1; i <= b.length; i++) {
+		for (let j = 1; j <= a.length; j++) {
+			if (b.charAt(i - 1) === a.charAt(j - 1)) {
+				matrix[i]![j] = matrix[i - 1]![j - 1]!;
+			} else {
+				matrix[i]![j] = Math.min(
+					matrix[i - 1]![j - 1]! + 1, // substitution
+					Math.min(
+						matrix[i]![j - 1]! + 1, // insertion
+						matrix[i - 1]![j]! + 1 // deletion
+					)
+				);
+			}
+		}
+	}
+
+	return matrix[b.length]![a.length]!;
+}
+
+export function compareStrings(a: string, b: string): number {
+	const aNorm = a.toLowerCase().replace(/\s+/g, " ").trim();
+	const bNorm = b.toLowerCase().replace(/\s+/g, " ").trim();
+	if (aNorm === bNorm) return 1;
+	if (!aNorm || !bNorm) return 0;
+	const distance = levenshtein(aNorm, bNorm);
+	const maxLength = Math.max(aNorm.length, bNorm.length);
+	return 1 - distance / maxLength;
+}
+
+export function strip_presentation_info(term: string): string {
+	let clean = term.replace(/ (feat\.|ft\.|with) .*$/i, "");
+	clean = clean.replace(/ [([](feat\.|ft\.|with).*$/i, "");
+	return clean.trim();
+}

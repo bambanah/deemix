@@ -13,6 +13,11 @@ import {
 } from "./errors.js";
 import { SearchOrder, type APIAlbum, type APIOptions } from "./index.js";
 import { trackSchema, type DeezerTrack } from "./schema/track-schema.js";
+import {
+	compareStrings,
+	clean_search_query,
+	strip_presentation_info,
+} from "./utils.js";
 
 type APIArgs = Record<string | number, string | number>;
 
@@ -494,6 +499,8 @@ export class API {
 	}
 
 	async get_track_id_from_metadata(artist, track, album) {
+		const originalArtist = artist;
+		const originalTrack = track;
 		artist = artist.replace("–", "-").replace("’", "'");
 		track = track.replace("–", "-").replace("’", "'");
 		album = album.replace("–", "-").replace("’", "'");
@@ -518,6 +525,60 @@ export class API {
 				track: track.split(" - ")[0],
 			});
 			if (resp.data.length) return resp.data[0].id;
+		}
+
+		// Fuzzy match fallback
+		// Try a broader search with cleaned terms
+		const cleanArtistQuery = clean_search_query(artist);
+		const cleanTrackQuery = clean_search_query(track);
+		resp = await this.search_track(`${cleanArtistQuery} ${cleanTrackQuery}`);
+
+		if (resp.data && resp.data.length > 0) {
+			let bestMatchId = "0";
+			let bestScore = 0;
+
+			for (const item of resp.data) {
+				// Artist Comparison
+				let artistScore = compareStrings(originalArtist, item.artist.name);
+				const cleanArtist = clean_search_query(originalArtist);
+				if (cleanArtist !== originalArtist) {
+					const s = compareStrings(cleanArtist, item.artist.name);
+					if (s > artistScore) artistScore = s;
+				}
+
+				// Track Comparison
+				const trackCandidates = [
+					originalTrack,
+					clean_search_query(originalTrack),
+					strip_presentation_info(originalTrack),
+				];
+				if (originalTrack.includes("("))
+					trackCandidates.push(originalTrack.split("(")[0].trim());
+				if (originalTrack.includes(" - "))
+					trackCandidates.push(originalTrack.split(" - ")[0].trim());
+
+				const deezerCandidates = [item.title];
+				if (item.title_short) deezerCandidates.push(item.title_short);
+
+				let bestTitleScore = 0;
+				for (const t1 of trackCandidates) {
+					for (const t2 of deezerCandidates) {
+						const s = compareStrings(t1, t2);
+						if (s > bestTitleScore) bestTitleScore = s;
+					}
+				}
+
+				const totalScore = (artistScore + bestTitleScore) / 2;
+
+				if (totalScore > bestScore && totalScore > 0.6) {
+					if (artistScore > 0.4 && bestTitleScore > 0.4) {
+						bestScore = totalScore;
+						bestMatchId = item.id;
+					}
+				}
+			}
+
+			if (bestMatchId !== "0") return bestMatchId;
 		}
 
 		return "0";
