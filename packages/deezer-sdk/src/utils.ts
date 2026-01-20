@@ -646,7 +646,20 @@ export function compareStrings(a: string, b: string): number {
 }
 
 export function strip_presentation_info(term: string): string {
-	let clean = term.replace(/ (feat\.|ft\.|with) .*$/i, "");
-	clean = clean.replace(/ [([](feat\.|ft\.|with).*$/i, "");
+	let clean = term.replace(/ (feat\.?|ft\.?|with) .*$/i, "");
+	clean = clean.replace(/ [([](feat\.?|ft\.?|with).*$/i, "");
 	return clean.trim();
+}
+
+export function compareStringsTokenSort(a: string, b: string): number {
+	const tokenize = (s: string) =>
+		s
+			.toLowerCase()
+			.replace(/[^\w\s]/g, "")
+			.split(/\s+/)
+			.sort()
+			.join(" ");
+	const aSorted = tokenize(a);
+	const bSorted = tokenize(b);
+	return compareStrings(aSorted, bSorted);
 }

@@ -17,6 +17,7 @@ import {
 	compareStrings,
 	clean_search_query,
 	strip_presentation_info,
+	compareStringsTokenSort,
 } from "./utils.js";
 
 type APIArgs = Record<string | number, string | number>;
@@ -545,6 +546,11 @@ export class API {
 					const s = compareStrings(cleanArtist, item.artist.name);
 					if (s > artistScore) artistScore = s;
 				}
+				const strippedArtist = strip_presentation_info(originalArtist);
+				if (strippedArtist !== originalArtist) {
+					const s = compareStrings(strippedArtist, item.artist.name);
+					if (s > artistScore) artistScore = s;
+				}
 
 				// Track Comparison
 				const trackCandidates = [
@@ -568,11 +574,29 @@ export class API {
 					}
 				}
 
-				const totalScore = (artistScore + bestTitleScore) / 2;
+				// Combined Token Sort Comparison (handles moved/swapped words)
+				const sourceCombined = `${originalArtist} ${originalTrack}`;
+				const targetCombined = `${item.artist.name} ${item.title}`;
+				const combinedScore = compareStringsTokenSort(
+					sourceCombined,
+					targetCombined
+				);
 
-				if (totalScore > bestScore && totalScore > 0.6) {
-					if (artistScore > 0.4 && bestTitleScore > 0.4) {
-						bestScore = totalScore;
+				const individualScore = (artistScore + bestTitleScore) / 2;
+				let finalScore = individualScore;
+
+				// Trust combined score if it's very high, otherwise use max
+				if (combinedScore > 0.85) {
+					finalScore = Math.max(individualScore, combinedScore);
+				}
+
+				if (finalScore > bestScore && finalScore > 0.6) {
+					// If strictly relying on combined score, ensure it's high enough
+					if (
+						(artistScore > 0.4 && bestTitleScore > 0.4) ||
+						combinedScore > 0.85
+					) {
+						bestScore = finalScore;
 						bestMatchId = item.id;
 					}
 				}
