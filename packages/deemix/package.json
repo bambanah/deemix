@@ -21,6 +21,7 @@
 	"author": "Bambanah",
 	"license": "GPL-3.0-or-later",
 	"dependencies": {
+		"@deemix/common": "workspace:*",
 		"@spotify/web-api-ts-sdk": "^1.2.0",
 		"async": "^3.2.0",
 		"browser-id3-writer": "^6.3.0",
