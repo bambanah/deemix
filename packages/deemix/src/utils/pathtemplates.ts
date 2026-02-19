@@ -289,6 +289,11 @@ export function generateTrackName(
 		}
 	}
 
+	filename = filename.replaceAll(
+		"%bitrate%",
+		bitrateLabels[parseInt(String(track.bitrate))] ?? String(track.bitrate)
+	);
+
 	filename = filename.replaceAll("\\", "/");
 	return antiDot(fixLongName(filename));
 }
@@ -396,7 +401,7 @@ export function generateArtistName(
 }
 
 export function generatePlaylistName(
-	{ playlist }: Track,
+	{ playlist, bitrate }: Track,
 	{ illegalCharacterReplacer, playlistNameTemplate, dateFormat }: Settings
 ) {
 	const c = illegalCharacterReplacer;
@@ -426,6 +431,10 @@ export function generatePlaylistName(
 		playlist.explicit ? "(Explicit)" : ""
 	);
 	foldername = foldername.replaceAll("%today%", today_dz.format(dateFormat));
+	foldername = foldername.replaceAll(
+		"%bitrate%",
+		bitrateLabels[parseInt(String(bitrate))] ?? ""
+	);
 	foldername = foldername.replaceAll("\\", "/");
 
 	return antiDot(fixLongName(foldername));
