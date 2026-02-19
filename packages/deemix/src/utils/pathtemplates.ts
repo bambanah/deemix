@@ -174,9 +174,10 @@ export function generatePath(
 		filepath += `/CD${track.discNumber}`;
 	}
 
-	// Remove Subfolders from filename and add it to filepath
+	// Remove subfolders from filename and add them to filepath.
+	// Uses lastIndexOf to handle multiple levels (e.g. "Singles/FLAC/Artist - Title")
 	if (filename.includes("/")) {
-		const tempPath = filename.slice(0, filename.indexOf("/"));
+		const tempPath = filename.slice(0, filename.lastIndexOf("/"));
 		filepath += `/${tempPath}`;
 		filename = filename.slice(tempPath.length + 1);
 	}
