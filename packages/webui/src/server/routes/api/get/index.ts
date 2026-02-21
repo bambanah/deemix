@@ -17,6 +17,8 @@ import getUserSpotifyPlaylists from "./getUserSpotifyPlaylists.js";
 import getUserFavorites from "./getUserFavorites.js";
 import getQueue from "./getQueue.js";
 import spotifyStatus from "./spotifyStatus.js";
+import spotifyLogin from "./spotifyLogin.js";
+import spotifyCallback from "./spotifyCallback.js";
 import checkForUpdates from "./checkForUpdates.js";
 
 export default [
@@ -39,5 +41,7 @@ export default [
 	getUserFavorites,
 	getQueue,
 	spotifyStatus,
+	spotifyLogin,
+	spotifyCallback,
 	checkForUpdates,
 ];
