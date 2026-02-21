@@ -51,6 +51,7 @@ const lastCredentials = ref({
 	clientSecret: "",
 	fallbackSearch: false,
 });
+const spotifyOAuthConnected = ref(false);
 const lastUser = ref("");
 const spotifyUser = ref(localStorage.getItem("spotifyUser") || "");
 const storedAccountNum = localStorage.getItem("accountNum");
@@ -73,12 +74,45 @@ const userLicense = computed(() => {
 	else return "Free";
 });
 
+function handleSpotifyOAuthMessage(event: MessageEvent) {
+	if (event.data === "spotifyOAuthSuccess") {
+		spotifyOAuthConnected.value = true;
+		toast("Spotify connected!", "done");
+	}
+}
+
+function connectSpotify() {
+	// Save settings first so credentials are persisted
+	saveSettings();
+	// Open OAuth login in a popup window
+	const width = 500;
+	const height = 700;
+	const left = window.screenX + (window.innerWidth - width) / 2;
+	const top = window.screenY + (window.innerHeight - height) / 2;
+	window.open(
+		"/api/spotifyLogin",
+		"spotifyOAuth",
+		`width=${width},height=${height},left=${left},top=${top}`
+	);
+}
+
+async function disconnectSpotify() {
+	try {
+		await postToServer("spotifyLogout");
+		spotifyOAuthConnected.value = false;
+		toast("Spotify disconnected", "done");
+	} catch {
+		toast("Failed to disconnect Spotify", "close");
+	}
+}
+
 onMounted(async () => {
 	const { settingsData, defaultSettingsData, spotifyCredentials } =
 		await getSettingsData();
 
 	defaultSettings.value = defaultSettingsData;
 	spotifyFeatures.value = spotifyCredentials;
+	spotifyOAuthConnected.value = !!spotifyCredentials.oauthAuthenticated;
 	initSettings(settingsData, spotifyCredentials);
 
 	if (spotifyUser.value) {
@@ -89,6 +123,7 @@ onMounted(async () => {
 	socket.on("updateSettings", updateSettings);
 	// socket.on('accountChanged', accountChanged)
 	socket.on("familyAccounts", initAccounts);
+	window.addEventListener("message", handleSpotifyOAuthMessage);
 
 	if (clientMode.value) {
 		window.api.receive("downloadFolderSelected", downloadFolderSelected);
@@ -100,6 +135,7 @@ onUnmounted(() => {
 	socket.off("updateSettings");
 	// socket.off('accountChanged')
 	socket.off("familyAccounts");
+	window.removeEventListener("message", handleSpotifyOAuthMessage);
 });
 
 function onTemplateVariableClick(templateName) {
@@ -1347,15 +1383,52 @@ function canDownload(bitrate: number) {
 				<input v-model="spotifyFeatures.clientId" type="text" />
 			</div>
 
-			<div class="input-group">
-				<p class="input-group-text">
-					{{ t("settings.spotify.clientSecret") }}
-				</p>
-				<input v-model="spotifyFeatures.clientSecret" type="password" />
-			</div>
+		<div class="input-group">
+			<p class="input-group-text">
+				{{ t("settings.spotify.clientSecret") }}
+			</p>
+			<input v-model="spotifyFeatures.clientSecret" type="password" />
+		</div>
 
-			<div class="input-group">
-				<p class="input-group-text">{{ t("settings.spotify.username") }}</p>
+		<div class="input-group" style="margin-top: 1rem; margin-bottom: 1rem;">
+			<p class="input-group-text" style="margin-bottom: 0.5rem; font-weight: bold;">Spotify Connection</p>
+			<div style="display: flex; align-items: center; gap: 12px;">
+				<span v-if="spotifyOAuthConnected" style="color: #1db954; display: flex; align-items: center; gap: 6px;">
+					<i class="material-icons" style="font-size: 18px;">check_circle</i>
+					Connected to Spotify
+				</span>
+				<span v-else style="color: #999; display: flex; align-items: center; gap: 6px;">
+					<i class="material-icons" style="font-size: 18px;">cancel</i>
+					Not connected
+				</span>
+			</div>
+			<div style="margin-top: 8px;">
+				<button
+					v-if="!spotifyOAuthConnected"
+					class="btn btn-primary"
+					style="background-color: #1db954; border-color: #1db954;"
+					:disabled="!spotifyFeatures.clientId || !spotifyFeatures.clientSecret"
+					@click="connectSpotify"
+				>
+					<svg style="width: 16px; height: 16px; margin-right: 6px; vertical-align: middle; fill: white;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12 24c6.624 0 12-5.376 12-12s-5.376-12-12-12-12 5.376-12 12 5.376 12 12 12zm4.872-6.344v.001c-.807 0-3.356-2.828-10.52-1.36-.189.049-.436.126-.576.126-.915 0-1.09-1.369-.106-1.578 3.963-.875 8.013-.798 11.467 1.268.824.526.474 1.543-.265 1.543zm1.303-3.173c-.113-.03-.08.069-.597-.203-3.025-1.79-7.533-2.512-11.545-1.423-.232.063-.358.126-.576.126-1.071 0-1.355-1.611-.188-1.94 4.716-1.325 9.775-.552 13.297 1.543.392.232.547.533.547.953-.005.522-.411.944-.938.944zm-13.627-7.485c4.523-1.324 11.368-.906 15.624 1.578 1.091.629.662 2.22-.498 2.22l-.001-.001c-.252 0-.407-.063-.625-.189-3.443-2.056-9.604-2.549-13.59-1.436-.175.048-.393.125-.625.125-.639 0-1.127-.499-1.127-1.142 0-.657.407-1.029.842-1.155z"/></svg>
+					Connect with Spotify
+				</button>
+				<button
+					v-else
+					class="btn btn-primary"
+					style="background-color: #666;"
+					@click="disconnectSpotify"
+				>
+					Disconnect
+				</button>
+			</div>
+			<p v-if="!spotifyOAuthConnected && spotifyFeatures.clientId && spotifyFeatures.clientSecret" style="margin-top: 8px; font-size: 0.85em; color: #999;">
+				Save settings first, then click Connect. You'll be redirected to Spotify to authorize.
+			</p>
+		</div>
+
+		<div class="input-group">
+			<p class="input-group-text">{{ t("settings.spotify.username") }}</p>
 				<p class="input-group-text text-sm text-gray-400">
 					{{ t("settings.spotify.usernameHint") }}
 				</p>
