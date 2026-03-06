@@ -36,6 +36,16 @@ export class NotYourPrivatePlaylist extends GenerationError {
 	}
 }
 
+export class SpotifyPlaylistNotAccessible extends GenerationError {
+	constructor(link: string) {
+		super(
+			link,
+			"Spotify playlist is not accessible via API with current app credentials."
+		);
+		this.name = "SpotifyPlaylistNotAccessible";
+	}
+}
+
 export class TrackNotOnDeezer extends GenerationError {
 	errid: string;
 	constructor(link: string) {
