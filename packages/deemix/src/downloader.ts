@@ -703,7 +703,7 @@ export class Downloader {
 
 		for (let i = 0; i < tracks.length; i++) {
 			const track = tracks[i];
-			if (!track) return;
+			if (!track) continue;
 
 			if (track.error) {
 				if (!track.error.data)

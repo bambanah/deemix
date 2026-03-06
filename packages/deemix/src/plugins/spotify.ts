@@ -178,18 +178,17 @@ export default class SpotifyPlugin extends BasePlugin {
 			// Some Spotify playlists require a market context to resolve.
 			if (this.getSpotifyErrorStatus(e) === 404) {
 				market = "US";
-					try {
-						spotifyPlaylist = await this.sp.playlists.getPlaylist(link_id, market);
-					} catch (retryError) {
-						if (this.getSpotifyErrorStatus(retryError) === 404) {
-							return this.generatePlaylistItemFromPage(
-								dz,
-								link_id,
-								bitrate
-							);
-						}
-						throw retryError;
+				try {
+					spotifyPlaylist = await this.sp.playlists.getPlaylist(
+						link_id,
+						market
+					);
+				} catch (retryError) {
+					if (this.getSpotifyErrorStatus(retryError) === 404) {
+						return this.generatePlaylistItemFromPage(dz, link_id, bitrate);
 					}
+					throw retryError;
+				}
 			} else {
 				throw e;
 			}
@@ -256,19 +255,69 @@ export default class SpotifyPlugin extends BasePlugin {
 		});
 		const html = page.body;
 
-		const titleMatch = /<meta property="og:title" content="([^"]+)"/i.exec(html);
-		const imageMatch = /<meta property="og:image" content="([^"]+)"/i.exec(html);
-		const creatorMatch = /<meta name="music:creator" content="([^"]+)"/i.exec(html);
+		const titleMatch = /<meta property="og:title" content="([^"]+)"/i.exec(
+			html
+		);
+		const imageMatch = /<meta property="og:image" content="([^"]+)"/i.exec(
+			html
+		);
+		const creatorMatch = /<meta name="music:creator" content="([^"]+)"/i.exec(
+			html
+		);
 		const descriptionMatch = /<meta name="description" content="([^"]+)"/i.exec(
 			html
 		);
+		const expectedCount = this.getExpectedPlaylistTrackCount(
+			descriptionMatch?.[1] || ""
+		);
 
-		const trackIdMatches = html.matchAll(
-			/<meta name="music:song" content="https:\/\/open\.spotify\.com\/track\/([A-Za-z0-9]+)"/gi
-		);
-		const trackIds = Array.from(
-			new Set(Array.from(trackIdMatches, (match) => match[1]))
-		);
+		const webPlaylist = await this.getPlaylistFromWebApi(link_id);
+		if (webPlaylist) {
+			const playlistAPI: any = this._convertPlaylistStructure(
+				webPlaylist.playlist
+			);
+			playlistAPI.various_artist = await dz.api.get_artist(5080);
+			playlistAPI.explicit = webPlaylist.tracks.some((track) => track.explicit);
+
+			return new Convertable({
+				type: "spotify_playlist",
+				id: link_id,
+				bitrate,
+				title: webPlaylist.playlist.name,
+				artist: webPlaylist.playlist.owner.display_name,
+				cover: playlistAPI.picture_thumbnail,
+				explicit: playlistAPI.explicit,
+				size: webPlaylist.tracks.length,
+				collection: {
+					tracks: [],
+					playlistAPI,
+				},
+				plugin: "spotify",
+				conversion_data: webPlaylist.tracks,
+			});
+		}
+
+		const trackIdSet = this.extractTrackIdsFromHtml(html);
+
+		// Main playlist page often exposes only a preview subset (e.g. 30).
+		if (expectedCount && trackIdSet.size < expectedCount) {
+			try {
+				const embedPage = await got.get(
+					`https://open.spotify.com/embed/playlist/${link_id}`,
+					{
+						https: { rejectUnauthorized: false },
+					}
+				);
+				const embedTrackIds = this.extractTrackIdsFromHtml(embedPage.body);
+				for (const trackId of embedTrackIds) {
+					trackIdSet.add(trackId);
+				}
+			} catch {
+				/* empty */
+			}
+		}
+
+		const trackIds = Array.from(trackIdSet);
 
 		if (!trackIds.length) {
 			throw new SpotifyPlaylistNotAccessible(playlistUrl);
@@ -288,7 +337,8 @@ export default class SpotifyPlugin extends BasePlugin {
 			throw new SpotifyPlaylistNotAccessible(playlistUrl);
 		}
 
-		const ownerUrl = creatorMatch?.[1] || "https://open.spotify.com/user/spotify";
+		const ownerUrl =
+			creatorMatch?.[1] || "https://open.spotify.com/user/spotify";
 		const ownerId = ownerUrl.split("/").pop() || "spotify";
 		const playlistLike: any = {
 			snapshot_id: "",
@@ -331,6 +381,121 @@ export default class SpotifyPlugin extends BasePlugin {
 			plugin: "spotify",
 			conversion_data: tracklist,
 		});
+	}
+
+	async getSpotifyWebAccessToken() {
+		try {
+			const data: any = await got
+				.get(
+					"https://open.spotify.com/get_access_token?reason=transport&productType=web_player",
+					{
+						https: { rejectUnauthorized: false },
+						responseType: "json",
+					}
+				)
+				.json();
+			if (
+				typeof data?.accessToken === "string" &&
+				data.accessToken.length > 0
+			) {
+				return data.accessToken;
+			}
+		} catch {
+			/* empty */
+		}
+		return null;
+	}
+
+	async getPlaylistFromWebApi(link_id: string) {
+		const accessToken = await this.getSpotifyWebAccessToken();
+		if (!accessToken) return null;
+
+		const headers = {
+			Authorization: `Bearer ${accessToken}`,
+			accept: "application/json",
+		};
+
+		try {
+			const playlist: any = await got
+				.get(`https://api.spotify.com/v1/playlists/${link_id}?market=US`, {
+					headers,
+					https: { rejectUnauthorized: false },
+					responseType: "json",
+				})
+				.json();
+
+			const trackItems: any[] = Array.isArray(playlist?.tracks?.items)
+				? [...playlist.tracks.items]
+				: [];
+			let nextUrl: string | null = playlist?.tracks?.next || null;
+
+			while (nextUrl) {
+				const page: any = await got
+					.get(nextUrl, {
+						headers,
+						https: { rejectUnauthorized: false },
+						responseType: "json",
+					})
+					.json();
+				if (Array.isArray(page?.items)) {
+					trackItems.push(...page.items);
+				}
+				nextUrl = page?.next || null;
+			}
+
+			const tracklist: SpotifyTrack[] = [];
+			for (const item of trackItems) {
+				if (!item?.track || typeof item.track.id !== "string") continue;
+				tracklist.push(item.track);
+			}
+
+			if (!tracklist.length) return null;
+			playlist.tracks.items = trackItems;
+			playlist.tracks.total = tracklist.length;
+
+			return {
+				playlist,
+				tracks: tracklist,
+			};
+		} catch {
+			return null;
+		}
+	}
+
+	extractTrackIdsFromHtml(html: string): Set<string> {
+		const trackIdSet = new Set<string>();
+		const addTrackIds = (matches: IterableIterator<RegExpMatchArray>) => {
+			for (const match of matches) {
+				if (match?.[1]) {
+					trackIdSet.add(match[1]);
+				}
+			}
+		};
+
+		const nextDataMatch =
+			/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/i.exec(html);
+		if (nextDataMatch?.[1]) {
+			addTrackIds(nextDataMatch[1].matchAll(/spotify:track:([A-Za-z0-9]+)/gi));
+		}
+
+		addTrackIds(
+			html.matchAll(
+				/<meta name="music:song" content="https:\/\/open\.spotify\.com\/track\/([A-Za-z0-9]+)"/gi
+			)
+		);
+
+		addTrackIds(html.matchAll(/spotify:track:([A-Za-z0-9]+)/gi));
+		addTrackIds(html.matchAll(/open\.spotify\.com\/track\/([A-Za-z0-9]+)/gi));
+
+		return trackIdSet;
+	}
+
+	getExpectedPlaylistTrackCount(description: string): number | null {
+		const countMatch = /(\d[\d,]*)\s+items?/i.exec(description);
+		if (!countMatch?.[1]) return null;
+		const parsedCount = Number.parseInt(countMatch[1].replaceAll(",", ""), 10);
+		if (Number.isNaN(parsedCount) || parsedCount <= 0) return null;
+		return parsedCount;
 	}
 
 	getSpotifyErrorStatus(error: any): number | undefined {
