@@ -5,11 +5,13 @@ import {
 	AlbumNotOnDeezer,
 	InvalidID,
 	PluginNotEnabledError,
+	SpotifyPlaylistNotAccessible,
 	TrackNotOnDeezer,
 } from "@/errors.js";
 import { type Settings } from "@/types/Settings.js";
 import { getConfigFolder } from "@/utils/localpaths.js";
 import {
+	type Market,
 	SpotifyApi,
 	type MaxInt,
 	type Track as SpotifyTrack,
@@ -81,7 +83,7 @@ export default class SpotifyPlugin extends BasePlugin {
 		} else if (link.search(/[/:]album[/:](.+)/g) !== -1) {
 			link_type = "album";
 			link_id = /[/:]album[/:](.+)/g.exec(link)[1];
-		} else if (link.search(/[/:]playlist[/:](\d+)/g) !== -1) {
+		} else if (link.search(/[/:]playlist[/:](.+)/g) !== -1) {
 			link_type = "playlist";
 			link_id = /[/:]playlist[/:](.+)/g.exec(link)[1];
 		}
@@ -168,8 +170,30 @@ export default class SpotifyPlugin extends BasePlugin {
 
 	async generatePlaylistItem(dz: Deezer, link_id: string, bitrate: number) {
 		if (!this.enabled) throw new PluginNotEnabledError("Spotify");
-
-		const spotifyPlaylist = await this.sp.playlists.getPlaylist(link_id);
+		let spotifyPlaylist;
+		let market: Market | undefined;
+		try {
+			spotifyPlaylist = await this.sp.playlists.getPlaylist(link_id);
+		} catch (e) {
+			// Some Spotify playlists require a market context to resolve.
+			if (this.getSpotifyErrorStatus(e) === 404) {
+				market = "US";
+					try {
+						spotifyPlaylist = await this.sp.playlists.getPlaylist(link_id, market);
+					} catch (retryError) {
+						if (this.getSpotifyErrorStatus(retryError) === 404) {
+							return this.generatePlaylistItemFromPage(
+								dz,
+								link_id,
+								bitrate
+							);
+						}
+						throw retryError;
+					}
+			} else {
+				throw e;
+			}
+		}
 
 		const playlistAPI: any = this._convertPlaylistStructure(spotifyPlaylist);
 		playlistAPI.various_artist = await dz.api.get_artist(5080); // Useful for save as compilation
@@ -184,7 +208,7 @@ export default class SpotifyPlugin extends BasePlugin {
 
 			const playlistTracks = await this.sp.playlists.getPlaylistItems(
 				link_id,
-				undefined,
+				market,
 				undefined,
 				limit,
 				offset
@@ -219,6 +243,112 @@ export default class SpotifyPlugin extends BasePlugin {
 			plugin: "spotify",
 			conversion_data: tracklist,
 		});
+	}
+
+	async generatePlaylistItemFromPage(
+		dz: Deezer,
+		link_id: string,
+		bitrate: number
+	) {
+		const playlistUrl = `https://open.spotify.com/playlist/${link_id}`;
+		const page = await got.get(playlistUrl, {
+			https: { rejectUnauthorized: false },
+		});
+		const html = page.body;
+
+		const titleMatch = /<meta property="og:title" content="([^"]+)"/i.exec(html);
+		const imageMatch = /<meta property="og:image" content="([^"]+)"/i.exec(html);
+		const creatorMatch = /<meta name="music:creator" content="([^"]+)"/i.exec(html);
+		const descriptionMatch = /<meta name="description" content="([^"]+)"/i.exec(
+			html
+		);
+
+		const trackIdMatches = html.matchAll(
+			/<meta name="music:song" content="https:\/\/open\.spotify\.com\/track\/([A-Za-z0-9]+)"/gi
+		);
+		const trackIds = Array.from(
+			new Set(Array.from(trackIdMatches, (match) => match[1]))
+		);
+
+		if (!trackIds.length) {
+			throw new SpotifyPlaylistNotAccessible(playlistUrl);
+		}
+
+		const tracklist: SpotifyTrack[] = [];
+		for (const trackId of trackIds) {
+			try {
+				const track = await this.sp.tracks.get(trackId);
+				tracklist.push(track);
+			} catch {
+				// Skip tracks unavailable to this app credentials in current market
+			}
+		}
+
+		if (!tracklist.length) {
+			throw new SpotifyPlaylistNotAccessible(playlistUrl);
+		}
+
+		const ownerUrl = creatorMatch?.[1] || "https://open.spotify.com/user/spotify";
+		const ownerId = ownerUrl.split("/").pop() || "spotify";
+		const playlistLike: any = {
+			snapshot_id: "",
+			collaborative: false,
+			owner: {
+				id: ownerId,
+				display_name: ownerId,
+				href: ownerUrl,
+			},
+			description: descriptionMatch?.[1] || "",
+			followers: { total: 0 },
+			id: link_id,
+			external_urls: { spotify: playlistUrl },
+			tracks: {
+				total: tracklist.length,
+				href: `${playlistUrl}/tracks`,
+			},
+			images: imageMatch?.[1] ? [{ url: imageMatch[1] }] : [],
+			public: true,
+			name: titleMatch?.[1] || `Spotify Playlist ${link_id}`,
+		};
+
+		const playlistAPI: any = this._convertPlaylistStructure(playlistLike);
+		playlistAPI.various_artist = await dz.api.get_artist(5080);
+		playlistAPI.explicit = tracklist.some((track) => track.explicit);
+
+		return new Convertable({
+			type: "spotify_playlist",
+			id: link_id,
+			bitrate,
+			title: playlistLike.name,
+			artist: playlistLike.owner.display_name,
+			cover: playlistAPI.picture_thumbnail,
+			explicit: playlistAPI.explicit,
+			size: tracklist.length,
+			collection: {
+				tracks: [],
+				playlistAPI,
+			},
+			plugin: "spotify",
+			conversion_data: tracklist,
+		});
+	}
+
+	getSpotifyErrorStatus(error: any): number | undefined {
+		const directStatus =
+			error?.status ??
+			error?.response?.statusCode ??
+			error?.body?.error?.status ??
+			error?.statusCode;
+		if (typeof directStatus === "number") return directStatus;
+
+		const message = String(error?.message || "");
+		const codeMatch =
+			/message:\s*(\d+)/i.exec(message) ||
+			/response code:\s*(\d+)/i.exec(message) ||
+			/"status"\s*:\s*(\d+)/i.exec(message);
+		if (codeMatch?.[1]) return Number.parseInt(codeMatch[1], 10);
+
+		return undefined;
 	}
 
 	async getTrack(track_id: string, spotifyTrack?: SpotifyTrack) {
