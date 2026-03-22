@@ -37,8 +37,8 @@ const handler: ApiHandler["handler"] = async (req, res) => {
 		a.DIGITAL_RELEASE_DATE < b.DIGITAL_RELEASE_DATE
 			? 1
 			: b.DIGITAL_RELEASE_DATE < a.DIGITAL_RELEASE_DATE
-				? -1
-				: 0
+			? -1
+			: 0
 	);
 
 	const now = Date.now();
@@ -48,9 +48,15 @@ const handler: ApiHandler["handler"] = async (req, res) => {
 		(x: any) => now - Date.parse(x.DIGITAL_RELEASE_DATE) < delta
 	);
 
-	const albums = await Promise.all(
-		recent.map((c: any) => getAlbumDetails(dz, c.ALB_ID))
+	const albumResults = await Promise.all(
+		recent.map((c: any) =>
+			getAlbumDetails(dz, c.ALB_ID).catch((err: Error) => {
+				console.warn(`[newReleases] Skipping album ${c.ALB_ID}: ${err.message}`);
+				return null;
+			})
+		)
 	);
+	const albums = albumResults.filter((a) => a !== null);
 
 	const output = {
 		data: albums,
