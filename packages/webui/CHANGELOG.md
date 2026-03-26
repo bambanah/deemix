@@ -1,5 +1,14 @@
 # deemix-webui
 
+## 4.5.1
+
+### Patch Changes
+
+- 72b17d0: Fix crash in `/api/newReleases` when Deezer feed contains geo-blocked or unavailable albums. Each album is now fetched with a `.catch()` so unavailable albums are skipped with a warning instead of crashing the process.
+- Updated dependencies [87b5dad]
+- Updated dependencies [8622f04]
+  - deemix@3.13.6
+
 ## 4.5.0
 
 ### Minor Changes

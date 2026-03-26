@@ -1,5 +1,17 @@
 # deemix
 
+## 3.13.6
+
+### Patch Changes
+
+- 87b5dad: Improve Spotify public playlist fallback reliability and fix playlist post-processing completion.
+  - Expand public playlist fallback by merging track IDs from Spotify's embed page when standard page data is truncated.
+  - Ensure collection post-download tasks continue when one track entry is missing, so playlist files (`.m3u8`) are still created.
+
+- 8622f04: Add a fallback for Spotify public playlists that return 404 from the playlist API by parsing track IDs from the public playlist page and resolving tracks individually.
+
+  This also improves Spotify playlist link parsing and error code extraction from SDK error messages.
+
 ## 3.13.5
 
 ### Patch Changes
