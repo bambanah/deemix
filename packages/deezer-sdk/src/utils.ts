@@ -497,9 +497,10 @@ export function mapGwTrackToDeezer(track: GWTrack): EnrichedAPITrack {
 		release_date: track.PHYSICAL_RELEASE_DATE,
 		explicit_lyrics: Boolean(track.EXPLICIT_LYRICS),
 		explicit_content_lyrics:
-			track.EXPLICIT_TRACK_CONTENT.EXPLICIT_LYRICS_STATUS,
-		explicit_content_cover: track.EXPLICIT_TRACK_CONTENT.EXPLICIT_COVER_STATUS,
-		preview: track.MEDIA[0]?.HREF,
+			track.EXPLICIT_TRACK_CONTENT?.EXPLICIT_LYRICS_STATUS,
+		explicit_content_cover:
+			track.EXPLICIT_TRACK_CONTENT?.EXPLICIT_COVER_STATUS,
+		preview: track.MEDIA?.[0]?.HREF,
 		gain: track.GAIN,
 		lyrics_id: track.LYRICS_ID,
 		physical_release_date: track.PHYSICAL_RELEASE_DATE,
