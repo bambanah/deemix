@@ -1,5 +1,12 @@
 # deemix
 
+## 3.13.7
+
+### Patch Changes
+
+- Updated dependencies [ddedcf2]
+  - deezer-sdk@1.10.2
+
 ## 3.13.6
 
 ### Patch Changes

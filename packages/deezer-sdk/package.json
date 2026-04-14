@@ -1,6 +1,6 @@
 {
 	"name": "deezer-sdk",
-	"version": "1.10.1",
+	"version": "1.10.2",
 	"private": true,
 	"description": "A wrapper for all Deezer's APIs",
 	"type": "module",
