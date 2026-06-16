@@ -6,64 +6,70 @@ import { getAlbumDetails } from "./albumSearch.js";
 const path: ApiHandler["path"] = "/newReleases";
 
 const handler: ApiHandler["handler"] = async (req, res) => {
-	if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer();
-	const dz = sessionDZ[req.session.id];
-
-	const results = await dz.gw.get_page("channels/explore");
-
-	const music_section = results.sections.find((e: any) =>
-		e.section_id.includes("module_id=83718b7b-5503-4062-b8b9-3530e2e2cefa")
-	);
-
-	const channels = music_section.items.map((e: any) => e.target);
-
-	const newReleasesByChannel = <any[][]>(
-		await Promise.all(channels.map((c: string) => channelNewReleases(dz, c)))
-	);
-
-	const seen = new Set();
-	const distinct: any[] = [];
-
-	newReleasesByChannel.forEach((l) => {
-		l.forEach((r) => {
-			if (!seen.has(r.ALB_ID)) {
-				seen.add(r.ALB_ID);
-				distinct.push(r);
-			}
+	try {
+		if (!sessionDZ[req.session.id]) sessionDZ[req.session.id] = new Deezer();
+		const dz = sessionDZ[req.session.id];
+	
+		const results = await dz.gw.get_page("channels/explore");
+	
+		const music_section = results.sections.find((e: any) =>
+			e.section_id.includes("module_id=83718b7b-5503-4062-b8b9-3530e2e2cefa")
+		);
+	
+		const channels = music_section.items.map((e: any) => e.target);
+	
+        const newReleasesByChannel = (await Promise.all(channels.map((c) => channelNewReleases(dz, c).catch((err) => {
+            console.warn(`[newReleases] Skipping channel ${c}: ${err.message}`);
+            return [];
+        }))));
+	
+		const seen = new Set();
+		const distinct: any[] = [];
+	
+		newReleasesByChannel.forEach((l) => {
+			l.forEach((r) => {
+				if (!seen.has(r.ALB_ID)) {
+					seen.add(r.ALB_ID);
+					distinct.push(r);
+				}
+			});
 		});
-	});
-
-	distinct.sort((a, b) =>
-		a.DIGITAL_RELEASE_DATE < b.DIGITAL_RELEASE_DATE
-			? 1
-			: b.DIGITAL_RELEASE_DATE < a.DIGITAL_RELEASE_DATE
-			? -1
-			: 0
-	);
-
-	const now = Date.now();
-	const delta = 8 * 24 * 60 * 60 * 1000;
-
-	const recent = distinct.filter(
-		(x: any) => now - Date.parse(x.DIGITAL_RELEASE_DATE) < delta
-	);
-
-	const albumResults = await Promise.all(
-		recent.map((c: any) =>
-			getAlbumDetails(dz, c.ALB_ID).catch((err: Error) => {
-				console.warn(`[newReleases] Skipping album ${c.ALB_ID}: ${err.message}`);
-				return null;
-			})
-		)
-	);
-	const albums = albumResults.filter((a) => a !== null);
-
-	const output = {
-		data: albums,
-		total: albums.length,
-	};
-
-	res.send(output);
+	
+		distinct.sort((a, b) =>
+			a.DIGITAL_RELEASE_DATE < b.DIGITAL_RELEASE_DATE
+				? 1
+				: b.DIGITAL_RELEASE_DATE < a.DIGITAL_RELEASE_DATE
+				? -1
+				: 0
+		);
+	
+		const now = Date.now();
+		const delta = 8 * 24 * 60 * 60 * 1000;
+	
+		const recent = distinct.filter(
+			(x: any) => now - Date.parse(x.DIGITAL_RELEASE_DATE) < delta
+		);
+	
+		const albumResults = await Promise.all(
+			recent.map((c: any) =>
+				getAlbumDetails(dz, c.ALB_ID).catch((err: Error) => {
+					console.warn(`[newReleases] Skipping album ${c.ALB_ID}: ${err.message}`);
+					return null;
+				})
+			)
+		);
+		const albums = albumResults.filter((a) => a !== null);
+	
+		const output = {
+			data: albums,
+			total: albums.length,
+		};
+	
+		res.send(output);
+    } catch (err) {
+        console.error(`[newReleases] Handler failed: ${err.message}`);
+        res.send({ data: [], total: 0 });
+    }
 };
 
 const apiHandler: ApiHandler = { path, handler };
