@@ -194,7 +194,16 @@ async function login(arl: string, force = false) {
 			break;
 		case 0:
 			// Login failed
-			toast(t("toasts.loginFailed"), "close", true, "login-toast");
+			toast(
+				t(
+					data.error === "invalidArl"
+						? "toasts.invalidArl"
+						: "toasts.loginFailed"
+				),
+				"close",
+				true,
+				"login-toast"
+			);
 			loginStore.removeARL();
 			break;
 		case -1:
