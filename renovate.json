@@ -6,7 +6,40 @@
 		"security:only-security-updates",
 		"security:openssf-scorecard"
 	],
-	"packageRules": [],
+	"packageRules": [
+		{
+			"matchFileNames": [".github/workflows/build-publish-docker.yml"],
+			"matchPackageNames": ["*"],
+			"semanticCommitScope": "webui",
+			"enabled": true
+		},
+		{
+			"matchFileNames": [".github/workflows/build-publish-cli.yml"],
+			"matchPackageNames": ["*"],
+			"semanticCommitScope": "cli",
+			"enabled": true
+		},
+		{
+			"matchFileNames": [".github/workflows/build-publish-electron.yml"],
+			"matchPackageNames": ["*"],
+			"semanticCommitScope": "gui",
+			"enabled": true
+		},
+		{
+			"matchFileNames": [
+				".github/workflows/create-release-or-publish.yml",
+				".github/workflows/pull-request.yml"
+			],
+			"matchPackageNames": ["*"],
+			"semanticCommitScope": "ci",
+			"enabled": true
+		},
+		{
+			"matchPackageNames": ["*"],
+			"matchManagers": ["dockerfile", "docker-compose"],
+			"enabled": true
+		}
+	],
 	"osvVulnerabilityAlerts": true,
 	"vulnerabilityAlerts": {
 		"enabled": true,
