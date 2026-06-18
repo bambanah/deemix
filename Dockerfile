@@ -7,7 +7,7 @@ ARG TURBO_TOKEN
 ENV TURBO_TOKEN=$TURBO_TOKEN
 
 ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
+ENV PATH="$PNPM_HOME/bin:$PATH"
 RUN corepack enable
 
 WORKDIR /app
@@ -16,9 +16,9 @@ COPY pnpm-lock.yaml .
 
 FROM base AS builder
 
-RUN pnpm install -g turbo
-
 COPY . .
+
+RUN pnpm install -g turbo
 
 RUN turbo prune deemix-webui --docker
 
