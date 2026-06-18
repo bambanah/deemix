@@ -228,11 +228,6 @@ const sr = {
 				update: "Ажурирај ARL",
 			},
 			logout: "Одјава",
-			login: "Пријава преко deezer.com",
-		},
-		loginWithCredentials: {
-			title: "Пријава имејлом и шифром",
-			login: "Пријава",
 		},
 		appearance: {
 			title: "Приказ",

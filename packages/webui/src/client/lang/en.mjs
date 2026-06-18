@@ -253,9 +253,6 @@ const en = {
 				update: "Force Update ARL",
 			},
 			logout: "Logout",
-			login: "Login",
-			email: "E-mail",
-			password: "Password",
 		},
 		appearance: {
 			title: "Appearance",

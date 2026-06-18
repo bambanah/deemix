@@ -256,8 +256,6 @@ const pt = {
 						p2: "O Deemix utiliza este cookie para obter metadata necessária para transferir faixas do Deezer.",
 						p3: "Os ARL duram 3 meses, após esse período o Deezer solicita novo inicio de sessão. O mesmo método é usado no deemix.",
 						p4: "Seguindo um dos guias mais abaixo poderás obter o teu próprio ARL.",
-						warning:
-							"Utiliza este método apenas no caso do email e palavra-passe não funcionarem.",
 					},
 					chromeSteps: {
 						title: "Chrome",
@@ -296,9 +294,6 @@ const pt = {
 				},
 			},
 			logout: "Sair",
-			login: "Iniciar sessão",
-			email: "E-mail",
-			password: "Palavra-passe",
 		},
 		appearance: {
 			title: "Aspeto",

@@ -226,7 +226,6 @@ const es = {
 				update: "Actualiza la ARL",
 			},
 			logout: "Cerrar Sesión",
-			login: "Inicia sesión a través de deezer.com",
 		},
 		appearance: {
 			title: "Apariencia",

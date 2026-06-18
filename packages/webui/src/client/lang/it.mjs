@@ -253,8 +253,6 @@ const it = {
 						p2: "Deemix utilizza lo stesso cookie per ottenere i dati utili per scaricare i brani da Deezer.",
 						p3: "Gli ARL durano un massimo di 3 mesi, dopo di che Deezer ti chiede di rifare il login e te ne assegna un altro. Lo stesso metodo è usato da deemix.",
 						p4: "Seguendo una delle prossime guide potrai ottenere il tuo ARL personale.",
-						warning:
-							"Usa questo metodo solo se il login con email e password non funziona.",
 					},
 					chromeSteps: {
 						title: "Chrome",
@@ -291,9 +289,6 @@ const it = {
 				update: "Aggiorna ARL",
 			},
 			logout: "Disconnettiti",
-			login: "Login",
-			email: "E-mail",
-			password: "Password",
 		},
 		appearance: {
 			title: "Aspetto",

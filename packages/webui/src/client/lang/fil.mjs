@@ -217,7 +217,6 @@ const fil = {
 				update: "I-update ang ARL",
 			},
 			logout: "Logout",
-			login: "Mag-login gamit ng deezer.com",
 		},
 		appearance: {
 			title: "Hitsura",

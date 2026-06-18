@@ -257,7 +257,6 @@ const pt_br = {
 						p2: "O Deemix usa este cookie para obter os metadados necessários para fazer o download das faixas do Deezer.",
 						p3: "ARLs duram por 3 meses, após isto o Deezer solicita que você faça login novamente. O mesmo método é usado no Deemix.",
 						p4: "Seguindo um dos guias abaixo, você pode obter o ARL da sua conta.",
-						warning: "Use este método somente se e-mail/senha não funcionar.",
 					},
 					chromeSteps: {
 						title: "Chrome",
@@ -297,9 +296,6 @@ const pt_br = {
 				update: "Forçar atualizar ARL",
 			},
 			logout: "Sair",
-			login: "Entrar",
-			email: "E-mail",
-			password: "Senha",
 		},
 		appearance: {
 			title: "Aparência",
