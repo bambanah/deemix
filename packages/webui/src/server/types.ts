@@ -166,5 +166,4 @@ export interface Arguments {
 
 export interface LoginFile {
 	arl: string | null;
-	accessToken: string | null;
 }

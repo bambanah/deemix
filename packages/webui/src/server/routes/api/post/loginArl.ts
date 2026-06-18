@@ -100,7 +100,6 @@ const handler: RequestHandler<any, any, RawLoginArlBody, any> = async (
 		deemix.startQueue(dz);
 		if (isSingleUser)
 			saveLoginCredentials({
-				accessToken: null,
 				arl: returnValue.arl,
 			});
 	} else if (isSingleUser) resetLoginCredentials();

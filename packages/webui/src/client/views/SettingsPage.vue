@@ -8,7 +8,6 @@ import { useAppInfoStore } from "@/stores/appInfo";
 import { useLoginStore } from "@/stores/login";
 import { fetchData, postToServer } from "@/utils/api-utils";
 import { flags } from "@/utils/flags";
-import { getFormItem } from "@/utils/forms";
 import { socket } from "@/utils/socket";
 import { toast } from "@/utils/toasts";
 import { copyToClipboard } from "@/utils/utils";
@@ -21,7 +20,6 @@ const appInfoStore = useAppInfoStore(pinia);
 const { t, locale, availableLocales } = useI18n();
 
 const loginInput = ref<HTMLInputElement | null>(null);
-const loginWithCredentialsForm = ref<HTMLFormElement | null>(null);
 const username = ref<HTMLElement | null>(null);
 const userpicture = ref<HTMLImageElement | null>(null);
 
@@ -217,28 +215,6 @@ function loginButton() {
 	}
 }
 
-async function loginWithCredentials() {
-	const fromLoginForm = getFormItem(loginWithCredentialsForm.value);
-
-	const { email } = fromLoginForm("email");
-	const { password } = fromLoginForm("password");
-
-	if (!email || !password) return;
-
-	toast(t("toasts.loggingIn"), "loading", false, "login-toast");
-
-	const { accessToken, arl } = await postToServer("loginEmail", {
-		email,
-		password,
-		accessToken: loginStore.accessToken,
-	});
-
-	if (accessToken !== loginStore.accessToken)
-		loginStore.setAccessToken(accessToken);
-	if (arl) loginStore.login(arl);
-	else toast(t("toasts.loginFailed"), "close", true, "login-toast");
-}
-
 async function changeAccount() {
 	const [user, newAccountNum] = await fetchData(
 		"changeAccount",
@@ -352,70 +328,37 @@ function canDownload(bitrate: number) {
 				</select>
 			</div>
 
-			<div v-else>
-				<form
-					ref="loginWithCredentialsForm"
-					@submit.prevent="loginWithCredentials"
-				>
-					<label>
-						<span>{{ t("settings.login.email") }}</span>
-						<input
-							type="text"
-							name="email"
-							placeholder="email@example.com"
-							class="mb-6"
-						/>
-					</label>
-					<label>
-						<span>{{ t("settings.login.password") }}</span>
-						<input
-							type="password"
-							name="password"
-							placeholder="●●●●●●●●"
-							class="mb-6"
-						/>
-					</label>
-					<button class="btn btn-primary login-button" type="submit">
-						{{ t("settings.login.login") }}
-					</button>
-				</form>
-			</div>
-
-			<BaseAccordion class="my-5 space-y-5">
-				<template #title>
-					<span>{{ t("settings.login.arl.title") }}</span>
-				</template>
-				<div class="my-5 space-y-5">
-					<div class="flex items-center">
-						<input
-							id="login_input_arl"
-							ref="loginInput"
-							:value="arl"
-							autocomplete="off"
-							placeholder="ARL"
-							type="password"
-						/>
-						<button
-							class="btn btn-primary btn-only-icon ml-2"
-							@click="copyARLtoClipboard"
-						>
-							<i class="material-icons">assignment</i>
-						</button>
-					</div>
-
-					<router-link :to="{ name: 'ARL' }" class="block">
-						{{ t("settings.login.arl.question") }}
-					</router-link>
-
+			<div class="my-5 space-y-5">
+				<span>{{ t("settings.login.arl.title") }}</span>
+				<div class="flex items-center">
+					<input
+						id="login_input_arl"
+						ref="loginInput"
+						:value="arl"
+						autocomplete="off"
+						placeholder="ARL"
+						type="password"
+					/>
 					<button
-						class="btn btn-primary"
-						style="width: 100%"
-						@click="loginButton"
+						class="btn btn-primary btn-only-icon ml-2"
+						@click="copyARLtoClipboard"
 					>
-						{{ t("settings.login.arl.update") }}
+						<i class="material-icons">assignment</i>
 					</button>
 				</div>
-			</BaseAccordion>
+
+				<router-link :to="{ name: 'ARL' }" class="block">
+					{{ t("settings.login.arl.question") }}
+				</router-link>
+
+				<button
+					class="btn btn-primary"
+					style="width: 100%"
+					@click="loginButton"
+				>
+					{{ t("settings.login.arl.update") }}
+				</button>
+			</div>
 		</div>
 
 		<BaseAccordion class="settings-group">

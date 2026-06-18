@@ -209,7 +209,7 @@ const en = {
 			title: "Login",
 			loggedIn: "You are logged in as {username}",
 			arl: {
-				title: "Use ARL instead",
+				title: "Log in with ARL",
 				question: "How do I get my own ARL?",
 				howTo: {
 					prologue: {
@@ -217,7 +217,6 @@ const en = {
 						p2: "Deemix uses that cookie to get the metadata that it needs to download the tracks from Deezer.",
 						p3: "ARLs last for 3 months, after that Deezer asks you to log in again. The same method is used in deemix.",
 						p4: "Following one of the guides below you can get your own account ARL.",
-						warning: "Use this method only if email and password doesn't work.",
 					},
 					chromeSteps: {
 						title: "Chrome",
