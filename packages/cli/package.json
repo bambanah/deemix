@@ -27,7 +27,7 @@
 		]
 	},
 	"devDependencies": {
-		"@yao-pkg/pkg": "^5.15.0",
+		"@yao-pkg/pkg": "^5.16.1",
 		"commander": "^12.1.0",
 		"deemix": "workspace:*",
 		"deezer-sdk": "workspace:*"
