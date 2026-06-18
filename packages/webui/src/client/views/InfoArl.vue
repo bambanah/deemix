@@ -7,9 +7,6 @@
 			{{ t("settings.login.arl.howTo.prologue.p3") }}<br />
 			{{ t("settings.login.arl.howTo.prologue.p4") }}<br />
 		</p>
-		<p class="mb-2 text-base">
-			<b>{{ t("settings.login.arl.howTo.prologue.warning") }}</b>
-		</p>
 
 		<h3 class="mt-6 text-3xl">
 			{{ t("settings.login.arl.howTo.chromeSteps.easyWay.title") }}

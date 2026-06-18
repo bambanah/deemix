@@ -23,10 +23,6 @@ import got, { type Response as GotResponse } from "got";
 import { sep } from "path";
 import { v4 as uuidv4 } from "uuid";
 
-// Functions
-export const getAccessToken = utils.getDeezerAccessTokenFromEmailPassword;
-export const getArlFromAccessToken = utils.getDeezerArlFromAccessToken;
-
 // Constants
 export const configFolder: string = utils.getConfigFolder();
 setDeezerCacheDir(configFolder);

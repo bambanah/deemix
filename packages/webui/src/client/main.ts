@@ -52,12 +52,9 @@ async function startApp() {
 	loginStore.setSpotifyStatus(spotifyStatus);
 
 	let arl = localStorage.getItem("arl");
-	let accessToken = localStorage.getItem("accessToken");
 
 	if (connectResponse.singleUser) {
 		if (connectResponse.singleUser.arl) arl = connectResponse.singleUser.arl;
-		if (connectResponse.singleUser.accessToken)
-			accessToken = connectResponse.singleUser.accessToken;
 	}
 
 	if (connectResponse.autologin) {
@@ -82,17 +79,7 @@ async function startApp() {
 		}
 
 		if (arl) {
-			let result = await login(arl, Number(accountNum));
-			if (result.status === 0 && accessToken) {
-				const { arl: newArl } = await postToServer("loginWithCredentials", {
-					accessToken,
-				});
-				if (newArl && newArl !== arl) {
-					arl = newArl;
-					loginStore.setARL(arl);
-				}
-				result = await login(newArl, Number(accountNum));
-			}
+			const result = await login(arl, Number(accountNum));
 			loggedIn(result);
 		}
 	} else {

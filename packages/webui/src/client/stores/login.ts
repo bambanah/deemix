@@ -3,7 +3,6 @@ import { defineStore } from "pinia";
 
 interface LoginState {
 	arl: string;
-	accessToken: string;
 	status: number | null;
 	user: {
 		id: string | null;
@@ -25,7 +24,6 @@ interface LoginState {
 export const useLoginStore = defineStore("login", {
 	state: (): LoginState => ({
 		arl: localStorage.getItem("arl") || "",
-		accessToken: localStorage.getItem("accessToken") || "",
 		status: null,
 		user: {
 			id: null,
@@ -57,7 +55,6 @@ export const useLoginStore = defineStore("login", {
 		},
 		logout() {
 			localStorage.removeItem("arl");
-			localStorage.removeItem("accessToken");
 
 			this.$reset();
 		},
@@ -68,20 +65,9 @@ export const useLoginStore = defineStore("login", {
 				localStorage.setItem("arl", arl);
 			}
 		},
-		setAccessToken(accessToken: string, saveOnLocalStorage: boolean = true) {
-			this.accessToken = accessToken;
-
-			if (saveOnLocalStorage) {
-				localStorage.setItem("accessToken", accessToken);
-			}
-		},
 		removeARL() {
 			this.arl = "";
 			localStorage.removeItem("arl");
-		},
-		removeAccessToken() {
-			this.accessToken = "";
-			localStorage.removeItem("accessToken");
 		},
 		setUser(user: LoginState["user"]) {
 			this.user = user;

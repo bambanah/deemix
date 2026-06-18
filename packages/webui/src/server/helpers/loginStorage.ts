@@ -5,12 +5,10 @@ import type { LoginFile } from "../types.js";
 const configFolder = deemix.utils.getConfigFolder();
 
 const DEFAULTS: LoginFile = {
-	accessToken: null,
 	arl: null,
 };
 
 let loginData: LoginFile = {
-	accessToken: null,
 	arl: null,
 };
 
@@ -34,7 +32,6 @@ export function getLoginCredentials(): LoginFile {
 
 export function saveLoginCredentials(newLogin: LoginFile) {
 	if (newLogin.arl) loginData.arl = newLogin.arl;
-	if (newLogin.accessToken) loginData.accessToken = newLogin.accessToken;
 	if (!fs.existsSync(configFolder)) fs.mkdirSync(configFolder);
 	fs.writeFileSync(
 		configFolder + "login.json",
