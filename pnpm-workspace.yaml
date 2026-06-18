@@ -1,8 +1,11 @@
 packages:
   - packages/*
-onlyBuiltDependencies:
-  - electron
-  - electron-winstaller
-  - esbuild
-  - utf-8-validate
-  - vue-demi
+
+allowBuilds:
+  electron: true
+  electron-winstaller: true
+  esbuild: true
+  fs-xattr: true
+  macos-alias: true
+  utf-8-validate: true
+  vue-demi: true
