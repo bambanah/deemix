@@ -179,6 +179,8 @@ const en = {
 		loggedIn: "Logged in",
 		alreadyLogged: "Already logged in",
 		loginFailed: "Couldn't log in",
+		invalidArl:
+			"Invalid ARL. Copy only the cookie value — no spaces, quotes or extra text.",
 		loggedOut: "Logged out",
 		cancellingCurrentItem: "Cancelling current item.",
 		currentItemCancelled: "Current item cancelled.",
