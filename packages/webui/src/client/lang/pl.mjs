@@ -211,7 +211,6 @@ const pl = {
 				update: "Zakualizuj ARL",
 			},
 			logout: "Wyloguj",
-			login: "Zaloguj przez deezer.com",
 		},
 		appearance: {
 			title: "Wygląd",

@@ -225,11 +225,6 @@ const th = {
 				update: "อัปเดต ARL",
 			},
 			logout: "ออกจากระบบ",
-			login: "เข้าสู่ระบบผ่าน deezer.com",
-		},
-		loginWithCredentials: {
-			title: "เข้าสู่ระบบด้วยรหัสรับรองตัวตน",
-			login: "เข้าสู่ระบบ",
 		},
 		appearance: {
 			title: "หน้าตาแอป",

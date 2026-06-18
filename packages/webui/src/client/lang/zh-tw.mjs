@@ -219,7 +219,6 @@ const zh_tw = {
 				update: "更新 ARL",
 			},
 			logout: "登出",
-			login: "透過 deezer.com 登入",
 		},
 		appearance: {
 			title: "外觀",

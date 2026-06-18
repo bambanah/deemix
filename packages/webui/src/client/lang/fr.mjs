@@ -271,8 +271,6 @@ const fr = {
 						p2: "Deemix utilise ce cookie pour obtenir les métadonnées dont il a besoin pour télécharger les pistes depuis Deezer.",
 						p3: "Les ARLs restent valables pendant 3 mois, après quoi Deezer vous demande de vous reconnecter. La même méthode est utilisée dans deemix.",
 						p4: "En suivant l'un des modes opératoires ci-dessous, vous pouvez obtenir votre ARL personnel.",
-						warning:
-							"N'utilisez cette méthode que si l'e-mail et le mot de passe ne fonctionnent pas.",
 					},
 					chromeSteps: {
 						title: "Chrome",
@@ -315,9 +313,6 @@ const fr = {
 				update: "Forcer la réactualisation de l'ARL",
 			},
 			logout: "Déconnexion",
-			login: "Connexion",
-			email: "E-mail",
-			password: "Mot de passe",
 		},
 		appearance: {
 			title: "Apparence",
