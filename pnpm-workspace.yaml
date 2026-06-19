@@ -2,6 +2,7 @@ packages:
   - packages/*
 
 blockExoticSubdeps: false
+nodeLinker: "hoisted"
 
 allowBuilds:
   electron: true

@@ -11,7 +11,7 @@ on:
       - .github/workflows/build-publish-docker.yml
       - Dockerfile
       - docker/**
-      - packages/webui/CHANGELOG.md
+      - packages/webui/*
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
