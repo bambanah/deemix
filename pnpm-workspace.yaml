@@ -1,6 +1,8 @@
 packages:
   - packages/*
 
+blockExoticSubdeps: false
+
 allowBuilds:
   electron: true
   electron-winstaller: true
