@@ -198,8 +198,8 @@ importers:
         specifier: ^17.0.33
         version: 17.0.33
       electron:
-        specifier: 37.2.6
-        version: 37.2.6(supports-color@5.5.0)
+        specifier: 39.8.5
+        version: 39.8.5
       esbuild:
         specifier: ^0.25.8
         version: 0.25.8
@@ -2821,8 +2821,8 @@ packages:
     resolution: {integrity: sha512-bO3y10YikuUwUuDUQRM4KfwNkKhnpVO7IPdbsrejwN9/AABJzzTQ4GeHwyzNSrVO+tEH3/Np255a3sVZpZDjvg==}
     engines: {node: '>=8.0.0'}
 
-  electron@37.2.6:
-    resolution: {integrity: sha512-Ns6xyxE+hIK5UlujtRlw7w4e2Ju/ImCWXf1Q/PoOhc0N3/6SN6YW7+ujCarsHbxWnolbW+1RlkHtdklUJpjbPA==}
+  electron@39.8.5:
+    resolution: {integrity: sha512-q6+LiQIcTadSyvtPgLDQkCtVA9jQJXQVMrQcctfOJILh6OFMN+UJJLRkuUTy8CZDYeCIBn1ZycqsL1dAXugxZA==}
     engines: {node: '>= 12.20.55'}
     hasBin: true
 
@@ -6598,7 +6598,7 @@ snapshots:
       glob: 7.2.3
       minimatch: 3.1.2
 
-  '@electron/get@2.0.3(supports-color@5.5.0)':
+  '@electron/get@2.0.3':
     dependencies:
       debug: 4.4.3(supports-color@5.5.0)
       env-paths: 2.2.1
@@ -6644,7 +6644,7 @@ snapshots:
 
   '@electron/notarize@2.5.0':
     dependencies:
-      debug: 4.4.1(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@5.5.0)
       fs-extra: 9.1.0
       promise-retry: 2.0.1
     transitivePeerDependencies:
@@ -6653,7 +6653,7 @@ snapshots:
   '@electron/osx-sign@1.3.1':
     dependencies:
       compare-version: 0.1.2
-      debug: 4.4.1(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@5.5.0)
       fs-extra: 10.1.0
       isbinaryfile: 4.0.10
       minimist: 1.2.8
@@ -6720,7 +6720,7 @@ snapshots:
     dependencies:
       '@electron/asar': 3.2.15
       '@malept/cross-spawn-promise': 2.0.0
-      debug: 4.4.1(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@5.5.0)
       dir-compare: 4.2.0
       fs-extra: 11.3.0
       minimatch: 9.0.5
@@ -7639,7 +7639,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/tsconfig-utils': 8.39.1(typescript@5.9.2)
       '@typescript-eslint/types': 8.39.1
-      debug: 4.4.1(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@5.5.0)
       typescript: 5.9.2
     transitivePeerDependencies:
       - supports-color
@@ -8796,9 +8796,9 @@ snapshots:
       - supports-color
     optional: true
 
-  electron@37.2.6(supports-color@5.5.0):
+  electron@39.8.5:
     dependencies:
-      '@electron/get': 2.0.3(supports-color@5.5.0)
+      '@electron/get': 2.0.3
       '@types/node': 22.17.1
       extract-zip: 2.0.1
     transitivePeerDependencies:
@@ -9291,7 +9291,7 @@ snapshots:
 
   flora-colossus@2.0.0:
     dependencies:
-      debug: 4.4.1(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@5.5.0)
       fs-extra: 10.1.0
     transitivePeerDependencies:
       - supports-color
@@ -9398,7 +9398,7 @@ snapshots:
 
   galactus@1.0.0:
     dependencies:
-      debug: 4.4.1(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@5.5.0)
       flora-colossus: 2.0.0
       fs-extra: 10.1.0
     transitivePeerDependencies:

@@ -26,7 +26,7 @@
 		"@electron-forge/plugin-auto-unpack-natives": "7.11.2",
 		"@electron/rebuild": "4.0.4",
 		"@types/yargs": "^17.0.33",
-		"electron": "37.2.6",
+		"electron": "39.8.5",
 		"esbuild": "^0.25.8",
 		"node-gyp": "^11.3.0"
 	},
