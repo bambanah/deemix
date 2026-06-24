@@ -66,6 +66,19 @@ You'll probably want to at least map the download and config folders, as well as
 | `-e DISABLE_OWNERSHIP_CHECK_MUSIC=true` | Disable ownership fix on container start for music files  |              |
 | `-e DISABLE_OWNERSHIP_CHECK_DATA=true`  | Disable ownership fix on container start for config files |              |
 
+### Nix Flake
+
+Build and run the webui server or cli reproducibly with [Nix](https://nixos.org) (flakes enabled):
+
+```bash
+nix run github:bambanah/deemix#webui      # start the webui server on 0.0.0.0:6595
+nix run github:bambanah/deemix#cli -- <url>  # download a track/playlist
+
+nix build github:bambanah/deemix#webui    # build only, result in ./result
+```
+
+A dev shell with the pinned node + pnpm is available via `nix develop`.
+
 ## Feature requests
 
 Before asking for a feature make sure there isn't already an [open issue](https://github.com/bambanah/deemix/issues).
