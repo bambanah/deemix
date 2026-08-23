@@ -8,14 +8,14 @@ mkdir -p "$DEEMIX_DATA_DIR"
 
 printf '[cont-init.d] Fixing folder permissions\n'
 
-if [ -n "${DISABLE_OWNERSHIP_CHECK}" ] || [ -n "${DISABLE_OWNERSHIP_CHECK_MUSIC}" ] || x; then
+if [ -n "${DISABLE_OWNERSHIP_CHECK}" ] || [ -n "${DISABLE_OWNERSHIP_CHECK_MUSIC}" ]; then
 	printf '[cont-init.d] Music folder ownership check disabled by environment variable\n'
 else
 	printf '[cont-init.d] Fixing music folder permissions\n'
 	chown -R "$PUID":"$PGID" "$DEEMIX_MUSIC_DIR"
 fi
 
-if [ -n "${DISABLE_OWNERSHIP_CHECK}" ] || [ -n "${DISABLE_OWNERSHIP_CHECK_DATA}" ] || x; then
+if [ -n "${DISABLE_OWNERSHIP_CHECK}" ] || [ -n "${DISABLE_OWNERSHIP_CHECK_DATA}" ]; then
 	printf '[cont-init.d] Data folder ownership check disabled by environment variable\n'
 else
 	printf '[cont-init.d] Fixing data folder permissions\n'
