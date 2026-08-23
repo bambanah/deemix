@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv bash
+# shellcheck disable=SC1008
+
+exec s6-setuidgid abc node /app/packages/cli/dist/main.cjs "$@"

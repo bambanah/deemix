@@ -10,7 +10,7 @@
 	},
 	"scripts": {
 		"start": "tsx src/main.ts",
-		"build": "tsup src/main.ts --format cjs",
+		"build": "tsup",
 		"compile": "pkg . --out-path out",
 		"test": "vitest run",
 		"lint": "eslint .",
@@ -26,10 +26,12 @@
 			"node20-win-arm64"
 		]
 	},
-	"devDependencies": {
-		"@yao-pkg/pkg": "^5.15.0",
+	"dependencies": {
 		"commander": "^12.1.0",
 		"deemix": "workspace:*",
 		"deezer-sdk": "workspace:*"
+	},
+	"devDependencies": {
+		"@yao-pkg/pkg": "^5.15.0"
 	}
 }

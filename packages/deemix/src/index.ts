@@ -106,6 +106,7 @@ const itemgen = {
 };
 
 export * as decryption from "./decryption.js";
+export * from "./credentials.js";
 export * from "./plugins/index.js";
 export * from "./settings.js";
 export * as tagger from "./tagger.js";

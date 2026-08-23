@@ -163,7 +163,3 @@ export interface Arguments {
 	[x: string]: unknown;
 	$0: string;
 }
-
-export interface LoginFile {
-	arl: string | null;
-}

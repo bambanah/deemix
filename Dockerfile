@@ -20,7 +20,7 @@ COPY . .
 
 RUN pnpm install -g turbo
 
-RUN turbo prune deemix-webui --docker
+RUN turbo prune deemix-webui deemix-cli --docker
 
 FROM base AS installer
 
@@ -32,7 +32,7 @@ RUN pnpm install --frozen-lockfile
 
 COPY --from=builder /app/out/full/ .
 
-RUN pnpm turbo build --filter=deemix-webui...
+RUN pnpm turbo build --filter=deemix-webui... --filter=deemix-cli...
 
 FROM ghcr.io/linuxserver/baseimage-alpine:3.24 AS runner
 

@@ -50,7 +50,7 @@ All paremeters are optional - if not specified, the default value will be used.
 You'll probably want to at least map the download and config folders, as well as the port.
 
 | Parameter                               | Description                                               | Default      |
-|-----------------------------------------|-----------------------------------------------------------|--------------|
+| --------------------------------------- | --------------------------------------------------------- | ------------ |
 | `-v /path/to/music:/downloads`          | Path to the music folder                                  |              |
 | `-v /path/to/config:/config`            | Path to the config folder                                 |              |
 | `-p 6595:6595`                          | Port mapped to the host                                   |              |
@@ -65,6 +65,31 @@ You'll probably want to at least map the download and config folders, as well as
 | `-e DISABLE_OWNERSHIP_CHECK=true`       | Disable ownership fix on container start globally         |              |
 | `-e DISABLE_OWNERSHIP_CHECK_MUSIC=true` | Disable ownership fix on container start for music files  |              |
 | `-e DISABLE_OWNERSHIP_CHECK_DATA=true`  | Disable ownership fix on container start for config files |              |
+
+#### CLI
+
+The `deemix` CLI is available inside the running container, so downloads can be triggered from
+the host (from a cron job, for example):
+
+```bash
+docker exec Deemix deemix https://www.deezer.com/track/3135556
+docker exec Deemix deemix -b flac -p /downloads/singles https://www.deezer.com/track/3135556
+```
+
+| Flag                | Description                                             |
+| ------------------- | ------------------------------------------------------- |
+| `-p, --path <path>` | Downloads into the given folder instead of `/downloads` |
+| `-b, --bitrate <t>` | Overrides the configured bitrate - `128`, `320`, `flac` |
+
+You must be logged in first. Logging in through the web UI is enough - the CLI reads the same
+credentials. Alternatively, run it interactively once to be prompted for an ARL:
+
+```bash
+docker exec -it Deemix deemix https://www.deezer.com/track/3135556
+```
+
+Without a valid ARL and without a TTY, the command exits 1 rather than waiting for input.
+Downloads are performed as `PUID:PGID`, so files are owned the same way as web UI downloads.
 
 ### Nix Flake
 

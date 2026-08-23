@@ -85,10 +85,7 @@ importers:
         version: 10.2.0(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@5.5.0)
 
   packages/cli:
-    devDependencies:
-      '@yao-pkg/pkg':
-        specifier: ^5.15.0
-        version: 5.16.1(encoding@0.1.13)(supports-color@5.5.0)
+    dependencies:
       commander:
         specifier: ^12.1.0
         version: 12.1.0
@@ -98,6 +95,10 @@ importers:
       deezer-sdk:
         specifier: workspace:*
         version: link:../deezer-sdk
+    devDependencies:
+      '@yao-pkg/pkg':
+        specifier: ^5.15.0
+        version: 5.16.1(encoding@0.1.13)(supports-color@5.5.0)
 
   packages/deemix:
     dependencies:

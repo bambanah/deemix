@@ -12,6 +12,7 @@ on:
       - Dockerfile
       - docker/**
       - packages/webui/*
+      - packages/cli/**
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
