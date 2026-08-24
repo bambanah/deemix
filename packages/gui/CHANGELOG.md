@@ -1,5 +1,20 @@
 # deemix-gui
 
+## 0.5.0
+
+### Minor Changes
+
+- a3c71d1: Run deemix in single user mode
+- e801e18: Fix cont-init scripts not running
+
+### Patch Changes
+
+- Updated dependencies [a3c71d1]
+- Updated dependencies [a3c71d1]
+- Updated dependencies [e801e18]
+- Updated dependencies [7dcc3b6]
+  - deemix-webui@4.7.0
+
 ## 0.4.6
 
 ### Patch Changes

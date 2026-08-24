@@ -1,5 +1,20 @@
 # deemix-webui
 
+## 4.7.0
+
+### Minor Changes
+
+- a3c71d1: Run deemix in single user mode
+- e801e18: Bundle cli with webui docker image
+- 7dcc3b6: Add a Nix flake for reproducible builds of the webui server and cli. `nix build .#webui` / `.#cli`, `nix run .#webui`, and `nix develop` for a dev shell.
+
+### Patch Changes
+
+- a3c71d1: Update ARL button from "Force Update" to "Login with"
+- Updated dependencies [7dcc3b6]
+- Updated dependencies [e801e18]
+  - deemix@3.14.0
+
 ## 4.6.0
 
 ### Minor Changes

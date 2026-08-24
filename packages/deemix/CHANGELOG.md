@@ -1,5 +1,12 @@
 # deemix
 
+## 3.14.0
+
+### Minor Changes
+
+- 7dcc3b6: Add a Nix flake for reproducible builds of the webui server and cli. `nix build .#webui` / `.#cli`, `nix run .#webui`, and `nix develop` for a dev shell.
+- e801e18: Add login file handling
+
 ## 3.13.7
 
 ### Patch Changes
