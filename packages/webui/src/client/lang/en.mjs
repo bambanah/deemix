@@ -250,7 +250,7 @@ const en = {
 						lastStep: "That's your ARL, now you can use it in the app",
 					},
 				},
-				update: "Force Update ARL",
+				update: "Login with ARL",
 			},
 			logout: "Logout",
 		},

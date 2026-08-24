@@ -45,6 +45,7 @@ COPY --chown=root:root docker/ /
 ENV DEEMIX_DATA_DIR=/config/
 ENV DEEMIX_MUSIC_DIR=/downloads/
 ENV DEEMIX_SERVER_PORT=6595
+ENV DEEMIX_SINGLE_USER=true
 ENV DEEMIX_HOST=0.0.0.0
 ENV NODE_ENV=production
 
