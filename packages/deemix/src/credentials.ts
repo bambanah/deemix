@@ -8,7 +8,7 @@ const loginFile = (configFolder: string) =>
 	path.join(configFolder, "login.json");
 
 export function writeLoginCredentials(configFolder: string, login: LoginFile) {
-	if (!fs.existsSync(configFolder)) fs.mkdirSync(configFolder);
+	fs.mkdirSync(configFolder, { recursive: true });
 
 	fs.writeFileSync(loginFile(configFolder), JSON.stringify(login, null, 2));
 }

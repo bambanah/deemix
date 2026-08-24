@@ -107,7 +107,7 @@ export const DEFAULT_SETTINGS: Settings = {
 
 export function saveSettings(settings: Settings, configFolder) {
 	configFolder = configFolder || getConfigFolder();
-	if (!fs.existsSync(configFolder)) fs.mkdirSync(configFolder);
+	fs.mkdirSync(configFolder, { recursive: true });
 
 	fs.writeFileSync(
 		configFolder + "config.json",
@@ -117,7 +117,7 @@ export function saveSettings(settings: Settings, configFolder) {
 
 export function loadSettings(configFolder: string) {
 	configFolder = configFolder || getConfigFolder();
-	if (!fs.existsSync(configFolder)) fs.mkdirSync(configFolder);
+	fs.mkdirSync(configFolder, { recursive: true });
 
 	if (!fs.existsSync(configFolder + "config.json"))
 		saveSettings(DEFAULT_SETTINGS, configFolder);

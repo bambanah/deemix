@@ -247,8 +247,7 @@ export class DeemixApp {
 			}
 
 			// Save queue status when adding something to the queue
-			if (!fs.existsSync(configFolder + "queue"))
-				fs.mkdirSync(configFolder + "queue");
+			fs.mkdirSync(configFolder + "queue", { recursive: true });
 
 			this.queueOrder.push(downloadObj.uuid);
 			fs.writeFileSync(
@@ -431,8 +430,7 @@ export class DeemixApp {
 	}
 
 	restoreQueueFromDisk() {
-		if (!fs.existsSync(configFolder + "queue"))
-			fs.mkdirSync(configFolder + "queue");
+		fs.mkdirSync(configFolder + "queue", { recursive: true });
 		const allItems: string[] = fs.readdirSync(configFolder + "queue");
 		allItems.forEach((filename: string) => {
 			if (filename === "order.json") {

@@ -43,7 +43,7 @@ export const logger = createLogger({
 });
 
 export function removeOldLogs(logFilesNumber: number) {
-	if (!fs.existsSync(logFolder)) fs.mkdirSync(logFolder, { recursive: true });
+	fs.mkdirSync(logFolder, { recursive: true });
 	fs.appendFileSync(
 		logFilename,
 		`${os.platform()} - ${os.type()} ${os.release()} ${os.arch()}\n\n`
@@ -56,7 +56,7 @@ export function removeOldLogs(logFilesNumber: number) {
 	logs.sort();
 	if (logs.length > logFilesNumber) {
 		for (let i = 0; i < logs.length - logFilesNumber; i++) {
-			fs.unlinkSync(joinPath(logFolder, logs[i] + ".log"));
+			fs.rmSync(joinPath(logFolder, logs[i] + ".log"), { force: true });
 		}
 	}
 }
