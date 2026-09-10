@@ -76,10 +76,10 @@ importers:
         version: 5.9.2
       typescript-eslint:
         specifier: 8.39.1
-        version: 8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@5.5.0)(typescript@5.9.2)
+        version: 8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@8.1.1)(typescript@5.9.2)
       vitest:
-        specifier: ^3.2.4
-        version: 3.2.6(@types/node@24.2.1)(jiti@2.4.2)(supports-color@5.5.0)(terser@5.48.0)(tsx@4.20.4)(yaml@2.6.0)
+        specifier: ^4.0.0
+        version: 4.1.11(@types/node@24.2.1)(vite@7.3.5(@types/node@24.2.1)(jiti@2.4.2)(terser@5.48.0)(tsx@4.20.4)(yaml@2.6.0))
       vue-eslint-parser:
         specifier: ^10.2.0
         version: 10.2.0(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@5.5.0)
@@ -122,7 +122,7 @@ importers:
         version: 2.6.0
       metaflac-js2:
         specifier: ^1.0.8
-        version: 1.0.8
+        version: 1.0.8(supports-color@8.1.1)
       tough-cookie:
         specifier: ^4.0.0
         version: 4.1.4
@@ -163,7 +163,7 @@ importers:
         version: 4.1.0
       electron-squirrel-startup:
         specifier: ^1.0.1
-        version: 1.0.1
+        version: 1.0.1(supports-color@8.1.1)
       electron-window-state-manager:
         specifier: ^0.3.2
         version: 0.3.2
@@ -173,40 +173,40 @@ importers:
     devDependencies:
       '@electron-forge/cli':
         specifier: 7.11.2
-        version: 7.11.2(encoding@0.1.13)(esbuild@0.25.8)(postcss@8.5.26)(supports-color@5.5.0)
+        version: 7.11.2(bluebird@3.7.2)(csso@5.0.5)(encoding@0.1.13)(esbuild@0.25.8)(postcss@8.5.26)(supports-color@8.1.1)
       '@electron-forge/maker-deb':
         specifier: 7.11.2
-        version: 7.11.2(supports-color@5.5.0)
+        version: 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
       '@electron-forge/maker-dmg':
         specifier: 7.11.2
-        version: 7.11.2(supports-color@5.5.0)
+        version: 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
       '@electron-forge/maker-rpm':
         specifier: 7.11.2
-        version: 7.11.2(supports-color@5.5.0)
+        version: 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
       '@electron-forge/maker-squirrel':
         specifier: 7.11.2
-        version: 7.11.2(supports-color@5.5.0)
+        version: 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
       '@electron-forge/maker-zip':
         specifier: 7.11.2
-        version: 7.11.2
+        version: 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
       '@electron-forge/plugin-auto-unpack-natives':
         specifier: 7.11.2
-        version: 7.11.2
+        version: 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
       '@electron/rebuild':
         specifier: 4.0.4
-        version: 4.0.4(supports-color@5.5.0)
+        version: 4.0.4(supports-color@8.1.1)
       '@types/yargs':
         specifier: ^17.0.33
         version: 17.0.33
       electron:
         specifier: 37.2.6
-        version: 37.2.6(supports-color@5.5.0)
+        version: 37.2.6(supports-color@8.1.1)
       esbuild:
         specifier: ^0.25.8
         version: 0.25.8
       node-gyp:
         specifier: ^11.3.0
-        version: 11.3.0(supports-color@5.5.0)
+        version: 11.3.0(supports-color@8.1.1)
 
   packages/webui:
     dependencies:
@@ -224,10 +224,10 @@ importers:
         version: link:../deezer-sdk
       express:
         specifier: ^4.19.2
-        version: 4.21.1
+        version: 4.21.1(supports-color@5.5.0)
       express-session:
         specifier: ^1.17.3
-        version: 1.18.1
+        version: 1.18.1(supports-color@5.5.0)
       flag-icon-css:
         specifier: 3.5.0
         version: 3.5.0
@@ -245,7 +245,7 @@ importers:
         version: 3.0.1
       morgan:
         specifier: 1.11.0
-        version: 1.11.0
+        version: 1.11.0(supports-color@5.5.0)
       pinia:
         specifier: ^2.2.2
         version: 2.2.5(typescript@5.9.2)(vue@3.5.12(typescript@5.9.2))
@@ -269,7 +269,7 @@ importers:
         version: 11.1.1
       vite-express:
         specifier: ^0.19.0
-        version: 0.19.0
+        version: 0.19.0(supports-color@5.5.0)
       vue:
         specifier: ~3.5.1
         version: 3.5.12(typescript@5.9.2)
@@ -354,7 +354,7 @@ importers:
         version: 5.1.0(vue@3.5.12(typescript@5.9.2))
       vite-tsconfig-paths:
         specifier: ^5.1.4
-        version: 5.1.4(typescript@5.9.3)(vite@6.4.3(@types/node@24.2.1)(jiti@2.4.2)(terser@5.48.0)(tsx@4.20.4)(yaml@2.6.0))
+        version: 5.1.4(supports-color@5.5.0)(typescript@5.9.3)(vite@6.4.3(@types/node@24.2.1)(jiti@2.4.2)(terser@5.48.0)(tsx@4.20.4)(yaml@2.6.0))
       vue-tsc:
         specifier: ^2.2.8
         version: 2.2.8(typescript@5.9.2)
@@ -616,7 +616,7 @@ packages:
     engines: {node: '>=14'}
 
   '@electron/node-gyp@https://codeload.github.com/electron/node-gyp/tar.gz/06b29aafb7708acef8b3669835c8a7857ebc92d2':
-    resolution: {gitHosted: true, integrity: sha512-MXgzlTDEEndJB3TBbvd5uFQO/8gaINo1Hfen8vef5rq/VHVPeB63uuv/uO5+8GFsAJ/rauu6XB79S6K4+aXc+w==, tarball: https://codeload.github.com/electron/node-gyp/tar.gz/06b29aafb7708acef8b3669835c8a7857ebc92d2}
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/electron/node-gyp/tar.gz/06b29aafb7708acef8b3669835c8a7857ebc92d2}
     version: 10.2.0-electron.1
     engines: {node: '>=12.13.0'}
     hasBin: true
@@ -1751,6 +1751,9 @@ packages:
   '@spotify/web-api-ts-sdk@1.2.0':
     resolution: {integrity: sha512-JUaebva3Ohwo5I5tuTqyW/FKGOMbb40YevJMySAOINRxP7qQ/AMjBzfJx0zeO6yS+wAPfQSoGNsZaUggHw8vsA==}
 
+  '@standard-schema/spec@1.1.0':
+    resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
+
   '@szmarczak/http-timer@4.0.6':
     resolution: {integrity: sha512-4BAffykYOgO+5nzBWYwE3W90sBgLJoUPRWWcL8wlyiM8IB8ipJz3UMJ9KXQd1RKQXpKp8Tutn80HZtWsu2u76w==}
     engines: {node: '>=10'}
@@ -2010,34 +2013,34 @@ packages:
       vite: ^5.0.0
       vue: ^3.2.25
 
-  '@vitest/expect@3.2.6':
-    resolution: {integrity: sha512-1+7q9BtaKzEmO+fmNT3kYvoNn5Y71XWAx2Q5HRim4tTVRQVRv4uJFAQ5FbK0OPUeNP/WmVCpxYxoJdvuHVjzBQ==}
+  '@vitest/expect@4.1.11':
+    resolution: {integrity: sha512-VX2x5vNJXET47KAFzwERI+KRMtTTCSWTfSMKsW7JsUsXV4psq++e3DvZpuTDOpHcxytiDs6p2nhVb2tVDiiUYw==}
 
-  '@vitest/mocker@3.2.6':
-    resolution: {integrity: sha512-EZOrpDbkKotFAP7wPAQV1UIyoGOk4oX7ynWhBhLB7v+meMHbQhU16oPpIYGTTe4oFlhpryGpgpcZP/sin3hYuw==}
+  '@vitest/mocker@4.1.11':
+    resolution: {integrity: sha512-2XJVD55d1o5AZous5CCGKS74g/riOj9odEt2bQpCVZeblHyHdnMeFl4jl0XjU21stf4mbjUkew2eXQZt65g5CQ==}
     peerDependencies:
       msw: ^2.4.9
-      vite: ^5.0.0 || ^6.0.0 || ^7.0.0-0
+      vite: ^6.0.0 || ^7.0.0 || ^8.0.0
     peerDependenciesMeta:
       msw:
         optional: true
       vite:
         optional: true
 
-  '@vitest/pretty-format@3.2.6':
-    resolution: {integrity: sha512-lb7XXXzmm2h2ASzFnRvQpDo6onT1NmMJA3tkGTWiBFtRJ9lxGY3d3mm/Apt36gej2bkkOVLL/yTOtufDaFa/jA==}
+  '@vitest/pretty-format@4.1.11':
+    resolution: {integrity: sha512-yiZzPbGTS9Sr/JpFl8zHrcIkAofNbFV6k21vIgQN/cY/oxZeXhJv5sc/MBJ5jFKWmWs+oJHw0UXLZjmf931+Vw==}
 
-  '@vitest/runner@3.2.6':
-    resolution: {integrity: sha512-HYcoSj1w5tcgUnzoF0HcyaAQjpA1gj9ftUJ7iSJSuipc02jW9gKkigwZbjFldAfYHA1fa8UZVRftdMY5msWM9Q==}
+  '@vitest/runner@4.1.11':
+    resolution: {integrity: sha512-LztvUgdwMNJMIkj3hQnnxiC2Xy1zNxq928W/xhjCLaNCzqTZOudjwbQf6v9IntZGPw132i2Lq2rgTRZHD3JHNw==}
 
-  '@vitest/snapshot@3.2.6':
-    resolution: {integrity: sha512-H+ZjNTWGpObenh0YnlBctAPnJSI20P81PL8BPzWpx54YXLLTm8hEsWawtcYLMrwvpK48hGxLLbCS+1KRXhsKhw==}
+  '@vitest/snapshot@4.1.11':
+    resolution: {integrity: sha512-pN7ikn1ON7h8ee4gIAp4AzyK+zBtJPzVbqOgu5LCEh4VaJVbPQcgYQYJIMGQPXVeJJq1fnfazis7a5pFNPahog==}
 
-  '@vitest/spy@3.2.6':
-    resolution: {integrity: sha512-oq6BbH68WzcWmwtBrU9nqLeaXTR4XwJF7FSLkKEZo4i6eoXcrxjcwSuTvWBIRUTC6VC72nXYunzqgZA+IKdtxg==}
+  '@vitest/spy@4.1.11':
+    resolution: {integrity: sha512-apNa/prQy2qCeywhnixOHPRCgGNhvg7T4Dapfl1GahLp/R+uhBm5cPyFoNVyqsNd2h1nJxL6BqqdIjiABL60YA==}
 
-  '@vitest/utils@3.2.6':
-    resolution: {integrity: sha512-lI23nIs4bnT3T8NIoh+vFaz5s2/DdP0Jgt2jxwgWljvwn82cLJtyi/If+fjFyoLMGIOz0U/fKvWE0d4jsNQEfg==}
+  '@vitest/utils@4.1.11':
+    resolution: {integrity: sha512-zTCVGpyFsGWBhllOyKlTw/vnr6D9qxsfSDyfbyZmTyjHw5N/VuvzHpHoQjm2ZJzn4RJgx5w4r7V0er69CmLgPQ==}
 
   '@volar/language-core@2.4.12':
     resolution: {integrity: sha512-RLrFdXEaQBWfSnYGVxvR2WrO6Bub0unkdHYIdC31HzIEqATIuuhRRzYu76iGPZ6OtA4Au1SnW0ZwIqPP217YhA==}
@@ -2047,6 +2050,11 @@ packages:
 
   '@volar/typescript@2.4.12':
     resolution: {integrity: sha512-HJB73OTJDgPc80K30wxi3if4fSsZZAOScbj2fcicMuOPoOkcf9NNAINb33o+DzhBdF9xTKC1gnPmIRDous5S0g==}
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   '@vscode/sudo-prompt@9.3.2':
     resolution: {integrity: sha512-gcXoCN00METUNFeQOFJ+C9xUI0DKB+0EGMVg7wbVYRHBw2Eq3fKisDZOkRdOz3kqXRKOENMfShPOmypw1/8nOw==}
@@ -2483,8 +2491,8 @@ packages:
   caniuse-lite@1.0.30001799:
     resolution: {integrity: sha512-hG1bReV+OUU+MOqK4t/ZWI0tZOyz3rqS9XuhOUz1cIcbwBKjOyJEJuw9ER5JuNyqxNk8u/JUVbGibBOL1yrjFw==}
 
-  chai@5.3.3:
-    resolution: {integrity: sha512-4zNhdJD/iOjSH0A05ea+Ke6MU5mmpQcbQsSOkgdaUMJ9zTlDTD/GYlwohmIE2u0gaxHYiVHEn1Fw9mZ/ktJWgw==}
+  chai@6.2.2:
+    resolution: {integrity: sha512-NUPRluOfOiTKBKvWPtSD4PhFvWCqOi0BGStNWs57X9js7XGTprSmFoz5F0tWhR4WPjNeR9jXqdC7/UpSJTnlRg==}
     engines: {node: '>=18'}
 
   chalk@4.1.2:
@@ -2497,10 +2505,6 @@ packages:
 
   chardet@0.7.0:
     resolution: {integrity: sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==}
-
-  check-error@2.1.3:
-    resolution: {integrity: sha512-PAJdDJusoxnwm1VwW07VWwUN1sl7smmC3OKggvndJFadxxDRyFJBX/ggnu/KE4kQAB7a3Dp8f/YXC1FlUprWmA==}
-    engines: {node: '>= 16'}
 
   chokidar@3.6.0:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
@@ -2678,6 +2682,9 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
+  convert-source-map@2.0.0:
+    resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
+
   cookie-parser@1.4.6:
     resolution: {integrity: sha512-z3IzaNjdwUC2olLIB5/ITd0/setiaFMLYiZJle7xg5Fe9KWAceil7xszYfHHBtDFYLSgJduS2Ty0P1uJdPDJeA==}
     engines: {node: '>= 0.8.0'}
@@ -2826,10 +2833,6 @@ packages:
   decompress-response@6.0.0:
     resolution: {integrity: sha512-aW35yZM6Bb/4oJlZncMH2LCoZtJXTRxES17vE3hoRiowU2kWHaJKFkSBDnDR+cm9J+9QhXmREyIfv0pji9ejCQ==}
     engines: {node: '>=10'}
-
-  deep-eql@5.0.2:
-    resolution: {integrity: sha512-h5k/5U50IJJFpzfL6nO9jaaumfjO/f2NjK/oYB2Djzm4p9L+3T9qWpZqZ2hAbLPuuYq9wrU08WQyBTL5GbPk5Q==}
-    engines: {node: '>=6'}
 
   deep-extend@0.6.0:
     resolution: {integrity: sha512-LOHxIOaPYdHlJRtCQfDIVZtfw/ufM8+rVj649RIHzcm/vGwQRXFt6OPqIFWsm2XEMrNIEtWR64sY1LEKD2vAOA==}
@@ -3036,9 +3039,6 @@ packages:
     resolution: {integrity: sha512-Zf5H2Kxt2xjTvbJvP2ZWLEICxA6j+hAmMzIlypy4xcBg1vKVnx89Wy0GbS+kf5cwCVFFzdCFh2XSCFNULS6csw==}
     engines: {node: '>= 0.4'}
 
-  es-module-lexer@1.7.0:
-    resolution: {integrity: sha512-jEQoCwk8hyb2AZziIOLhDqpm5+2ww5uIE6lkO/6jcOCusfk6LhMHpXXfBLXTZ7Ydyt0j4VoUQv6uGNYbdW+kBA==}
-
   es-module-lexer@2.1.0:
     resolution: {integrity: sha512-n27zTYMjYu1aj4MjCWzSP7G9r75utsaoc8m61weK+W8JMBGGQybd43GstCXZ3WNmSFtGT9wi59qQTW6mhTR5LQ==}
 
@@ -3127,6 +3127,7 @@ packages:
   eslint@9.33.0:
     resolution: {integrity: sha512-TS9bTNIryDzStCpJN93aC5VRSW3uTx9sClUn4B87pwiCaJh220otoI0X8mJKr+VcPtniMdN8GKjlwgWGUv5ZKA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -3874,9 +3875,6 @@ packages:
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
-  js-tokens@9.0.1:
-    resolution: {integrity: sha512-mxa9E9ITFOt0ban3j6L5MpjwegGz6lBQmM1IJkWeBZGcMxto50+eWdjC/52xDbS2vy0k7vIMK0Fe2wfL9OQSpQ==}
-
   js-yaml@3.14.1:
     resolution: {integrity: sha512-okMH7OXXJ7YrN9Ok3/SXrnu4iX9yOk+25nqX4imS2npuvTYDmo/QEZoqwZkYaIDk3jVvBOTOIEgEhaLOynBS9g==}
     hasBin: true
@@ -4034,9 +4032,6 @@ packages:
   logform@2.6.1:
     resolution: {integrity: sha512-CdaO738xRapbKIMVn2m4F6KTj4j7ooJ8POVnebSgKo3KBz5axNXRAL7ZdRjIV6NOr2Uf4vjtRkxrFETOioCqSA==}
     engines: {node: '>= 12.0.0'}
-
-  loupe@3.2.1:
-    resolution: {integrity: sha512-CdzqowRJCeLU72bHvWqwRBBlLcMEtIvGrlvef74kMnV2AolS9Y8xUv1I0U/MNAWMhBlKIoyuEgoJ0t/bbwHbLQ==}
 
   lowercase-keys@2.0.0:
     resolution: {integrity: sha512-tqNXrS78oMOE73NMxK4EMLQsQowWf8jKooH9g7xPavRT706R6bkQJ6DY2Te7QukaZsulxa30wQ7bk0pm4XiHmA==}
@@ -4461,6 +4456,10 @@ packages:
     resolution: {integrity: sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA==}
     engines: {node: '>= 0.4'}
 
+  obug@2.2.1:
+    resolution: {integrity: sha512-XrsrhT5sybtKI6wakr2SPOlGZWWYbUXZ7a0jT8/QOeAPau+1X/bSegNe5YR75oJmEZQbKningirmGOEJCIk61Q==}
+    engines: {node: '>=12.20.0'}
+
   on-finished@2.4.1:
     resolution: {integrity: sha512-oVlzkg3ENAhCk2zdv7IJwd/QUD4z2RxRwpkcGY8psCVcCYZNq4wYnVWALHM+brtuJjePWiYF/ClmuDr8Ch5+kg==}
     engines: {node: '>= 0.8'}
@@ -4665,10 +4664,6 @@ packages:
 
   pathe@2.0.3:
     resolution: {integrity: sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w==}
-
-  pathval@2.0.1:
-    resolution: {integrity: sha512-//nshmD55c46FuFw26xV/xFAaB5HF9Xdap7HJBBnrKdAd6/GxDBaNA1870O79+9ueg61cZLSVc+OaFlfmObYVQ==}
-    engines: {node: '>= 14.16'}
 
   pe-library@1.0.1:
     resolution: {integrity: sha512-nh39Mo1eGWmZS7y+mK/dQIqg7S1lp38DpRxkyoHf0ZcUs/HDc+yyTjuOtTvSMZHmfSLuSQaX945u05Y2Q6UWZg==}
@@ -5353,8 +5348,8 @@ packages:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}
     engines: {node: '>= 0.8'}
 
-  std-env@3.10.0:
-    resolution: {integrity: sha512-5GS12FdOZNliM5mAOxFRg7Ir0pWz8MdpYm6AY6VPkGpbA7ZzmbzNcBJQ0GPvvyWgcY7QAhCgf9Uy89I03faLkg==}
+  std-env@4.2.0:
+    resolution: {integrity: sha512-oCUKSupKTHX53EyjDtuZQ64pjLJ6yYCtpmEw0goYxtjG9KpbRe8KAsl2tBUGU9DyMcJ0RwJ8GqJAFzMXcXW1Rw==}
 
   stream-buffers@2.2.0:
     resolution: {integrity: sha512-uyQK/mx5QjHun80FLJTfaWE7JtwfRMKBLkMne6udYOmvH0CawotVa7TfgYHzAnpphn4+TweIx1QKMnRIbipmUg==}
@@ -5407,9 +5402,6 @@ packages:
   strip-json-comments@3.1.1:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
-
-  strip-literal@3.1.0:
-    resolution: {integrity: sha512-8r3mkIM/2+PpjHoOtiAW8Rg3jJLHaV7xPwG+YRGrv6FP0wwk/toTpATxWYOW0BKdWwl82VT2tFYi5DlROa0Mxg==}
 
   strip-outer@1.0.1:
     resolution: {integrity: sha512-k55yxKHwaXnpYGsOzg4Vl8+tDrWylxDEpknGjhTiZB8dFRU5rTo9CAzeycivxV3s+zlTKwrs6WxMxR95n26kwg==}
@@ -5573,6 +5565,10 @@ packages:
   tinyexec@1.0.1:
     resolution: {integrity: sha512-5uC6DDlmeqiOwCPmK9jMSdOuZTh8bU39Ys6yidB+UTt5hfZUPGAypSgFRiEp+jbi9qH40BLDvy85jIU88wKSqw==}
 
+  tinyexec@1.3.1:
+    resolution: {integrity: sha512-GCvB3aoys96IuDFBMcTB46JOR6mdMtAToqwiW8JlWhsoh1mhHi/xn9ss/Dg7N555GiJyEt2qzoG/NHCwM6h1EA==}
+    engines: {node: '>=18'}
+
   tinyglobby@0.2.14:
     resolution: {integrity: sha512-tX5e7OM1HnYr2+a2C/4V0htOcSQcoSTH9KgJnVvNm5zm/cyEWKJ7j7YutsH9CxMdtOkkLFy2AHrMci9IM8IPZQ==}
     engines: {node: '>=12.0.0'}
@@ -5581,16 +5577,8 @@ packages:
     resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
     engines: {node: '>=12.0.0'}
 
-  tinypool@1.1.1:
-    resolution: {integrity: sha512-Zba82s87IFq9A9XmjiX5uZA/ARWDrB03OHlq+Vw1fSdt0I+4/Kutwy8BP4Y/y/aORMo61FQ0vIb5j44vSo5Pkg==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-
-  tinyrainbow@2.0.0:
-    resolution: {integrity: sha512-op4nsTR47R6p0vMUUoYl/a+ljLFVtlfaXkLQmqfLR1qHma1h/ysYk4hEXZ880bf2CYgTskvTa/e196Vd5dDQXw==}
-    engines: {node: '>=14.0.0'}
-
-  tinyspy@4.0.4:
-    resolution: {integrity: sha512-azl+t0z7pw/z958Gy9svOTuzqIk6xq+NSheJzn5MMWtWTFywIacg2wUlzKFGtt3cthx0r2SxMK0yzJOR0IES7Q==}
+  tinyrainbow@3.1.1:
+    resolution: {integrity: sha512-yau8yJdTt989Mm0Bd/236QnzEiPf2xLLTqUZRUJOo/3CB078LSwzei343DgtJVmfJKJE3TMINY1u42SQsP6mXw==}
     engines: {node: '>=14.0.0'}
 
   tmp-promise@3.0.3:
@@ -5860,11 +5848,6 @@ packages:
   vite-express@0.19.0:
     resolution: {integrity: sha512-ktCeka2A2f9IlRkrqfg1oz1mdRRbev6dIXUQqTojDGf+d5QBZzkWLQMCqzNEv3AUN3wod62dG7sgyEcoaBTjjg==}
 
-  vite-node@3.2.4:
-    resolution: {integrity: sha512-EbKSKh+bh1E1IFxeO0pg1n4dvoOTt0UDiXMd/qn++r98+jPO1xtJilvXldeuQ8giIB5IkpjCgMleHMNEsGH6pg==}
-    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
-    hasBin: true
-
   vite-svg-loader@5.1.0:
     resolution: {integrity: sha512-M/wqwtOEjgb956/+m5ZrYT/Iq6Hax0OakWbokj8+9PXOnB7b/4AxESHieEtnNEy7ZpjsjYW1/5nK8fATQMmRxw==}
     peerDependencies:
@@ -5958,26 +5941,39 @@ packages:
       yaml:
         optional: true
 
-  vitest@3.2.6:
-    resolution: {integrity: sha512-xejya+bT/j/+R/AGa1XOfRxLmNUlLtlwjRsFUILF+xHfzElmGcmFydy2gqqIrd62ptIEfwVMofd19uNWD9L7Nw==}
-    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
+  vitest@4.1.11:
+    resolution: {integrity: sha512-fhACrNXUidIbGSBr5FlbuBkO7VWC1ZyLl0DO4CU2DrQoAPxX84Ysxs+HeGQpii5lZWV1Q4gBZTTu49mF+A6Edw==}
+    engines: {node: ^20.0.0 || ^22.0.0 || >=24.0.0}
     hasBin: true
     peerDependencies:
       '@edge-runtime/vm': '*'
-      '@types/debug': ^4.1.12
-      '@types/node': ^18.0.0 || ^20.0.0 || >=22.0.0
-      '@vitest/browser': 3.2.6
-      '@vitest/ui': 3.2.6
+      '@opentelemetry/api': ^1.9.0
+      '@types/node': ^20.0.0 || ^22.0.0 || >=24.0.0
+      '@vitest/browser-playwright': 4.1.11
+      '@vitest/browser-preview': 4.1.11
+      '@vitest/browser-webdriverio': 4.1.11
+      '@vitest/coverage-istanbul': 4.1.11
+      '@vitest/coverage-v8': 4.1.11
+      '@vitest/ui': 4.1.11
       happy-dom: '*'
       jsdom: '*'
+      vite: ^6.0.0 || ^7.0.0 || ^8.0.0
     peerDependenciesMeta:
       '@edge-runtime/vm':
         optional: true
-      '@types/debug':
+      '@opentelemetry/api':
         optional: true
       '@types/node':
         optional: true
-      '@vitest/browser':
+      '@vitest/browser-playwright':
+        optional: true
+      '@vitest/browser-preview':
+        optional: true
+      '@vitest/browser-webdriverio':
+        optional: true
+      '@vitest/coverage-istanbul':
+        optional: true
+      '@vitest/coverage-v8':
         optional: true
       '@vitest/ui':
         optional: true
@@ -6487,11 +6483,11 @@ snapshots:
       enabled: 2.0.0
       kuler: 2.0.0
 
-  '@electron-forge/cli@7.11.2(encoding@0.1.13)(esbuild@0.25.8)(postcss@8.5.26)(supports-color@5.5.0)':
+  '@electron-forge/cli@7.11.2(bluebird@3.7.2)(csso@5.0.5)(encoding@0.1.13)(esbuild@0.25.8)(postcss@8.5.26)(supports-color@8.1.1)':
     dependencies:
-      '@electron-forge/core': 7.11.2(encoding@0.1.13)(esbuild@0.25.8)(postcss@8.5.26)(supports-color@5.5.0)
-      '@electron-forge/core-utils': 7.11.2
-      '@electron-forge/shared-types': 7.11.2
+      '@electron-forge/core': 7.11.2(bluebird@3.7.2)(csso@5.0.5)(encoding@0.1.13)(esbuild@0.25.8)(postcss@8.5.26)(supports-color@8.1.1)
+      '@electron-forge/core-utils': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/shared-types': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
       '@electron/get': 3.1.0(supports-color@5.5.0)
       '@inquirer/prompts': 6.0.1
       '@listr2/prompt-adapter-inquirer': 2.0.22(@inquirer/prompts@6.0.1)
@@ -6520,13 +6516,13 @@ snapshots:
       - uglify-js
       - webpack-cli
 
-  '@electron-forge/core-utils@7.11.2':
+  '@electron-forge/core-utils@7.11.2(bluebird@3.7.2)(supports-color@8.1.1)':
     dependencies:
-      '@electron-forge/shared-types': 7.11.2
-      '@electron/rebuild': 3.7.0
+      '@electron-forge/shared-types': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron/rebuild': 3.7.0(bluebird@3.7.2)(supports-color@8.1.1)
       '@malept/cross-spawn-promise': 2.0.0
       chalk: 4.1.2
-      debug: 4.4.1(supports-color@5.5.0)
+      debug: 4.4.1(supports-color@8.1.1)
       find-up: 5.0.0
       fs-extra: 10.1.0
       log-symbols: 4.1.0
@@ -6536,22 +6532,22 @@ snapshots:
       - bluebird
       - supports-color
 
-  '@electron-forge/core@7.11.2(encoding@0.1.13)(esbuild@0.25.8)(postcss@8.5.26)(supports-color@5.5.0)':
+  '@electron-forge/core@7.11.2(bluebird@3.7.2)(csso@5.0.5)(encoding@0.1.13)(esbuild@0.25.8)(postcss@8.5.26)(supports-color@8.1.1)':
     dependencies:
-      '@electron-forge/core-utils': 7.11.2
-      '@electron-forge/maker-base': 7.11.2
-      '@electron-forge/plugin-base': 7.11.2
-      '@electron-forge/publisher-base': 7.11.2
-      '@electron-forge/shared-types': 7.11.2
-      '@electron-forge/template-base': 7.11.2(supports-color@5.5.0)
-      '@electron-forge/template-vite': 7.11.2
-      '@electron-forge/template-vite-typescript': 7.11.2
-      '@electron-forge/template-webpack': 7.11.2
-      '@electron-forge/template-webpack-typescript': 7.11.2(esbuild@0.25.8)(postcss@8.5.26)
+      '@electron-forge/core-utils': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/maker-base': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/plugin-base': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/publisher-base': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/shared-types': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/template-base': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/template-vite': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/template-vite-typescript': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/template-webpack': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/template-webpack-typescript': 7.11.2(bluebird@3.7.2)(csso@5.0.5)(esbuild@0.25.8)(postcss@8.5.26)(supports-color@8.1.1)
       '@electron-forge/tracer': 7.11.2
-      '@electron/get': 3.1.0(supports-color@5.5.0)
-      '@electron/packager': 18.3.5(supports-color@5.5.0)
-      '@electron/rebuild': 3.7.0
+      '@electron/get': 3.1.0(supports-color@8.1.1)
+      '@electron/packager': 18.3.5(supports-color@8.1.1)
+      '@electron/rebuild': 3.7.0(bluebird@3.7.2)(supports-color@8.1.1)
       '@malept/cross-spawn-promise': 2.0.0
       '@vscode/sudo-prompt': 9.3.2
       chalk: 4.1.2
@@ -6590,29 +6586,29 @@ snapshots:
       - uglify-js
       - webpack-cli
 
-  '@electron-forge/maker-base@7.11.2':
+  '@electron-forge/maker-base@7.11.2(bluebird@3.7.2)(supports-color@8.1.1)':
     dependencies:
-      '@electron-forge/shared-types': 7.11.2
+      '@electron-forge/shared-types': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
       fs-extra: 10.1.0
       which: 2.0.2
     transitivePeerDependencies:
       - bluebird
       - supports-color
 
-  '@electron-forge/maker-deb@7.11.2(supports-color@5.5.0)':
+  '@electron-forge/maker-deb@7.11.2(bluebird@3.7.2)(supports-color@8.1.1)':
     dependencies:
-      '@electron-forge/maker-base': 7.11.2
-      '@electron-forge/shared-types': 7.11.2
+      '@electron-forge/maker-base': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/shared-types': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
     optionalDependencies:
       electron-installer-debian: 3.2.0(supports-color@5.5.0)
     transitivePeerDependencies:
       - bluebird
       - supports-color
 
-  '@electron-forge/maker-dmg@7.11.2(supports-color@5.5.0)':
+  '@electron-forge/maker-dmg@7.11.2(bluebird@3.7.2)(supports-color@8.1.1)':
     dependencies:
-      '@electron-forge/maker-base': 7.11.2
-      '@electron-forge/shared-types': 7.11.2
+      '@electron-forge/maker-base': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/shared-types': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
       fs-extra: 10.1.0
     optionalDependencies:
       electron-installer-dmg: 5.0.1(supports-color@5.5.0)
@@ -6620,20 +6616,20 @@ snapshots:
       - bluebird
       - supports-color
 
-  '@electron-forge/maker-rpm@7.11.2(supports-color@5.5.0)':
+  '@electron-forge/maker-rpm@7.11.2(bluebird@3.7.2)(supports-color@8.1.1)':
     dependencies:
-      '@electron-forge/maker-base': 7.11.2
-      '@electron-forge/shared-types': 7.11.2
+      '@electron-forge/maker-base': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/shared-types': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
     optionalDependencies:
-      electron-installer-redhat: 3.4.0(supports-color@5.5.0)
+      electron-installer-redhat: 3.4.0(supports-color@8.1.1)
     transitivePeerDependencies:
       - bluebird
       - supports-color
 
-  '@electron-forge/maker-squirrel@7.11.2(supports-color@5.5.0)':
+  '@electron-forge/maker-squirrel@7.11.2(bluebird@3.7.2)(supports-color@8.1.1)':
     dependencies:
-      '@electron-forge/maker-base': 7.11.2
-      '@electron-forge/shared-types': 7.11.2
+      '@electron-forge/maker-base': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/shared-types': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
       fs-extra: 10.1.0
     optionalDependencies:
       electron-winstaller: 5.4.0(supports-color@5.5.0)
@@ -6641,10 +6637,10 @@ snapshots:
       - bluebird
       - supports-color
 
-  '@electron-forge/maker-zip@7.11.2':
+  '@electron-forge/maker-zip@7.11.2(bluebird@3.7.2)(supports-color@8.1.1)':
     dependencies:
-      '@electron-forge/maker-base': 7.11.2
-      '@electron-forge/shared-types': 7.11.2
+      '@electron-forge/maker-base': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/shared-types': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
       cross-zip: 4.0.1
       fs-extra: 10.1.0
       got: 11.8.6
@@ -6652,42 +6648,42 @@ snapshots:
       - bluebird
       - supports-color
 
-  '@electron-forge/plugin-auto-unpack-natives@7.11.2':
+  '@electron-forge/plugin-auto-unpack-natives@7.11.2(bluebird@3.7.2)(supports-color@8.1.1)':
     dependencies:
-      '@electron-forge/plugin-base': 7.11.2
-      '@electron-forge/shared-types': 7.11.2
+      '@electron-forge/plugin-base': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/shared-types': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
     transitivePeerDependencies:
       - bluebird
       - supports-color
 
-  '@electron-forge/plugin-base@7.11.2':
+  '@electron-forge/plugin-base@7.11.2(bluebird@3.7.2)(supports-color@8.1.1)':
     dependencies:
-      '@electron-forge/shared-types': 7.11.2
+      '@electron-forge/shared-types': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
     transitivePeerDependencies:
       - bluebird
       - supports-color
 
-  '@electron-forge/publisher-base@7.11.2':
+  '@electron-forge/publisher-base@7.11.2(bluebird@3.7.2)(supports-color@8.1.1)':
     dependencies:
-      '@electron-forge/shared-types': 7.11.2
+      '@electron-forge/shared-types': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
     transitivePeerDependencies:
       - bluebird
       - supports-color
 
-  '@electron-forge/shared-types@7.11.2':
+  '@electron-forge/shared-types@7.11.2(bluebird@3.7.2)(supports-color@8.1.1)':
     dependencies:
       '@electron-forge/tracer': 7.11.2
-      '@electron/packager': 18.3.5(supports-color@5.5.0)
-      '@electron/rebuild': 3.7.0
+      '@electron/packager': 18.3.5(supports-color@8.1.1)
+      '@electron/rebuild': 3.7.0(bluebird@3.7.2)(supports-color@8.1.1)
       listr2: 7.0.2
     transitivePeerDependencies:
       - bluebird
       - supports-color
 
-  '@electron-forge/template-base@7.11.2(supports-color@5.5.0)':
+  '@electron-forge/template-base@7.11.2(bluebird@3.7.2)(supports-color@8.1.1)':
     dependencies:
-      '@electron-forge/core-utils': 7.11.2
-      '@electron-forge/shared-types': 7.11.2
+      '@electron-forge/core-utils': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/shared-types': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
       '@malept/cross-spawn-promise': 2.0.0
       debug: 4.4.3(supports-color@5.5.0)
       fs-extra: 10.1.0
@@ -6697,31 +6693,31 @@ snapshots:
       - bluebird
       - supports-color
 
-  '@electron-forge/template-vite-typescript@7.11.2':
+  '@electron-forge/template-vite-typescript@7.11.2(bluebird@3.7.2)(supports-color@8.1.1)':
     dependencies:
-      '@electron-forge/shared-types': 7.11.2
-      '@electron-forge/template-base': 7.11.2(supports-color@5.5.0)
+      '@electron-forge/shared-types': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/template-base': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
       fs-extra: 10.1.0
     transitivePeerDependencies:
       - bluebird
       - supports-color
 
-  '@electron-forge/template-vite@7.11.2':
+  '@electron-forge/template-vite@7.11.2(bluebird@3.7.2)(supports-color@8.1.1)':
     dependencies:
-      '@electron-forge/shared-types': 7.11.2
-      '@electron-forge/template-base': 7.11.2(supports-color@5.5.0)
+      '@electron-forge/shared-types': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/template-base': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
       fs-extra: 10.1.0
     transitivePeerDependencies:
       - bluebird
       - supports-color
 
-  '@electron-forge/template-webpack-typescript@7.11.2(esbuild@0.25.8)(postcss@8.5.26)':
+  '@electron-forge/template-webpack-typescript@7.11.2(bluebird@3.7.2)(csso@5.0.5)(esbuild@0.25.8)(postcss@8.5.26)(supports-color@8.1.1)':
     dependencies:
-      '@electron-forge/shared-types': 7.11.2
-      '@electron-forge/template-base': 7.11.2(supports-color@5.5.0)
+      '@electron-forge/shared-types': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/template-base': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
       fs-extra: 10.1.0
       typescript: 5.4.5
-      webpack: 5.107.2(esbuild@0.25.8)(postcss@8.5.26)
+      webpack: 5.107.2(csso@5.0.5)(esbuild@0.25.8)(postcss@8.5.26)
     transitivePeerDependencies:
       - '@minify-html/node'
       - '@swc/core'
@@ -6739,10 +6735,10 @@ snapshots:
       - uglify-js
       - webpack-cli
 
-  '@electron-forge/template-webpack@7.11.2':
+  '@electron-forge/template-webpack@7.11.2(bluebird@3.7.2)(supports-color@8.1.1)':
     dependencies:
-      '@electron-forge/shared-types': 7.11.2
-      '@electron-forge/template-base': 7.11.2(supports-color@5.5.0)
+      '@electron-forge/shared-types': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
+      '@electron-forge/template-base': 7.11.2(bluebird@3.7.2)(supports-color@8.1.1)
       fs-extra: 10.1.0
     transitivePeerDependencies:
       - bluebird
@@ -6758,7 +6754,7 @@ snapshots:
       glob: 7.2.3
       minimatch: 3.1.2
 
-  '@electron/get@2.0.3(supports-color@5.5.0)':
+  '@electron/get@2.0.3(supports-color@8.1.1)':
     dependencies:
       debug: 4.4.3(supports-color@5.5.0)
       env-paths: 2.2.1
@@ -6766,7 +6762,7 @@ snapshots:
       got: 11.8.6
       progress: 2.0.3
       semver: 6.3.1
-      sumchecker: 3.0.1(supports-color@5.5.0)
+      sumchecker: 3.0.1(supports-color@8.1.1)
     optionalDependencies:
       global-agent: 3.0.0
     transitivePeerDependencies:
@@ -6786,13 +6782,27 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@electron/node-gyp@https://codeload.github.com/electron/node-gyp/tar.gz/06b29aafb7708acef8b3669835c8a7857ebc92d2':
+  '@electron/get@3.1.0(supports-color@8.1.1)':
+    dependencies:
+      debug: 4.4.1(supports-color@8.1.1)
+      env-paths: 2.2.1
+      fs-extra: 8.1.0
+      got: 11.8.6
+      progress: 2.0.3
+      semver: 6.3.1
+      sumchecker: 3.0.1(supports-color@8.1.1)
+    optionalDependencies:
+      global-agent: 3.0.0
+    transitivePeerDependencies:
+      - supports-color
+
+  '@electron/node-gyp@https://codeload.github.com/electron/node-gyp/tar.gz/06b29aafb7708acef8b3669835c8a7857ebc92d2(bluebird@3.7.2)(supports-color@8.1.1)':
     dependencies:
       env-paths: 2.2.1
       exponential-backoff: 3.1.3
       glob: 8.1.0
       graceful-fs: 4.2.11
-      make-fetch-happen: 10.2.1
+      make-fetch-happen: 10.2.1(bluebird@3.7.2)(supports-color@8.1.1)
       nopt: 6.0.0
       proc-log: 2.0.1
       semver: 7.7.2
@@ -6821,20 +6831,20 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@electron/packager@18.3.5(supports-color@5.5.0)':
+  '@electron/packager@18.3.5(supports-color@8.1.1)':
     dependencies:
       '@electron/asar': 3.2.15
-      '@electron/get': 3.1.0(supports-color@5.5.0)
+      '@electron/get': 3.1.0(supports-color@8.1.1)
       '@electron/notarize': 2.5.0(supports-color@5.5.0)
       '@electron/osx-sign': 1.3.1(supports-color@5.5.0)
       '@electron/universal': 2.0.1(supports-color@5.5.0)
-      '@electron/windows-sign': 1.1.3
+      '@electron/windows-sign': 1.1.3(supports-color@8.1.1)
       debug: 4.4.3(supports-color@5.5.0)
-      extract-zip: 2.0.1
+      extract-zip: 2.0.1(supports-color@8.1.1)
       filenamify: 4.3.0
       fs-extra: 11.3.0
       galactus: 1.0.0(supports-color@5.5.0)
-      get-package-info: 1.0.0
+      get-package-info: 1.0.0(supports-color@8.1.1)
       junk: 3.1.0
       parse-author: 2.0.0
       plist: 3.1.0
@@ -6845,19 +6855,19 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@electron/rebuild@3.7.0':
+  '@electron/rebuild@3.7.0(bluebird@3.7.2)(supports-color@8.1.1)':
     dependencies:
-      '@electron/node-gyp': https://codeload.github.com/electron/node-gyp/tar.gz/06b29aafb7708acef8b3669835c8a7857ebc92d2
+      '@electron/node-gyp': https://codeload.github.com/electron/node-gyp/tar.gz/06b29aafb7708acef8b3669835c8a7857ebc92d2(bluebird@3.7.2)(supports-color@8.1.1)
       '@malept/cross-spawn-promise': 2.0.0
       chalk: 4.1.2
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       detect-libc: 2.0.3
       fs-extra: 10.1.0
       got: 11.8.6
       node-abi: 3.71.0
       node-api-version: 0.2.1
       ora: 5.4.1
-      read-binary-file-arch: 1.0.6
+      read-binary-file-arch: 1.0.6(supports-color@8.1.1)
       semver: 7.7.2
       tar: 6.2.1
       yargs: 17.7.2
@@ -6865,14 +6875,14 @@ snapshots:
       - bluebird
       - supports-color
 
-  '@electron/rebuild@4.0.4(supports-color@5.5.0)':
+  '@electron/rebuild@4.0.4(supports-color@8.1.1)':
     dependencies:
       '@malept/cross-spawn-promise': 2.0.0
       debug: 4.4.1(supports-color@5.5.0)
       node-abi: 4.12.0
       node-api-version: 0.2.1
       node-gyp: 12.4.0
-      read-binary-file-arch: 1.0.6
+      read-binary-file-arch: 1.0.6(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -6888,10 +6898,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@electron/windows-sign@1.1.3':
+  '@electron/windows-sign@1.1.3(supports-color@8.1.1)':
     dependencies:
       cross-dirname: 0.1.0
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       fs-extra: 11.3.0
       minimist: 1.2.8
       postject: 1.0.0-alpha.6
@@ -7398,13 +7408,13 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
 
-  '@npmcli/agent@3.0.0(supports-color@5.5.0)':
+  '@npmcli/agent@3.0.0(supports-color@8.1.1)':
     dependencies:
       agent-base: 7.1.1(supports-color@5.5.0)
-      http-proxy-agent: 7.0.2(supports-color@5.5.0)
-      https-proxy-agent: 7.0.5(supports-color@5.5.0)
+      http-proxy-agent: 7.0.2(supports-color@8.1.1)
+      https-proxy-agent: 7.0.5(supports-color@8.1.1)
       lru-cache: 10.4.3
-      socks-proxy-agent: 8.0.4(supports-color@5.5.0)
+      socks-proxy-agent: 8.0.4(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -7640,6 +7650,8 @@ snapshots:
 
   '@spotify/web-api-ts-sdk@1.2.0': {}
 
+  '@standard-schema/spec@1.1.0': {}
+
   '@szmarczak/http-timer@4.0.6':
     dependencies:
       defer-to-connect: 2.0.1
@@ -7844,13 +7856,13 @@ snapshots:
       '@types/node': 24.2.1
     optional: true
 
-  '@typescript-eslint/eslint-plugin@8.39.1(@typescript-eslint/parser@8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@5.5.0)(typescript@5.9.2))(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@5.5.0)(typescript@5.9.2)':
+  '@typescript-eslint/eslint-plugin@8.39.1(@typescript-eslint/parser@8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@5.5.0)(typescript@5.9.2))(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@8.1.1)(typescript@5.9.2)':
     dependencies:
       '@eslint-community/regexpp': 4.12.1
       '@typescript-eslint/parser': 8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@5.5.0)(typescript@5.9.2)
       '@typescript-eslint/scope-manager': 8.39.1
-      '@typescript-eslint/type-utils': 8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@5.5.0)(typescript@5.9.2)
-      '@typescript-eslint/utils': 8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(typescript@5.9.2)
+      '@typescript-eslint/type-utils': 8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@8.1.1)(typescript@5.9.2)
+      '@typescript-eslint/utils': 8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@8.1.1)(typescript@5.9.2)
       '@typescript-eslint/visitor-keys': 8.39.1
       eslint: 9.33.0(jiti@2.4.2)(supports-color@5.5.0)
       graphemer: 1.4.0
@@ -7873,11 +7885,32 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@typescript-eslint/parser@8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@8.1.1)(typescript@5.9.2)':
+    dependencies:
+      '@typescript-eslint/scope-manager': 8.39.1
+      '@typescript-eslint/types': 8.39.1
+      '@typescript-eslint/typescript-estree': 8.39.1(supports-color@8.1.1)(typescript@5.9.2)
+      '@typescript-eslint/visitor-keys': 8.39.1
+      debug: 4.4.1(supports-color@8.1.1)
+      eslint: 9.33.0(jiti@2.4.2)(supports-color@5.5.0)
+      typescript: 5.9.2
+    transitivePeerDependencies:
+      - supports-color
+
   '@typescript-eslint/project-service@8.39.1(supports-color@5.5.0)(typescript@5.9.2)':
     dependencies:
       '@typescript-eslint/tsconfig-utils': 8.39.1(typescript@5.9.2)
       '@typescript-eslint/types': 8.39.1
       debug: 4.4.3(supports-color@5.5.0)
+      typescript: 5.9.2
+    transitivePeerDependencies:
+      - supports-color
+
+  '@typescript-eslint/project-service@8.39.1(supports-color@8.1.1)(typescript@5.9.2)':
+    dependencies:
+      '@typescript-eslint/tsconfig-utils': 8.39.1(typescript@5.9.2)
+      '@typescript-eslint/types': 8.39.1
+      debug: 4.4.3(supports-color@8.1.1)
       typescript: 5.9.2
     transitivePeerDependencies:
       - supports-color
@@ -7891,11 +7924,11 @@ snapshots:
     dependencies:
       typescript: 5.9.2
 
-  '@typescript-eslint/type-utils@8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@5.5.0)(typescript@5.9.2)':
+  '@typescript-eslint/type-utils@8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@8.1.1)(typescript@5.9.2)':
     dependencies:
       '@typescript-eslint/types': 8.39.1
-      '@typescript-eslint/typescript-estree': 8.39.1(supports-color@5.5.0)(typescript@5.9.2)
-      '@typescript-eslint/utils': 8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(typescript@5.9.2)
+      '@typescript-eslint/typescript-estree': 8.39.1(supports-color@8.1.1)(typescript@5.9.2)
+      '@typescript-eslint/utils': 8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@8.1.1)(typescript@5.9.2)
       debug: 4.4.3(supports-color@5.5.0)
       eslint: 9.33.0(jiti@2.4.2)(supports-color@5.5.0)
       ts-api-utils: 2.1.0(typescript@5.9.2)
@@ -7921,12 +7954,28 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(typescript@5.9.2)':
+  '@typescript-eslint/typescript-estree@8.39.1(supports-color@8.1.1)(typescript@5.9.2)':
+    dependencies:
+      '@typescript-eslint/project-service': 8.39.1(supports-color@8.1.1)(typescript@5.9.2)
+      '@typescript-eslint/tsconfig-utils': 8.39.1(typescript@5.9.2)
+      '@typescript-eslint/types': 8.39.1
+      '@typescript-eslint/visitor-keys': 8.39.1
+      debug: 4.4.3(supports-color@8.1.1)
+      fast-glob: 3.3.3
+      is-glob: 4.0.3
+      minimatch: 9.0.5
+      semver: 7.7.2
+      ts-api-utils: 2.1.0(typescript@5.9.2)
+      typescript: 5.9.2
+    transitivePeerDependencies:
+      - supports-color
+
+  '@typescript-eslint/utils@8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@8.1.1)(typescript@5.9.2)':
     dependencies:
       '@eslint-community/eslint-utils': 4.7.0(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))
       '@typescript-eslint/scope-manager': 8.39.1
       '@typescript-eslint/types': 8.39.1
-      '@typescript-eslint/typescript-estree': 8.39.1(supports-color@5.5.0)(typescript@5.9.2)
+      '@typescript-eslint/typescript-estree': 8.39.1(supports-color@8.1.1)(typescript@5.9.2)
       eslint: 9.33.0(jiti@2.4.2)(supports-color@5.5.0)
       typescript: 5.9.2
     transitivePeerDependencies:
@@ -7942,47 +7991,46 @@ snapshots:
       vite: 6.4.3(@types/node@24.2.1)(jiti@2.4.2)(terser@5.48.0)(tsx@4.20.4)(yaml@2.6.0)
       vue: 3.5.12(typescript@5.9.2)
 
-  '@vitest/expect@3.2.6':
+  '@vitest/expect@4.1.11':
     dependencies:
+      '@standard-schema/spec': 1.1.0
       '@types/chai': 5.2.3
-      '@vitest/spy': 3.2.6
-      '@vitest/utils': 3.2.6
-      chai: 5.3.3
-      tinyrainbow: 2.0.0
+      '@vitest/spy': 4.1.11
+      '@vitest/utils': 4.1.11
+      chai: 6.2.2
+      tinyrainbow: 3.1.1
 
-  '@vitest/mocker@3.2.6(vite@7.3.5(@types/node@24.2.1)(jiti@2.4.2)(terser@5.48.0)(tsx@4.20.4)(yaml@2.6.0))':
+  '@vitest/mocker@4.1.11(vite@7.3.5(@types/node@24.2.1)(jiti@2.4.2)(terser@5.48.0)(tsx@4.20.4)(yaml@2.6.0))':
     dependencies:
-      '@vitest/spy': 3.2.6
+      '@vitest/spy': 4.1.11
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
       vite: 7.3.5(@types/node@24.2.1)(jiti@2.4.2)(terser@5.48.0)(tsx@4.20.4)(yaml@2.6.0)
 
-  '@vitest/pretty-format@3.2.6':
+  '@vitest/pretty-format@4.1.11':
     dependencies:
-      tinyrainbow: 2.0.0
+      tinyrainbow: 3.1.1
 
-  '@vitest/runner@3.2.6':
+  '@vitest/runner@4.1.11':
     dependencies:
-      '@vitest/utils': 3.2.6
+      '@vitest/utils': 4.1.11
       pathe: 2.0.3
-      strip-literal: 3.1.0
 
-  '@vitest/snapshot@3.2.6':
+  '@vitest/snapshot@4.1.11':
     dependencies:
-      '@vitest/pretty-format': 3.2.6
+      '@vitest/pretty-format': 4.1.11
+      '@vitest/utils': 4.1.11
       magic-string: 0.30.21
       pathe: 2.0.3
 
-  '@vitest/spy@3.2.6':
-    dependencies:
-      tinyspy: 4.0.4
+  '@vitest/spy@4.1.11': {}
 
-  '@vitest/utils@3.2.6':
+  '@vitest/utils@4.1.11':
     dependencies:
-      '@vitest/pretty-format': 3.2.6
-      loupe: 3.2.1
-      tinyrainbow: 2.0.0
+      '@vitest/pretty-format': 4.1.11
+      convert-source-map: 2.0.0
+      tinyrainbow: 3.1.1
 
   '@volar/language-core@2.4.12':
     dependencies:
@@ -7990,11 +8038,13 @@ snapshots:
 
   '@volar/source-map@2.4.12': {}
 
-  '@volar/typescript@2.4.12':
+  '@volar/typescript@2.4.12(typescript@5.9.2)':
     dependencies:
       '@volar/language-core': 2.4.12
       path-browserify: 1.0.1
       vscode-uri: 3.0.8
+    optionalDependencies:
+      typescript: 5.9.2
 
   '@vscode/sudo-prompt@9.3.2': {}
 
@@ -8228,9 +8278,21 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  agent-base@6.0.2(supports-color@8.1.1):
+    dependencies:
+      debug: 4.4.3(supports-color@8.1.1)
+    transitivePeerDependencies:
+      - supports-color
+
   agent-base@7.1.1(supports-color@5.5.0):
     dependencies:
       debug: 4.4.3(supports-color@5.5.0)
+    transitivePeerDependencies:
+      - supports-color
+
+  agent-base@7.1.1(supports-color@8.1.1):
+    dependencies:
+      debug: 4.4.3(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -8390,11 +8452,11 @@ snapshots:
 
   bluebird@3.7.2: {}
 
-  body-parser@1.20.3:
+  body-parser@1.20.3(supports-color@5.5.0):
     dependencies:
       bytes: 3.1.2
       content-type: 1.0.5
-      debug: 2.6.9
+      debug: 2.6.9(supports-color@5.5.0)
       depd: 2.0.0
       destroy: 1.2.0
       http-errors: 2.0.0
@@ -8469,7 +8531,7 @@ snapshots:
 
   cac@6.7.14: {}
 
-  cacache@16.1.3:
+  cacache@16.1.3(bluebird@3.7.2):
     dependencies:
       '@npmcli/fs': 2.1.2
       '@npmcli/move-file': 2.0.1
@@ -8484,7 +8546,7 @@ snapshots:
       minipass-pipeline: 1.2.4
       mkdirp: 1.0.4
       p-map: 4.0.0
-      promise-inflight: 1.0.1
+      promise-inflight: 1.0.1(bluebird@3.7.2)
       rimraf: 3.0.2
       ssri: 9.0.1
       tar: 6.2.1
@@ -8547,13 +8609,7 @@ snapshots:
 
   caniuse-lite@1.0.30001799: {}
 
-  chai@5.3.3:
-    dependencies:
-      assertion-error: 2.0.1
-      check-error: 2.1.3
-      deep-eql: 5.0.2
-      loupe: 3.2.1
-      pathval: 2.0.1
+  chai@6.2.2: {}
 
   chalk@4.1.2:
     dependencies:
@@ -8563,8 +8619,6 @@ snapshots:
   chalk@5.4.1: {}
 
   chardet@0.7.0: {}
-
-  check-error@2.1.3: {}
 
   chokidar@3.6.0:
     dependencies:
@@ -8725,6 +8779,8 @@ snapshots:
       meow: 12.1.1
       split2: 4.2.0
 
+  convert-source-map@2.0.0: {}
+
   cookie-parser@1.4.6:
     dependencies:
       cookie: 0.4.1
@@ -8816,13 +8872,23 @@ snapshots:
 
   de-indent@1.0.2: {}
 
-  debug@2.6.9:
+  debug@2.6.9(supports-color@5.5.0):
     dependencies:
       ms: 2.0.0
+    optionalDependencies:
+      supports-color: 5.5.0
 
-  debug@3.2.7:
+  debug@2.6.9(supports-color@8.1.1):
+    dependencies:
+      ms: 2.0.0
+    optionalDependencies:
+      supports-color: 8.1.1
+
+  debug@3.2.7(supports-color@8.1.1):
     dependencies:
       ms: 2.1.3
+    optionalDependencies:
+      supports-color: 8.1.1
 
   debug@4.4.0(supports-color@5.5.0):
     dependencies:
@@ -8836,17 +8902,27 @@ snapshots:
     optionalDependencies:
       supports-color: 5.5.0
 
+  debug@4.4.1(supports-color@8.1.1):
+    dependencies:
+      ms: 2.1.3
+    optionalDependencies:
+      supports-color: 8.1.1
+
   debug@4.4.3(supports-color@5.5.0):
     dependencies:
       ms: 2.1.3
     optionalDependencies:
       supports-color: 5.5.0
 
+  debug@4.4.3(supports-color@8.1.1):
+    dependencies:
+      ms: 2.1.3
+    optionalDependencies:
+      supports-color: 8.1.1
+
   decompress-response@6.0.0:
     dependencies:
       mimic-response: 3.1.0
-
-  deep-eql@5.0.2: {}
 
   deep-extend@0.6.0: {}
 
@@ -8968,6 +9044,23 @@ snapshots:
       - supports-color
     optional: true
 
+  electron-installer-common@0.10.3(supports-color@8.1.1):
+    dependencies:
+      '@malept/cross-spawn-promise': 1.1.1
+      asar: 3.2.0
+      debug: 4.4.3(supports-color@8.1.1)
+      fs-extra: 9.1.0
+      glob: 7.2.3
+      lodash: 4.17.21
+      parse-author: 2.0.0
+      semver: 7.7.2
+      tmp-promise: 3.0.3
+    optionalDependencies:
+      '@types/fs-extra': 9.0.13
+    transitivePeerDependencies:
+      - supports-color
+    optional: true
+
   electron-installer-debian@3.2.0(supports-color@5.5.0):
     dependencies:
       '@malept/cross-spawn-promise': 1.1.1
@@ -8993,11 +9086,11 @@ snapshots:
       - supports-color
     optional: true
 
-  electron-installer-redhat@3.4.0(supports-color@5.5.0):
+  electron-installer-redhat@3.4.0(supports-color@8.1.1):
     dependencies:
       '@malept/cross-spawn-promise': 1.1.1
       debug: 4.4.3(supports-color@5.5.0)
-      electron-installer-common: 0.10.3(supports-color@5.5.0)
+      electron-installer-common: 0.10.3(supports-color@8.1.1)
       fs-extra: 9.1.0
       lodash: 4.17.21
       word-wrap: 1.2.5
@@ -9008,9 +9101,9 @@ snapshots:
 
   electron-is-dev@3.0.1: {}
 
-  electron-squirrel-startup@1.0.1:
+  electron-squirrel-startup@1.0.1(supports-color@8.1.1):
     dependencies:
-      debug: 2.6.9
+      debug: 2.6.9(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -9031,16 +9124,16 @@ snapshots:
       lodash: 4.17.21
       temp: 0.9.4
     optionalDependencies:
-      '@electron/windows-sign': 1.1.3
+      '@electron/windows-sign': 1.1.3(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
     optional: true
 
-  electron@37.2.6(supports-color@5.5.0):
+  electron@37.2.6(supports-color@8.1.1):
     dependencies:
-      '@electron/get': 2.0.3(supports-color@5.5.0)
+      '@electron/get': 2.0.3(supports-color@8.1.1)
       '@types/node': 22.17.1
-      extract-zip: 2.0.1
+      extract-zip: 2.0.1(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -9093,8 +9186,6 @@ snapshots:
       get-intrinsic: 1.2.4
 
   es-errors@1.3.0: {}
-
-  es-module-lexer@1.7.0: {}
 
   es-module-lexer@2.1.0: {}
 
@@ -9340,11 +9431,11 @@ snapshots:
 
   exponential-backoff@3.1.3: {}
 
-  express-session@1.18.1:
+  express-session@1.18.1(supports-color@5.5.0):
     dependencies:
       cookie: 0.7.2
       cookie-signature: 1.0.7
-      debug: 2.6.9
+      debug: 2.6.9(supports-color@5.5.0)
       depd: 2.0.0
       on-headers: 1.0.2
       parseurl: 1.3.3
@@ -9353,27 +9444,27 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  express-static-gzip@2.1.7:
+  express-static-gzip@2.1.7(supports-color@5.5.0):
     dependencies:
-      serve-static: 1.16.2
+      serve-static: 1.16.2(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  express@4.21.1:
+  express@4.21.1(supports-color@5.5.0):
     dependencies:
       accepts: 1.3.8
       array-flatten: 1.1.1
-      body-parser: 1.20.3
+      body-parser: 1.20.3(supports-color@5.5.0)
       content-disposition: 0.5.4
       content-type: 1.0.5
       cookie: 0.7.1
       cookie-signature: 1.0.6
-      debug: 2.6.9
+      debug: 2.6.9(supports-color@5.5.0)
       depd: 2.0.0
       encodeurl: 2.0.0
       escape-html: 1.0.3
       etag: 1.8.1
-      finalhandler: 1.3.1
+      finalhandler: 1.3.1(supports-color@5.5.0)
       fresh: 0.5.2
       http-errors: 2.0.0
       merge-descriptors: 1.0.3
@@ -9385,8 +9476,8 @@ snapshots:
       qs: 6.13.0
       range-parser: 1.2.1
       safe-buffer: 5.2.1
-      send: 0.19.0
-      serve-static: 1.16.2
+      send: 0.19.0(supports-color@5.5.0)
+      serve-static: 1.16.2(supports-color@5.5.0)
       setprototypeof: 1.2.0
       statuses: 2.0.1
       type-is: 1.6.18
@@ -9412,9 +9503,9 @@ snapshots:
       iconv-lite: 0.4.24
       tmp: 0.0.33
 
-  extract-zip@2.0.1:
+  extract-zip@2.0.1(supports-color@8.1.1):
     dependencies:
-      debug: 4.4.3(supports-color@5.5.0)
+      debug: 4.4.3(supports-color@8.1.1)
       get-stream: 5.2.0
       yauzl: 2.10.0
     optionalDependencies:
@@ -9482,9 +9573,9 @@ snapshots:
     dependencies:
       to-regex-range: 5.0.1
 
-  finalhandler@1.3.1:
+  finalhandler@1.3.1(supports-color@5.5.0):
     dependencies:
-      debug: 2.6.9
+      debug: 2.6.9(supports-color@5.5.0)
       encodeurl: 2.0.0
       escape-html: 1.0.3
       on-finished: 2.4.1
@@ -9685,10 +9776,10 @@ snapshots:
       has-symbols: 1.0.3
       hasown: 2.0.2
 
-  get-package-info@1.0.0:
+  get-package-info@1.0.0(supports-color@8.1.1):
     dependencies:
       bluebird: 3.7.2
-      debug: 2.6.9
+      debug: 2.6.9(supports-color@8.1.1)
       lodash.get: 4.4.2
       read-pkg-up: 2.0.0
     transitivePeerDependencies:
@@ -9873,17 +9964,17 @@ snapshots:
       statuses: 2.0.1
       toidentifier: 1.0.1
 
-  http-proxy-agent@5.0.0:
+  http-proxy-agent@5.0.0(supports-color@8.1.1):
     dependencies:
       '@tootallnate/once': 2.0.1
-      agent-base: 6.0.2(supports-color@5.5.0)
-      debug: 4.4.3(supports-color@5.5.0)
+      agent-base: 6.0.2(supports-color@8.1.1)
+      debug: 4.4.3(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
-  http-proxy-agent@7.0.2(supports-color@5.5.0):
+  http-proxy-agent@7.0.2(supports-color@8.1.1):
     dependencies:
-      agent-base: 7.1.1(supports-color@5.5.0)
+      agent-base: 7.1.1(supports-color@8.1.1)
       debug: 4.4.3(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
@@ -9905,9 +9996,16 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  https-proxy-agent@7.0.5(supports-color@5.5.0):
+  https-proxy-agent@5.0.1(supports-color@8.1.1):
     dependencies:
-      agent-base: 7.1.1(supports-color@5.5.0)
+      agent-base: 6.0.2(supports-color@8.1.1)
+      debug: 4.4.3(supports-color@8.1.1)
+    transitivePeerDependencies:
+      - supports-color
+
+  https-proxy-agent@7.0.5(supports-color@8.1.1):
+    dependencies:
+      agent-base: 7.1.1(supports-color@8.1.1)
       debug: 4.4.3(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
@@ -10090,8 +10188,6 @@ snapshots:
 
   js-tokens@4.0.0: {}
 
-  js-tokens@9.0.1: {}
-
   js-yaml@3.14.1:
     dependencies:
       argparse: 1.0.10
@@ -10238,8 +10334,6 @@ snapshots:
       safe-stable-stringify: 2.5.0
       triple-beam: 1.4.1
 
-  loupe@3.2.1: {}
-
   lowercase-keys@2.0.0: {}
 
   lowercase-keys@3.0.0: {}
@@ -10264,13 +10358,13 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  make-fetch-happen@10.2.1:
+  make-fetch-happen@10.2.1(bluebird@3.7.2)(supports-color@8.1.1):
     dependencies:
       agentkeepalive: 4.6.0
-      cacache: 16.1.3
+      cacache: 16.1.3(bluebird@3.7.2)
       http-cache-semantics: 4.2.0
-      http-proxy-agent: 5.0.0
-      https-proxy-agent: 5.0.1(supports-color@5.5.0)
+      http-proxy-agent: 5.0.0(supports-color@8.1.1)
+      https-proxy-agent: 5.0.1(supports-color@8.1.1)
       is-lambda: 1.0.1
       lru-cache: 7.18.3
       minipass: 3.3.6
@@ -10280,15 +10374,15 @@ snapshots:
       minipass-pipeline: 1.2.4
       negotiator: 0.6.4
       promise-retry: 2.0.1
-      socks-proxy-agent: 7.0.0
+      socks-proxy-agent: 7.0.0(supports-color@8.1.1)
       ssri: 9.0.1
     transitivePeerDependencies:
       - bluebird
       - supports-color
 
-  make-fetch-happen@14.0.3(supports-color@5.5.0):
+  make-fetch-happen@14.0.3(supports-color@8.1.1):
     dependencies:
-      '@npmcli/agent': 3.0.0(supports-color@5.5.0)
+      '@npmcli/agent': 3.0.0(supports-color@8.1.1)
       cacache: 19.0.1
       http-cache-semantics: 4.2.0
       minipass: 7.1.2
@@ -10340,10 +10434,10 @@ snapshots:
 
   merge2@1.4.1: {}
 
-  metaflac-js2@1.0.8:
+  metaflac-js2@1.0.8(supports-color@8.1.1):
     dependencies:
       commander: 8.3.0
-      probe-image-size: 7.2.3
+      probe-image-size: 7.2.3(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -10478,10 +10572,10 @@ snapshots:
       pkg-types: 1.3.1
       ufo: 1.6.1
 
-  morgan@1.11.0:
+  morgan@1.11.0(supports-color@5.5.0):
     dependencies:
       basic-auth: 2.0.1
-      debug: 2.6.9
+      debug: 2.6.9(supports-color@5.5.0)
       depd: 2.0.0
       on-finished: 2.4.1
       on-headers: 1.1.0
@@ -10529,9 +10623,9 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  needle@2.9.1:
+  needle@2.9.1(supports-color@8.1.1):
     dependencies:
-      debug: 3.2.7
+      debug: 3.2.7(supports-color@8.1.1)
       iconv-lite: 0.4.24
       sax: 1.4.1
     transitivePeerDependencies:
@@ -10567,12 +10661,12 @@ snapshots:
 
   node-gyp-build@4.8.2: {}
 
-  node-gyp@11.3.0(supports-color@5.5.0):
+  node-gyp@11.3.0(supports-color@8.1.1):
     dependencies:
       env-paths: 2.2.1
       exponential-backoff: 3.1.2
       graceful-fs: 4.2.11
-      make-fetch-happen: 14.0.3(supports-color@5.5.0)
+      make-fetch-happen: 14.0.3(supports-color@8.1.1)
       nopt: 8.1.0
       proc-log: 5.0.0
       semver: 7.7.2
@@ -10668,6 +10762,8 @@ snapshots:
 
   object-keys@1.1.1:
     optional: true
+
+  obug@2.2.1: {}
 
   on-finished@2.4.1:
     dependencies:
@@ -10848,8 +10944,6 @@ snapshots:
 
   pathe@2.0.3: {}
 
-  pathval@2.0.1: {}
-
   pe-library@1.0.1: {}
 
   pend@1.2.0: {}
@@ -10986,11 +11080,11 @@ snapshots:
 
   prettier@3.6.2: {}
 
-  probe-image-size@7.2.3:
+  probe-image-size@7.2.3(supports-color@8.1.1):
     dependencies:
       lodash.merge: 4.6.2
-      needle: 2.9.1
-      stream-parser: 0.3.1
+      needle: 2.9.1(supports-color@8.1.1)
+      stream-parser: 0.3.1(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -11004,7 +11098,9 @@ snapshots:
 
   progress@2.0.3: {}
 
-  promise-inflight@1.0.1: {}
+  promise-inflight@1.0.1(bluebird@3.7.2):
+    optionalDependencies:
+      bluebird: 3.7.2
 
   promise-retry@2.0.1:
     dependencies:
@@ -11075,9 +11171,9 @@ snapshots:
       minimist: 1.2.8
       strip-json-comments: 2.0.1
 
-  read-binary-file-arch@1.0.6:
+  read-binary-file-arch@1.0.6(supports-color@8.1.1):
     dependencies:
-      debug: 4.4.1(supports-color@5.5.0)
+      debug: 4.4.1(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -11335,9 +11431,9 @@ snapshots:
 
   semver@7.7.2: {}
 
-  send@0.19.0:
+  send@0.19.0(supports-color@5.5.0):
     dependencies:
-      debug: 2.6.9
+      debug: 2.6.9(supports-color@5.5.0)
       depd: 2.0.0
       destroy: 1.2.0
       encodeurl: 1.0.2
@@ -11358,12 +11454,12 @@ snapshots:
       type-fest: 0.13.1
     optional: true
 
-  serve-static@1.16.2:
+  serve-static@1.16.2(supports-color@5.5.0):
     dependencies:
       encodeurl: 2.0.0
       escape-html: 1.0.3
       parseurl: 1.3.3
-      send: 0.19.0
+      send: 0.19.0(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -11430,17 +11526,17 @@ snapshots:
 
   smart-buffer@4.2.0: {}
 
-  socks-proxy-agent@7.0.0:
+  socks-proxy-agent@7.0.0(supports-color@8.1.1):
     dependencies:
-      agent-base: 6.0.2(supports-color@5.5.0)
-      debug: 4.4.3(supports-color@5.5.0)
+      agent-base: 6.0.2(supports-color@8.1.1)
+      debug: 4.4.3(supports-color@8.1.1)
       socks: 2.8.9
     transitivePeerDependencies:
       - supports-color
 
-  socks-proxy-agent@8.0.4(supports-color@5.5.0):
+  socks-proxy-agent@8.0.4(supports-color@8.1.1):
     dependencies:
-      agent-base: 7.1.1(supports-color@5.5.0)
+      agent-base: 7.1.1(supports-color@8.1.1)
       debug: 4.4.3(supports-color@5.5.0)
       socks: 2.8.7
     transitivePeerDependencies:
@@ -11517,7 +11613,7 @@ snapshots:
 
   statuses@2.0.1: {}
 
-  std-env@3.10.0: {}
+  std-env@4.2.0: {}
 
   stream-buffers@2.2.0:
     optional: true
@@ -11526,9 +11622,9 @@ snapshots:
     dependencies:
       readable-stream: 2.3.8
 
-  stream-parser@0.3.1:
+  stream-parser@0.3.1(supports-color@8.1.1):
     dependencies:
-      debug: 2.6.9
+      debug: 2.6.9(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -11574,10 +11670,6 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
-  strip-literal@3.1.0:
-    dependencies:
-      js-tokens: 9.0.1
-
   strip-outer@1.0.1:
     dependencies:
       escape-string-regexp: 1.0.5
@@ -11595,6 +11687,12 @@ snapshots:
   sumchecker@3.0.1(supports-color@5.5.0):
     dependencies:
       debug: 4.4.3(supports-color@5.5.0)
+    transitivePeerDependencies:
+      - supports-color
+
+  sumchecker@3.0.1(supports-color@8.1.1):
+    dependencies:
+      debug: 4.4.3(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -11723,14 +11821,15 @@ snapshots:
 
   term-size@2.2.1: {}
 
-  terser-webpack-plugin@5.6.1(esbuild@0.25.8)(postcss@8.5.26)(webpack@5.107.2(esbuild@0.25.8)(postcss@8.5.26)):
+  terser-webpack-plugin@5.6.1(csso@5.0.5)(esbuild@0.25.8)(postcss@8.5.26)(webpack@5.107.2(csso@5.0.5)(esbuild@0.25.8)(postcss@8.5.26)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
       schema-utils: 4.3.3
       terser: 5.48.0
-      webpack: 5.107.2(esbuild@0.25.8)(postcss@8.5.26)
+      webpack: 5.107.2(csso@5.0.5)(esbuild@0.25.8)(postcss@8.5.26)
     optionalDependencies:
+      csso: 5.0.5
       esbuild: 0.25.8
       postcss: 8.5.26
 
@@ -11764,6 +11863,8 @@ snapshots:
 
   tinyexec@1.0.1: {}
 
+  tinyexec@1.3.1: {}
+
   tinyglobby@0.2.14:
     dependencies:
       fdir: 6.4.6(picomatch@4.0.4)
@@ -11771,14 +11872,10 @@ snapshots:
 
   tinyglobby@0.2.17:
     dependencies:
-      fdir: 6.5.0(picomatch@4.0.4)
-      picomatch: 4.0.4
+      fdir: 6.5.0(picomatch@4.0.5)
+      picomatch: 4.0.5
 
-  tinypool@1.1.1: {}
-
-  tinyrainbow@2.0.0: {}
-
-  tinyspy@4.0.4: {}
+  tinyrainbow@3.1.1: {}
 
   tmp-promise@3.0.3:
     dependencies:
@@ -11920,12 +12017,12 @@ snapshots:
       media-typer: 0.3.0
       mime-types: 2.1.35
 
-  typescript-eslint@8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@5.5.0)(typescript@5.9.2):
+  typescript-eslint@8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@8.1.1)(typescript@5.9.2):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 8.39.1(@typescript-eslint/parser@8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@5.5.0)(typescript@5.9.2))(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@5.5.0)(typescript@5.9.2)
-      '@typescript-eslint/parser': 8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@5.5.0)(typescript@5.9.2)
-      '@typescript-eslint/typescript-estree': 8.39.1(supports-color@5.5.0)(typescript@5.9.2)
-      '@typescript-eslint/utils': 8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(typescript@5.9.2)
+      '@typescript-eslint/eslint-plugin': 8.39.1(@typescript-eslint/parser@8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@5.5.0)(typescript@5.9.2))(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@8.1.1)(typescript@5.9.2)
+      '@typescript-eslint/parser': 8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@8.1.1)(typescript@5.9.2)
+      '@typescript-eslint/typescript-estree': 8.39.1(supports-color@8.1.1)(typescript@5.9.2)
+      '@typescript-eslint/utils': 8.39.1(eslint@9.33.0(jiti@2.4.2)(supports-color@5.5.0))(supports-color@8.1.1)(typescript@5.9.2)
       eslint: 9.33.0(jiti@2.4.2)(supports-color@5.5.0)
       typescript: 5.9.2
     transitivePeerDependencies:
@@ -12029,33 +12126,12 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite-express@0.19.0:
+  vite-express@0.19.0(supports-color@5.5.0):
     dependencies:
-      express-static-gzip: 2.1.7
+      express-static-gzip: 2.1.7(supports-color@5.5.0)
       picocolors: 1.1.1
     transitivePeerDependencies:
       - supports-color
-
-  vite-node@3.2.4(@types/node@24.2.1)(jiti@2.4.2)(supports-color@5.5.0)(terser@5.48.0)(tsx@4.20.4)(yaml@2.6.0):
-    dependencies:
-      cac: 6.7.14
-      debug: 4.4.3(supports-color@5.5.0)
-      es-module-lexer: 1.7.0
-      pathe: 2.0.3
-      vite: 7.3.5(@types/node@24.2.1)(jiti@2.4.2)(terser@5.48.0)(tsx@4.20.4)(yaml@2.6.0)
-    transitivePeerDependencies:
-      - '@types/node'
-      - jiti
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - tsx
-      - yaml
 
   vite-svg-loader@5.1.0(vue@3.5.12(typescript@5.9.2)):
     dependencies:
@@ -12073,7 +12149,7 @@ snapshots:
       - supports-color
       - typescript
 
-  vite-tsconfig-paths@5.1.4(typescript@5.9.3)(vite@6.4.3(@types/node@24.2.1)(jiti@2.4.2)(terser@5.48.0)(tsx@4.20.4)(yaml@2.6.0)):
+  vite-tsconfig-paths@5.1.4(supports-color@5.5.0)(typescript@5.9.3)(vite@6.4.3(@types/node@24.2.1)(jiti@2.4.2)(terser@5.48.0)(tsx@4.20.4)(yaml@2.6.0)):
     dependencies:
       debug: 4.4.1(supports-color@5.5.0)
       globrex: 0.1.2
@@ -12116,46 +12192,32 @@ snapshots:
       tsx: 4.20.4
       yaml: 2.6.0
 
-  vitest@3.2.6(@types/node@24.2.1)(jiti@2.4.2)(supports-color@5.5.0)(terser@5.48.0)(tsx@4.20.4)(yaml@2.6.0):
+  vitest@4.1.11(@types/node@24.2.1)(vite@7.3.5(@types/node@24.2.1)(jiti@2.4.2)(terser@5.48.0)(tsx@4.20.4)(yaml@2.6.0)):
     dependencies:
-      '@types/chai': 5.2.3
-      '@vitest/expect': 3.2.6
-      '@vitest/mocker': 3.2.6(vite@7.3.5(@types/node@24.2.1)(jiti@2.4.2)(terser@5.48.0)(tsx@4.20.4)(yaml@2.6.0))
-      '@vitest/pretty-format': 3.2.6
-      '@vitest/runner': 3.2.6
-      '@vitest/snapshot': 3.2.6
-      '@vitest/spy': 3.2.6
-      '@vitest/utils': 3.2.6
-      chai: 5.3.3
-      debug: 4.4.3(supports-color@5.5.0)
+      '@vitest/expect': 4.1.11
+      '@vitest/mocker': 4.1.11(vite@7.3.5(@types/node@24.2.1)(jiti@2.4.2)(terser@5.48.0)(tsx@4.20.4)(yaml@2.6.0))
+      '@vitest/pretty-format': 4.1.11
+      '@vitest/runner': 4.1.11
+      '@vitest/snapshot': 4.1.11
+      '@vitest/spy': 4.1.11
+      '@vitest/utils': 4.1.11
+      es-module-lexer: 2.1.0
       expect-type: 1.3.0
       magic-string: 0.30.21
+      obug: 2.2.1
       pathe: 2.0.3
-      picomatch: 4.0.4
-      std-env: 3.10.0
+      picomatch: 4.0.5
+      std-env: 4.2.0
       tinybench: 2.9.0
-      tinyexec: 0.3.2
+      tinyexec: 1.3.1
       tinyglobby: 0.2.17
-      tinypool: 1.1.1
-      tinyrainbow: 2.0.0
+      tinyrainbow: 3.1.1
       vite: 7.3.5(@types/node@24.2.1)(jiti@2.4.2)(terser@5.48.0)(tsx@4.20.4)(yaml@2.6.0)
-      vite-node: 3.2.4(@types/node@24.2.1)(jiti@2.4.2)(supports-color@5.5.0)(terser@5.48.0)(tsx@4.20.4)(yaml@2.6.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 24.2.1
     transitivePeerDependencies:
-      - jiti
-      - less
-      - lightningcss
       - msw
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - tsx
-      - yaml
 
   vscode-uri@3.0.8: {}
 
@@ -12189,7 +12251,7 @@ snapshots:
 
   vue-tsc@2.2.8(typescript@5.9.2):
     dependencies:
-      '@volar/typescript': 2.4.12
+      '@volar/typescript': 2.4.12(typescript@5.9.2)
       '@vue/language-core': 2.2.8(typescript@5.9.2)
       typescript: 5.9.2
 
@@ -12217,7 +12279,7 @@ snapshots:
 
   webpack-sources@3.5.0: {}
 
-  webpack@5.107.2(esbuild@0.25.8)(postcss@8.5.26):
+  webpack@5.107.2(csso@5.0.5)(esbuild@0.25.8)(postcss@8.5.26):
     dependencies:
       '@types/estree': 1.0.9
       '@types/json-schema': 7.0.15
@@ -12239,7 +12301,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.3
-      terser-webpack-plugin: 5.6.1(esbuild@0.25.8)(postcss@8.5.26)(webpack@5.107.2(esbuild@0.25.8)(postcss@8.5.26))
+      terser-webpack-plugin: 5.6.1(csso@5.0.5)(esbuild@0.25.8)(postcss@8.5.26)(webpack@5.107.2(csso@5.0.5)(esbuild@0.25.8)(postcss@8.5.26))
       watchpack: 2.5.2
       webpack-sources: 3.5.0
     transitivePeerDependencies:
