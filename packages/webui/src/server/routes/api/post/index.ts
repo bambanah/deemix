@@ -7,6 +7,7 @@ import removeFromQueue from "./removeFromQueue.js";
 import logout from "./logout.js";
 import saveSettings from "./saveSettings.js";
 import retryDownload from "./retryDownload.js";
+import spotifyLogout from "./spotifyLogout.js";
 
 export default [
 	changeAccount,
@@ -18,4 +19,5 @@ export default [
 	logout,
 	saveSettings,
 	retryDownload,
+	spotifyLogout,
 ];

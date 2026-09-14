@@ -97,7 +97,7 @@ importers:
         version: link:../deezer-sdk
     devDependencies:
       '@yao-pkg/pkg':
-        specifier: ^5.15.0
+        specifier: ^5.16.1
         version: 5.16.1(encoding@0.1.13)(supports-color@5.5.0)
 
   packages/deemix:
