@@ -46,7 +46,7 @@
 		"turbo": "^2.5.5",
 		"typescript": "~5.9.2",
 		"typescript-eslint": "8.39.1",
-		"vitest": "^3.2.4",
+		"vitest": "^4.0.0",
 		"vue-eslint-parser": "^10.2.0"
 	},
 	"packageManager": "pnpm@11.23.0+sha512.f00082e5b283a199b74e079da28d155c008fe232f44c8a06ea7ddfa014ecf719fc362f790ecc67b28106ddac2afb24c49a9a079159da560b2ce7d1e98efd11af"
