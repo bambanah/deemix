@@ -2,6 +2,43 @@
 <html class="h-screen" data-theme="dark" dir="ltr" lang="en">
 	<head>
 		<meta charset="utf-8" />
+		<script>
+			// Must mirror the route paths in src/client/router/index.ts - update
+			// this list when adding a new route.
+			var known = [
+				"tracklist",
+				"artist",
+				"album",
+				"playlist",
+				"spotify-playlist",
+				"charts",
+				"favorites",
+				"errors",
+				"link-analyzer",
+				"about",
+				"info-arl",
+				"info-spotify",
+				"settings",
+				"search",
+			];
+			var segments = window.location.pathname.split("/");
+			var base = null;
+			for (var i = 1; i < segments.length; i++) {
+				if (known.indexOf(segments[i]) !== -1) {
+					base = segments.slice(0, i).join("/") + "/";
+					break;
+				}
+			}
+			if (base === null) {
+				base =
+					window.location.pathname.slice(-1) === "/"
+						? window.location.pathname
+						: "/";
+			}
+			base = base.replace(/[^\/A-Za-z0-9._~!$&'()*+,;=:@%-]/g, "");
+			window.location.base = base;
+			document.write('<base href="' + base + '">');
+		</script>
 		<title>Deemix</title>
 		<link rel="shortcut icon" type="image/png" href="favicon.png" />
 		<meta
