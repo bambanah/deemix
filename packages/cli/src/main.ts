@@ -16,6 +16,10 @@ program
 	.description("A CLI wrapper for deemix")
 	.version(packageJson.version)
 	.argument("<url>", "The URL of the track or playlist")
+	.option(
+		"--track-ids <ids>",
+		"Download only these comma-separated track IDs within an album"
+	)
 	.option("-p, --path <path>", "Downloads in the given folder")
 	.option(
 		"-b, --bitrate <type>",
@@ -43,7 +47,7 @@ const settings = loadSettings(configFolder);
 const spotifyPlugin = new SpotifyPlugin(configFolder);
 spotifyPlugin.setup();
 
-const { path: downloadPath, bitrate } = program.opts();
+const { path: downloadPath, bitrate, trackIds } = program.opts();
 
 if (downloadPath) settings.downloadLocation = path.resolve(downloadPath);
 if (bitrate) parseBitrate(settings, bitrate);
@@ -55,7 +59,7 @@ const loginAndDownload = async () => {
 	if (loggedIn) {
 		const urls = program.args;
 
-		await downloadLinks(dz, urls, settings, spotifyPlugin);
+		await downloadLinks(dz, urls, settings, spotifyPlugin, trackIds);
 
 		process.exit(0);
 	} else {
