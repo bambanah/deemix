@@ -30,4 +30,7 @@ packages/webui/public/js/*
 
 .turbo
 tsconfig.tsbuildinfo
+
+# nix build output symlink
+/result
 vite.config.*.timestamp-*
