@@ -3,24 +3,10 @@
 	<head>
 		<meta charset="utf-8" />
 		<script>
-			// Must mirror the route paths in src/client/router/index.ts - update
-			// this list when adding a new route.
-			var known = [
-				"tracklist",
-				"artist",
-				"album",
-				"playlist",
-				"spotify-playlist",
-				"charts",
-				"favorites",
-				"errors",
-				"link-analyzer",
-				"about",
-				"info-arl",
-				"info-spotify",
-				"settings",
-				"search",
-			];
+			// Derives mount prefix (e.g. reverse proxy subfolder) from URL before first
+			// known route segment. Used as <base> and location.base. Segments are auto-injected
+			// by route-segments plugin in vite.config.mts.
+			var known = [];
 			var segments = window.location.pathname.split("/");
 			var base = null;
 			for (var i = 1; i < segments.length; i++) {
@@ -33,7 +19,7 @@
 				base =
 					window.location.pathname.slice(-1) === "/"
 						? window.location.pathname
-						: "/";
+						: window.location.pathname + "/";
 			}
 			base = base.replace(/[^\/A-Za-z0-9._~!$&'()*+,;=:@%-]/g, "");
 			window.location.base = base;
