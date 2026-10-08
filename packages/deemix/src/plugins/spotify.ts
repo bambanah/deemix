@@ -15,9 +15,11 @@ import {
 	SpotifyApi,
 	type MaxInt,
 	type Track as SpotifyTrack,
+	type AccessToken,
 } from "@spotify/web-api-ts-sdk";
 import { queue } from "async";
 import { Deezer, type DeezerTrack } from "deezer-sdk";
+import crypto from "crypto";
 import fs from "fs";
 import got from "got";
 import { sep } from "path";
@@ -40,6 +42,14 @@ export default class SpotifyPlugin extends BasePlugin {
 	configFolder: string;
 	sp: SpotifyApi;
 
+	// OAuth token storage
+	oauthTokens: {
+		accessToken: string;
+		refreshToken: string;
+		expiresAt: number; // Unix timestamp in ms
+	} | null;
+	oauthState: string | null; // CSRF protection
+
 	constructor(configFolder = undefined) {
 		super();
 		this.credentials = { clientId: "", clientSecret: "" };
@@ -47,6 +57,8 @@ export default class SpotifyPlugin extends BasePlugin {
 			fallbackSearch: false,
 		};
 		this.enabled = false;
+		this.oauthTokens = null;
+		this.oauthState = null;
 		/* this.sp */
 		this.configFolder = configFolder || getConfigFolder();
 		this.configFolder += `spotify${sep}`;
@@ -168,29 +180,97 @@ export default class SpotifyPlugin extends BasePlugin {
 		}
 	}
 
+	// Spotify Feb 2026 migration (Development Mode apps, enforced 9 Mar 2026):
+	// GET /playlists/{id}/tracks was replaced by GET /playlists/{id}/items,
+	// and the shape changed from tracks.items[].track to items.items[].item.
+	// Extended Quota apps still serve the old shape, and the pinned
+	// @spotify/web-api-ts-sdk@1.2.0 still generates /tracks URLs, so every
+	// playlist page is normalized here into the legacy
+	// { items, next, total, href } form (each entry exposing .track).
+	private normalizeTracksPage(page: any): any {
+		if (!page || typeof page !== "object") return page;
+		const rawItems: any[] = Array.isArray((page as any)?.items?.items)
+			? (page as any).items.items
+			: Array.isArray((page as any)?.tracks?.items)
+				? (page as any).tracks.items
+				: Array.isArray((page as any)?.items)
+					? (page as any).items
+					: [];
+		const maybeItemsPage = (page as any)?.items;
+		const source =
+			maybeItemsPage && !Array.isArray(maybeItemsPage)
+				? maybeItemsPage
+				: ((page as any)?.tracks ?? page);
+		const normalizedItems = rawItems.map((entry: any) => {
+			if (!entry || typeof entry !== "object") return entry;
+			const track = entry.item ?? entry.track;
+			if (track && !entry.track) return { ...entry, track };
+			return entry;
+		});
+		return {
+			...source,
+			items: normalizedItems,
+			next: source?.next ?? (page as any)?.next ?? null,
+			total: source?.total ?? (page as any)?.total ?? normalizedItems.length,
+			href: source?.href ?? (page as any)?.href ?? "",
+		};
+	}
+
+	private normalizePlaylistTracksPage(playlist: any): void {
+		if (!playlist || typeof playlist !== "object") return;
+		if (!playlist.tracks && playlist.items) {
+			playlist.tracks = this.normalizeTracksPage(playlist.items);
+		} else if (playlist.tracks) {
+			playlist.tracks = this.normalizeTracksPage(playlist.tracks);
+		}
+	}
+
 	async generatePlaylistItem(dz: Deezer, link_id: string, bitrate: number) {
 		if (!this.enabled) throw new PluginNotEnabledError("Spotify");
-		let spotifyPlaylist;
+		await this.ensureValidToken();
+		let spotifyPlaylist = await this.spotifyApiGet(`/playlists/${link_id}`) as any;
 		let market: Market | undefined;
-		try {
-			spotifyPlaylist = await this.sp.playlists.getPlaylist(link_id);
-		} catch (e) {
-			// Some Spotify playlists require a market context to resolve.
-			if (this.getSpotifyErrorStatus(e) === 404) {
-				market = "US";
-				try {
-					spotifyPlaylist = await this.sp.playlists.getPlaylist(
-						link_id,
-						market
-					);
-				} catch (retryError) {
-					if (this.getSpotifyErrorStatus(retryError) === 404) {
-						return this.generatePlaylistItemFromPage(dz, link_id, bitrate);
+		if (!spotifyPlaylist) {
+			// Fall back to SDK, with market retry for region-locked playlists
+			try {
+				spotifyPlaylist = await this.sp.playlists.getPlaylist(link_id);
+			} catch (e) {
+				if (this.getSpotifyErrorStatus(e) === 404) {
+					market = "US";
+					try {
+						spotifyPlaylist = await this.sp.playlists.getPlaylist(
+							link_id,
+							market
+						);
+					} catch (retryError) {
+						if (this.getSpotifyErrorStatus(retryError) === 404) {
+							return this.generatePlaylistItemFromPage(dz, link_id, bitrate);
+						}
+						throw retryError;
 					}
-					throw retryError;
+				} else {
+					throw e;
 				}
+			}
+		}
+
+		// Normalize Feb 2026 (`items`) and legacy (`tracks`) playlist shapes
+		this.normalizePlaylistTracksPage(spotifyPlaylist);
+
+		// Handle null/missing track pages (Spotify Dev Mode apps return null
+		// tracks for some playlists): try the Feb 2026 `/items` endpoint
+		// first via direct HTTP, then fall back to the SDK (which still
+		// targets `/tracks` and only helps Extended Quota apps).
+		if (!spotifyPlaylist.tracks?.items) {
+			const itemsPage = (await this.spotifyApiGet(
+				`/playlists/${link_id}/items?offset=0&limit=50`
+			)) as any;
+			if (itemsPage) {
+				spotifyPlaylist.tracks = this.normalizeTracksPage(itemsPage);
 			} else {
-				throw e;
+				spotifyPlaylist.tracks = this.normalizeTracksPage(
+					await this.sp.playlists.getPlaylistItems(link_id)
+				);
 			}
 		}
 
@@ -205,24 +285,30 @@ export default class SpotifyPlugin extends BasePlugin {
 			const offset = parseInt(regExec[1]);
 			const limit = parseInt(regExec[2]) as MaxInt<50>;
 
-			const playlistTracks = await this.sp.playlists.getPlaylistItems(
-				link_id,
-				market,
-				undefined,
-				limit,
-				offset
-			);
+			let playlistTracks = (await this.spotifyApiGet(
+				`/playlists/${link_id}/items?offset=${offset}&limit=${limit}`
+			)) as any;
+			if (!playlistTracks) {
+				playlistTracks = await this.sp.playlists.getPlaylistItems(
+					link_id,
+					market,
+					undefined,
+					limit,
+					offset
+				);
+			}
 
-			spotifyPlaylist.tracks = playlistTracks;
+			spotifyPlaylist.tracks = this.normalizeTracksPage(playlistTracks);
 			tracklistTemp = tracklistTemp.concat(spotifyPlaylist.tracks.items);
 		}
 
 		const tracklist: SpotifyTrack[] = [];
 		tracklistTemp.forEach((item) => {
-			if (!item.track) return; // Skip everything that isn't a track
-			if (item.track.explicit && !playlistAPI.explicit)
-				playlistAPI.explicit = true;
-			tracklist.push(item.track);
+			// Feb 2026 shape wraps each entry as `item`; legacy shape uses `track`
+			const track = item?.item ?? item?.track;
+			if (!track) return; // Skip everything that isn't a track
+			if (track.explicit && !playlistAPI.explicit) playlistAPI.explicit = true;
+			tracklist.push(track);
 		});
 		if (!playlistAPI.explicit) playlistAPI.explicit = false;
 
@@ -424,10 +510,11 @@ export default class SpotifyPlugin extends BasePlugin {
 				})
 				.json();
 
-			const trackItems: any[] = Array.isArray(playlist?.tracks?.items)
-				? [...playlist.tracks.items]
+			const trackPage: any = playlist?.items ?? playlist?.tracks;
+			const trackItems: any[] = Array.isArray(trackPage?.items)
+				? [...trackPage.items]
 				: [];
-			let nextUrl: string | null = playlist?.tracks?.next || null;
+			let nextUrl: string | null = trackPage?.next || null;
 
 			while (nextUrl) {
 				const page: any = await got
@@ -445,11 +532,17 @@ export default class SpotifyPlugin extends BasePlugin {
 
 			const tracklist: SpotifyTrack[] = [];
 			for (const item of trackItems) {
-				if (!item?.track || typeof item.track.id !== "string") continue;
-				tracklist.push(item.track);
+				const track = item?.item ?? item?.track;
+				if (!track || typeof track.id !== "string") continue;
+				tracklist.push(track);
 			}
 
 			if (!tracklist.length) return null;
+			const normalized = this.normalizeTracksPage(
+				playlist.tracks ?? playlist.items
+			);
+			playlist.tracks =
+				normalized && typeof normalized === "object" ? normalized : {};
 			playlist.tracks.items = trackItems;
 			playlist.tracks.total = tracklist.length;
 
@@ -518,6 +611,7 @@ export default class SpotifyPlugin extends BasePlugin {
 
 	async getTrack(track_id: string, spotifyTrack?: SpotifyTrack) {
 		if (!this.enabled) throw new PluginNotEnabledError("Spotify");
+		await this.ensureValidToken();
 
 		const cachedTrack = {
 			isrc: null,
@@ -525,12 +619,17 @@ export default class SpotifyPlugin extends BasePlugin {
 		};
 
 		if (!spotifyTrack) {
-			try {
-				spotifyTrack = await this.sp.tracks.get(track_id);
-			} catch (e) {
-				if (e.body.error.message === "invalid id")
-					throw new InvalidID(`https://open.spotify.com/track/${track_id}`);
-				throw e;
+			const directTrack = await this.spotifyApiGet(`/tracks/${track_id}`);
+			if (directTrack) {
+				spotifyTrack = directTrack as SpotifyTrack;
+			} else {
+				try {
+					spotifyTrack = await this.sp.tracks.get(track_id);
+				} catch (e) {
+					if (e.body?.error?.message === "invalid id")
+						throw new InvalidID(`https://open.spotify.com/track/${track_id}`);
+					throw e;
+				}
 			}
 		}
 
@@ -554,18 +653,24 @@ export default class SpotifyPlugin extends BasePlugin {
 
 	async getAlbum(album_id: string, spotifyAlbum = null) {
 		if (!this.enabled) throw new PluginNotEnabledError("Spotify");
+		await this.ensureValidToken();
 		const cachedAlbum = {
 			upc: null,
 			data: null,
 		};
 
 		if (!spotifyAlbum) {
-			try {
-				spotifyAlbum = await this.sp.albums.get(album_id);
-			} catch (e) {
-				if (e.body.error.message === "invalid id")
-					throw new InvalidID(`https://open.spotify.com/album/${album_id}`);
-				throw e;
+			const directAlbum = await this.spotifyApiGet(`/albums/${album_id}`);
+			if (directAlbum) {
+				spotifyAlbum = directAlbum;
+			} else {
+				try {
+					spotifyAlbum = await this.sp.albums.get(album_id);
+				} catch (e) {
+					if (e.body?.error?.message === "invalid id")
+						throw new InvalidID(`https://open.spotify.com/album/${album_id}`);
+					throw e;
+				}
 			}
 		}
 		if (spotifyAlbum.external_ids && spotifyAlbum.external_ids.upc)
@@ -698,6 +803,9 @@ export default class SpotifyPlugin extends BasePlugin {
 	}
 
 	_convertPlaylistStructure(spotifyPlaylist) {
+		// Normalize Feb 2026 (`items`) and legacy (`tracks`) shapes so both
+		// Development Mode and Extended Quota responses report correct counts.
+		this.normalizePlaylistTracksPage(spotifyPlaylist);
 		let cover = null;
 		// Mickey: some playlists can be faulty, for example https://open.spotify.com/playlist/7vyEjAGrXOIjqlC8pZRupW
 		if (spotifyPlaylist?.images?.length) cover = spotifyPlaylist.images[0].url;
@@ -718,7 +826,7 @@ export default class SpotifyPlugin extends BasePlugin {
 			id: spotifyPlaylist.id,
 			is_loved_track: false,
 			link: spotifyPlaylist.external_urls.spotify,
-			nb_tracks: spotifyPlaylist.tracks.total,
+			nb_tracks: spotifyPlaylist.tracks?.total ?? 0,
 			picture: cover,
 			picture_small:
 				cover ||
@@ -738,7 +846,7 @@ export default class SpotifyPlugin extends BasePlugin {
 			public: spotifyPlaylist.public,
 			share: spotifyPlaylist.external_urls.spotify,
 			title: spotifyPlaylist.name,
-			tracklist: spotifyPlaylist.tracks.href,
+			tracklist: spotifyPlaylist.tracks?.href ?? '',
 			type: "playlist",
 		};
 
@@ -786,22 +894,29 @@ export default class SpotifyPlugin extends BasePlugin {
 			);
 		}
 		this.setSettings(settings);
+
+		// Load OAuth tokens if present
+		if (settings.oauthTokens) {
+			this.oauthTokens = settings.oauthTokens;
+		}
+
 		this.checkCredentials();
 	}
 
 	saveSettings(newSettings?: any) {
 		if (newSettings) this.setSettings(newSettings);
 		this.checkCredentials();
+		const configData: any = {
+			...this.credentials,
+			...this.settings,
+		};
+		// Persist OAuth tokens if present
+		if (this.oauthTokens) {
+			configData.oauthTokens = this.oauthTokens;
+		}
 		fs.writeFileSync(
 			this.configFolder + "config.json",
-			JSON.stringify(
-				{
-					...this.credentials,
-					...this.settings,
-				},
-				null,
-				2
-			)
+			JSON.stringify(configData, null, 2)
 		);
 	}
 
@@ -809,6 +924,7 @@ export default class SpotifyPlugin extends BasePlugin {
 		return {
 			...this.credentials,
 			...this.settings,
+			oauthAuthenticated: this.isOAuthAuthenticated(),
 		};
 	}
 
@@ -820,6 +936,8 @@ export default class SpotifyPlugin extends BasePlugin {
 		const settings = { ...newSettings };
 		delete settings.clientId;
 		delete settings.clientSecret;
+		delete settings.oauthTokens;
+		delete settings.oauthAuthenticated;
 		this.settings = settings;
 	}
 
@@ -857,11 +975,163 @@ export default class SpotifyPlugin extends BasePlugin {
 			return;
 		}
 
+		// Prefer OAuth tokens if available and valid
+		if (this.oauthTokens && this.oauthTokens.accessToken) {
+			this._initWithOAuthToken();
+			this.enabled = true;
+			return;
+		}
+
+		// Fall back to Client Credentials
 		this.sp = SpotifyApi.withClientCredentials(
 			this.credentials.clientId,
 			this.credentials.clientSecret
 		);
 		this.enabled = true;
+	}
+
+	_initWithOAuthToken() {
+		const token: AccessToken = {
+			access_token: this.oauthTokens.accessToken,
+			token_type: "Bearer",
+			expires_in: Math.max(0, Math.floor((this.oauthTokens.expiresAt - Date.now()) / 1000)),
+			refresh_token: this.oauthTokens.refreshToken,
+		};
+		this.sp = SpotifyApi.withAccessToken(
+			this.credentials.clientId,
+			token
+		);
+	}
+
+	/**
+	 * Direct Spotify API call using got + Bearer token.
+	 * Bypasses the @spotify/web-api-ts-sdk which has issues with withAccessToken.
+	 * Falls back to null if no OAuth tokens, so callers use the SDK instead.
+	 */
+	private async spotifyApiGet(endpoint: string): Promise<any | null> {
+		if (!this.oauthTokens?.accessToken) return null;
+		await this.ensureValidToken();
+		try {
+			const response = await got.get(`https://api.spotify.com/v1${endpoint}`, {
+				headers: {
+					'Authorization': `Bearer ${this.oauthTokens.accessToken}`,
+				},
+			}).json();
+			return response;
+		} catch (e) {
+			// If OAuth request fails, return null to fall back to SDK
+			console.error('[spotify] Direct OAuth API call failed:', e.message);
+			return null;
+		}
+	}
+
+	// --- OAuth Flow Methods ---
+
+	getAuthUrl(redirectUri: string): string {
+		this.oauthState = crypto.randomBytes(16).toString("hex");
+		const scopes = "playlist-read-private";
+		const params = new URLSearchParams({
+			response_type: "code",
+			client_id: this.credentials.clientId,
+			scope: scopes,
+			redirect_uri: redirectUri,
+			state: this.oauthState,
+		});
+		return `https://accounts.spotify.com/authorize?${params.toString()}`;
+	}
+
+	async handleAuthCallback(code: string, redirectUri: string, state: string): Promise<boolean> {
+		// Verify CSRF state
+		if (this.oauthState && state !== this.oauthState) {
+			throw new Error("OAuth state mismatch — possible CSRF attack");
+		}
+		this.oauthState = null;
+
+		// Exchange authorization code for tokens
+		const basicAuth = Buffer.from(
+			`${this.credentials.clientId}:${this.credentials.clientSecret}`
+		).toString("base64");
+
+		const response: any = await got.post("https://accounts.spotify.com/api/token", {
+			headers: {
+				"Authorization": `Basic ${basicAuth}`,
+				"Content-Type": "application/x-www-form-urlencoded",
+			},
+			form: {
+				grant_type: "authorization_code",
+				code,
+				redirect_uri: redirectUri,
+			},
+		}).json();
+
+		if (!response.access_token) {
+			throw new Error(`Spotify token exchange failed: ${JSON.stringify(response)}`);
+		}
+
+		this.oauthTokens = {
+			accessToken: response.access_token,
+			refreshToken: response.refresh_token,
+			expiresAt: Date.now() + (response.expires_in * 1000),
+		};
+
+		this._initWithOAuthToken();
+		this.enabled = true;
+		this.saveSettings();
+		return true;
+	}
+
+	async refreshAccessToken(): Promise<boolean> {
+		if (!this.oauthTokens?.refreshToken) return false;
+
+		const basicAuth = Buffer.from(
+			`${this.credentials.clientId}:${this.credentials.clientSecret}`
+		).toString("base64");
+
+		try {
+			const response: any = await got.post("https://accounts.spotify.com/api/token", {
+				headers: {
+					"Authorization": `Basic ${basicAuth}`,
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
+				form: {
+					grant_type: "refresh_token",
+					refresh_token: this.oauthTokens.refreshToken,
+				},
+			}).json();
+
+			if (!response.access_token) return false;
+
+			this.oauthTokens.accessToken = response.access_token;
+			this.oauthTokens.expiresAt = Date.now() + (response.expires_in * 1000);
+			// Spotify may issue a new refresh token
+			if (response.refresh_token) {
+				this.oauthTokens.refreshToken = response.refresh_token;
+			}
+
+			this._initWithOAuthToken();
+			this.saveSettings();
+			return true;
+		} catch {
+			return false;
+		}
+	}
+
+	async ensureValidToken(): Promise<void> {
+		if (!this.oauthTokens) return;
+		// Refresh if token expires within 60 seconds
+		if (Date.now() >= this.oauthTokens.expiresAt - 60000) {
+			await this.refreshAccessToken();
+		}
+	}
+
+	isOAuthAuthenticated(): boolean {
+		return !!(this.oauthTokens?.accessToken);
+	}
+
+	logoutOAuth(): void {
+		this.oauthTokens = null;
+		this.saveSettings();
+		this.checkCredentials(); // Fall back to Client Credentials
 	}
 
 	getCredentials() {
