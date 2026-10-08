@@ -7,7 +7,11 @@ export class Collection extends DownloadObject {
 
 	constructor(obj) {
 		super(obj);
-		this.collection = obj.collection;
+		// Completed queue items are persisted in slimmed form (see
+		// DownloadObject.getSlimmedDict) without a collection payload. Default
+		// it so a stale queue entry can never leave this undefined and crash
+		// the downloader.
+		this.collection = obj.collection ?? { tracks: [] };
 		this.__type__ = "Collection";
 	}
 

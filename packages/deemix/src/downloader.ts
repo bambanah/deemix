@@ -122,7 +122,7 @@ export class Downloader {
 				this.settings.queueConcurrency
 			);
 
-			if (this.downloadObject.collection.tracks.length) {
+			if (this.downloadObject.collection?.tracks?.length) {
 				this.downloadObject.collection.tracks.forEach((track, pos) => {
 					q.push({ track, pos }, () => {});
 				});
