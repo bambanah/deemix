@@ -239,6 +239,11 @@ export class Downloader {
 		const { filename, filepath, artistPath, coverPath, extrasPath } =
 			generatePath(track, this.downloadObject.type, this.settings);
 
+		// Save extrasPath
+		if (extrasPath && !this.downloadObject.extrasPath) {
+			this.downloadObject.extrasPath = extrasPath;
+		}
+
 		// Make sure the filepath exsists
 		mkdirSync(filepath, { recursive: true });
 		const extension = extensions[track.bitrate];
@@ -310,11 +315,6 @@ export class Downloader {
 			title: track.title,
 			artist: track.mainArtist.name,
 		};
-
-		// Save extrasPath
-		if (extrasPath && !this.downloadObject.extrasPath) {
-			this.downloadObject.extrasPath = extrasPath;
-		}
 
 		// Generate covers URLs
 		let embeddedImageFormat = `jpg-${this.settings.jpegImageQuality}`;
