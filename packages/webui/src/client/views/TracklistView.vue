@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { isEmpty } from "lodash-es";
 import { sendAddToQueue } from "@/utils/downloads";
-import { convertDuration } from "@/utils/utils";
+import { convertDuration, convertDurationSeparated } from "@/utils/utils";
 import { emitter } from "@/utils/emitter";
 import { useI18n } from "vue-i18n";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
+import { pinia } from "@/stores";
+import { useLoginStore } from "@/stores/login";
+import { usePlayerStore, type QueueTrack } from "@/stores/player";
 
 const { t } = useI18n();
 
@@ -18,8 +21,60 @@ const type = ref("empty");
 const link = ref("");
 const body = ref([]);
 
+const loginStore = useLoginStore(pinia);
+const playerStore = usePlayerStore(pinia);
+const albumInfo = ref({
+	id: null as string | null,
+	title: "",
+	artist: "",
+	cover: "",
+});
+
 function playPausePreview(e) {
 	emitter.emit("trackPreview:playPausePreview", e);
+}
+const totalDuration = computed(() =>
+	(body.value ?? []).reduce((total, item) => {
+		if (type.value === "spotifyPlaylist")
+			return total + Math.floor((item.duration_ms ?? 0) / 1000);
+		return item.type === "track" ? total + (item.duration ?? 0) : total;
+	}, 0)
+);
+function formatTotalDuration(seconds: number) {
+	const [hours, minutes, secs] = convertDurationSeparated(seconds);
+	const pad = (value: number) => String(value).padStart(2, "0");
+	return hours > 0
+		? `${hours}:${pad(minutes)}:${pad(secs)}`
+		: `${minutes}:${pad(secs)}`;
+}
+function playableTracks() {
+	return (body.value ?? []).filter((item) => item.type === "track");
+}
+function toQueueTrack(track): QueueTrack {
+	return {
+		id: String(track.id),
+		title: track.title,
+		artist: track.artist?.name ?? "",
+		artistId: track.artist?.id ? String(track.artist.id) : null,
+		// Playlist tracks don't include the album artist, the track artist is the best guess
+		albumArtist: albumInfo.value.artist || track.artist?.name || "",
+		album: track.album?.title ?? albumInfo.value.title,
+		albumId: track.album?.id ? String(track.album.id) : albumInfo.value.id,
+		cover: track.album?.cover_medium ?? albumInfo.value.cover,
+		duration: track.duration ?? 0,
+	};
+}
+function isCurrentTrack(track) {
+	return playerStore.currentTrack?.id === String(track.id);
+}
+function playFromTrack(track) {
+	if (!track) return;
+	if (isCurrentTrack(track)) {
+		playerStore.togglePlay();
+		return;
+	}
+	const tracks = playableTracks();
+	playerStore.playQueue(tracks.map(toQueueTrack), tracks.indexOf(track));
 }
 function reset() {
 	title.value = "Loading...";
@@ -64,9 +119,16 @@ function showAlbum(data) {
 		nb_tracks: numberOfTracks,
 		release_date: albumReleaseDate,
 		cover_xl,
+		cover_medium,
 	} = data;
 
 	type.value = "album";
+	albumInfo.value = {
+		id: String(albumID),
+		title: albumTitle,
+		artist: artistName,
+		cover: cover_medium ?? cover_xl,
+	};
 	link.value = `https://www.deezer.com/album/${albumID}`;
 	title.value = albumTitle;
 	explicit.value = explicit_lyrics;
@@ -98,6 +160,7 @@ function showPlaylist(data) {
 	} = data;
 
 	type.value = "playlist";
+	albumInfo.value = { id: null, title: "", artist: "", cover: "" };
 	link.value = `https://www.deezer.com/playlist/${playlistID}`;
 	title.value = playlistTitle;
 	image.value = playlistCover;
@@ -209,6 +272,20 @@ onMounted(() => {
 									class="table__cell-content table__cell-content--vertical-center"
 								>
 									<i
+										v-if="loginStore.isLoggedIn"
+										:class="{ 'text-primary': isCurrentTrack(track) }"
+										:title="t('globals.play_hint')"
+										class="material-icons cursor-pointer"
+										@click.stop="playFromTrack(track)"
+									>
+										{{
+											isCurrentTrack(track) && playerStore.isPlaying
+												? "pause"
+												: "play_arrow"
+										}}
+									</i>
+									<i
+										v-else
 										:class="{
 											preview_playlist_controls: track.preview,
 											'cursor-pointer': track.preview,
@@ -353,6 +430,20 @@ onMounted(() => {
 					</tr>
 				</template>
 			</tbody>
+			<tfoot v-if="totalDuration > 0">
+				<tr class="table__row-no-highlight">
+					<td
+						:colspan="type === 'album' ? 4 : 5"
+						class="table__cell--right !pb-3 !pt-6 text-right font-semibold opacity-70"
+					>
+						{{ t("tracklist.totalLength") }}
+					</td>
+					<td class="table__cell--center !pb-3 !pt-6 font-semibold">
+						{{ formatTotalDuration(totalDuration) }}
+					</td>
+					<td></td>
+				</tr>
+			</tfoot>
 		</table>
 		<span
 			v-if="label"
@@ -365,6 +456,15 @@ onMounted(() => {
 			>{{ label }}</span
 		>
 		<footer class="bg-background-main">
+			<button
+				v-if="loginStore.isLoggedIn && type !== 'spotifyPlaylist'"
+				class="btn btn-primary mr-2 flex items-center"
+				:disabled="playableTracks().length === 0"
+				@click.stop="playFromTrack(playableTracks()[0])"
+			>
+				<i class="material-icons mr-2">play_arrow</i
+				>{{ t("tracklist.playAll") }}
+			</button>
 			<button
 				:data-link="link"
 				class="btn btn-primary mr-2"

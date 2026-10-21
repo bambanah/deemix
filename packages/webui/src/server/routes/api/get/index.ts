@@ -18,6 +18,11 @@ import getUserFavorites from "./getUserFavorites.js";
 import getQueue from "./getQueue.js";
 import spotifyStatus from "./spotifyStatus.js";
 import checkForUpdates from "./checkForUpdates.js";
+import getPlayerLibrary from "./getPlayerLibrary.js";
+import getPlayerTrack from "./getPlayerTrack.js";
+import getLastfmStatus from "./getLastfmStatus.js";
+import streamTrack from "./streamTrack.js";
+import streamTrackInfo from "./streamTrackInfo.js";
 
 export default [
 	connect,
@@ -40,4 +45,9 @@ export default [
 	getQueue,
 	spotifyStatus,
 	checkForUpdates,
+	getPlayerLibrary,
+	getPlayerTrack,
+	getLastfmStatus,
+	streamTrack,
+	streamTrackInfo,
 ];

@@ -7,6 +7,11 @@ import removeFromQueue from "./removeFromQueue.js";
 import logout from "./logout.js";
 import saveSettings from "./saveSettings.js";
 import retryDownload from "./retryDownload.js";
+import connectLastfm from "./connectLastfm.js";
+import completeLastfm from "./completeLastfm.js";
+import disconnectLastfm from "./disconnectLastfm.js";
+import lastfmNowPlaying from "./lastfmNowPlaying.js";
+import lastfmScrobble from "./lastfmScrobble.js";
 
 export default [
 	changeAccount,
@@ -18,4 +23,9 @@ export default [
 	logout,
 	saveSettings,
 	retryDownload,
+	connectLastfm,
+	completeLastfm,
+	disconnectLastfm,
+	lastfmNowPlaying,
+	lastfmScrobble,
 ];

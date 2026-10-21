@@ -5,6 +5,7 @@ import DeezerWarning from "@/components/globals/DeezerWarning.vue";
 import TheContextMenu from "@/components/globals/TheContextMenu.vue";
 import TheQualityModal from "@/components/globals/TheQualityModal.vue";
 import TheTrackPreview from "@/components/globals/TheTrackPreview.vue";
+import TheFullPlayer from "@/components/globals/TheFullPlayer.vue";
 import TheContent from "@/components/TheContent.vue";
 import TheSearchBar from "@/components/TheSearchBar.vue";
 import TheSidebar from "@/components/TheSidebar.vue";
@@ -59,6 +60,7 @@ onMounted(() => {
 				</div>
 				<DeezerWarning />
 				<TheContent />
+				<TheFullPlayer />
 			</div>
 
 			<TheDownloadBar />

@@ -482,6 +482,7 @@ const en = {
 		search: "search",
 		charts: "charts",
 		favorites: "favorites",
+		playback: "playback",
 		linkAnalyzer: "link analyzer",
 		settings: "settings",
 		logs: "logs",
@@ -489,6 +490,64 @@ const en = {
 	},
 	tracklist: {
 		downloadSelection: "Download selection",
+		playAll: "Play",
+		totalLength: "Total length",
+	},
+	fullPlayer: {
+		title: "Player",
+		play: "Play",
+		pause: "Pause",
+		previous: "Previous track",
+		next: "Next track",
+		seek: "Seek",
+		volume: "Volume",
+		close: "Close player",
+		goToAlbum: "Go to album",
+		codec: "Stream format",
+		playError: "Couldn't play this track",
+	},
+	playback: {
+		title: "Playback",
+		description: "Streaming quality and Last.fm scrobbling for the player.",
+		qualityTitle: "Streaming quality",
+		qualityDescription:
+			"Best quality to stream. If your account or the track doesn't have it, the next one down is used. Changes apply from the next track.",
+		qualityFlac: "FLAC (lossless)",
+		qualityFlacHint:
+			"Best sound, around 30-50 MB per track. Needs a lossless Deezer plan.",
+		quality320: "MP3 320 kbps",
+		quality320Hint: "High quality, around 10 MB per track.",
+		quality128: "MP3 128 kbps",
+		quality128Hint: "Uses the least data, around 4 MB per track.",
+	},
+	lastfm: {
+		title: "Last.fm",
+		description: "Send what you play in the player to your Last.fm profile.",
+		account: "Account",
+		connected: "Connected as {username}",
+		notConnected:
+			"Connect your account to send now-playing updates and scrobbles.",
+		connect: "Connect Last.fm",
+		openAuthorization: "Open Last.fm authorization",
+		complete: "I authorized this app",
+		disconnect: "Disconnect",
+		statusError: "Could not load Last.fm connection status.",
+		connectError:
+			"Could not start Last.fm authorization. Check the server API credentials.",
+		completeError:
+			"Could not complete Last.fm authorization. Authorize the app, then try again.",
+		disconnectError: "Could not disconnect Last.fm.",
+		notConfigured:
+			"Last.fm API credentials are missing on the server (LASTFM_API_KEY / LASTFM_API_SECRET or lastfm.json in the config folder). Scrobbles won't be sent.",
+		artistTagTitle: "Artist to scrobble",
+		artistTagDescription:
+			"Choose which tag is sent to Last.fm as the track's artist.",
+		artistTagArtists: "Artists",
+		artistTagArtistsHint:
+			"The track's own artist, e.g. the guest artist on a compilation.",
+		artistTagAlbumArtist: "AlbumArtist",
+		artistTagAlbumArtistHint:
+			"The album's main artist, so every track of an album is grouped under the same artist.",
 	},
 };
 

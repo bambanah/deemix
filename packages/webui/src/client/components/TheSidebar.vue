@@ -52,8 +52,8 @@ function handleNavClick() {
 			@click="handleNavClick"
 		>
 			<img
-				src="@/assets/deemix-icon.svg?url"
-				alt="deemix-icon"
+				src="@/assets/deemix-icon.png"
+				alt="Deemix+"
 				class="mx-auto"
 				:class="{
 					'my-2 w-14': hasSlimSidebar,

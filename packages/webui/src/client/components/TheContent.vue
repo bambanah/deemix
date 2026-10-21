@@ -96,14 +96,17 @@ main {
 	background-color: var(--main-background);
 	padding-right: 5px;
 	width: 100%;
-	height: calc(100vh - 93px);
+	height: calc(100vh - 93px - var(--full-player-height, 0px));
 	overflow-y: scroll;
 	overflow-x: hidden;
 }
 
 @media (max-width: 767px) {
 	main {
-		height: calc(100dvh - 93px - env(safe-area-inset-bottom, 0px));
+		height: calc(
+			100dvh - 93px - env(safe-area-inset-bottom, 0px) -
+				var(--full-player-height, 0px)
+		);
 	}
 }
 

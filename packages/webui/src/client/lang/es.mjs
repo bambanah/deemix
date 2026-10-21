@@ -403,12 +403,73 @@ const es = {
 		search: "buscar",
 		charts: "charts",
 		favorites: "favoritos",
+		playback: "playback",
 		linkAnalyzer: "analizar enlaces",
 		settings: "ajustes",
 		about: "acerca de",
 	},
 	tracklist: {
 		downloadSelection: "Descargar selección",
+		playAll: "Reproducir",
+		totalLength: "Duración total",
+	},
+	fullPlayer: {
+		title: "Reproductor",
+		play: "Reproducir",
+		pause: "Pausar",
+		previous: "Pista anterior",
+		next: "Pista siguiente",
+		seek: "Posición",
+		volume: "Volumen",
+		close: "Cerrar reproductor",
+		goToAlbum: "Ir al álbum",
+		codec: "Formato del stream",
+		playError: "No se pudo reproducir esta pista",
+	},
+	playback: {
+		title: "Playback",
+		description:
+			"Calidad del streaming y scrobbles de Last.fm del reproductor.",
+		qualityTitle: "Calidad del streaming",
+		qualityDescription:
+			"La mejor calidad a reproducir. Si tu cuenta o la pista no la tienen, se usa la siguiente. Los cambios aplican desde la siguiente pista.",
+		qualityFlac: "FLAC (sin pérdida)",
+		qualityFlacHint:
+			"El mejor sonido, unos 30-50 MB por pista. Requiere un plan de Deezer con calidad lossless.",
+		quality320: "MP3 320 kbps",
+		quality320Hint: "Alta calidad, unos 10 MB por pista.",
+		quality128: "MP3 128 kbps",
+		quality128Hint: "Consume menos datos, unos 4 MB por pista.",
+	},
+	lastfm: {
+		title: "Last.fm",
+		description:
+			"Envía lo que escuchas en el reproductor a tu perfil de Last.fm.",
+		account: "Cuenta",
+		connected: "Conectado como {username}",
+		notConnected:
+			"Vincula tu cuenta para enviar la canción actual y scrobbles.",
+		connect: "Conectar Last.fm",
+		openAuthorization: "Abrir autorización de Last.fm",
+		complete: "Ya autoricé esta app",
+		disconnect: "Desconectar",
+		statusError: "No se pudo cargar el estado de conexión de Last.fm.",
+		connectError:
+			"No se pudo iniciar la autorización de Last.fm. Comprueba las credenciales API del servidor.",
+		completeError:
+			"No se pudo completar la autorización. Autoriza la app e inténtalo de nuevo.",
+		disconnectError: "No se pudo desconectar Last.fm.",
+		notConfigured:
+			"Faltan las credenciales API de Last.fm en el servidor (LASTFM_API_KEY / LASTFM_API_SECRET o lastfm.json en la carpeta de configuración). No se enviarán scrobbles.",
+		artistTagTitle: "Artista para el scrobble",
+		artistTagDescription:
+			"Elige qué tag se envía a Last.fm como artista de la pista.",
+		artistTagArtists: "Artists",
+		artistTagArtistsHint:
+			"El artista propio de la pista, p. ej. el artista invitado en un compilado.",
+		artistTagAlbumArtist: "AlbumArtist",
+		artistTagAlbumArtistHint:
+			"El artista principal del álbum, para que todas las pistas del álbum queden bajo el mismo artista.",
 	},
 };
 

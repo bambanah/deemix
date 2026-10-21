@@ -119,6 +119,7 @@ const playPausePreview = async (e: MouseEvent) => {
 		}
 
 		previewStopped.value = false;
+		emitter.emit("fullPlayer:pause");
 
 		await adjustVolume(preview.value, 0, { duration: 250 });
 		preview.value.pause();

@@ -6,7 +6,8 @@
 		},
 		"dev": {
 			"persistent": true,
-			"cache": false
+			"cache": false,
+			"passThroughEnv": ["LASTFM_API_KEY", "LASTFM_API_SECRET"]
 		},
 		"build": {
 			"dependsOn": ["^build"],

@@ -18,6 +18,12 @@ export const mainNavItems = [
 		label: "sidebar.favorites",
 	},
 	{
+		name: "playback",
+		routerName: "Playback",
+		icon: "graphic_eq",
+		label: "sidebar.playback",
+	},
+	{
 		name: "charts",
 		routerName: "Charts",
 		icon: "show_chart",

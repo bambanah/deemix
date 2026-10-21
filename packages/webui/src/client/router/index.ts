@@ -14,6 +14,7 @@ import Favorites from "@/views/FavoritesView.vue";
 import Home from "@/views/HomeView.vue";
 import InfoArl from "@/views/InfoArl.vue";
 import InfoSpotifyFeatures from "@/views/InfoSpotifyFeatures.vue";
+import Playback from "@/views/PlaybackView.vue";
 import Tracklist from "@/views/TracklistView.vue";
 
 const Search = () => import("@/views/SearchView.vue");
@@ -70,6 +71,14 @@ const routes: RouteRecordRaw[] = [
 		path: "/favorites",
 		name: "Favorites",
 		component: Favorites,
+		meta: {
+			notKeepAlive: true,
+		},
+	},
+	{
+		path: "/playback",
+		name: "Playback",
+		component: Playback,
 		meta: {
 			notKeepAlive: true,
 		},
