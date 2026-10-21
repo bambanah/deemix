@@ -6,6 +6,11 @@ printf '[cont-init.d] Creating folders if missing\n'
 mkdir -p "$DEEMIX_MUSIC_DIR"
 mkdir -p "$DEEMIX_DATA_DIR"
 
+# Ensure temporary artwork is writable by the runtime abc user.
+mkdir -p /tmp/deemix-imgs
+chown "$PUID":"$PGID" /tmp/deemix-imgs
+chmod 755 /tmp/deemix-imgs
+
 printf '[cont-init.d] Fixing folder permissions\n'
 
 if [ -n "${DISABLE_OWNERSHIP_CHECK}" ] || [ -n "${DISABLE_OWNERSHIP_CHECK_MUSIC}" ]; then
