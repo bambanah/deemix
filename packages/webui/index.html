@@ -2,6 +2,29 @@
 <html class="h-screen" data-theme="dark" dir="ltr" lang="en">
 	<head>
 		<meta charset="utf-8" />
+		<script>
+			// Derives mount prefix (e.g. reverse proxy subfolder) from URL before first
+			// known route segment. Used as <base> and location.base. Segments are auto-injected
+			// by route-segments plugin in vite.config.mts.
+			var known = [];
+			var segments = window.location.pathname.split("/");
+			var base = null;
+			for (var i = 1; i < segments.length; i++) {
+				if (known.indexOf(segments[i]) !== -1) {
+					base = segments.slice(0, i).join("/") + "/";
+					break;
+				}
+			}
+			if (base === null) {
+				base =
+					window.location.pathname.slice(-1) === "/"
+						? window.location.pathname
+						: window.location.pathname + "/";
+			}
+			base = base.replace(/[^\/A-Za-z0-9._~!$&'()*+,;=:@%-]/g, "");
+			window.location.base = base;
+			document.write('<base href="' + base + '">');
+		</script>
 		<title>Deemix</title>
 		<link rel="shortcut icon" type="image/png" href="favicon.png" />
 		<meta
