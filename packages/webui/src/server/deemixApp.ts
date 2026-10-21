@@ -298,6 +298,31 @@ export class DeemixApp {
 					.readFileSync(configFolder + `queue${sep}${currentUUID}.json`)
 					.toString()
 			);
+			// Skip stale entries that can no longer be downloaded. Completed items
+			// are persisted in slimmed form (without their single/collection
+			// payload), and a leftover order.json can still reference them;
+			// constructing + starting those crashes the downloader
+			// (collection.tracks of undefined) and paralyzes the whole queue.
+			// Keep the saved state, persist the shift, and move on to the next item.
+			const hasPayload =
+				(currentItem.__type__ === "Single" && currentItem.single != null) ||
+				(currentItem.__type__ === "Collection" &&
+					currentItem.collection != null) ||
+				(currentItem.__type__ === "Convertable" &&
+					currentItem.collection != null &&
+					currentItem.plugin != null);
+			if (currentItem.status === "completed" || !hasPayload) {
+				logger.warn(
+					`Skipping queue item ${currentUUID}: status=${currentItem.status ?? "unknown"} hasPayload=${hasPayload}`
+				);
+				this.queue[currentUUID] = currentItem;
+				fs.writeFileSync(
+					configFolder + `queue${sep}order.json`,
+					JSON.stringify(this.queueOrder)
+				);
+				this.currentJob = null;
+				continue;
+			}
 			let downloadObject: Single | Collection | Convertable | undefined =
 				undefined;
 
