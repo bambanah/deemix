@@ -8,6 +8,7 @@ import {
 	type Settings,
 } from "deemix";
 import { TrackFormats, type Deezer } from "deezer-sdk";
+import { selectAlbumTracks } from "./trackSelection";
 import { configFolder } from "./main";
 
 const listener: Listener = {
@@ -22,7 +23,8 @@ export const downloadLinks = async (
 	dz: Deezer,
 	urls: string[],
 	settings: Settings,
-	spotifyPlugin: SpotifyPlugin
+	spotifyPlugin: SpotifyPlugin,
+	trackIds?: string
 ) => {
 	const bitrate = settings.maxBitrate ?? TrackFormats.MP3_128;
 
@@ -70,6 +72,7 @@ export const downloadLinks = async (
 			);
 		}
 
+		selectAlbumTracks(downloadObject, trackIds);
 		const downloader = new Downloader(dz, downloadObject, settings, listener);
 		await downloader.start();
 	}

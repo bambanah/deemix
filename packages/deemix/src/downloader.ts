@@ -153,6 +153,7 @@ export class Downloader {
 		extraData: { trackAPI: APITrack; albumAPI?: APIAlbum; playlistAPI?: any },
 		track?: Track
 	) {
+		const isRetry = Boolean(track);
 		const returnData = <any>{};
 		const { trackAPI, albumAPI, playlistAPI } = extraData;
 
@@ -181,13 +182,14 @@ export class Downloader {
 
 		// Enrich track with additional data
 		try {
-			await track.parseData(
-				this.dz,
-				trackAPI.id,
-				trackAPI,
-				albumAPI,
-				playlistAPI
-			);
+			if (!isRetry)
+				await track.parseData(
+					this.dz,
+					trackAPI.id,
+					trackAPI,
+					albumAPI,
+					playlistAPI
+				);
 		} catch (e) {
 			if (e.name === "AlbumDoesntExists") {
 				throw new DownloadFailed("albumDoesntExists");
@@ -477,7 +479,8 @@ export class Downloader {
 
 	async downloadWrapper(
 		extraData: { trackAPI: APITrack; albumAPI?: APIAlbum; playlistAPI?: any },
-		track?: Track
+		track?: Track,
+		visited = new Set<string>()
 	) {
 		const { trackAPI } = extraData;
 
@@ -495,46 +498,55 @@ export class Downloader {
 			if (e instanceof DownloadFailed) {
 				if (e.track) {
 					const track = e.track;
-					if (track.fallbackID !== 0) {
-						this.warn(itemData, e.errid, "fallback");
-						const gwTrack = await this.dz.gw.get_track_with_fallback(
-							track.fallbackID
+
+					visited.add(String(track.id));
+					const selectFallback = async (id: string | number) => {
+						const key = String(id ?? "");
+						if (!key || key === "0" || visited.has(key)) return false;
+						visited.add(key);
+						const candidate = map_track(
+							await this.dz.gw.get_track_with_fallback(id)
 						);
-						track.parseEssentialData(map_track(gwTrack));
-						return await this.downloadWrapper(extraData, track);
+						const resolved = String(candidate.id ?? "");
+						if (
+							!resolved ||
+							resolved === "0" ||
+							(resolved !== key && visited.has(resolved))
+						)
+							return false;
+						visited.add(resolved);
+						track.parseEssentialData(candidate);
+						return true;
+					};
+					if (await selectFallback(track.fallbackID)) {
+						this.warn(itemData, e.errid, "fallback");
+						return await this.downloadWrapper(extraData, track, visited);
 					}
-					if (track.albumsFallback.length && this.settings.fallbackISRC) {
-						const newAlbumID = track.albumsFallback.pop();
-						const newAlbum = await this.dz.gw.get_album_page(newAlbumID);
-						let fallbackID = 0;
-						for (const newTrack of newAlbum.SONGS.data) {
-							if (newTrack.ISRC === track.ISRC) {
-								fallbackID = newTrack.SNG_ID;
-								break;
+					while (track.albumsFallback.length && this.settings.fallbackISRC) {
+						const album = await this.dz.gw.get_album_page(
+							track.albumsFallback.pop()
+						);
+						for (const candidate of album.SONGS.data) {
+							if (
+								candidate.ISRC === track.ISRC &&
+								(await selectFallback(candidate.SNG_ID))
+							) {
+								this.warn(itemData, e.errid, "fallback");
+								return await this.downloadWrapper(extraData, track, visited);
 							}
-						}
-						if (fallbackID !== 0) {
-							this.warn(itemData, e.errid, "fallback");
-							const gwTrack =
-								await this.dz.gw.get_track_with_fallback(fallbackID);
-							track.parseEssentialData(map_track(gwTrack));
-							return await this.downloadWrapper(extraData, track);
 						}
 					}
 					if (!track.searched && this.settings.fallbackSearch) {
+						track.searched = true;
 						this.warn(itemData, e.errid, "search");
-						const searchedID = await this.dz.api.get_track_id_from_metadata(
+						const id = await this.dz.api.get_track_id_from_metadata(
 							track.mainArtist.name,
 							track.title,
 							track.album.title
 						);
-						if (searchedID !== "0") {
-							const gwTrack =
-								await this.dz.gw.get_track_with_fallback(searchedID);
-							track.parseEssentialData(map_track(gwTrack));
-							track.searched = true;
+						if (await selectFallback(id)) {
 							this.log(itemData, "searchFallback");
-							return await this.downloadWrapper(extraData, track);
+							return await this.downloadWrapper(extraData, track, visited);
 						}
 					}
 					e.errid += "NoAlternative";
