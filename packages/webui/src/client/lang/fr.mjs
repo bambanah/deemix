@@ -66,7 +66,7 @@ const fr = {
 		},
 		officialRepo: "Contribuer sur GitHub",
 		beforeReporting: `Avant de signaler un bug, assurez-vous que vous utilisez la version la plus récente de l'application et que ce que vous souhaitez signaler est bel et bien un bug, et non un problème qui ne se produit que de votre côté.`,
-		beSure: `Assurez-vous que le bug est reproductible sur d'autres appareils et <strong>NE</strong> signalez <strong>PAS/strong> un bug si celui-ci a déjà été recensé.`,
+		beSure: `Assurez-vous que le bug est reproductible sur d'autres appareils et <strong>NE</strong> signalez <strong>PAS</strong> un bug si celui-ci a déjà été recensé.`,
 		duplicateReports:
 			"Les rapports de bugs identiques seront clôturés, faites donc preuve de vigilance à ce sujet.",
 		licencedUnder: {
