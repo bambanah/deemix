@@ -36,7 +36,6 @@ export async function getPreferredBitrate(
 	listener: any
 ) {
 	let falledBack = false;
-	let hasAlternative = track.fallbackID !== 0;
 	let isGeolocked = false;
 	let wrongLicense = false;
 
@@ -151,23 +150,34 @@ export async function getPreferredBitrate(
 			formatNumber,
 			feelingLucky
 		);
+
 		let newTrack;
-		do {
-			if (!url && hasAlternative) {
-				newTrack = await dz.gw.get_track_with_fallback(currentTrack.fallbackID);
-				newTrack = map_track(newTrack);
-				currentTrack = new Track();
-				currentTrack.parseEssentialData(newTrack);
-				hasAlternative = currentTrack.fallbackID !== 0;
-			}
-			if (!url)
-				url = await getCorrectURL(
-					currentTrack,
-					formatName,
-					formatNumber,
-					feelingLucky
-				);
-		} while (!url && hasAlternative);
+		const visited = new Set([String(track.id)]);
+		while (!url) {
+			const requested = String(currentTrack.fallbackID ?? "");
+			if (!requested || requested === "0" || visited.has(requested)) break;
+			visited.add(requested);
+			const candidate = map_track(
+				await dz.gw.get_track_with_fallback(currentTrack.fallbackID)
+			);
+			const resolved = String(candidate.id ?? "");
+			if (
+				!resolved ||
+				resolved === "0" ||
+				(resolved !== requested && visited.has(resolved))
+			)
+				break;
+			visited.add(resolved);
+			newTrack = candidate;
+			currentTrack = new Track();
+			currentTrack.parseEssentialData(newTrack);
+			url = await getCorrectURL(
+				currentTrack,
+				formatName,
+				formatNumber,
+				feelingLucky
+			);
+		}
 
 		if (url) {
 			if (newTrack) track.parseEssentialData(newTrack);
