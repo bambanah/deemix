@@ -29,7 +29,7 @@ RUN pnpm install --frozen-lockfile
 
 COPY --from=builder /app/out/full/ .
 
-RUN --mount=type=secret,id=turbo_token,env=TURBO_TOKEN \
+RUN TURBO_TOKEN=${TURBO_TOKEN:-} \
     pnpm turbo build --filter=deemix-webui... --filter=deemix-cli...
 
 FROM ghcr.io/linuxserver/baseimage-alpine:3.24 AS runner
