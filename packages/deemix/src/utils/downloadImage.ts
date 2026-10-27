@@ -55,7 +55,7 @@ export async function downloadImage(
 	try {
 		await pipeline(downloadStream, fileWriterStream);
 	} catch (e) {
-		unlinkSync(path);
+		if (existsSync(path)) unlinkSync(path);
 		if (e instanceof HTTPError) {
 			if (url.includes("images.dzcdn.net")) {
 				const urlBase = url.slice(0, url.lastIndexOf("/") + 1);
