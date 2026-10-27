@@ -18,8 +18,8 @@ stdenv.mkDerivation (finalAttrs: {
 
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
-    fetcherVersion = 3;
-    hash = "sha256-4a9/SuTRJoFkCStDTZSrgjXlee0ooMOeCpjAXmjevG4=";
+    fetcherVersion = 4;
+    hash = "sha256-9jZzLtKMv1E8xQSTuaxDJzEOilxrXM/hKZPvkq+IFX0=";
   };
 
   nativeBuildInputs = [
@@ -33,6 +33,14 @@ stdenv.mkDerivation (finalAttrs: {
   buildPhase = ''
     runHook preBuild
     patchShebangs node_modules packages/*/node_modules
+
+    # package.json pins a newer pnpm than nixpkgs ships, so every pnpm invocation
+    # would try to download that version from the registry, which the sandbox has
+    # no network for. This has to go in pnpm-workspace.yaml: pnpm 11 reads its
+    # settings from there rather than .npmrc, and turbo does not forward
+    # undeclared env vars to the task processes that run the per-package builds.
+    echo 'pmOnFail: ignore' >> pnpm-workspace.yaml
+
     pnpm run build
     runHook postBuild
   '';
