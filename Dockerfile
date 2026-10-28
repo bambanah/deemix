@@ -1,4 +1,4 @@
-FROM node:24-alpine AS base
+FROM node:26-alpine AS base
 
 ARG TURBO_TEAM
 ENV TURBO_TEAM=$TURBO_TEAM
