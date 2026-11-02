@@ -32,6 +32,6 @@
 		"deezer-sdk": "workspace:*"
 	},
 	"devDependencies": {
-		"@yao-pkg/pkg": "^5.15.0"
+		"@yao-pkg/pkg": "^5.16.1"
 	}
 }

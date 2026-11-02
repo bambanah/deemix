@@ -31,3 +31,6 @@ packages/webui/public/js/*
 .turbo
 tsconfig.tsbuildinfo
 vite.config.*.timestamp-*
+
+# Local project management
+memory-bank/
