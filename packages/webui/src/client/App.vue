@@ -4,6 +4,7 @@ import BaseLoadingPlaceholder from "@/components/globals/BaseLoadingPlaceholder.
 import DeezerWarning from "@/components/globals/DeezerWarning.vue";
 import TheContextMenu from "@/components/globals/TheContextMenu.vue";
 import TheQualityModal from "@/components/globals/TheQualityModal.vue";
+import TheTopLoader from "@/components/globals/TheTopLoader.vue";
 import TheTrackPreview from "@/components/globals/TheTrackPreview.vue";
 import TheContent from "@/components/TheContent.vue";
 import TheSearchBar from "@/components/TheSearchBar.vue";
@@ -74,6 +75,7 @@ onMounted(() => {
 						</span>
 					</button>
 				</div>
+				<TheTopLoader />
 				<DeezerWarning />
 				<TheContent />
 			</div>
@@ -84,7 +86,7 @@ onMounted(() => {
 		<BaseLoadingPlaceholder
 			:text="loadingText"
 			:hidden="isSocketConnected"
-			additional-classes="fixed inset-0 bg-black bg-opacity-50 z-50"
+			additional-classes="fixed inset-0 bg-black bg-opacity-50 z-50 text-white"
 		/>
 
 		<TheTrackPreview />

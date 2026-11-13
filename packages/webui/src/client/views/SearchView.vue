@@ -16,7 +16,6 @@ import {
 import { standardizeData } from "@/data/standardize";
 import { useMainSearch } from "@/use/main-search";
 import { useSearch } from "@/use/search";
-import { sendAddToQueue } from "@/utils/downloads";
 import { uniqWith } from "lodash-es";
 import { computed, onMounted, reactive, ref, watch, watchEffect } from "vue";
 import { useI18n } from "vue-i18n";
@@ -191,9 +190,6 @@ function handleMainSearch(newValue) {
 	}
 }
 
-function addToQueue(e) {
-	sendAddToQueue(e.currentTarget.dataset.link);
-}
 function getViewInfo() {
 	if (state.currentTab.searchType === "all") {
 		return state.results.allTab;
@@ -316,7 +312,6 @@ state.currentTab = state.tabs.find((tab) => tab.searchType === "all");
 					:view-info="getViewInfo()"
 					want-headers
 					:items-to-show="Infinity"
-					@add-to-queue="addToQueue"
 					@change-search-tab="changeSearchTab"
 				></component>
 			</keep-alive>

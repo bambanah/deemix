@@ -1,12 +1,13 @@
 <script setup lang="ts">
+import PendingQueueItem from "@/components/downloads/PendingQueueItem.vue";
 import QueueItem from "@/components/downloads/QueueItem.vue";
 import { pinia } from "@/stores";
 import { useAppInfoStore } from "@/stores/appInfo";
+import { useDownloadsStore } from "@/stores/downloads";
 import { useErrorStore } from "@/stores/errors";
 import { useLoginStore } from "@/stores/login";
 import { fetchData, postToServer } from "@/utils/api-utils";
 import { socket } from "@/utils/socket";
-import { toast } from "@/utils/toasts";
 import {
 	computed,
 	onMounted,
@@ -27,6 +28,7 @@ const tabMaxWidth = 500;
 const loginStore = useLoginStore(pinia);
 const appInfoStore = useAppInfoStore(pinia);
 const errorStore = useErrorStore(pinia);
+const downloadsStore = useDownloadsStore(pinia);
 
 const container = useTemplateRef("container");
 const toggler = ref<HTMLElement | null>(null);
@@ -35,9 +37,6 @@ const list = ref<HTMLElement | null>(null);
 const cachedTabWidth = ref(
 	parseInt(localStorage.getItem("downloadTabWidth")) || 300
 );
-const queue = ref([]);
-const queueList = ref<any>({});
-const queueComplete = ref([]);
 const isExpanded = ref(localStorage.getItem("downloadTabOpen") === "true");
 
 const clientMode = computed(() => loginStore.clientMode);
@@ -47,9 +46,9 @@ const isMobileDownloadsOpen = computed(
 	() => appInfoStore.isMobileDownloadsOpen
 );
 
-const queueCount = computed(
-	() => queue.value.length + queueComplete.value.length
-);
+const queueList = computed<Record<string, any>>(() => downloadsStore.queueList);
+const pendingItems = computed(() => downloadsStore.pending);
+const queueCount = computed(() => downloadsStore.queueCount);
 
 watch(queueCount, (count) => appInfoStore.setDownloadQueueCount(count), {
 	immediate: true,
@@ -58,13 +57,6 @@ watch(queueCount, (count) => appInfoStore.setDownloadQueueCount(count), {
 function toggleMobileDownloads() {
 	appInfoStore.toggleMobileDownloads();
 }
-
-const finishedWithoutErrors = computed(() => {
-	const isCompletedWithoutErrors = (el) =>
-		(el.status || "") === "download finished" && el.errors.length === 0;
-
-	return Object.values(queueList.value).filter(isCompletedWithoutErrors);
-});
 
 function checkIfToggleBar(keyEvent) {
 	if (!(keyEvent.ctrlKey && keyEvent.key === "b")) return;
@@ -90,193 +82,6 @@ function setTabWidth(newWidth?: number) {
 		container.value.style.width = newWidth + "px";
 		list.value.style.width = newWidth + "px";
 	}
-}
-
-function initQueue(data) {
-	const {
-		queueOrder: initQueue,
-		//		queueComplete: initQueueComplete,
-		current: currentItem,
-		queue: initQueueList,
-		restored,
-	} = data;
-
-	const initQueueComplete = Object.values(initQueueList)
-		.filter((el: any) =>
-			["completed", "withErrors", "failed"].includes(el.status)
-		)
-		.map((el: any) => el.uuid);
-
-	if (initQueueComplete && initQueueComplete.length) {
-		initQueueComplete.forEach((item) => {
-			initQueueList[item].silent = true;
-			addToQueue(initQueueList[item]);
-		});
-	}
-
-	if (currentItem) {
-		currentItem.silent = true;
-		addToQueue(currentItem, true);
-	}
-
-	initQueue.forEach((item) => {
-		if (!initQueueList[item]) return;
-		initQueueList[item].silent = true;
-		addToQueue(initQueueList[item]);
-	});
-
-	if (restored) {
-		toast(t("toasts.queueRestored"), "done", true, "restoring_queue");
-		socket.emit("queueRestored");
-	}
-}
-
-function addToQueue(queueItem, current = false) {
-	if (Array.isArray(queueItem)) {
-		if (queueItem.length > 1) {
-			queueItem.forEach((item) => {
-				item.silent = true;
-				addToQueue(item);
-			});
-			toast(
-				t("toasts.addedMoreToQueue", { n: queueItem.length }),
-				"playlist_add_check"
-			);
-			return;
-		} else {
-			queueItem = queueItem[0];
-		}
-	}
-
-	// Add implicit values back
-	queueItem.downloaded = queueItem.downloaded || 0;
-	queueItem.failed = queueItem.failed || 0;
-	queueItem.progress = queueItem.progress || 0;
-	queueItem.conversion = queueItem.conversion || 0;
-	queueItem.errors = queueItem.errors || [];
-
-	// * Here we have only queueItem objects
-	queueItem.current = current;
-	queueList.value[queueItem.uuid] = queueItem;
-
-	// * Used when opening the app in another tab
-	const itemIsAlreadyDownloaded =
-		queueItem.downloaded + queueItem.failed == queueItem.size;
-
-	if (itemIsAlreadyDownloaded) {
-		const itemIsNotInCompletedQueue = !queueComplete.value.includes(
-			queueItem.uuid
-		);
-
-		queueList.value[queueItem.uuid].status = "download finished";
-
-		if (itemIsNotInCompletedQueue) {
-			// * Add it
-			queueComplete.value.push(queueItem.uuid);
-		}
-	} else {
-		const itemIsNotInQueue = !queue.value.includes(queueItem.uuid);
-
-		if (itemIsNotInQueue) {
-			queue.value.push(queueItem.uuid);
-		}
-	}
-
-	const needToStartDownload =
-		!itemIsAlreadyDownloaded &&
-		((queueItem.progress > 0 && queueItem.progress < 100) || current);
-
-	if (needToStartDownload) {
-		startDownload(queueItem.uuid);
-	}
-
-	if (!queueItem.silent) {
-		toast(
-			t("toasts.addedToQueue", { item: queueItem.title }),
-			"playlist_add_check"
-		);
-	}
-}
-
-function updateQueue(update) {
-	// downloaded and failed default to false?
-	const {
-		uuid,
-		downloaded,
-		alreadyDownloaded,
-		failed,
-		progress,
-		conversion,
-		error,
-		data,
-		errid,
-		stack,
-		postFailed,
-	} = update;
-
-	if (uuid && queue.value.includes(uuid)) {
-		if (downloaded || alreadyDownloaded) {
-			queueList.value[uuid].downloaded++;
-		}
-
-		if (failed) {
-			queueList.value[uuid].failed++;
-			queueList.value[uuid].errors.push({
-				message: error,
-				data,
-				errid,
-				stack,
-			});
-		}
-
-		if (progress) {
-			queueList.value[uuid].progress = progress;
-		}
-
-		if (conversion) {
-			queueList.value[uuid].conversion = conversion;
-		}
-
-		if (postFailed) {
-			queueList.value[uuid].errors.push({ message: error, data, stack });
-		}
-	}
-}
-
-function removeFromQueue({ uuid }: { uuid: string }) {
-	const index = queue.value.indexOf(uuid);
-
-	if (index > -1) {
-		delete queue.value[index];
-		delete queueList.value[uuid];
-	}
-}
-
-function removeAllDownloads(currentItem) {
-	queueComplete.value = [];
-
-	if (!currentItem) {
-		queue.value = [];
-		queueList.value = {};
-	} else {
-		queue.value = [currentItem];
-
-		const tempQueueItem = queueList.value[currentItem];
-
-		queueList.value = {};
-		queueList.value[currentItem] = tempQueueItem;
-	}
-}
-
-function removedFinishedDownloads() {
-	// TODO: Make this a computed property
-	queueComplete.value = finishedWithoutErrors.value.map((el: any) => el.uuid);
-
-	queueComplete.value.forEach((uuid) => {
-		delete queueList.value[uuid];
-	});
-
-	queueComplete.value = [];
 }
 
 function toggleDownloadTab() {
@@ -323,40 +128,6 @@ function startDrag() {
 	document.addEventListener("mousemove", handleDrag);
 }
 
-function startDownload(uuid) {
-	queueList.value[uuid].status = "downloading";
-}
-
-function finishDownload({ uuid }: { uuid: string }) {
-	const isInQueue =
-		queue.value.includes(uuid) || queueComplete.value.includes(uuid);
-
-	if (!isInQueue) return;
-
-	queueList.value[uuid].status = "download finished";
-	toast(
-		t("toasts.finishDownload", { item: queueList.value[uuid].title }),
-		"done"
-	);
-
-	const index = queue.value.indexOf(uuid);
-
-	if (index > -1) {
-		queue.value.splice(index, 1);
-		queueComplete.value.push(uuid);
-	}
-
-	if (queue.value.length <= 0) {
-		toast(t("toasts.allDownloaded"), "done_all");
-	}
-}
-function startConversion({ uuid }: { uuid: string; title: string }) {
-	queueList.value[uuid].status = "converting";
-	queueList.value[uuid].conversion = 0;
-}
-function finishConversion(downloadObject) {
-	queueList.value[downloadObject.uuid].size = downloadObject.size;
-}
 async function showErrorsTab(item) {
 	setErrors(item);
 
@@ -364,19 +135,22 @@ async function showErrorsTab(item) {
 }
 
 onMounted(() => {
-	socket.on("startDownload", startDownload);
-	socket.on("startConversion", startConversion);
-	socket.on("finishConversion", finishConversion);
-	socket.on("addedToQueue", addToQueue);
-	socket.on("updateQueue", updateQueue);
-	socket.on("removedFromQueue", removeFromQueue);
-	socket.on("finishDownload", finishDownload);
-	socket.on("removedAllDownloads", removeAllDownloads);
-	socket.on("removedFinishedDownloads", removedFinishedDownloads);
+	socket.on("startDownload", downloadsStore.startDownload);
+	socket.on("startConversion", downloadsStore.startConversion);
+	socket.on("finishConversion", downloadsStore.finishConversion);
+	socket.on("addedToQueue", downloadsStore.addToQueue);
+	socket.on("updateQueue", downloadsStore.updateQueue);
+	socket.on("removedFromQueue", downloadsStore.removeFromQueue);
+	socket.on("finishDownload", downloadsStore.finishDownload);
+	socket.on("removedAllDownloads", downloadsStore.removeAllDownloads);
+	socket.on(
+		"removedFinishedDownloads",
+		downloadsStore.removedFinishedDownloads
+	);
 
 	fetchData("getQueue")
 		.then((res) => {
-			initQueue(res);
+			if (downloadsStore.initQueue(res)) socket.emit("queueRestored");
 		})
 		.catch(console.error);
 
@@ -469,6 +243,11 @@ onUnmounted(() => {
 
 		<!-- Sheet queue list -->
 		<div class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-4">
+			<PendingQueueItem
+				v-for="item in pendingItems"
+				:key="item.id"
+				:item="item"
+			/>
 			<QueueItem
 				v-for="item in queueList"
 				:key="item.uuid"
@@ -551,6 +330,11 @@ onUnmounted(() => {
 			class="w-full pr-2"
 			:class="{ slim: isSlim }"
 		>
+			<PendingQueueItem
+				v-for="item in pendingItems"
+				:key="item.id"
+				:item="item"
+			/>
 			<QueueItem
 				v-for="item in queueList"
 				:key="item.uuid"

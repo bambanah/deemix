@@ -53,7 +53,7 @@ const { t } = useI18n();
 								is-rounded
 								:cover="release.albumCoverMedium"
 								:link="release.albumLink"
-								@click.stop="$emit('add-to-queue', $event)"
+								:item-title="release.albumTitle"
 							/>
 
 							<span class="primary-text">

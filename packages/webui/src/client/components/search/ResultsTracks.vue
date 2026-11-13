@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import DownloadButton from "@/components/globals/DownloadButton.vue";
 import BaseLoadingPlaceholder from "@/components/globals/BaseLoadingPlaceholder.vue";
 import PreviewControls from "@/components/globals/PreviewControls.vue";
 import ResultsError from "@/components/search/ResultsError.vue";
@@ -127,18 +128,13 @@ const playPausePreview = (e: MouseEvent) => {
 							{{ convertDuration(track.trackDuration) }}
 						</td>
 
-						<td
-							class="table__cell--center group cursor-pointer"
-							:data-link="track.trackLink"
-							aria-label="download"
-							@click.stop="$emit('add-to-queue', $event)"
-						>
-							<i
-								class="material-icons group-hover:text-primary transition-colors duration-150 ease-in-out"
-								:title="t('globals.download_hint')"
-							>
-								get_app
-							</i>
+						<td class="table__cell--center">
+							<DownloadButton
+								plain
+								:link="track.trackLink"
+								:item-title="track.trackTitle"
+								class="transition-colors duration-150 ease-in-out"
+							/>
 						</td>
 					</tr>
 				</tbody>

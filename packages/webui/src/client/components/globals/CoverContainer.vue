@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
-
-const { t } = useI18n();
+import BaseSpinner from "@/components/globals/BaseSpinner.vue";
+import DownloadButton from "@/components/globals/DownloadButton.vue";
 
 interface Props {
 	cover: string;
 	isRounded?: boolean;
 	isCircle?: boolean;
 	link: string;
+	itemTitle?: string;
 }
 
 defineProps<Props>();
@@ -22,20 +22,15 @@ defineProps<Props>();
 			:src="cover"
 		/>
 
-		<button
-			role="button"
-			aria-label="download"
-			:data-link="link"
-			class="download_overlay hover:bg-primary absolute rounded-full border-0 bg-black p-0 text-center opacity-0"
-			tabindex="0"
-			v-bind="$attrs"
+		<DownloadButton
+			v-slot="{ state, icon }"
+			:link="link"
+			:item-title="itemTitle"
+			class="download_overlay absolute flex items-center justify-center rounded-full border-0 bg-black p-0 text-center text-white"
 		>
-			<i
-				class="material-icons cursor-pointer text-white"
-				:title="t('globals.download_hint')"
-				>get_app</i
-			>
-		</button>
+			<BaseSpinner v-if="state === 'pending'" :size="20" class="m-3" />
+			<i v-else class="material-icons">{{ icon }}</i>
+		</DownloadButton>
 	</div>
 </template>
 
@@ -65,10 +60,16 @@ defineProps<Props>();
 .cover-container .download_overlay i {
 	padding: 0.625rem;
 }
-.cover-container .download_overlay:focus {
+.cover-container .download_overlay:focus-visible,
+.cover-container .download_overlay.download-btn--disabled {
 	opacity: 1;
 }
-
+.cover-container .download_overlay:not(.download-btn--disabled):hover {
+	background-color: var(--primary-color);
+}
+.cover-container .download_overlay.download-btn--finished {
+	background-color: var(--primary-color);
+}
 @media (min-width: 768px) {
 	.cover-container {
 		max-width: 156px;

@@ -88,20 +88,13 @@
 						{{ ` • ${t("globals.listTabs.trackN", data.nb_tracks)}` }}
 					</h2>
 				</div>
-				<div
-					role="button"
-					aria-label="download"
-					:data-link="link"
-					class="bg-primary text-grayscale-870 ml-auto grid h-12 w-12 shrink-0 cursor-pointer place-items-center rounded-full md:h-16 md:w-16"
-					@click.stop="addToQueue"
-				>
-					<!-- @contextmenu.prevent="openQualityModal" -->
-					<i
-						class="material-icons text-3xl md:text-4xl"
-						:title="t('globals.download_hint')"
-						>get_app</i
-					>
-				</div>
+				<DownloadButton
+					:link="link"
+					:item-title="title"
+					icon-class="text-3xl md:text-4xl"
+					:spinner-size="28"
+					class="bg-primary text-grayscale-870 ml-auto grid h-12 w-12 shrink-0 place-items-center rounded-full border-0 md:h-16 md:w-16"
+				/>
 			</header>
 			<table class="table [overflow-wrap:anywhere]">
 				<tr v-if="data.id">
@@ -200,10 +193,10 @@
 </template>
 
 <script setup lang="ts">
+import DownloadButton from "@/components/globals/DownloadButton.vue";
 import { pinia } from "@/stores";
 import { useLoginStore } from "@/stores/login";
 import { COUNTRIES } from "@/utils/countries";
-import { sendAddToQueue } from "@/utils/downloads";
 import { emitter } from "@/utils/emitter";
 import { convertDuration } from "@/utils/utils";
 import { computed, onMounted, ref } from "vue";
@@ -324,10 +317,6 @@ function showAlbum(data) {
 
 function notSupported() {
 	link.value = "error";
-}
-
-function addToQueue(e) {
-	sendAddToQueue(e.currentTarget.dataset.link);
 }
 
 onMounted(() => {

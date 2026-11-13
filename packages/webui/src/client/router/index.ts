@@ -1,3 +1,5 @@
+import { pinia } from "@/stores";
+import { useLoadingStore } from "@/stores/loading";
 import { fetchData } from "@/utils/api-utils";
 import { emitter } from "@/utils/emitter";
 import {
@@ -128,6 +130,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to, _, next) => {
+	useLoadingStore(pinia).setNavigating(true);
+
 	if (to.name && to.name !== "Home") {
 		document.title = to.name.toString() + " · Deemix";
 	} else {
@@ -181,6 +185,14 @@ router.beforeEach((to, _, next) => {
 	}
 
 	next();
+});
+
+router.afterEach(() => {
+	useLoadingStore(pinia).setNavigating(false);
+});
+
+router.onError(() => {
+	useLoadingStore(pinia).setNavigating(false);
 });
 
 export default router;

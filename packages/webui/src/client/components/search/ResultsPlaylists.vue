@@ -52,7 +52,7 @@ const { t } = useI18n();
 								is-rounded
 								:cover="playlist.playlistPictureMedium"
 								:link="playlist.playlistLink"
-								@click.stop="$emit('add-to-queue', $event)"
+								:item-title="playlist.playlistTitle"
 							/>
 
 							<span class="primary-text">

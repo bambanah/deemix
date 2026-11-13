@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import DownloadButton from "@/components/globals/DownloadButton.vue";
 import BaseTab from "@/components/globals/BaseTab.vue";
 import BaseTabs from "@/components/globals/BaseTabs.vue";
 import CoverContainer from "@/components/globals/CoverContainer.vue";
@@ -71,10 +72,6 @@ function downloadAllOfType() {
 	} catch (error) {
 		console.error(error.message);
 	}
-}
-
-function addToQueue(e) {
-	sendAddToQueue(e.currentTarget.dataset.link);
 }
 
 function getActiveRelease(tab?: (typeof state.tabs)[number]) {
@@ -198,8 +195,8 @@ const activeTabEmpty = computed(() => {
 							<CoverContainer
 								:cover="release.picture_medium"
 								:link="release.link"
+								:item-title="release.title"
 								is-rounded
-								@click.stop="addToQueue"
 							/>
 							<p class="primary-text">{{ release.title }}</p>
 						</div>
@@ -234,8 +231,8 @@ const activeTabEmpty = computed(() => {
 							<CoverContainer
 								:cover="release.picture_medium"
 								:link="release.link"
+								:item-title="release.title"
 								is-rounded
-								@click.stop="addToQueue"
 							/>
 							<p class="primary-text">{{ release.title }}</p>
 						</div>
@@ -274,8 +271,8 @@ const activeTabEmpty = computed(() => {
 						<CoverContainer
 							:cover="release.cover_medium"
 							:link="release.link"
+							:item-title="release.title"
 							is-rounded
-							@click.stop="addToQueue"
 						/>
 						<p class="primary-text">{{ release.title }}</p>
 						<p class="secondary-text">
@@ -307,8 +304,8 @@ const activeTabEmpty = computed(() => {
 						<CoverContainer
 							:cover="release.picture_medium"
 							:link="release.link"
+							:item-title="release.name"
 							is-circle
-							@click.stop="addToQueue"
 						/>
 						<p class="primary-text text-center">{{ release.name }}</p>
 					</div>
@@ -381,22 +378,16 @@ const activeTabEmpty = computed(() => {
 					<td class="table__cell--small cell-desktop">
 						{{ convertDuration(track.duration) }}
 					</td>
-					<td
-						:data-link="track.link"
-						aria-label="download"
-						class="group cursor-pointer"
-						role="button"
-						@click.stop="addToQueue"
-					>
+					<td>
 						<div
 							class="table__cell-content table__cell-content--vertical-center"
 						>
-							<i
-								:title="t('globals.download_hint')"
-								class="material-icons group-hover:text-primary transition-colors duration-150 ease-in-out"
-							>
-								get_app
-							</i>
+							<DownloadButton
+								plain
+								:link="track.link"
+								:item-title="track.title"
+								class="transition-colors duration-150 ease-in-out"
+							/>
 						</div>
 					</td>
 				</tr>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import BaseSpinner from "@/components/globals/BaseSpinner.vue";
+import DownloadButton from "@/components/globals/DownloadButton.vue";
 import PreviewControls from "@/components/globals/PreviewControls.vue";
 import { getChartsData, getChartTracks } from "@/data/charts";
-import { sendAddToQueue } from "@/utils/downloads";
 import { emitter } from "@/utils/emitter";
 import { convertDuration } from "@/utils/utils";
 import { onMounted, ref, watch } from "vue";
@@ -16,11 +17,6 @@ const chart = ref([]);
 
 function playPausePreview(e) {
 	emitter.emit("trackPreview:playPausePreview", e);
-}
-
-function addToQueue(e) {
-	e.stopPropagation();
-	sendAddToQueue(e.currentTarget.dataset.link);
 }
 
 function getTrackList(event) {
@@ -116,13 +112,15 @@ watch(id, (newId) => {
 				<button class="btn btn-primary" @click="onChangeCountry">
 					{{ t("charts.changeCountry") }}
 				</button>
-				<button
-					:data-link="'https://www.deezer.com/playlist/' + id"
-					class="btn btn-primary"
-					@click.stop="addToQueue"
+				<DownloadButton
+					v-slot="{ state }"
+					:link="'https://www.deezer.com/playlist/' + id"
+					:item-title="country"
+					class="btn btn-primary flex items-center gap-2"
 				>
+					<BaseSpinner v-if="state === 'pending'" :size="16" />
 					{{ t("charts.download") }}
-				</button>
+				</DownloadButton>
 			</div>
 
 			<table class="table--charts table">
@@ -185,19 +183,13 @@ watch(id, (newId) => {
 						<td class="table__cell--small table__cell--center cell-desktop">
 							{{ convertDuration(track.duration) }}
 						</td>
-						<td
-							:data-link="track.link"
-							aria-label="download"
-							class="group cursor-pointer"
-							role="button"
-							@click.stop="addToQueue"
-						>
-							<i
-								:title="t('globals.download_hint')"
-								class="material-icons group-hover:text-primary transition-colors duration-150 ease-in-out"
-							>
-								get_app
-							</i>
+						<td class="table__cell--center">
+							<DownloadButton
+								plain
+								:link="track.link"
+								:item-title="track.title"
+								class="transition-colors duration-150 ease-in-out"
+							/>
 						</td>
 					</tr>
 				</tbody>

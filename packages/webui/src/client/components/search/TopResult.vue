@@ -57,7 +57,7 @@ const fansNumber = computed(() => {
 						:is-circle="info.type === 'artist'"
 						:cover="info.picture"
 						:link="info.link"
-						@click.stop="$emit('add-to-queue', $event)"
+						:item-title="info.title"
 					/>
 				</div>
 

@@ -48,7 +48,7 @@ const { t } = useI18n();
 								is-circle
 								:cover="release.artistPictureMedium"
 								:link="release.artistLink"
-								@click.stop="$emit('add-to-queue', $event)"
+								:item-title="release.artistName"
 							/>
 
 							<span class="primary-text">

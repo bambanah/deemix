@@ -78,31 +78,26 @@ function checkSectionResults(section) {
 					<TopResult
 						v-if="section === 'TOP_RESULT'"
 						:info="viewInfo.TOP_RESULT[0]"
-						@add-to-queue="$emit('add-to-queue', $event)"
 					/>
 
 					<ResultsTracks
 						v-else-if="section === 'TRACK'"
 						:view-info="standardizeData(viewInfo.TRACK, formatSingleTrack)"
-						@add-to-queue="$emit('add-to-queue', $event)"
 					/>
 
 					<ResultsAlbums
 						v-else-if="section === 'ALBUM'"
 						:view-info="standardizeData(viewInfo.ALBUM, formatAlbums)"
-						@add-to-queue="$emit('add-to-queue', $event)"
 					/>
 
 					<ResultsPlaylists
 						v-else-if="section === 'PLAYLIST'"
 						:view-info="standardizeData(viewInfo.PLAYLIST, formatPlaylist)"
-						@add-to-queue="$emit('add-to-queue', $event)"
 					/>
 
 					<ResultsArtists
 						v-else-if="section === 'ARTIST'"
 						:view-info="standardizeData(viewInfo.ARTIST, formatArtist)"
-						@add-to-queue="$emit('add-to-queue', $event)"
 					/>
 				</template>
 			</section>

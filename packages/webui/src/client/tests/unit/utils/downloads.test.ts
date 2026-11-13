@@ -1,4 +1,4 @@
-import { aggregateDownloadLinks } from "../../../utils/downloads";
+import { aggregateDownloadLinks } from "../../../utils/queue-keys";
 
 describe("download utils", () => {
 	describe("aggregateDownloadLinks", () => {

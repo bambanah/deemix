@@ -1,12 +1,17 @@
 <script setup lang="ts">
+import BaseLoadingPlaceholder from "@/components/globals/BaseLoadingPlaceholder.vue";
+import BaseSpinner from "@/components/globals/BaseSpinner.vue";
+import DownloadButton from "@/components/globals/DownloadButton.vue";
 import { isEmpty } from "lodash-es";
-import { sendAddToQueue } from "@/utils/downloads";
 import { convertDuration } from "@/utils/utils";
 import { emitter } from "@/utils/emitter";
+import { pinia } from "@/stores";
+import { useDownloadsStore } from "@/stores/downloads";
 import { useI18n } from "vue-i18n";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 const { t } = useI18n();
+const downloadsStore = useDownloadsStore(pinia);
 
 const title = ref("");
 const metadata = ref("");
@@ -31,22 +36,35 @@ function reset() {
 	type.value = "empty";
 	body.value = [];
 }
-function addToQueue(e) {
-	sendAddToQueue(e.currentTarget.dataset.link);
+function getTrackLink(track) {
+	return type.value === "spotifyPlaylist" ? track.uri : track.link;
+}
+/** Tracks already in the download queue (pending, downloading or finished) */
+function isTrackInQueue(track) {
+	const trackLink = getTrackLink(track);
+	return (
+		Boolean(trackLink) && downloadsStore.getDownloadState(trackLink) !== "idle"
+	);
+}
+function isSelectable(track) {
+	return (
+		(track.type === "track" || type.value === "spotifyPlaylist") &&
+		!isTrackInQueue(track)
+	);
 }
 function toggleAll(e) {
-	body.value.forEach((item) => {
-		if (item.type === "track") {
-			item.selected = e.currentTarget.checked;
-		}
+	const checked = e.currentTarget.checked;
+
+	(body.value || []).forEach((item) => {
+		if (isSelectable(item)) item.selected = checked;
 	});
 }
 function selectedLinks() {
 	const selected = [];
 	if (body.value) {
 		body.value.forEach((item) => {
-			if (item.type === "track" && item.selected)
-				selected.push(type.value === "spotifyPlaylist" ? item.uri : item.link);
+			if (item.selected && isSelectable(item))
+				selected.push(getTrackLink(item));
 		});
 	}
 	return selected.join(";");
@@ -143,8 +161,20 @@ function showSpotifyPlaylist(data) {
 	}
 }
 function selectRow(_, track) {
+	if (!isSelectable(track)) return;
 	track.selected = !track.selected;
 }
+
+// Deselect the tracks that get added to the queue (also from other views/tabs)
+watch(
+	() => [downloadsStore.queueList, downloadsStore.pending],
+	() => {
+		(body.value || []).forEach((item) => {
+			if (item.selected && isTrackInQueue(item)) item.selected = false;
+		});
+	},
+	{ deep: true }
+);
 
 onMounted(() => {
 	emitter.on("showAlbum", showAlbum);
@@ -154,7 +184,12 @@ onMounted(() => {
 </script>
 
 <template>
-	<div ref="root" class="fixed-footer bg-background-main image-header relative">
+	<BaseLoadingPlaceholder v-if="type === 'empty'" class="min-h-[50vh]" />
+	<div
+		v-else
+		ref="root"
+		class="fixed-footer bg-background-main image-header relative"
+	>
 		<header
 			:style="{
 				'background-image':
@@ -202,6 +237,7 @@ onMounted(() => {
 						<tr
 							v-if="track.type === 'track'"
 							:key="track.id"
+							:class="{ 'track-in-queue': isTrackInQueue(track) }"
 							@click="selectRow(index, track)"
 						>
 							<td class="table__cell--x-small table__cell--center">
@@ -296,8 +332,19 @@ onMounted(() => {
 							<td class="table__icon table__cell--center">
 								<input
 									v-model="track.selected"
-									class="cursor-pointer"
+									:class="
+										isTrackInQueue(track)
+											? 'cursor-not-allowed'
+											: 'cursor-pointer'
+									"
+									:disabled="isTrackInQueue(track)"
+									:title="
+										isTrackInQueue(track)
+											? t('globals.already_in_queue_hint')
+											: undefined
+									"
 									type="checkbox"
+									@click.stop
 								/>
 							</td>
 						</tr>
@@ -362,7 +409,17 @@ onMounted(() => {
 						<td>
 							<input
 								v-model="track.selected"
-								class="cursor-pointer"
+								:class="
+									isTrackInQueue(track)
+										? 'cursor-not-allowed'
+										: 'cursor-pointer'
+								"
+								:disabled="isTrackInQueue(track)"
+								:title="
+									isTrackInQueue(track)
+										? t('globals.already_in_queue_hint')
+										: undefined
+								"
 								type="checkbox"
 							/>
 						</td>
@@ -381,25 +438,39 @@ onMounted(() => {
 			>{{ label }}</span
 		>
 		<footer class="bg-background-main">
-			<button
-				:data-link="link"
-				class="btn btn-primary md:mr-2"
-				@click.stop="addToQueue"
+			<DownloadButton
+				v-slot="{ state, icon }"
+				:link="link"
+				:item-title="title"
+				class="btn btn-primary flex items-center gap-2 md:mr-2"
 			>
+				<BaseSpinner v-if="state === 'pending'" :size="16" />
+				<i v-else-if="state !== 'idle'" class="material-icons">{{ icon }}</i>
 				{{
 					`${t("globals.download", {
 						thing: t(`globals.listTabs.${type}`, 1),
 					})}`
 				}}
-			</button>
-			<button
-				:data-link="selectedLinks()"
+			</DownloadButton>
+			<DownloadButton
+				v-slot="{ state }"
+				:link="selectedLinks()"
+				:item-title="t('tracklist.downloadSelection')"
 				class="btn btn-primary flex items-center"
-				@click.stop="addToQueue"
 			>
 				{{ t("tracklist.downloadSelection")
-				}}<i class="material-icons ml-2">file_download</i>
-			</button>
+				}}<BaseSpinner v-if="state === 'pending'" :size="18" class="ml-2" /><i
+					v-else
+					class="material-icons ml-2"
+					>file_download</i
+				>
+			</DownloadButton>
 		</footer>
 	</div>
 </template>
+
+<style scoped>
+.track-in-queue td {
+	opacity: 0.6;
+}
+</style>

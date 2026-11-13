@@ -3,7 +3,6 @@ import CoverContainer from "@/components/globals/CoverContainer.vue";
 import { getHomeData } from "@/data/home";
 import { pinia } from "@/stores";
 import { useLoginStore } from "@/stores/login";
-import { sendAddToQueue } from "@/utils/downloads";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -16,9 +15,6 @@ const albums = ref([]);
 
 const isLoggedIn = computed(() => loginStore.isLoggedIn);
 
-function addToQueue(e) {
-	sendAddToQueue(e.currentTarget.dataset.link);
-}
 function initHome(data) {
 	const {
 		playlists: { data: playlistData },
@@ -94,7 +90,7 @@ onMounted(async () => {
 							is-rounded
 							:cover="release.picture_medium"
 							:link="release.link"
-							@click.stop="addToQueue"
+							:item-title="release.title"
 						/>
 						<p class="primary-text">{{ release.title }}</p>
 						<p class="secondary-text">
@@ -140,7 +136,7 @@ onMounted(async () => {
 							is-rounded
 							:cover="release.cover_medium"
 							:link="release.link"
-							@click.stop="addToQueue"
+							:item-title="release.title"
 						/>
 						<p class="primary-text">{{ release.title }}</p>
 						<p class="secondary-text">
