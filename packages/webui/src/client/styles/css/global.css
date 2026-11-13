@@ -147,28 +147,40 @@
 		color: var(--foreground);
 	}
 
-	.btn-primary:hover {
-		@apply border-foreground bg-blue-600;
+	@media (hover: hover) {
+		.btn-primary:hover {
+			@apply border-foreground bg-blue-600;
+		}
 	}
 
-	/* Section tabs */
+	/* Section tabs: horizontally scrollable on mobile, evenly spread on desktop */
 	.section-tabs {
 		@apply mb-6 mt-4 flex cursor-pointer list-none;
+		margin-inline: -1rem;
+		padding-inline: 1rem;
 		overflow-x: auto;
 		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
+	}
+
+	.section-tabs::-webkit-scrollbar {
+		display: none;
 	}
 
 	.section-tabs__tab {
-		@apply border-foreground bg-background-main flex-1 rounded-b border-t-4 p-3 text-center text-xl capitalize;
+		@apply border-foreground bg-background-main flex-none rounded-b border-t-4 px-4 py-2 text-center text-base capitalize;
 		white-space: nowrap;
-		min-width: max-content;
 	}
 
-	@media (max-width: 767px) {
+	@media (min-width: 768px) {
+		.section-tabs {
+			margin-inline: 0;
+			padding-inline: 0;
+		}
+
 		.section-tabs__tab {
-			flex: none;
-			padding-left: 1rem;
-			padding-right: 1rem;
+			@apply flex-1 p-3 text-xl;
+			min-width: max-content;
 		}
 	}
 
@@ -176,68 +188,127 @@
 		@apply text-primary border-primary bg-background-main;
 	}
 
-	.section-tabs__tab:hover {
-		@apply text-primary border-primary bg-background-secondary;
-		@apply bg-opacity-25;
+	@media (hover: hover) {
+		.section-tabs__tab:hover {
+			@apply text-primary border-primary bg-background-secondary;
+			@apply bg-opacity-25;
+		}
 	}
 
 	/* Image header */
 	.image-header header {
-		@apply rounded-t-lg bg-cover px-6 pb-2 pt-56;
-
+		@apply rounded-t-lg bg-cover px-4 pb-2 pt-32;
+		margin-inline: -1rem;
 		background-position: 0% 35%;
+		overflow-wrap: anywhere;
 	}
 
-	/* Fixed footer */
+	.image-header header h1 {
+		@apply text-3xl;
+	}
+
+	@media (min-width: 768px) {
+		.image-header header {
+			@apply px-6 pt-56;
+			margin-inline: 0;
+		}
+
+		.image-header header h1 {
+			@apply text-5xl;
+		}
+	}
+
+	/* Sticky footer: equal-width actions spanning the screen on mobile, right-aligned row on desktop */
 	.fixed-footer footer {
-		@apply sticky bottom-0 mt-6 flex h-16 w-full flex-row items-center justify-end;
-		padding: 0 1rem;
+		@apply sticky bottom-0 mt-6 flex flex-row items-stretch gap-2;
+		margin-inline: -1rem;
+		padding: 0.625rem 1rem;
+		padding-bottom: calc(0.625rem + env(safe-area-inset-bottom, 0px));
+		margin-bottom: calc(-1.5rem - env(safe-area-inset-bottom, 0px));
 	}
 
-	@media (max-width: 767px) {
+	.fixed-footer footer > * {
+		display: flex;
+		flex: 1 1 0;
+		min-width: 0;
+		margin: 0 !important;
+	}
+
+	.fixed-footer footer .btn {
+		@apply flex h-auto min-h-11 w-full items-center justify-center rounded-lg px-2 py-2 text-sm leading-tight;
+	}
+
+	.fixed-footer footer .btn .material-icons {
+		display: none;
+	}
+
+	.fixed-footer footer .btn-flat {
+		border: 1px solid currentColor;
+	}
+
+	@media (min-width: 768px) {
 		.fixed-footer footer {
-			flex-direction: column;
-			height: auto;
-			gap: 0.5rem;
-			align-items: stretch;
-			/* Break out of 95% container */
-			width: 100vw;
-			margin-left: -2.63vw;
-			padding: 0.75rem 2.63vw;
-			padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
-			box-sizing: border-box;
+			@apply h-16 items-center justify-end;
+			margin-inline: 0;
+			margin-bottom: -2rem;
+			padding: 0 1rem;
 		}
 
 		.fixed-footer footer > * {
-			width: 100%;
-			flex-grow: 0;
+			flex: 0 0 auto;
+		}
+
+		.fixed-footer footer > div {
+			flex-grow: 1;
 		}
 
 		.fixed-footer footer .btn {
-			width: 100%;
-			padding: 0.875rem 1rem;
-			height: auto;
-			font-size: 1rem;
-			justify-content: center;
-			display: flex;
-			border-radius: 0.5rem;
-		}
-
-		.fixed-footer footer .btn-flat {
-			background: transparent;
-			border: 1px solid rgba(255, 255, 255, 0.3);
+			@apply h-8 min-h-0 w-auto rounded px-2 py-0;
 		}
 
 		.fixed-footer footer .btn .material-icons {
+			display: inline-block;
+		}
+
+		.fixed-footer footer .btn-flat {
+			border-color: transparent;
+		}
+	}
+
+	/* Release grid: two fluid columns on phones, auto-fill on larger screens */
+	.release-grid {
+		@apply grid gap-x-3 gap-y-4;
+
+		grid-template-columns: repeat(auto-fill, minmax(min(9rem, 40vw), 1fr));
+	}
+
+	@media (min-width: 768px) {
+		.release-grid {
+			@apply gap-4;
+
+			grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+		}
+	}
+
+	/* Responsive tables: helper to hide secondary columns on small screens */
+	.cell-desktop {
+		display: none;
+	}
+
+	@media (min-width: 768px) {
+		.cell-desktop {
+			display: table-cell;
+		}
+
+		.cell-mobile {
 			display: none;
 		}
 	}
 
-	/* Release grid */
-	.release-grid {
-		@apply grid gap-4;
-
-		grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+	/* Wrap wide tables so they scroll instead of breaking the layout */
+	.table-scroll {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
 	}
 
 	.tag {

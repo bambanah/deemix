@@ -6,23 +6,19 @@
 		@scroll="$route.name === 'Search' ? handleContentScroll() : null"
 	>
 		<div id="container">
-			<BackButton
-				v-if="showBackButton"
-				class="sticky -ml-20"
-				style="top: 1rem"
-			/>
+			<BackButton v-if="showBackButton" class="back-button sticky" />
 
 			<router-view
 				v-if="!$route.meta.notKeepAlive"
 				:key="$route.fullPath"
-				:class="{ '-mt-16': showBackButton }"
+				:class="{ 'has-back-button': showBackButton }"
 				:perform-scrolled-search="performScrolledSearch"
 			></router-view>
 
 			<router-view
 				v-if="$route.meta.notKeepAlive"
 				:key="$route.fullPath"
-				:class="{ '-mt-16': showBackButton }"
+				:class="{ 'has-back-button': showBackButton }"
 				:perform-scrolled-search="performScrolledSearch"
 			></router-view>
 		</div>
@@ -74,36 +70,61 @@ onMounted(() => {
 </script>
 
 <style>
+/* Mobile first: full-width content with side gutters */
 #container {
-	--container-width: 95%;
 	margin: 0 auto;
+	padding: 0 1rem calc(1.5rem + env(safe-area-inset-bottom, 0px));
+	width: 100%;
 	max-width: 1280px;
-	width: var(--container-width);
 	transform: scale(1);
 }
-@media only screen and (min-width: 601px) {
+
+#container .back-button {
+	top: 0.75rem;
+	margin-left: 0.5rem;
+}
+
+#container .has-back-button {
+	margin-top: -3rem;
+}
+
+@media (min-width: 768px) {
 	#container {
-		--container-width: 85%;
+		padding: 0 0 2rem;
+		width: 85%;
+	}
+
+	#container .back-button {
+		top: 1rem;
+		margin-left: -5rem;
+	}
+
+	#container .has-back-button {
+		margin-top: -4rem;
 	}
 }
-@media only screen and (min-width: 993px) {
+
+@media (min-width: 993px) {
 	#container {
-		--container-width: 70%;
+		width: 70%;
 	}
 }
 
 main {
+	flex: 1 1 auto;
 	background-color: var(--main-background);
-	padding-right: 5px;
 	width: 100%;
-	height: calc(100vh - 93px);
-	overflow-y: scroll;
+	min-height: 0;
 	overflow-x: hidden;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+	overscroll-behavior: contain;
 }
 
-@media (max-width: 767px) {
+@media (min-width: 768px) {
 	main {
-		height: calc(100dvh - 93px - env(safe-area-inset-bottom, 0px));
+		padding-right: 5px;
+		overflow-y: scroll;
 	}
 }
 

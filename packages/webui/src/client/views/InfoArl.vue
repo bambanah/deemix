@@ -1,6 +1,8 @@
 <template>
 	<div>
-		<h1 class="mb-8 text-5xl">{{ t("settings.login.arl.question") }}</h1>
+		<h1 class="mb-6 text-3xl md:mb-8 md:text-5xl">
+			{{ t("settings.login.arl.question") }}
+		</h1>
 		<p class="mb-2 text-base">
 			{{ t("settings.login.arl.howTo.prologue.p1") }}<br />
 			{{ t("settings.login.arl.howTo.prologue.p2") }}<br />
@@ -8,7 +10,7 @@
 			{{ t("settings.login.arl.howTo.prologue.p4") }}<br />
 		</p>
 
-		<h3 class="mt-6 text-3xl">
+		<h3 class="mt-6 text-2xl md:text-3xl">
 			{{ t("settings.login.arl.howTo.chromeSteps.easyWay.title") }}
 		</h3>
 		<ul class="mb-2 text-base">
@@ -20,7 +22,7 @@
 			<li>{{ t("settings.login.arl.howTo.commonSteps.lastStep") }}</li>
 		</ul>
 
-		<h3 class="mt-6 text-3xl">
+		<h3 class="mt-6 text-2xl md:text-3xl">
 			{{ t("settings.login.arl.howTo.chromeSteps.title") }}
 		</h3>
 		<ul class="mb-2 text-base">
@@ -47,7 +49,7 @@
 			</template>
 		</i18n>
 
-		<h3 class="mt-6 text-3xl">
+		<h3 class="mt-6 text-2xl md:text-3xl">
 			{{ t("settings.login.arl.howTo.firefoxSteps.title") }}
 		</h3>
 		<ul class="mb-2 text-base">

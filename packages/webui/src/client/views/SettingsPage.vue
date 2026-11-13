@@ -283,7 +283,7 @@ function canDownload(bitrate: number) {
 
 <template>
 	<div class="fixed-footer">
-		<h1 class="mb-8 text-5xl">{{ t("settings.title") }}</h1>
+		<h1 class="mb-6 text-3xl md:mb-8 md:text-5xl">{{ t("settings.title") }}</h1>
 
 		<div class="settings-group">
 			<h3 class="settings-group__header">
@@ -296,7 +296,7 @@ function canDownload(bitrate: number) {
 					ref="userpicture"
 					:src="pictureHref"
 					alt="Profile Picture"
-					class="h-32 w-32 rounded-full"
+					class="h-20 w-20 rounded-full md:h-32 md:w-32"
 				/>
 				<div class="user_info">
 					<i18n-t keypath="settings.login.loggedIn" tag="p">
@@ -493,7 +493,7 @@ function canDownload(bitrate: number) {
 				</h3>
 			</template>
 
-			<div class="settings-container space-x-5">
+			<div class="settings-container">
 				<div class="settings-container__third">
 					<label class="with-checkbox">
 						<input v-model="settings.createPlaylistFolder" type="checkbox" />
@@ -570,7 +570,7 @@ function canDownload(bitrate: number) {
 				</h3>
 			</template>
 
-			<div class="settings-container space-x-5">
+			<div class="settings-container">
 				<div
 					class="settings-container__third settings-container__third--only-checkbox"
 				>
@@ -733,7 +733,7 @@ function canDownload(bitrate: number) {
 				</h3>
 			</template>
 
-			<div class="settings-container space-x-5">
+			<div class="settings-container">
 				<div class="settings-container__half">
 					<label class="with-checkbox">
 						<input v-model="settings.tags.title" type="checkbox" />
@@ -938,7 +938,7 @@ function canDownload(bitrate: number) {
 				</select>
 			</div>
 
-			<div class="settings-container space-x-5">
+			<div class="settings-container">
 				<div
 					class="settings-container__third settings-container__third--only-checkbox"
 				>
@@ -1339,12 +1339,24 @@ function canDownload(bitrate: number) {
 	align-items: center;
 	flex-direction: column;
 	justify-content: center;
-	grid-template-columns: 128px auto;
+	grid-template-columns: 80px auto;
 	grid-template-rows: auto auto;
 }
 
 #logged_in_info .user_info {
-	padding-left: 24px;
+	padding-left: 16px;
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+
+@media (min-width: 768px) {
+	#logged_in_info {
+		grid-template-columns: 128px auto;
+	}
+
+	#logged_in_info .user_info {
+		padding-left: 24px;
+	}
 }
 
 #family_account {
@@ -1355,7 +1367,8 @@ function canDownload(bitrate: number) {
 .locale-flag {
 	justify-content: center;
 	cursor: pointer;
-	width: 60px;
+	width: 52px;
+	margin-bottom: 8px;
 }
 .locale-flag:not(:last-child) {
 	margin-right: 10px;
@@ -1377,22 +1390,43 @@ function canDownload(bitrate: number) {
 .settings-group__header {
 	display: inline-flex;
 	align-items: center;
-	padding-top: 2rem;
-	padding-bottom: 2rem;
-	font-size: 1.5rem;
+	padding-top: 1.25rem;
+	padding-bottom: 1.25rem;
+	font-size: 1.25rem;
+}
+
+@media (min-width: 768px) {
+	.settings-group__header {
+		padding-top: 2rem;
+		padding-bottom: 2rem;
+		font-size: 1.5rem;
+	}
 }
 .settings-group__header i.material-icons {
 	margin-right: 1rem;
 }
 
+/* Stacked on mobile, side by side from tablet up */
 .settings-container {
 	display: flex;
+	flex-direction: column;
 }
-.settings-container__half {
-	width: 50%;
-}
+.settings-container__half,
 .settings-container__third {
-	width: 33%;
+	width: 100%;
+}
+
+@media (min-width: 768px) {
+	.settings-container {
+		flex-direction: row;
+		gap: 1.25rem;
+	}
+	.settings-container__half {
+		width: 50%;
+	}
+	.settings-container__third {
+		width: 33%;
+	}
 }
 .settings-container__third--only-checkbox {
 	display: flex;

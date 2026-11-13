@@ -42,12 +42,16 @@ const playPausePreview = (e: MouseEvent) => {
 						<th class="h-12 pb-3" colspan="2">
 							{{ t("globals.listTabs.title", 1) }}
 						</th>
-						<th class="h-12 pb-3">{{ t("globals.listTabs.artist", 1) }}</th>
-						<th class="h-12 pb-3">{{ t("globals.listTabs.album", 1) }}</th>
-						<th class="h-12 pb-3">
+						<th class="cell-desktop h-12 pb-3">
+							{{ t("globals.listTabs.artist", 1) }}
+						</th>
+						<th class="cell-desktop h-12 pb-3">
+							{{ t("globals.listTabs.album", 1) }}
+						</th>
+						<th class="cell-desktop h-12 pb-3">
 							<i class="material-icons">timer</i>
 						</th>
-						<th class="h-12 pb-3" style="width: 3.5rem"></th>
+						<th class="h-12 w-11 pb-3 md:w-14"></th>
 					</tr>
 				</thead>
 
@@ -70,7 +74,7 @@ const playPausePreview = (e: MouseEvent) => {
 
 						<td class="table__cell table__cell--large">
 							<div
-								class="table__cell-content table__cell-content--vertical-center break-words"
+								class="table__cell-content table__cell-content--vertical-center break-words [overflow-wrap:anywhere]"
 							>
 								<i
 									v-if="track.isTrackExplicit"
@@ -79,6 +83,10 @@ const playPausePreview = (e: MouseEvent) => {
 								>
 								{{ formatTitle(track) }}
 							</div>
+							<span class="cell-subtitle">
+								{{ track.artistName }} · {{ track.albumTitle }} ·
+								{{ convertDuration(track.trackDuration) }}
+							</span>
 						</td>
 
 						<router-link
@@ -88,7 +96,7 @@ const playPausePreview = (e: MouseEvent) => {
 						>
 							<td
 								role="link"
-								class="table__cell table__cell--medium table__cell--center break-words"
+								class="table__cell table__cell--medium table__cell--center cell-desktop break-words"
 								@click="navigate"
 							>
 								<span class="cursor-pointer hover:underline">
@@ -104,7 +112,7 @@ const playPausePreview = (e: MouseEvent) => {
 						>
 							<td
 								role="link"
-								class="table__cell table__cell--medium table__cell--center break-words"
+								class="table__cell table__cell--medium table__cell--center cell-desktop break-words"
 								@click="navigate"
 							>
 								<span class="cursor-pointer hover:underline">
@@ -113,7 +121,9 @@ const playPausePreview = (e: MouseEvent) => {
 							</td>
 						</router-link>
 
-						<td class="table__cell table__cell--small table__cell--center">
+						<td
+							class="table__cell table__cell--small table__cell--center cell-desktop"
+						>
 							{{ convertDuration(track.trackDuration) }}
 						</td>
 

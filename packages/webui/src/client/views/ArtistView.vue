@@ -24,6 +24,7 @@ const head = ref([
 	{
 		title: t("globals.listTabs.track", 2),
 		sortKey: "releaseTracksNumber",
+		class: "cell-desktop",
 	},
 	// { title: '', width: '32px' }
 	{ title: "", width: null },
@@ -102,16 +103,18 @@ const sortedData = computed(() => {
 <template>
 	<div class="fixed-footer image-header relative">
 		<header class="flex items-center" :style="headerStyle">
-			<h1 class="m-0">{{ state.artistName }}</h1>
+			<h1 class="m-0 min-w-0 pr-3">{{ state.artistName }}</h1>
 
 			<div
-				class="bg-primary text-grayscale-870 ml-auto grid h-16 w-16 cursor-pointer place-items-center rounded-full"
+				class="bg-primary text-grayscale-870 ml-auto grid h-12 w-12 shrink-0 cursor-pointer place-items-center rounded-full md:h-16 md:w-16"
 				aria-label="download"
 				role="button"
 				:data-cm-link="downloadLink"
 				@click.stop="sendAddToQueue(downloadLink)"
 			>
-				<i class="material-icons text-4xl" :title="t('globals.download_hint')"
+				<i
+					class="material-icons text-3xl md:text-4xl"
+					:title="t('globals.download_hint')"
 					>get_app</i
 				>
 			</div>
@@ -136,14 +139,17 @@ const sortedData = computed(() => {
 						:key="data.title"
 						:style="{ width: data.width ? data.width : 'auto' }"
 						class="uppercase-first-letter"
-						:class="{
-							'sort-asc':
-								data.sortKey === state.sortKey && state.sortOrder == 'asc',
-							'sort-desc':
-								data.sortKey === state.sortKey && state.sortOrder == 'desc',
-							sortable: data.sortKey,
-							'cursor-pointer': data.sortKey,
-						}"
+						:class="[
+							data.class,
+							{
+								'sort-asc':
+									data.sortKey === state.sortKey && state.sortOrder == 'asc',
+								'sort-desc':
+									data.sortKey === state.sortKey && state.sortOrder == 'desc',
+								sortable: data.sortKey,
+								'cursor-pointer': data.sortKey,
+							},
+						]"
 						@click="
 							typeof data.sortKey === 'string' ? sortBy(data.sortKey) : null
 						"
@@ -168,9 +174,8 @@ const sortedData = computed(() => {
 							@keypress.enter="() => navigate()"
 						>
 							<img
-								class="coverart mr-4 rounded"
+								class="coverart mr-2 h-10 w-10 shrink-0 rounded md:mr-4 md:h-14 md:w-14"
 								:src="release.releaseCover"
-								style="width: 56px; height: 56px"
 							/>
 							<i
 								v-if="release.isReleaseExplicit"
@@ -178,7 +183,7 @@ const sortedData = computed(() => {
 								>explicit</i
 							>
 							<div>
-								<span class="hover:text-primary flex">
+								<span class="hover:text-primary flex break-words">
 									{{ release.releaseTitle }}
 									<i
 										v-if="checkNewRelease(release.releaseDate)"
@@ -196,8 +201,10 @@ const sortedData = computed(() => {
 							</div>
 						</td>
 					</router-link>
-					<td class="w-32 text-center xl:w-40">{{ release.releaseDate }}</td>
-					<td class="w-20 text-center xl:w-32">
+					<td class="w-20 text-center text-xs md:w-32 md:text-base xl:w-40">
+						{{ release.releaseDate }}
+					</td>
+					<td class="cell-desktop w-20 text-center xl:w-32">
 						{{ release.releaseTracksNumber }}
 					</td>
 					<td

@@ -6,7 +6,9 @@ const { t } = useI18n();
 
 <template>
 	<div>
-		<h1 class="mb-8 text-5xl">{{ t("settings.spotify.question") }}</h1>
+		<h1 class="mb-6 text-3xl md:mb-8 md:text-5xl">
+			{{ t("settings.spotify.question") }}
+		</h1>
 		<p class="mb-2 text-base">
 			{{ t("settings.spotify.howTo.prologue.p1") }}<br />
 			{{ t("settings.spotify.howTo.prologue.p2") }}<br />
@@ -14,7 +16,7 @@ const { t } = useI18n();
 		</p>
 		<p class="mb-2 text-base">{{ t("settings.spotify.howTo.info") }}</p>
 
-		<h2 class="mt-6 text-3xl">
+		<h2 class="mt-6 text-2xl md:text-3xl">
 			{{ t("settings.spotify.howTo.clientSecretQuestion.title") }}
 		</h2>
 		<i18n
@@ -55,7 +57,7 @@ const { t } = useI18n();
 			{{ t("settings.spotify.howTo.clientSecretQuestion.step5") }}
 		</p>
 
-		<h2 class="mt-6 text-3xl">
+		<h2 class="mt-6 text-2xl md:text-3xl">
 			{{ t("settings.spotify.howTo.usernameQuestion.title") }}
 		</h2>
 		<i18n

@@ -126,7 +126,7 @@ const activeTabEmpty = computed(() => {
 
 <template>
 	<div>
-		<h1 class="mb-8 text-5xl">
+		<h1 class="mb-6 text-3xl md:mb-8 md:text-5xl">
 			{{ t("favorites.title") }}
 			<div
 				ref="reloadButton"
@@ -324,7 +324,7 @@ const activeTabEmpty = computed(() => {
 				<tr v-for="track in favoriteTracks" :key="track.id" class="track_row">
 					<td
 						:class="{ first: track.position === 1 }"
-						class="cursor-default p-3 text-center"
+						class="cursor-default p-1 text-center md:p-3"
 					>
 						{{ track.position }}
 					</td>
@@ -346,6 +346,9 @@ const activeTabEmpty = computed(() => {
 								? " " + track.title_version
 								: "")
 						}}
+						<span class="cell-subtitle">
+							{{ track.artist.name }} · {{ track.album.title }}
+						</span>
 					</td>
 					<router-link
 						v-slot="{ navigate }"
@@ -354,7 +357,7 @@ const activeTabEmpty = computed(() => {
 					>
 						<td
 							role="link"
-							class="table__cell table__cell--medium table__cell--center cursor-pointer"
+							class="table__cell table__cell--medium table__cell--center cell-desktop cursor-pointer"
 							@click="navigate"
 							@keypress.enter="() => navigate()"
 						>
@@ -368,14 +371,14 @@ const activeTabEmpty = computed(() => {
 					>
 						<td
 							role="link"
-							class="table__cell--medium table__cell--center cursor-pointer"
+							class="table__cell--medium table__cell--center cell-desktop cursor-pointer"
 							@click="navigate"
 							@keypress.enter="() => navigate()"
 						>
 							{{ track.album.title }}
 						</td>
 					</router-link>
-					<td class="table__cell--small">
+					<td class="table__cell--small cell-desktop">
 						{{ convertDuration(track.duration) }}
 					</td>
 					<td

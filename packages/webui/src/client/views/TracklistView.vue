@@ -163,7 +163,7 @@ onMounted(() => {
 					'\')',
 			}"
 		>
-			<h1 class="m-0 flex items-center text-5xl">
+			<h1 class="m-0 flex items-center text-3xl md:text-5xl">
 				{{ title }}
 				<i v-if="explicit" class="material-icons title-icon title-icon--right"
 					>explicit</i
@@ -184,11 +184,11 @@ onMounted(() => {
 					</th>
 					<th>#</th>
 					<th>{{ t("globals.listTabs.title", 1) }}</th>
-					<th>{{ t("globals.listTabs.artist", 1) }}</th>
-					<th v-if="type === 'playlist'">
+					<th class="cell-desktop">{{ t("globals.listTabs.artist", 1) }}</th>
+					<th v-if="type !== 'album'" class="cell-desktop">
 						{{ t("globals.listTabs.album", 1) }}
 					</th>
-					<th>
+					<th class="cell-desktop">
 						<i class="material-icons">timer</i>
 					</th>
 					<th class="table__icon table__cell--center cursor-pointer">
@@ -249,6 +249,13 @@ onMounted(() => {
 											: "")
 									}}
 								</div>
+								<span class="cell-subtitle">
+									{{ track.artist.name
+									}}<template v-if="type === 'playlist'">
+										· {{ track.album.title }}</template
+									>
+									· {{ convertDuration(track.duration) }}
+								</span>
 							</td>
 							<router-link
 								v-slot="{ navigate }"
@@ -257,7 +264,7 @@ onMounted(() => {
 							>
 								<td
 									role="link"
-									class="table__cell--medium table__cell--center cursor-pointer"
+									class="table__cell--medium table__cell--center cell-desktop cursor-pointer"
 									@click="navigate"
 								>
 									{{ track.artist.name }}
@@ -271,7 +278,7 @@ onMounted(() => {
 							>
 								<td
 									role="link"
-									class="table__cell--medium table__cell--center cursor-pointer"
+									class="table__cell--medium table__cell--center cell-desktop cursor-pointer"
 									@click="navigate"
 								>
 									{{ track.album.title }}
@@ -282,7 +289,7 @@ onMounted(() => {
 									'table__cell--small': type === 'album',
 									'table__cell--x-small': type === 'playlist',
 								}"
-								class="table__cell--center"
+								class="table__cell--center cell-desktop"
 							>
 								{{ convertDuration(track.duration) }}
 							</td>
@@ -311,7 +318,8 @@ onMounted(() => {
 							<td class="table__cell--center">
 								{{ track.number }}
 							</td>
-							<td colspan="4"></td>
+							<td class="cell-mobile" colspan="2"></td>
+							<td class="cell-desktop" :colspan="type === 'album' ? 4 : 5"></td>
 						</tr>
 					</template>
 				</template>
@@ -334,15 +342,23 @@ onMounted(() => {
 							<i v-else class="material-icons disabled">play_arrow</i>
 						</td>
 						<td>{{ i + 1 }}</td>
-						<td class="flex items-center">
-							<i v-if="track.explicit" class="material-icons title-icon"
-								>explicit</i
-							>
-							{{ track.name }}
+						<td>
+							<div class="flex items-center">
+								<i v-if="track.explicit" class="material-icons title-icon"
+									>explicit</i
+								>
+								{{ track.name }}
+							</div>
+							<span class="cell-subtitle">
+								{{ track.artists[0].name }} · {{ track.album.name }} ·
+								{{ convertDuration(Math.floor(track.duration_ms / 1000)) }}
+							</span>
 						</td>
-						<td>{{ track.artists[0].name }}</td>
-						<td>{{ track.album.name }}</td>
-						<td>{{ convertDuration(Math.floor(track.duration_ms / 1000)) }}</td>
+						<td class="cell-desktop">{{ track.artists[0].name }}</td>
+						<td class="cell-desktop">{{ track.album.name }}</td>
+						<td class="cell-desktop">
+							{{ convertDuration(Math.floor(track.duration_ms / 1000)) }}
+						</td>
 						<td>
 							<input
 								v-model="track.selected"
@@ -367,7 +383,7 @@ onMounted(() => {
 		<footer class="bg-background-main">
 			<button
 				:data-link="link"
-				class="btn btn-primary mr-2"
+				class="btn btn-primary md:mr-2"
 				@click.stop="addToQueue"
 			>
 				{{

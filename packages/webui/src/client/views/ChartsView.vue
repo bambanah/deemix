@@ -84,7 +84,7 @@ watch(id, (newId) => {
 
 <template>
 	<div>
-		<h1 class="mb-8 text-5xl">
+		<h1 class="mb-6 text-3xl md:mb-8 md:text-5xl">
 			{{ t("charts.title") }} {{ country ? `- ${country}` : "" }}
 		</h1>
 
@@ -96,7 +96,7 @@ watch(id, (newId) => {
 					:aria-label="release.title"
 					:data-id="release.id"
 					:data-title="release.title"
-					class="release h-40 w-40 cursor-pointer"
+					class="release cursor-pointer"
 					role="button"
 					tabindex="0"
 					@click="getTrackList"
@@ -112,7 +112,7 @@ watch(id, (newId) => {
 		</div>
 
 		<div v-else>
-			<div class="flex gap-x-1">
+			<div class="mb-4 flex flex-wrap gap-2">
 				<button class="btn btn-primary" @click="onChangeCountry">
 					{{ t("charts.changeCountry") }}
 				</button>
@@ -130,7 +130,7 @@ watch(id, (newId) => {
 					<tr v-for="(track, pos) in chart" :key="pos" class="track_row">
 						<td
 							:class="{ first: pos === 0 }"
-							class="cursor-default p-3 text-center"
+							class="cursor-default p-1 text-center md:p-3"
 						>
 							{{ pos + 1 }}
 						</td>
@@ -152,6 +152,9 @@ watch(id, (newId) => {
 									? " " + track.title_version
 									: "")
 							}}
+							<span class="cell-subtitle">
+								{{ track.artist.name }} · {{ track.album.title }}
+							</span>
 						</td>
 						<router-link
 							v-slot="{ navigate }"
@@ -160,7 +163,7 @@ watch(id, (newId) => {
 						>
 							<td
 								role="link"
-								class="table__cell table__cell--medium table__cell--center cursor-pointer"
+								class="table__cell table__cell--medium table__cell--center cell-desktop cursor-pointer"
 								@click="navigate"
 							>
 								{{ track.artist.name }}
@@ -173,13 +176,13 @@ watch(id, (newId) => {
 						>
 							<td
 								role="link"
-								class="table__cell--medium table__cell--center cursor-pointer"
+								class="table__cell--medium table__cell--center cell-desktop cursor-pointer"
 								@click="navigate"
 							>
 								{{ track.album.title }}
 							</td>
 						</router-link>
-						<td class="table__cell--small table__cell--center">
+						<td class="table__cell--small table__cell--center cell-desktop">
 							{{ convertDuration(track.duration) }}
 						</td>
 						<td

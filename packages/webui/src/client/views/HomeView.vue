@@ -38,7 +38,9 @@ onMounted(async () => {
 
 <template>
 	<div id="home_tab">
-		<h1 class="mb-8 text-5xl">{{ t("globals.welcome") }}</h1>
+		<h1 class="mb-6 text-3xl md:mb-8 md:text-5xl">
+			{{ t("globals.welcome") }}
+		</h1>
 
 		<section
 			v-if="!isLoggedIn"
@@ -67,7 +69,9 @@ onMounted(async () => {
 			v-if="playlists.length"
 			class="border-grayscale-500 border-0 border-t border-solid py-6"
 		>
-			<h2 class="mb-6 text-3xl">{{ t("home.sections.popularPlaylists") }}</h2>
+			<h2 class="mb-4 text-2xl md:mb-6 md:text-3xl">
+				{{ t("home.sections.popularPlaylists") }}
+			</h2>
 			<div class="release-grid">
 				<router-link
 					v-for="release in playlists"
@@ -110,7 +114,9 @@ onMounted(async () => {
 			v-if="albums.length"
 			class="border-grayscale-500 border-0 border-t border-solid py-6"
 		>
-			<h2 class="mb-6 text-3xl">{{ t("home.sections.popularAlbums") }}</h2>
+			<h2 class="mb-4 text-2xl md:mb-6 md:text-3xl">
+				{{ t("home.sections.popularAlbums") }}
+			</h2>
 			<div class="release-grid">
 				<router-link
 					v-for="release in albums"

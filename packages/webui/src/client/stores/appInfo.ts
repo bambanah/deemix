@@ -14,6 +14,7 @@ interface AppInfoState {
 	showSearchButton: boolean;
 	isMobileSidebarOpen: boolean;
 	isMobileDownloadsOpen: boolean;
+	downloadQueueCount: number;
 }
 
 export const useAppInfoStore = defineStore("appInfo", {
@@ -26,6 +27,7 @@ export const useAppInfoStore = defineStore("appInfo", {
 		showSearchButton: localStorage.getItem("showSearchButton") === "true",
 		isMobileSidebarOpen: false,
 		isMobileDownloadsOpen: false,
+		downloadQueueCount: 0,
 	}),
 	actions: {
 		setAppInfo(payload: AppInfoState) {
@@ -77,6 +79,9 @@ export const useAppInfoStore = defineStore("appInfo", {
 		},
 		closeMobileDownloads() {
 			this.isMobileDownloadsOpen = false;
+		},
+		setDownloadQueueCount(count: number) {
+			this.downloadQueueCount = count;
 		},
 	},
 });

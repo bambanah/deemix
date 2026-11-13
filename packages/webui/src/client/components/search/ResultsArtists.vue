@@ -36,7 +36,7 @@ const { t } = useI18n();
 				<div
 					v-for="release in viewInfo.data.slice(0, itemsToShow)"
 					:key="release.artistID"
-					class="release w-40"
+					class="release"
 				>
 					<router-link
 						v-slot="{ navigate }"

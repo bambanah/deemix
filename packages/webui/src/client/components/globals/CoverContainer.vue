@@ -40,15 +40,17 @@ defineProps<Props>();
 </template>
 
 <style scoped>
+/* Fluid square cover: fills its grid cell on phones, capped on desktop */
 .cover-container {
-	width: 156px;
-	height: 156px;
+	width: 100%;
+	aspect-ratio: 1 / 1;
 	margin: 0px auto 10px;
 }
 .cover-container .coverart {
 	backface-visibility: hidden;
 	transition: 0.5s ease;
-	height: auto;
+	height: 100%;
+	object-fit: cover;
 }
 .cover-container .download_overlay {
 	top: 50%;
@@ -66,11 +68,37 @@ defineProps<Props>();
 .cover-container .download_overlay:focus {
 	opacity: 1;
 }
-.cover-container:hover .coverart {
-	opacity: 0.75;
+
+@media (min-width: 768px) {
+	.cover-container {
+		max-width: 156px;
+	}
 }
-.cover-container:hover .download_overlay {
-	opacity: 1;
-	border: 0;
+
+/* Touch screens have no hover: keep the download button visible in a corner */
+@media (hover: none) {
+	.cover-container .download_overlay {
+		top: auto;
+		left: auto;
+		right: 0.375rem;
+		bottom: 0.375rem;
+		transform: none;
+		opacity: 0.9;
+		height: 2.5rem;
+		min-width: 2.5rem;
+	}
+	.cover-container .download_overlay i {
+		padding: 0.5rem;
+	}
+}
+
+@media (hover: hover) {
+	.cover-container:hover .coverart {
+		opacity: 0.75;
+	}
+	.cover-container:hover .download_overlay {
+		opacity: 1;
+		border: 0;
+	}
 }
 </style>

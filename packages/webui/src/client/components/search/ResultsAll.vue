@@ -66,8 +66,8 @@ function checkSectionResults(section) {
 					<h2
 						class="mb-6 capitalize"
 						:class="{
-							'text-center text-4xl': section === 'TOP_RESULT',
-							'hover:text-primary inline-block cursor-pointer text-3xl transition-colors duration-200 ease-in-out':
+							'text-center text-3xl md:text-4xl': section === 'TOP_RESULT',
+							'hover:text-primary inline-block cursor-pointer text-2xl transition-colors duration-200 ease-in-out md:text-3xl':
 								section !== 'TOP_RESULT',
 						}"
 						@click="$emit('change-search-tab', section)"

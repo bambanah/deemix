@@ -35,7 +35,7 @@ const { t } = useI18n();
 				<div
 					v-for="playlist in viewInfo.data.slice(0, itemsToShow)"
 					:key="playlist.playlistID"
-					class="release w-40"
+					class="release"
 				>
 					<router-link
 						v-slot="{ navigate }"

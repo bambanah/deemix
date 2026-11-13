@@ -1,6 +1,8 @@
 <template>
 	<div id="analyzer_tab" class="image-header">
-		<h1 class="mb-8 text-5xl capitalize">{{ t("sidebar.linkAnalyzer") }}</h1>
+		<h1 class="mb-6 text-3xl capitalize md:mb-8 md:text-5xl">
+			{{ t("sidebar.linkAnalyzer") }}
+		</h1>
 
 		<div v-if="link === ''">
 			<p>
@@ -25,7 +27,7 @@
 						'\')',
 				}"
 			>
-				<div>
+				<div class="min-w-0 pr-3">
 					<h1 class="m-0">{{ title }}</h1>
 					<h2 v-if="type === 'track'" class="m-0 mb-3 text-lg">
 						<i18n-t keypath="globals.by" tag="span">
@@ -90,16 +92,18 @@
 					role="button"
 					aria-label="download"
 					:data-link="link"
-					class="bg-primary text-grayscale-870 ml-auto grid h-16 w-16 cursor-pointer place-items-center rounded-full"
+					class="bg-primary text-grayscale-870 ml-auto grid h-12 w-12 shrink-0 cursor-pointer place-items-center rounded-full md:h-16 md:w-16"
 					@click.stop="addToQueue"
 				>
 					<!-- @contextmenu.prevent="openQualityModal" -->
-					<i class="material-icons text-4xl" :title="t('globals.download_hint')"
+					<i
+						class="material-icons text-3xl md:text-4xl"
+						:title="t('globals.download_hint')"
 						>get_app</i
 					>
 				</div>
 			</header>
-			<table class="table">
+			<table class="table [overflow-wrap:anywhere]">
 				<tr v-if="data.id">
 					<td>{{ t("linkAnalyzer.table.id") }}</td>
 					<td>{{ data.id }}</td>
