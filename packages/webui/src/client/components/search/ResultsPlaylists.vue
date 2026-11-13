@@ -35,7 +35,7 @@ const { t } = useI18n();
 				<div
 					v-for="playlist in viewInfo.data.slice(0, itemsToShow)"
 					:key="playlist.playlistID"
-					class="release w-40"
+					class="release"
 				>
 					<router-link
 						v-slot="{ navigate }"
@@ -52,7 +52,7 @@ const { t } = useI18n();
 								is-rounded
 								:cover="playlist.playlistPictureMedium"
 								:link="playlist.playlistLink"
-								@click.stop="$emit('add-to-queue', $event)"
+								:item-title="playlist.playlistTitle"
 							/>
 
 							<span class="primary-text">

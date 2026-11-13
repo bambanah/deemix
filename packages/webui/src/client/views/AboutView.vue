@@ -20,7 +20,7 @@ const updateUrl = computed(() => {
 
 <template>
 	<div class="mb-8 flex flex-col items-start gap-6">
-		<h1 class="text-5xl capitalize">{{ t("sidebar.about") }}</h1>
+		<h1 class="text-3xl capitalize md:text-5xl">{{ t("sidebar.about") }}</h1>
 
 		<div
 			class="inline-flex rounded-full px-4 py-2"
@@ -63,7 +63,7 @@ const updateUrl = computed(() => {
 		</a>
 
 		<div>
-			<h2 class="text-3xl">
+			<h2 class="text-2xl md:text-3xl">
 				{{ t("about.titles.bugReportsContributing") }}
 			</h2>
 			<a
@@ -98,7 +98,9 @@ const updateUrl = computed(() => {
 			</li>
 		</ul>
 
-		<h2 class="text-3xl leading-10">{{ t("about.titles.license") }}</h2>
+		<h2 class="text-2xl leading-10 md:text-3xl">
+			{{ t("about.titles.license") }}
+		</h2>
 		<p>
 			<a
 				rel="license"

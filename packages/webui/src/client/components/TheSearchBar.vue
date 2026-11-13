@@ -202,7 +202,7 @@ input[type="search"]::-webkit-search-cancel-button {
 	border-radius: 0px;
 	background-color: var(--secondary-background);
 	color: var(--foreground);
-	font-size: 1.2rem;
+	font-size: 1rem;
 	font-family: "Open Sans";
 	font-weight: 300;
 	margin-bottom: 0;
@@ -246,5 +246,11 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 #search.showSearchButton {
 	padding: 0 0 0 1em;
+}
+
+@media (min-width: 768px) {
+	#search #searchbar {
+		font-size: 1.2rem;
+	}
 }
 </style>

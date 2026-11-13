@@ -15,7 +15,8 @@
 
 .release {
 	display: inline-block;
-	width: 156px;
+	min-width: 0;
+	overflow-wrap: anywhere;
 }
 
 .spin {

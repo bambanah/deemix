@@ -35,14 +35,17 @@ function handleNavClick() {
 	></div>
 
 	<aside
-		class="bg-panels-bg text-foreground left-0 top-0 flex h-screen flex-col transition-transform duration-300 ease-in-out md:relative md:translate-x-0"
+		class="bg-panels-bg text-foreground fixed inset-y-0 left-0 z-50 flex w-64 max-w-[80vw] shrink-0 flex-col overflow-y-auto transition-transform duration-300 ease-in-out md:relative md:z-auto md:max-w-none md:translate-x-0"
 		:class="{
-			'slim-sidebar w-20': hasSlimSidebar,
-			'min-w-56': !hasSlimSidebar,
-			'fixed z-50 -translate-x-full': !isMobileSidebarOpen,
-			'fixed z-50 translate-x-0': isMobileSidebarOpen,
-			'md:flex': true,
+			'slim-sidebar md:w-20': hasSlimSidebar,
+			'md:w-56': !hasSlimSidebar,
+			'-translate-x-full': !isMobileSidebarOpen,
+			'translate-x-0 shadow-2xl': isMobileSidebarOpen,
 		}"
+		style="
+			padding-top: env(safe-area-inset-top, 0px);
+			padding-bottom: env(safe-area-inset-bottom, 0px);
+		"
 		aria-label="sidebar"
 		role="navigation"
 	>
@@ -56,34 +59,34 @@ function handleNavClick() {
 				alt="deemix-icon"
 				class="mx-auto"
 				:class="{
-					'my-2 w-14': hasSlimSidebar,
-					'my-5 w-24': !hasSlimSidebar,
+					'my-4 w-20 md:my-2 md:w-14': hasSlimSidebar,
+					'my-4 w-20 md:my-5 md:w-24': !hasSlimSidebar,
 				}"
 			/>
 		</router-link>
 
-		<nav className="flex flex-col grow">
+		<nav class="flex grow flex-col">
 			<router-link
 				v-for="link in mainNavItems"
 				:key="link.name"
 				:aria-label="link.name"
-				class="hover:bg-background-main text-foreground group relative flex h-16 w-full items-center px-4 no-underline"
+				class="hover:bg-background-main text-foreground group relative flex h-14 w-full shrink-0 items-center px-4 no-underline md:h-16"
 				:class="{
 					'bg-background-main': route.name === link.routerName,
-					'justify-center': hasSlimSidebar,
+					'md:justify-center': hasSlimSidebar,
 				}"
 				:to="{ name: link.routerName }"
 				@click="handleNavClick"
 			>
 				<i
 					:class="{ 'text-primary': route.name === link.routerName }"
-					class="material-icons side_icon group-hover:text-primary p-2 text-3xl"
+					class="material-icons side_icon group-hover:text-primary p-2 text-2xl md:text-3xl"
 				>
 					{{ link.icon }}
 				</i>
 				<span
-					:class="{ hidden: hasSlimSidebar }"
-					class="whitespace-no-wrap ml-3 overflow-hidden capitalize"
+					:class="{ 'md:hidden': hasSlimSidebar }"
+					class="ml-3 overflow-hidden whitespace-nowrap capitalize"
 				>
 					{{ t(link.label) }}
 				</span>

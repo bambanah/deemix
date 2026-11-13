@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import BaseSpinner from "@/components/globals/BaseSpinner.vue";
+import DownloadButton from "@/components/globals/DownloadButton.vue";
 import PreviewControls from "@/components/globals/PreviewControls.vue";
 import { getChartsData, getChartTracks } from "@/data/charts";
-import { sendAddToQueue } from "@/utils/downloads";
 import { emitter } from "@/utils/emitter";
 import { convertDuration } from "@/utils/utils";
 import { onMounted, ref, watch } from "vue";
@@ -16,11 +17,6 @@ const chart = ref([]);
 
 function playPausePreview(e) {
 	emitter.emit("trackPreview:playPausePreview", e);
-}
-
-function addToQueue(e) {
-	e.stopPropagation();
-	sendAddToQueue(e.currentTarget.dataset.link);
 }
 
 function getTrackList(event) {
@@ -84,7 +80,7 @@ watch(id, (newId) => {
 
 <template>
 	<div>
-		<h1 class="mb-8 text-5xl">
+		<h1 class="mb-6 text-3xl md:mb-8 md:text-5xl">
 			{{ t("charts.title") }} {{ country ? `- ${country}` : "" }}
 		</h1>
 
@@ -96,7 +92,7 @@ watch(id, (newId) => {
 					:aria-label="release.title"
 					:data-id="release.id"
 					:data-title="release.title"
-					class="release h-40 w-40 cursor-pointer"
+					class="release cursor-pointer"
 					role="button"
 					tabindex="0"
 					@click="getTrackList"
@@ -112,17 +108,19 @@ watch(id, (newId) => {
 		</div>
 
 		<div v-else>
-			<div class="flex gap-x-1">
+			<div class="mb-4 flex flex-wrap gap-2">
 				<button class="btn btn-primary" @click="onChangeCountry">
 					{{ t("charts.changeCountry") }}
 				</button>
-				<button
-					:data-link="'https://www.deezer.com/playlist/' + id"
-					class="btn btn-primary"
-					@click.stop="addToQueue"
+				<DownloadButton
+					v-slot="{ state }"
+					:link="'https://www.deezer.com/playlist/' + id"
+					:item-title="country"
+					class="btn btn-primary flex items-center gap-2"
 				>
+					<BaseSpinner v-if="state === 'pending'" :size="16" />
 					{{ t("charts.download") }}
-				</button>
+				</DownloadButton>
 			</div>
 
 			<table class="table--charts table">
@@ -130,7 +128,7 @@ watch(id, (newId) => {
 					<tr v-for="(track, pos) in chart" :key="pos" class="track_row">
 						<td
 							:class="{ first: pos === 0 }"
-							class="cursor-default p-3 text-center"
+							class="cursor-default p-1 text-center md:p-3"
 						>
 							{{ pos + 1 }}
 						</td>
@@ -152,6 +150,9 @@ watch(id, (newId) => {
 									? " " + track.title_version
 									: "")
 							}}
+							<span class="cell-subtitle">
+								{{ track.artist.name }} · {{ track.album.title }}
+							</span>
 						</td>
 						<router-link
 							v-slot="{ navigate }"
@@ -160,7 +161,7 @@ watch(id, (newId) => {
 						>
 							<td
 								role="link"
-								class="table__cell table__cell--medium table__cell--center cursor-pointer"
+								class="table__cell table__cell--medium table__cell--center cell-desktop cursor-pointer"
 								@click="navigate"
 							>
 								{{ track.artist.name }}
@@ -173,28 +174,22 @@ watch(id, (newId) => {
 						>
 							<td
 								role="link"
-								class="table__cell--medium table__cell--center cursor-pointer"
+								class="table__cell--medium table__cell--center cell-desktop cursor-pointer"
 								@click="navigate"
 							>
 								{{ track.album.title }}
 							</td>
 						</router-link>
-						<td class="table__cell--small table__cell--center">
+						<td class="table__cell--small table__cell--center cell-desktop">
 							{{ convertDuration(track.duration) }}
 						</td>
-						<td
-							:data-link="track.link"
-							aria-label="download"
-							class="group cursor-pointer"
-							role="button"
-							@click.stop="addToQueue"
-						>
-							<i
-								:title="t('globals.download_hint')"
-								class="material-icons group-hover:text-primary transition-colors duration-150 ease-in-out"
-							>
-								get_app
-							</i>
+						<td class="table__cell--center">
+							<DownloadButton
+								plain
+								:link="track.link"
+								:item-title="track.title"
+								class="transition-colors duration-150 ease-in-out"
+							/>
 						</td>
 					</tr>
 				</tbody>

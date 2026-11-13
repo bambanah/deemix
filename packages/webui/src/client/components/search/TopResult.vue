@@ -51,14 +51,15 @@ const fansNumber = computed(() => {
 			}"
 		>
 			<div role="link" class="cursor-pointer" @click="navigate">
-				<CoverContainer
-					class="h-40 w-40"
-					:is-rounded="info.type !== 'artist'"
-					:is-circle="info.type === 'artist'"
-					:cover="info.picture"
-					:link="info.link"
-					@click.stop="$emit('add-to-queue', $event)"
-				/>
+				<div class="mx-auto w-40">
+					<CoverContainer
+						:is-rounded="info.type !== 'artist'"
+						:is-circle="info.type === 'artist'"
+						:cover="info.picture"
+						:link="info.link"
+						:item-title="info.title"
+					/>
+				</div>
 
 				<p
 					class="hover:text-primary mb-1 mt-4 text-center text-xl transition-colors duration-200 ease-in-out"
