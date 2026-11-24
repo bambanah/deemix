@@ -13,7 +13,7 @@ const hasSlimSidebar = computed(() => appInfoStore.hasSlimSidebar);
 <template>
 	<div
 		class="flex items-center justify-center gap-3 pb-6"
-		:class="{ 'h-auto flex-col pb-6': hasSlimSidebar }"
+		:class="{ 'md:h-auto md:flex-col': hasSlimSidebar }"
 		aria-label="theme selector"
 		role="link"
 	>

@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import BaseLoadingPlaceholder from "@/components/globals/BaseLoadingPlaceholder.vue";
+import BaseSpinner from "@/components/globals/BaseSpinner.vue";
+import DownloadButton from "@/components/globals/DownloadButton.vue";
 import BaseTab from "@/components/globals/BaseTab.vue";
 import BaseTabs from "@/components/globals/BaseTabs.vue";
 import { formatArtistData, getArtistData } from "@/data/artist";
 import { checkNewRelease } from "@/utils/dates";
-import { sendAddToQueue } from "@/utils/downloads";
 import { orderBy } from "lodash-es";
 import { computed, reactive, ref, unref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -24,6 +26,7 @@ const head = ref([
 	{
 		title: t("globals.listTabs.track", 2),
 		sortKey: "releaseTracksNumber",
+		class: "cell-desktop",
 	},
 	// { title: '', width: '32px' }
 	{ title: "", width: null },
@@ -82,7 +85,10 @@ getArtistData(unref(artistID.value.toString()))
 			currentTab: artistReleases ? Object.keys(artistReleases)[0] : 0,
 		});
 	})
-	.catch((err) => console.error(err));
+	.catch((err) => {
+		hasDataLoaded.value = true;
+		console.error(err);
+	});
 
 const sortedData = computed(() => {
 	if (!unref(hasDataLoaded)) {
@@ -100,21 +106,18 @@ const sortedData = computed(() => {
 </script>
 
 <template>
-	<div class="fixed-footer image-header relative">
+	<BaseLoadingPlaceholder v-if="!hasDataLoaded" class="min-h-[50vh]" />
+	<div v-else class="fixed-footer image-header relative">
 		<header class="flex items-center" :style="headerStyle">
-			<h1 class="m-0">{{ state.artistName }}</h1>
+			<h1 class="m-0 min-w-0 pr-3">{{ state.artistName }}</h1>
 
-			<div
-				class="bg-primary text-grayscale-870 ml-auto grid h-16 w-16 cursor-pointer place-items-center rounded-full"
-				aria-label="download"
-				role="button"
-				:data-cm-link="downloadLink"
-				@click.stop="sendAddToQueue(downloadLink)"
-			>
-				<i class="material-icons text-4xl" :title="t('globals.download_hint')"
-					>get_app</i
-				>
-			</div>
+			<DownloadButton
+				:link="downloadLink"
+				:item-title="state.artistName"
+				icon-class="text-3xl md:text-4xl"
+				:spinner-size="28"
+				class="bg-primary text-grayscale-870 ml-auto grid h-12 w-12 shrink-0 place-items-center rounded-full border-0 md:h-16 md:w-16"
+			/>
 		</header>
 
 		<BaseTabs>
@@ -136,14 +139,17 @@ const sortedData = computed(() => {
 						:key="data.title"
 						:style="{ width: data.width ? data.width : 'auto' }"
 						class="uppercase-first-letter"
-						:class="{
-							'sort-asc':
-								data.sortKey === state.sortKey && state.sortOrder == 'asc',
-							'sort-desc':
-								data.sortKey === state.sortKey && state.sortOrder == 'desc',
-							sortable: data.sortKey,
-							'cursor-pointer': data.sortKey,
-						}"
+						:class="[
+							data.class,
+							{
+								'sort-asc':
+									data.sortKey === state.sortKey && state.sortOrder == 'asc',
+								'sort-desc':
+									data.sortKey === state.sortKey && state.sortOrder == 'desc',
+								sortable: data.sortKey,
+								'cursor-pointer': data.sortKey,
+							},
+						]"
 						@click="
 							typeof data.sortKey === 'string' ? sortBy(data.sortKey) : null
 						"
@@ -168,9 +174,8 @@ const sortedData = computed(() => {
 							@keypress.enter="() => navigate()"
 						>
 							<img
-								class="coverart mr-4 rounded"
+								class="coverart mr-2 h-10 w-10 shrink-0 rounded md:mr-4 md:h-14 md:w-14"
 								:src="release.releaseCover"
-								style="width: 56px; height: 56px"
 							/>
 							<i
 								v-if="release.isReleaseExplicit"
@@ -178,7 +183,7 @@ const sortedData = computed(() => {
 								>explicit</i
 							>
 							<div>
-								<span class="hover:text-primary flex">
+								<span class="hover:text-primary flex break-words">
 									{{ release.releaseTitle }}
 									<i
 										v-if="checkNewRelease(release.releaseDate)"
@@ -196,49 +201,57 @@ const sortedData = computed(() => {
 							</div>
 						</td>
 					</router-link>
-					<td class="w-32 text-center xl:w-40">{{ release.releaseDate }}</td>
-					<td class="w-20 text-center xl:w-32">
+					<td class="w-20 text-center text-xs md:w-32 md:text-base xl:w-40">
+						{{ release.releaseDate }}
+					</td>
+					<td class="cell-desktop w-20 text-center xl:w-32">
 						{{ release.releaseTracksNumber }}
 					</td>
-					<td
-						:data-cm-link="release.releaseLink"
-						class="w-8 cursor-pointer"
-						@click.stop="sendAddToQueue(release.releaseLink)"
-					>
-						<i
-							class="material-icons hover:text-primary"
-							:title="t('globals.download_hint').toString()"
-							>file_download</i
-						>
+					<td class="w-8">
+						<DownloadButton
+							plain
+							idle-icon="file_download"
+							:link="release.releaseLink"
+							:item-title="release.releaseTitle"
+						/>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 		<footer class="bg-background-main">
 			<div style="flex-grow: 1">
-				<button
-					:data-link="downloadLink + '/discography'"
-					class="btn btn-flat"
-					@click.stop="sendAddToQueue(downloadLink)"
+				<DownloadButton
+					v-slot="{ state: downloadState }"
+					:link="downloadLink + '/discography'"
+					:item-title="state.artistName"
+					class="btn btn-flat flex items-center gap-2"
 				>
+					<BaseSpinner v-if="downloadState === 'pending'" :size="16" />
 					{{
 						`${t("globals.download", {
 							thing: t("globals.listTabs.discography"),
 						})}`
 					}}
-				</button>
+				</DownloadButton>
 			</div>
-			<button
-				:data-link="downloadLink + '/' + state.currentTab"
+			<DownloadButton
+				v-slot="{ state: downloadState, icon }"
+				:link="downloadLink + '/' + state.currentTab"
+				:item-title="state.artistName"
 				class="btn btn-primary flex items-center"
-				@click.stop="sendAddToQueue(downloadLink + '/' + state.currentTab)"
 			>
 				{{
 					`${t("globals.download", {
 						thing: t(`globals.listTabs.${state.currentTab}`, 2),
 					})}`
-				}}<i class="material-icons ml-2">file_download</i>
-			</button>
+				}}<BaseSpinner
+					v-if="downloadState === 'pending'"
+					:size="18"
+					class="ml-2"
+				/><i v-else class="material-icons ml-2">{{
+					icon === "get_app" ? "file_download" : icon
+				}}</i>
+			</DownloadButton>
 		</footer>
 	</div>
 </template>

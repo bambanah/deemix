@@ -66,8 +66,8 @@ function checkSectionResults(section) {
 					<h2
 						class="mb-6 capitalize"
 						:class="{
-							'text-center text-4xl': section === 'TOP_RESULT',
-							'hover:text-primary inline-block cursor-pointer text-3xl transition-colors duration-200 ease-in-out':
+							'text-center text-3xl md:text-4xl': section === 'TOP_RESULT',
+							'hover:text-primary inline-block cursor-pointer text-2xl transition-colors duration-200 ease-in-out md:text-3xl':
 								section !== 'TOP_RESULT',
 						}"
 						@click="$emit('change-search-tab', section)"
@@ -78,31 +78,26 @@ function checkSectionResults(section) {
 					<TopResult
 						v-if="section === 'TOP_RESULT'"
 						:info="viewInfo.TOP_RESULT[0]"
-						@add-to-queue="$emit('add-to-queue', $event)"
 					/>
 
 					<ResultsTracks
 						v-else-if="section === 'TRACK'"
 						:view-info="standardizeData(viewInfo.TRACK, formatSingleTrack)"
-						@add-to-queue="$emit('add-to-queue', $event)"
 					/>
 
 					<ResultsAlbums
 						v-else-if="section === 'ALBUM'"
 						:view-info="standardizeData(viewInfo.ALBUM, formatAlbums)"
-						@add-to-queue="$emit('add-to-queue', $event)"
 					/>
 
 					<ResultsPlaylists
 						v-else-if="section === 'PLAYLIST'"
 						:view-info="standardizeData(viewInfo.PLAYLIST, formatPlaylist)"
-						@add-to-queue="$emit('add-to-queue', $event)"
 					/>
 
 					<ResultsArtists
 						v-else-if="section === 'ARTIST'"
 						:view-info="standardizeData(viewInfo.ARTIST, formatArtist)"
-						@add-to-queue="$emit('add-to-queue', $event)"
 					/>
 				</template>
 			</section>

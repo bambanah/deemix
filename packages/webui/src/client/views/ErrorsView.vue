@@ -40,39 +40,45 @@ const downloadBitrate = computed(() => {
 
 <template>
 	<div>
-		<h1 class="mb-8 text-5xl">{{ t("errors.title", { name: title }) }}</h1>
+		<h1 class="mb-6 text-3xl [overflow-wrap:anywhere] md:mb-8 md:text-5xl">
+			{{ t("errors.title", { name: title }) }}
+		</h1>
 
-		<table v-if="errors.length >= 1" class="table--tracklist table">
-			<tbody>
-				<tr>
-					<th>ID</th>
-					<th class="uppercase-first-letter">
-						{{ t("globals.listTabs.artist", 1) }}
-					</th>
-					<th class="uppercase-first-letter">
-						{{ t("globals.listTabs.title", 1) }}
-					</th>
-					<th class="uppercase-first-letter">
-						{{ t("globals.listTabs.error", 1) }}
-					</th>
-				</tr>
-				<tr v-for="error in errors" :key="error.data.id">
-					<td>{{ error.data.id }}</td>
-					<td>{{ error.data.artist }}</td>
-					<td>{{ error.data.title }}</td>
-					<td>
-						<span :title="error.stack">
-							{{
-								error.errid
-									? t(`errors.ids.${error.errid}`, { bitrate: downloadBitrate })
-									: error.message
-							}}
-						</span>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<div v-if="postErrors.length >= 1">
+		<div v-if="errors.length >= 1" class="table-scroll">
+			<table class="table--tracklist table">
+				<tbody>
+					<tr>
+						<th>ID</th>
+						<th class="uppercase-first-letter">
+							{{ t("globals.listTabs.artist", 1) }}
+						</th>
+						<th class="uppercase-first-letter">
+							{{ t("globals.listTabs.title", 1) }}
+						</th>
+						<th class="uppercase-first-letter">
+							{{ t("globals.listTabs.error", 1) }}
+						</th>
+					</tr>
+					<tr v-for="error in errors" :key="error.data.id">
+						<td>{{ error.data.id }}</td>
+						<td>{{ error.data.artist }}</td>
+						<td>{{ error.data.title }}</td>
+						<td>
+							<span :title="error.stack">
+								{{
+									error.errid
+										? t(`errors.ids.${error.errid}`, {
+												bitrate: downloadBitrate,
+											})
+										: error.message
+								}}
+							</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div v-if="postErrors.length >= 1" class="table-scroll">
 			<h2>{{ t("errors.postTitle") }}</h2>
 			<table class="table--tracklist table">
 				<tbody>

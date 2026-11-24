@@ -118,7 +118,12 @@ export const toast = function (
 				}
 			},
 			offset: {
-				x: localStorage.getItem("slimSidebar") === "true" ? "3rem" : "14rem",
+				// On mobile the sidebar is an overlay drawer, so toasts need no offset
+				x: !window.matchMedia("(min-width: 768px)").matches
+					? 0
+					: localStorage.getItem("slimSidebar") === "true"
+						? "3rem"
+						: "14rem",
 				y: undefined,
 			},
 		});

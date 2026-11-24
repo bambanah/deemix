@@ -1,9 +1,12 @@
 <template>
 	<button
-		class="btn-primary z-10 m-0 flex h-16 w-16 items-center justify-center rounded-full border-solid border-transparent p-1"
+		aria-label="back"
+		class="btn-primary z-10 m-0 flex h-12 w-12 items-center justify-center rounded-full border-solid border-transparent p-1 shadow-lg md:h-16 md:w-16"
 		@click="router.back()"
 	>
-		<i class="material-icons mirrored text-4xl text-white">forward</i>
+		<i class="material-icons mirrored text-3xl text-white md:text-4xl"
+			>forward</i
+		>
 	</button>
 </template>
 

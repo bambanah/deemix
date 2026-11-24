@@ -1,5 +1,10 @@
 import { CantStream, NotLoggedIn } from "@/helpers/errors.js";
 import { logger } from "@/helpers/logger.js";
+import {
+	findQueuedItem,
+	getQueueKey,
+	getQueueKeyFromLink,
+} from "@/helpers/queueKeys.js";
 import { GUI_VERSION, WEBUI_PACKAGE_VERSION } from "@/helpers/versions.js";
 import {
 	Collection,
@@ -199,6 +204,15 @@ export class DeemixApp {
 
 		for (let i = 0; i < url.length; i++) {
 			link = url[i];
+
+			// Skip links already in the queue (any bitrate) before querying the API
+			const linkKey = retry ? null : getQueueKeyFromLink(link);
+			const queuedItem = linkKey ? findQueuedItem(this.queue, linkKey) : null;
+			if (queuedItem) {
+				this.listener.send("alreadyInQueue", queuedItem);
+				continue;
+			}
+
 			logger.info(`Adding ${link} to queue`);
 			try {
 				const downloadObj = await generateDownloadObject(
@@ -240,8 +254,8 @@ export class DeemixApp {
 		const slimmedObjects: Record<string, any>[] = [];
 
 		downloadObjs.forEach((downloadObj) => {
-			// Check if element is already in queue
-			if (Object.keys(this.queue).includes(downloadObj.uuid) && !retry) {
+			// Check if element is already in queue, whatever its bitrate
+			if (!retry && findQueuedItem(this.queue, getQueueKey(downloadObj))) {
 				this.listener.send("alreadyInQueue", downloadObj.getEssentialDict());
 				return;
 			}

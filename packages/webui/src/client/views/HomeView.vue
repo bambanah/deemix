@@ -3,7 +3,6 @@ import CoverContainer from "@/components/globals/CoverContainer.vue";
 import { getHomeData } from "@/data/home";
 import { pinia } from "@/stores";
 import { useLoginStore } from "@/stores/login";
-import { sendAddToQueue } from "@/utils/downloads";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -16,9 +15,6 @@ const albums = ref([]);
 
 const isLoggedIn = computed(() => loginStore.isLoggedIn);
 
-function addToQueue(e) {
-	sendAddToQueue(e.currentTarget.dataset.link);
-}
 function initHome(data) {
 	const {
 		playlists: { data: playlistData },
@@ -38,7 +34,9 @@ onMounted(async () => {
 
 <template>
 	<div id="home_tab">
-		<h1 class="mb-8 text-5xl">{{ t("globals.welcome") }}</h1>
+		<h1 class="mb-6 text-3xl md:mb-8 md:text-5xl">
+			{{ t("globals.welcome") }}
+		</h1>
 
 		<section
 			v-if="!isLoggedIn"
@@ -67,7 +65,9 @@ onMounted(async () => {
 			v-if="playlists.length"
 			class="border-grayscale-500 border-0 border-t border-solid py-6"
 		>
-			<h2 class="mb-6 text-3xl">{{ t("home.sections.popularPlaylists") }}</h2>
+			<h2 class="mb-4 text-2xl md:mb-6 md:text-3xl">
+				{{ t("home.sections.popularPlaylists") }}
+			</h2>
 			<div class="release-grid">
 				<router-link
 					v-for="release in playlists"
@@ -90,7 +90,7 @@ onMounted(async () => {
 							is-rounded
 							:cover="release.picture_medium"
 							:link="release.link"
-							@click.stop="addToQueue"
+							:item-title="release.title"
 						/>
 						<p class="primary-text">{{ release.title }}</p>
 						<p class="secondary-text">
@@ -110,7 +110,9 @@ onMounted(async () => {
 			v-if="albums.length"
 			class="border-grayscale-500 border-0 border-t border-solid py-6"
 		>
-			<h2 class="mb-6 text-3xl">{{ t("home.sections.popularAlbums") }}</h2>
+			<h2 class="mb-4 text-2xl md:mb-6 md:text-3xl">
+				{{ t("home.sections.popularAlbums") }}
+			</h2>
 			<div class="release-grid">
 				<router-link
 					v-for="release in albums"
@@ -134,7 +136,7 @@ onMounted(async () => {
 							is-rounded
 							:cover="release.cover_medium"
 							:link="release.link"
-							@click.stop="addToQueue"
+							:item-title="release.title"
 						/>
 						<p class="primary-text">{{ release.title }}</p>
 						<p class="secondary-text">

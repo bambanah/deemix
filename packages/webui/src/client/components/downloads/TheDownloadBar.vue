@@ -1,13 +1,21 @@
 <script setup lang="ts">
+import PendingQueueItem from "@/components/downloads/PendingQueueItem.vue";
 import QueueItem from "@/components/downloads/QueueItem.vue";
 import { pinia } from "@/stores";
 import { useAppInfoStore } from "@/stores/appInfo";
+import { useDownloadsStore } from "@/stores/downloads";
 import { useErrorStore } from "@/stores/errors";
 import { useLoginStore } from "@/stores/login";
 import { fetchData, postToServer } from "@/utils/api-utils";
 import { socket } from "@/utils/socket";
-import { toast } from "@/utils/toasts";
-import { computed, onMounted, onUnmounted, ref, useTemplateRef } from "vue";
+import {
+	computed,
+	onMounted,
+	onUnmounted,
+	ref,
+	useTemplateRef,
+	watch,
+} from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 
@@ -20,6 +28,7 @@ const tabMaxWidth = 500;
 const loginStore = useLoginStore(pinia);
 const appInfoStore = useAppInfoStore(pinia);
 const errorStore = useErrorStore(pinia);
+const downloadsStore = useDownloadsStore(pinia);
 
 const container = useTemplateRef("container");
 const toggler = ref<HTMLElement | null>(null);
@@ -28,9 +37,6 @@ const list = ref<HTMLElement | null>(null);
 const cachedTabWidth = ref(
 	parseInt(localStorage.getItem("downloadTabWidth")) || 300
 );
-const queue = ref([]);
-const queueList = ref<any>({});
-const queueComplete = ref([]);
 const isExpanded = ref(localStorage.getItem("downloadTabOpen") === "true");
 
 const clientMode = computed(() => loginStore.clientMode);
@@ -40,20 +46,17 @@ const isMobileDownloadsOpen = computed(
 	() => appInfoStore.isMobileDownloadsOpen
 );
 
-const queueCount = computed(
-	() => queue.value.length + queueComplete.value.length
-);
+const queueList = computed<Record<string, any>>(() => downloadsStore.queueList);
+const pendingItems = computed(() => downloadsStore.pending);
+const queueCount = computed(() => downloadsStore.queueCount);
+
+watch(queueCount, (count) => appInfoStore.setDownloadQueueCount(count), {
+	immediate: true,
+});
 
 function toggleMobileDownloads() {
 	appInfoStore.toggleMobileDownloads();
 }
-
-const finishedWithoutErrors = computed(() => {
-	const isCompletedWithoutErrors = (el) =>
-		(el.status || "") === "download finished" && el.errors.length === 0;
-
-	return Object.values(queueList.value).filter(isCompletedWithoutErrors);
-});
 
 function checkIfToggleBar(keyEvent) {
 	if (!(keyEvent.ctrlKey && keyEvent.key === "b")) return;
@@ -79,193 +82,6 @@ function setTabWidth(newWidth?: number) {
 		container.value.style.width = newWidth + "px";
 		list.value.style.width = newWidth + "px";
 	}
-}
-
-function initQueue(data) {
-	const {
-		queueOrder: initQueue,
-		//		queueComplete: initQueueComplete,
-		current: currentItem,
-		queue: initQueueList,
-		restored,
-	} = data;
-
-	const initQueueComplete = Object.values(initQueueList)
-		.filter((el: any) =>
-			["completed", "withErrors", "failed"].includes(el.status)
-		)
-		.map((el: any) => el.uuid);
-
-	if (initQueueComplete && initQueueComplete.length) {
-		initQueueComplete.forEach((item) => {
-			initQueueList[item].silent = true;
-			addToQueue(initQueueList[item]);
-		});
-	}
-
-	if (currentItem) {
-		currentItem.silent = true;
-		addToQueue(currentItem, true);
-	}
-
-	initQueue.forEach((item) => {
-		if (!initQueueList[item]) return;
-		initQueueList[item].silent = true;
-		addToQueue(initQueueList[item]);
-	});
-
-	if (restored) {
-		toast(t("toasts.queueRestored"), "done", true, "restoring_queue");
-		socket.emit("queueRestored");
-	}
-}
-
-function addToQueue(queueItem, current = false) {
-	if (Array.isArray(queueItem)) {
-		if (queueItem.length > 1) {
-			queueItem.forEach((item) => {
-				item.silent = true;
-				addToQueue(item);
-			});
-			toast(
-				t("toasts.addedMoreToQueue", { n: queueItem.length }),
-				"playlist_add_check"
-			);
-			return;
-		} else {
-			queueItem = queueItem[0];
-		}
-	}
-
-	// Add implicit values back
-	queueItem.downloaded = queueItem.downloaded || 0;
-	queueItem.failed = queueItem.failed || 0;
-	queueItem.progress = queueItem.progress || 0;
-	queueItem.conversion = queueItem.conversion || 0;
-	queueItem.errors = queueItem.errors || [];
-
-	// * Here we have only queueItem objects
-	queueItem.current = current;
-	queueList.value[queueItem.uuid] = queueItem;
-
-	// * Used when opening the app in another tab
-	const itemIsAlreadyDownloaded =
-		queueItem.downloaded + queueItem.failed == queueItem.size;
-
-	if (itemIsAlreadyDownloaded) {
-		const itemIsNotInCompletedQueue = !queueComplete.value.includes(
-			queueItem.uuid
-		);
-
-		queueList.value[queueItem.uuid].status = "download finished";
-
-		if (itemIsNotInCompletedQueue) {
-			// * Add it
-			queueComplete.value.push(queueItem.uuid);
-		}
-	} else {
-		const itemIsNotInQueue = !queue.value.includes(queueItem.uuid);
-
-		if (itemIsNotInQueue) {
-			queue.value.push(queueItem.uuid);
-		}
-	}
-
-	const needToStartDownload =
-		!itemIsAlreadyDownloaded &&
-		((queueItem.progress > 0 && queueItem.progress < 100) || current);
-
-	if (needToStartDownload) {
-		startDownload(queueItem.uuid);
-	}
-
-	if (!queueItem.silent) {
-		toast(
-			t("toasts.addedToQueue", { item: queueItem.title }),
-			"playlist_add_check"
-		);
-	}
-}
-
-function updateQueue(update) {
-	// downloaded and failed default to false?
-	const {
-		uuid,
-		downloaded,
-		alreadyDownloaded,
-		failed,
-		progress,
-		conversion,
-		error,
-		data,
-		errid,
-		stack,
-		postFailed,
-	} = update;
-
-	if (uuid && queue.value.includes(uuid)) {
-		if (downloaded || alreadyDownloaded) {
-			queueList.value[uuid].downloaded++;
-		}
-
-		if (failed) {
-			queueList.value[uuid].failed++;
-			queueList.value[uuid].errors.push({
-				message: error,
-				data,
-				errid,
-				stack,
-			});
-		}
-
-		if (progress) {
-			queueList.value[uuid].progress = progress;
-		}
-
-		if (conversion) {
-			queueList.value[uuid].conversion = conversion;
-		}
-
-		if (postFailed) {
-			queueList.value[uuid].errors.push({ message: error, data, stack });
-		}
-	}
-}
-
-function removeFromQueue({ uuid }: { uuid: string }) {
-	const index = queue.value.indexOf(uuid);
-
-	if (index > -1) {
-		delete queue.value[index];
-		delete queueList.value[uuid];
-	}
-}
-
-function removeAllDownloads(currentItem) {
-	queueComplete.value = [];
-
-	if (!currentItem) {
-		queue.value = [];
-		queueList.value = {};
-	} else {
-		queue.value = [currentItem];
-
-		const tempQueueItem = queueList.value[currentItem];
-
-		queueList.value = {};
-		queueList.value[currentItem] = tempQueueItem;
-	}
-}
-
-function removedFinishedDownloads() {
-	// TODO: Make this a computed property
-	queueComplete.value = finishedWithoutErrors.value.map((el: any) => el.uuid);
-
-	queueComplete.value.forEach((uuid) => {
-		delete queueList.value[uuid];
-	});
-
-	queueComplete.value = [];
 }
 
 function toggleDownloadTab() {
@@ -312,40 +128,6 @@ function startDrag() {
 	document.addEventListener("mousemove", handleDrag);
 }
 
-function startDownload(uuid) {
-	queueList.value[uuid].status = "downloading";
-}
-
-function finishDownload({ uuid }: { uuid: string }) {
-	const isInQueue =
-		queue.value.includes(uuid) || queueComplete.value.includes(uuid);
-
-	if (!isInQueue) return;
-
-	queueList.value[uuid].status = "download finished";
-	toast(
-		t("toasts.finishDownload", { item: queueList.value[uuid].title }),
-		"done"
-	);
-
-	const index = queue.value.indexOf(uuid);
-
-	if (index > -1) {
-		queue.value.splice(index, 1);
-		queueComplete.value.push(uuid);
-	}
-
-	if (queue.value.length <= 0) {
-		toast(t("toasts.allDownloaded"), "done_all");
-	}
-}
-function startConversion({ uuid }: { uuid: string; title: string }) {
-	queueList.value[uuid].status = "converting";
-	queueList.value[uuid].conversion = 0;
-}
-function finishConversion(downloadObject) {
-	queueList.value[downloadObject.uuid].size = downloadObject.size;
-}
 async function showErrorsTab(item) {
 	setErrors(item);
 
@@ -353,19 +135,22 @@ async function showErrorsTab(item) {
 }
 
 onMounted(() => {
-	socket.on("startDownload", startDownload);
-	socket.on("startConversion", startConversion);
-	socket.on("finishConversion", finishConversion);
-	socket.on("addedToQueue", addToQueue);
-	socket.on("updateQueue", updateQueue);
-	socket.on("removedFromQueue", removeFromQueue);
-	socket.on("finishDownload", finishDownload);
-	socket.on("removedAllDownloads", removeAllDownloads);
-	socket.on("removedFinishedDownloads", removedFinishedDownloads);
+	socket.on("startDownload", downloadsStore.startDownload);
+	socket.on("startConversion", downloadsStore.startConversion);
+	socket.on("finishConversion", downloadsStore.finishConversion);
+	socket.on("addedToQueue", downloadsStore.addToQueue);
+	socket.on("updateQueue", downloadsStore.updateQueue);
+	socket.on("removedFromQueue", downloadsStore.removeFromQueue);
+	socket.on("finishDownload", downloadsStore.finishDownload);
+	socket.on("removedAllDownloads", downloadsStore.removeAllDownloads);
+	socket.on(
+		"removedFinishedDownloads",
+		downloadsStore.removedFinishedDownloads
+	);
 
 	fetchData("getQueue")
 		.then((res) => {
-			initQueue(res);
+			if (downloadsStore.initQueue(res)) socket.emit("queueRestored");
 		})
 		.catch(console.error);
 
@@ -401,66 +186,68 @@ onUnmounted(() => {
 		@click="toggleMobileDownloads"
 	></div>
 
-	<!-- Mobile FAB button (when sheet is closed) -->
-	<button
-		v-if="!isMobileDownloadsOpen"
-		class="bg-primary fixed right-4 z-30 flex h-14 w-14 items-center justify-center rounded-full border-2 border-white/30 shadow-lg md:hidden"
-		style="bottom: calc(1rem + env(safe-area-inset-bottom, 0px))"
-		aria-label="Open downloads"
-		@click="toggleMobileDownloads"
-	>
-		<i class="material-icons text-2xl text-white">download</i>
-		<span
-			v-if="queueCount > 0"
-			class="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white"
-		>
-			{{ queueCount > 9 ? "9+" : queueCount }}
-		</span>
-	</button>
-
 	<!-- Mobile bottom sheet -->
 	<section
-		class="bg-panels-bg text-foreground fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl transition-transform duration-300 ease-in-out md:hidden"
+		class="mobile-downloads bg-panels-bg text-foreground fixed inset-x-0 bottom-0 z-50 flex flex-col rounded-t-2xl shadow-2xl transition-transform duration-300 ease-in-out md:hidden"
 		:class="{
 			'translate-y-full': !isMobileDownloadsOpen,
 			'translate-y-0': isMobileDownloadsOpen,
 		}"
-		style="height: 60vh"
+		:aria-hidden="!isMobileDownloadsOpen"
 		aria-label="downloads"
 	>
-		<!-- Mobile sheet handle -->
-		<div class="flex justify-center py-2" @click="toggleMobileDownloads">
-			<div class="h-1 w-12 rounded-full bg-gray-500"></div>
-		</div>
+		<!-- Sheet handle -->
+		<button
+			class="flex w-full shrink-0 justify-center border-0 bg-transparent py-3"
+			aria-label="Close downloads"
+			@click="toggleMobileDownloads"
+		>
+			<span class="h-1 w-12 rounded-full bg-gray-500"></span>
+		</button>
 
-		<!-- Mobile header -->
-		<div class="flex items-center justify-between px-4 pb-2">
+		<!-- Sheet header -->
+		<div class="flex shrink-0 items-center justify-between px-4 pb-2">
 			<span class="text-lg font-semibold capitalize">{{ t("downloads") }}</span>
-			<div class="flex gap-2">
-				<i
+			<div class="flex">
+				<button
 					v-if="clientMode"
-					class="material-icons cursor-pointer text-xl"
+					class="sheet-action"
+					:aria-label="t('globals.open_downloads_folder')"
 					@click="openDownloadsFolder"
 				>
-					folder_open
-				</i>
-				<i class="material-icons cursor-pointer text-xl" @click="cleanQueue">
-					clear_all
-				</i>
-				<i class="material-icons cursor-pointer text-xl" @click="cancelQueue">
-					delete_sweep
-				</i>
-				<i
-					class="material-icons cursor-pointer text-xl"
+					<i class="material-icons">folder_open</i>
+				</button>
+				<button
+					class="sheet-action"
+					:aria-label="t('globals.clean_queue_hint')"
+					@click="cleanQueue"
+				>
+					<i class="material-icons">clear_all</i>
+				</button>
+				<button
+					class="sheet-action"
+					:aria-label="t('globals.cancel_queue_hint')"
+					@click="cancelQueue"
+				>
+					<i class="material-icons">delete_sweep</i>
+				</button>
+				<button
+					class="sheet-action"
+					aria-label="Close downloads"
 					@click="toggleMobileDownloads"
 				>
-					close
-				</i>
+					<i class="material-icons">close</i>
+				</button>
 			</div>
 		</div>
 
-		<!-- Mobile queue list -->
-		<div class="h-[calc(60vh-80px)] overflow-y-auto px-4">
+		<!-- Sheet queue list -->
+		<div class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-4">
+			<PendingQueueItem
+				v-for="item in pendingItems"
+				:key="item.id"
+				:item="item"
+			/>
 			<QueueItem
 				v-for="item in queueList"
 				:key="item.uuid"
@@ -476,11 +263,11 @@ onUnmounted(() => {
 		</div>
 	</section>
 
-	<!-- Desktop sidebar (unchanged) -->
+	<!-- Desktop side panel -->
 	<section
 		id="download_tab_container"
 		ref="container"
-		class="bg-panels-bg text-foreground hidden h-screen md:block"
+		class="bg-panels-bg text-foreground relative hidden h-full shrink-0 md:block"
 		:class="{ 'tab-hidden': !isExpanded, 'w-8': !isExpanded }"
 		:data-label="t('downloads')"
 		aria-label="downloads"
@@ -543,6 +330,11 @@ onUnmounted(() => {
 			class="w-full pr-2"
 			:class="{ slim: isSlim }"
 		>
+			<PendingQueueItem
+				v-for="item in pendingItems"
+				:key="item.id"
+				:item="item"
+			/>
 			<QueueItem
 				v-for="item in queueList"
 				:key="item.uuid"
@@ -557,6 +349,24 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+.mobile-downloads {
+	height: 70vh;
+	height: 70dvh;
+	padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.sheet-action {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 0;
+	background: transparent;
+	cursor: pointer;
+	width: 44px;
+	height: 44px;
+	color: var(--foreground);
+}
+
 #toggle_download_tab {
 	width: 25px;
 	height: 25px;
