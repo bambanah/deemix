@@ -277,14 +277,18 @@ watchEffect(() => {
 	if (props.performScrolledSearch) scrolledSearch();
 });
 
-watch(state.currentTab, (newTab) => {
-	if (isTabLoaded(newTab)) return;
-	performSearch({
-		term: state.results.query,
-		type: newTab.searchType,
-		start: state.results[`${newTab.searchType}Tab`].next,
-	});
-});
+watch(
+	() => state.currentTab,
+	(newTab) => {
+		if (isTabLoaded(newTab)) return;
+
+		performSearch({
+			term: state.results.query,
+			type: newTab.searchType,
+			start: state.results[`${newTab.searchType}Tab`].next,
+		});
+	}
+);
 
 state.currentTab = state.tabs.find((tab) => tab.searchType === "all");
 </script>
