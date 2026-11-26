@@ -174,10 +174,10 @@ function handleMainSearch(newValue) {
 	state.results.allTab.ARTIST.hasLoaded = true;
 	state.results.allTab.PLAYLIST.hasLoaded = true;
 
-	state.results.trackTab = newValue.TRACK;
-	state.results.albumTab = newValue.ALBUM;
-	state.results.artistTab = newValue.ARTIST;
-	state.results.playlistTab = newValue.PLAYLIST;
+	state.results.trackTab = { ...resetObj };
+	state.results.albumTab = { ...resetObj };
+	state.results.artistTab = { ...resetObj };
+	state.results.playlistTab = { ...resetObj };
 
 	if (lastTab.value && lastTab.value.searchType !== "all") {
 		state.currentTab = lastTab.value;
@@ -277,14 +277,18 @@ watchEffect(() => {
 	if (props.performScrolledSearch) scrolledSearch();
 });
 
-watch(state.currentTab, (newTab) => {
-	if (isTabLoaded(newTab)) return;
-	performSearch({
-		term: state.results.query,
-		type: newTab.searchType,
-		start: state.results[`${newTab.searchType}Tab`].next,
-	});
-});
+watch(
+	() => state.currentTab,
+	(newTab) => {
+		if (isTabLoaded(newTab)) return;
+
+		performSearch({
+			term: state.results.query,
+			type: newTab.searchType,
+			start: state.results[`${newTab.searchType}Tab`].next,
+		});
+	}
+);
 
 state.currentTab = state.tabs.find((tab) => tab.searchType === "all");
 </script>
